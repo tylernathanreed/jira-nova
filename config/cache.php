@@ -33,6 +33,10 @@ return [
 
     'stores' => [
 
+        'jira' => [
+            'driver' => 'array'
+        ],
+
         'apc' => [
             'driver' => 'apc',
         ],
