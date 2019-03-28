@@ -30,50 +30,76 @@ class Project extends Model
         // When creating this model...
         static::creating(function($model) {
 
-            // Sync with jira
-            $model->syncWithJira();
+            // Sync from jira
+            $model->updateFromJira();
 
         });
     }
 
     /**
-     * Syncs this model with jira.
+     * Syncs this model from jira.
      *
-     * @return boolean
+     * @param  \JiraRestApi\User\User|null
+     *
+     * @return $this
      */
-    public function syncWithJira()
+    public function updateFromJira(JiraProject $jira = null)
     {
-        // Make sure this model has a jira identifier
-        if(is_null($this->jira_id ?: $this->jira_key)) {
-            return false;
-        }
+        // Perform all actions within a transaction
+        return $this->getConnection()->transaction(function() use ($jira) {
 
-        // Determine the jira component
-        $jira = $this->jira();
+            // If a jira user wasn't specified, find it
+            $jira = $jira ?: $this->jira();
 
-        // Assign the attributes from jira
-        $this->syncAttributesWithJira($jira);
+            // Assign the attributes from jira
+            $this->syncAttributesFromJira($jira);
 
-        // Sync the related entities
-        // $this->syncLeadWithJira($jira);
-        // $this->syncComponentsWithJira($jira);
-        // $this->syncIssueTypesWithJira($jira);
-        // $this->syncVersionsWithJira($jira);
+            // Sync the related entities
+            $this->syncLeadFromJira($jira);
+            // $this->syncComponentsFromJira($jira);
+            // $this->syncIssueTypesFromJira($jira);
+            // $this->syncVersionsFromJira($jira);
 
-        // Return success
-        return true;
+            // Save
+            $this->save();
+
+            // Allow chaining
+            return $this;
+
+        });
     }
 
     /**
-     * Syncs this attributes with jira.
+     * Syncs this attributes from jira.
      *
-     * @return boolean
+     * @param \JiraRestApi\Project\Project  $jira
+     *
+     * @return void
      */
-    protected function syncAttributesWithJira(JiraProject $jira)
+    protected function syncAttributesFromJira(JiraProject $jira)
     {
         $this->jira_id = $jira->id;
         $this->jira_key = $jira->key;
         $this->display_name = $jira->name;
+    }
+
+    /**
+     * Syncs the project lead from jira.
+     *
+     * @param \JiraRestApi\Project\Project  $jira
+     *
+     * @return void
+     */
+    protected function syncLeadFromJira(JiraProject $jira)
+    {
+        // Determine the project lead
+        $lead = $jira->lead;
+
+        // Determine the account id
+        $accountId = $lead['accountId'];
+
+        // Create or update the user from jira
+        User::createOrUpdateFromJira(compact('accountId'));
     }
 
     /**

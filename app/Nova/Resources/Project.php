@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Nova;
+namespace App\Nova\Resources;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -9,21 +9,21 @@ use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Password;
 
-class User extends Resource
+class Project extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\User::class;
+    public static $model = \App\Models\Project::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'display_name';
 
     /**
      * The columns that should be searched.
@@ -31,7 +31,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'jira_key', 'display_name'
     ];
 
     /**
@@ -45,33 +45,12 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Account ID', function() {
-                return $this->jira()->accountId;
-            })->onlyOnDetail(),
+            Text::make('Jira ID', 'jira_id')->rules('required_without:jira_key'),
 
-            Text::make('Email Address', function() {
-                return $this->jira()->emailAddress;
-            }),
+            Text::make('Jira Key', 'jira_key')->rules('required_without:jira_id'),
 
-            Avatar::make('Avatar')->thumbnail(function() {
-                return $this->jira()->avatarUrls->{"48x48"};
-            })->maxWidth(48),
+            Text::make('Display Name', 'display_name')->exceptOnForms(),
 
-            Text::make('Display Name', function() {
-                return $this->jira()->displayName;
-            }),
-
-            Boolean::make('Active', function() {
-                return $this->jira()->active;
-            }),
-
-            Text::make('Time Zone', function() {
-                return $this->jira()->timeZone;
-            })->onlyOnDetail(),
-
-            Text::make('Locale', function() {
-                return $this->jira()->locale;
-            })->onlyOnDetail()
         ];
     }
 
@@ -116,6 +95,8 @@ class User extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Actions\UpdateFromJira
+        ];
     }
 }
