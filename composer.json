@@ -15,7 +15,8 @@
         "laravel/nova": "^2.0",
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
-        "lesstif/php-jira-rest-client": "^1.37"
+        "lesstif/php-jira-rest-client": "^1.37",
+        "reedware/laravel-blueprints": "^1.0@dev"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
