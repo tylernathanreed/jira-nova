@@ -56,7 +56,7 @@ class Project extends Model
 
             // Sync the related entities
             $this->syncLeadFromJira($jira);
-            // $this->syncComponentsFromJira($jira);
+            $this->syncComponentsFromJira($jira);
             // $this->syncIssueTypesFromJira($jira);
             // $this->syncVersionsFromJira($jira);
 
@@ -103,15 +103,68 @@ class Project extends Model
     }
 
     /**
-     * Returns the jira user for this user.
+     * Syncs the project components from jira.
+     *
+     * @param \JiraRestApi\Project\Project  $jira
+     *
+     * @return void
+     */
+    protected function syncComponentsFromJira(JiraProject $jira)
+    {
+        // Determine the project components
+        $components = $jira->components;
+
+        // Create or update the components from jira
+        foreach($components as $component) {
+
+            Component::createOrUpdateFromJira($this, [
+                'project_id' => $this->jira_id,
+                'project_key' => $this->jira_key,
+                'component_id' => $component->id
+            ]);
+
+        }
+    }
+
+    /**
+     * Finds and returns the specified jira project.
+     *
+     * @param  array  $attributes
+     *
+     * @return \JiraRestApi\Project\Project|null
+     */
+    public static function findJira($attributes = [])
+    {
+        // Return the result for a set interval
+        return static::getJiraCache()->remember(static::class . ':' . json_encode($attributes), 15 * 60, function() use ($attributes) {
+
+            // Check for a project id
+            if(isset($attributes['project_id'])) {
+                return Jira::projects()->get($attributes['project_id']);
+            }
+
+            // Check for a project key
+            if(isset($attributes['project_key'])) {
+                return Jira::projects()->get($attributes['project_key']);
+            }
+
+            // Unknown project
+            return null;
+
+        });
+    }
+
+    /**
+     * Returns the jira project for this project.
      *
      * @return \JiraRestApi\User\User
      */
     public function jira()
     {
-        return static::getJiraCache()->remember(static::class . ':' . $this->id, 15 * 60, function() {
-            return Jira::projects()->get($this->jira_id ?: $this->jira_key);
-        });
+        return static::findJira([
+            'project_id' => $this->jira_id,
+            'project_key' => $this->jira_key
+        ]);
     }
 
     /**

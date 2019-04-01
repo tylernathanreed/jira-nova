@@ -50,7 +50,7 @@ class User extends Authenticatable
     public static function createOrUpdateFromJira($attributes = [])
     {
         // Determine the jira user
-        $jira = Jira::users()->get($attributes);
+        $jira = static::findJira($attributes);
 
         // Try to find the existing user in our system
         if(!is_null($user = User::where('jira_id', '=', $jira->accountId)->first())) {
