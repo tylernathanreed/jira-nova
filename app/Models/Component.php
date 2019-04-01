@@ -21,68 +21,62 @@ class Component extends Model
     /**
      * Creates or updates the specified component from jira.
      *
-     * @param  \App\Models\Project  $project
-     * @param  array                $attributes
+     * @param  \JiraRestApi\Project\Component  $jira
+     * @param  array                           $options
      *
      * @return static
      */
-    public static function createOrUpdateFromJira(Project $project, $attributes = [])
+    public static function createOrUpdateFromJira(JiraComponent $jira, $options = [])
     {
-        // Determine the jira component
-        $jira = static::findJira($attributes);
-
-        // Make sure a jira component was found
-        if(is_null($jira)) {
-            throw new InvalidArgumentException('Unable to find Jira Component from attributes: ' . json_encode($attributes));
-        }
-
         // Try to find the existing component in our system
         if(!is_null($component = Component::where('jira_id', '=', $jira->id)->first())) {
 
             // Update the component
-            return $component->updateFromJira($project, $jira);
+            return $component->updateFromJira($jira, $options);
 
         }
 
         // Create the component
-        return static::createFromJira($project, $jira);
+        return static::createFromJira($jira, $options);
     }
 
     /**
      * Creates a new component from the specified jira component.
      *
-     * @param  \App\Models\Project             $project
      * @param  \JiraRestApi\Project\Component  $jira
+     * @param  array                           $options
      *
      * @return static
      */
-    public static function createFromJira(Project $project, JiraComponent $jira)
+    public static function createFromJira(JiraComponent $jira, $options = [])
     {
         // Create a new component
         $component = new static;
 
         // Update the component from jira
-        return $component->updateFromJira($project, $jira);
+        return $component->updateFromJira($jira, $options);
     }
 
     /**
      * Syncs this model from jira.
      *
-     * @param  \App\Models\Project
-     * @param  \JiraRestApi\Project\Component|null
+     * @param  \JiraRestApi\Project\Component  $jira
+     * @param  array                           $options
      *
      * @return $this
      */
-    public function updateFromJira(Project $project, JiraComponent $jira = null)
+    public function updateFromJira(JiraComponent $jira = null, $options = [])
     {
         // Perform all actions within a transaction
-        return $this->getConnection()->transaction(function() use ($project, $jira) {
+        return $this->getConnection()->transaction(function() use ($jira, $options) {
 
             // If a jira component wasn't specified, find it
             $jira = $jira ?: $this->jira();
 
-            // Associate the project
-            $this->project()->associate($project);
+            // If a project was provided, associate it
+            if(!is_null($project = ($options['project'] ?? null))) {
+                $this->project()->associate($project);
+            }
 
             // Assign the attributes
             $this->jira_id = $jira->id;

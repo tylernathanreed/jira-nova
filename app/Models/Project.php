@@ -54,14 +54,14 @@ class Project extends Model
             // Assign the attributes from jira
             $this->syncAttributesFromJira($jira);
 
+            // Save
+            $this->save();
+
             // Sync the related entities
             $this->syncLeadFromJira($jira);
             $this->syncComponentsFromJira($jira);
             // $this->syncIssueTypesFromJira($jira);
             // $this->syncVersionsFromJira($jira);
-
-            // Save
-            $this->save();
 
             // Allow chaining
             return $this;
@@ -117,10 +117,13 @@ class Project extends Model
         // Create or update the components from jira
         foreach($components as $component) {
 
-            Component::createOrUpdateFromJira($this, [
-                'project_id' => $this->jira_id,
-                'project_key' => $this->jira_key,
-                'component_id' => $component->id
+            // Add the project attributes to the component
+            $component->project = $this->jira_key;
+            $component->projectId = $this->jiraId;
+
+            // Create or update each component
+            Component::createOrUpdateFromJira($component, [
+                'project' => $this
             ]);
 
         }
