@@ -60,8 +60,8 @@ class Project extends Model
             // Sync the related entities
             $this->syncLeadFromJira($jira);
             $this->syncComponentsFromJira($jira);
-            // $this->syncIssueTypesFromJira($jira);
-            // $this->syncVersionsFromJira($jira);
+            $this->syncIssueTypesFromJira($jira);
+            $this->syncVersionsFromJira($jira);
 
             // Allow chaining
             return $this;
@@ -72,7 +72,7 @@ class Project extends Model
     /**
      * Syncs this attributes from jira.
      *
-     * @param \JiraRestApi\Project\Project  $jira
+     * @param  \JiraRestApi\Project\Project  $jira
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class Project extends Model
     /**
      * Syncs the project lead from jira.
      *
-     * @param \JiraRestApi\Project\Project  $jira
+     * @param  \JiraRestApi\Project\Project  $jira
      *
      * @return void
      */
@@ -105,7 +105,7 @@ class Project extends Model
     /**
      * Syncs the project components from jira.
      *
-     * @param \JiraRestApi\Project\Project  $jira
+     * @param  \JiraRestApi\Project\Project  $jira
      *
      * @return void
      */
@@ -123,6 +123,47 @@ class Project extends Model
 
             // Create or update each component
             Component::createOrUpdateFromJira($component, [
+                'project' => $this
+            ]);
+
+        }
+    }
+
+    /**
+     * Syncs the issue types from jira.
+     *
+     * @param  \JiraRestApi\Project\Project  $jira
+     *
+     * @return void
+     */
+    protected function syncIssueTypesFromJira(JiraProject $jira)
+    {
+        // Determine the issue types
+        $issueTypes = $jira->issueTypes;
+
+        // Create or update the issue types from jira
+        foreach($issueTypes as $issueType) {
+            IssueType::createOrUpdateFromJira($issueType);
+        }
+    }
+
+    /**
+     * Syncs the project versions from jira.
+     *
+     * @param  \JiraRestApi\Project\Project  $jira
+     *
+     * @return void
+     */
+    protected function syncVersionsFromJira(JiraProject $jira)
+    {
+        // Determine the versions
+        $versions = $jira->versions;
+
+        // Create or update the versions from jira
+        foreach($versions as $version) {
+
+            // Create or update each version
+            Version::createOrUpdateFromJira($version, [
                 'project' => $this
             ]);
 
