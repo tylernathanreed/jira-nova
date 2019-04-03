@@ -5,6 +5,7 @@ namespace App\Support\Jira;
 use JiraRestApi\User\UserService;
 use JiraRestApi\Issue\IssueService;
 use JiraRestApi\Project\ProjectService;
+use JiraRestApi\Priority\PriorityService;
 
 class JiraService
 {
@@ -16,6 +17,16 @@ class JiraService
 	public function issues()
 	{
 		return new IssueService;
+	}
+
+	/**
+	 * Returns the priorty service.
+	 *
+	 * @return \JiraRestApi\Priority\PriorityService
+	 */
+	public function priorities()
+	{
+		return new PriorityService;
 	}
 
 	/**

@@ -18,6 +18,15 @@ class Project extends Model
     ];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'issues_synched_at'
+    ];
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -168,6 +177,94 @@ class Project extends Model
             ]);
 
         }
+    }
+
+    /**
+     * Syncs the project issues from jira.
+     *
+     * @return void
+     */
+    public function syncIssuesFromJira()
+    {
+        // Determine the issues from jira
+        $issues = $this->getUpdatedJiraIssues();
+
+        // Create or update the issues from jira
+        foreach($issues as $issue) {
+
+            // Create or update each issue
+            Issue::createOrUpdateFromJira($issue, [
+                'project' => $this
+            ]);
+
+        }
+    }
+
+    /**
+     * Returns the jira issues that have been updated since the project was last synched.
+     *
+     * @return array
+     */
+    public function getUpdatedJiraIssues()
+    {
+        // Determine the search query
+        $jql = $this->newUpdatedJiraIssuesExpression();
+
+        // Initialize the list of issues
+        $issues = [];
+
+        // Initialize the pagination variables
+        $page = 0;
+        $count = 50;
+
+        // Loop until we're out of results
+        do {
+
+            // Determine the search results
+            $results = Jira::issues()->search($jql, $page * $count, $count, [
+                'summary',
+                'description',
+                'created',
+                'updated'
+            ], [], false);
+
+            // Determine the number of results
+            $countResults = count($results->issues);
+
+            // If there aren't any results, stop here
+            if($countResults == 0) {
+                break;
+            }
+
+            // Append the results to the list of issues
+            $issues = array_merge($issues, $results->issues);
+
+            // Forget the results
+            unset($results);
+
+            // Increase the page count
+            $page++;
+
+        } while ($countResults == $count);
+
+        // Return the list of issues
+        return $issues;
+    }
+
+    /**
+     * Creates and returns a new updated jira issues expression.
+     *
+     * @return string
+     */
+    public function newUpdatedJiraIssuesExpression()
+    {
+        // If this project hasn't ever been synched, load all issues
+        if(is_null($this->issues_synched_at)) {
+            return "project = {$this->jira_key}";
+        }
+
+        // Otherwise, load issues that have been updated since the project was synched
+        return "project = {$this->jira->key} and updated >= {$this->issues_synched_at}";
     }
 
     /**

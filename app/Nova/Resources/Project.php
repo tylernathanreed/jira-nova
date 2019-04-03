@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Datetime;
 use Laravel\Nova\Fields\Password;
 
 class Project extends Resource
@@ -26,13 +27,11 @@ class Project extends Resource
     public static $title = 'display_name';
 
     /**
-     * The columns that should be searched.
+     * Indicates if the resoruce should be globally searchable.
      *
-     * @var array
+     * @var bool
      */
-    public static $search = [
-        'jira_key', 'display_name'
-    ];
+    public static $globallySearchable = false;
 
     /**
      * Get the fields displayed by the resource.
@@ -50,6 +49,8 @@ class Project extends Resource
             Text::make('Jira Key', 'jira_key')->rules('required_without:jira_id'),
 
             Text::make('Display Name', 'display_name')->exceptOnForms(),
+
+            Datetime::make('Issues Synched At', 'issues_synched_at')->onlyOnDetail()
 
         ];
     }
@@ -96,7 +97,8 @@ class Project extends Resource
     public function actions(Request $request)
     {
         return [
-            new \App\Nova\Actions\UpdateFromJira
+            new \App\Nova\Actions\UpdateFromJira,
+            new \App\Nova\Actions\SyncIssuesFromJira,
         ];
     }
 }
