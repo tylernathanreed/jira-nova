@@ -22,7 +22,7 @@ class CreateIssuesTable extends Migration
             $table->bigBelongsTo('issue_types', 'issue_type_id')->index();
             $table->bigBelongsTo('issue_categories', 'issue_category_id')->nullable()->index();
             $table->bigBelongsTo('priorities', 'priority_id')->index();
-            $table->bigBelongsTo('status_types', 'status_id')->index();
+            $table->bigBelongsTo('issue_status_types', 'status_id')->index();
             $table->bigBelongsTo('users', 'reporter_id')->index();
             $table->bigBelongsTo('users', 'assignee_id')->nullable()->index();
             $table->string('summary', 255);

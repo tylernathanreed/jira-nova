@@ -71,6 +71,8 @@ class Project extends Model
             $this->syncComponentsFromJira($jira);
             $this->syncIssueTypesFromJira($jira);
             $this->syncVersionsFromJira($jira);
+            $this->syncPrioritiesFromJira($jira);
+            $this->syncIssueStatusTypesFromJira($jira);
 
             // Allow chaining
             return $this;
@@ -175,6 +177,68 @@ class Project extends Model
             Version::createOrUpdateFromJira($version, [
                 'project' => $this
             ]);
+
+        }
+    }
+
+    /**
+     * Syncs the project priorities from jira.
+     *
+     * @param  \JiraRestApi\Project\Project  $jira
+     *
+     * @return void
+     */
+    protected function syncPrioritiesFromJira(JiraProject $jira)
+    {
+        // Determine the priorities
+        $priorities = Jira::issues()->getAllPriorities();
+
+        // Create or update the priorities from jira
+        foreach($priorities as $priority) {
+            Priority::createOrUpdateFromJira($priority);
+        }
+    }
+
+    /**
+     * Syncs the issue status types from jira.
+     *
+     * @param  \JiraRestApi\Project\Project  $jira
+     *
+     * @return void
+     */
+    protected function syncIssueStatusTypesFromJira(JiraProject $jira)
+    {
+        // Initialize all status types
+        $allStatusTypes = [];
+
+        // Determine the issue status types for each issue type
+        $issueTypes = Jira::projects()->getStatuses($this->jira_id);
+
+        // Iterate through each issue type
+        foreach($issueTypes as $jiraIssueType) {
+
+            // Find the corresponding issue type
+            $issueType = IssueType::where('jira_id', '=', $jiraIssueType->id)->firstOrFail();
+
+            // Determine the status types
+            $statusTypes = $jiraIssueType->statuses;
+
+            // Initialize the sync list
+            $sync = [];
+
+            // Iterate through the issue status types
+            foreach($statusTypes as $jiraStatusType) {
+
+                // Determine the status type
+                $statusType = $allStatusTypes[$jiraStatusType->id] ?? IssueStatusType::createOrUpdate($jiraStatusType);
+
+                // Add the status type id to the sync list
+                $sync[] = $statusType->id;
+
+            }
+
+            // Sync the status types to the issue type
+            $issueType->statuses()->sync($sync);
 
         }
     }
