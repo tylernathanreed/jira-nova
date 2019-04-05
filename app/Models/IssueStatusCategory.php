@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use JiraRestApi\Issue\IssueStatus as JiraIssueStatus;
-
-class IssueStatusType extends Model
+class IssueStatusCategory extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,18 +10,18 @@ class IssueStatusType extends Model
      * @var array
      */
     protected $fillable = [
-        'jira_id'
+        'jira_id', 'jira_key'
     ];
 
     /**
      * Creates or updates the specified issue status type from jira.
      *
-     * @param  \JiraRestApi\Issue\IssueStatus  $jira
-     * @param  array                           $options
+     * @param  \stdclass  $jira
+     * @param  array      $options
      *
      * @return static
      */
-    public static function createOrUpdateFromJira(JiraIssueStatus $jira, $options = [])
+    public static function createOrUpdateFromJira($jira, $options = [])
     {
         // Try to find the existing issue status type in our system
         if(!is_null($statusType = static::where('jira_id', '=', $jira->id)->first())) {
@@ -40,12 +38,12 @@ class IssueStatusType extends Model
     /**
      * Creates a new issue status type from the specified jira issue status type.
      *
-     * @param  \JiraRestApi\Issue\IssueStatus  $jira
-     * @param  array                           $options
+     * @param  \stdclass  $jira
+     * @param  array      $options
      *
      * @return static
      */
-    public static function createFromJira(JiraIssueStatus $jira, $options = [])
+    public static function createFromJira($jira, $options = [])
     {
         // Create a new issue status type
         $statusType = new static;
@@ -57,12 +55,12 @@ class IssueStatusType extends Model
     /**
      * Syncs this model from jira.
      *
-     * @param  \JiraRestApi\Issue\IssueStatus  $jira
-     * @param  array                           $options
+     * @param  \stdclass  $jira
+     * @param  array      $options
      *
      * @return $this
      */
-    public function updateFromJira(JiraIssueStatus $jira, $options = [])
+    public function updateFromJira($jira, $options = [])
     {
         // Perform all actions within a transaction
         return $this->getConnection()->transaction(function() use ($jira, $options) {
@@ -72,16 +70,11 @@ class IssueStatusType extends Model
                 $this->project()->associate($project);
             }
 
-            // If a category was provided, associate it
-            if(!is_null($category = ($options['category'] ?? null))) {
-                $this->category()->associate($category);
-            }
-
             // Assign the attributes
             $this->jira_id = $jira->id;
+            $this->jira_key = $jira->key;
             $this->display_name = $jira->name;
-            $this->icon_url = $jira->iconUrl;
-            $this->description = $jira->description;
+            $this->color_name = $jira->colorName;
 
             // Save
             $this->save();
@@ -103,12 +96,12 @@ class IssueStatusType extends Model
     }
 
     /**
-     * Returns the issue status category that this status type belongs to.
+     * Returns the status types associated to this status category.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function category()
+    public function types()
     {
-        return $this->belongsTo(IssueStatusCategory::class, 'issue_status_category_id');
+        return $this->hasMany(IssueStatusType::class, 'issue_status_category_id');
     }
 }

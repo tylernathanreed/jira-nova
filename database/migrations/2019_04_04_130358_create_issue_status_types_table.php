@@ -16,6 +16,8 @@ class CreateIssueStatusTypesTable extends Migration
 
             $table->bigIncrements('id');
 
+            $table->bigBelongsTo('projects', 'project_id')->index();
+
             $table->integer('jira_id')->unsigned()->index();
             $table->string('jira_key', 20)->index();
             $table->string('display_name', 20);
@@ -30,7 +32,9 @@ class CreateIssueStatusTypesTable extends Migration
 
             $table->bigIncrements('id');
 
-            $table->bigBelongsTo('issue_status_category_id')->index();
+            $table->bigBelongsTo('projects', 'project_id')->index();
+            $table->bigBelongsTo('issue_status_categories', 'issue_status_category_id')->index();
+
             $table->integer('jira_id')->unsigned()->index();
             $table->string('display_name', 20);
             $table->string('icon_url', 255)->nullable();

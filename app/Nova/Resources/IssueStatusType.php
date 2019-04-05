@@ -6,17 +6,16 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Avatar;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Datetime;
+use Laravel\Nova\Fields\BelongsTo;
 
-class Project extends Resource
+class IssueStatusType extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Project::class;
+    public static $model = \App\Models\IssueStatusType::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -26,11 +25,28 @@ class Project extends Resource
     public static $title = 'display_name';
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var boolean
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * Indicates if the resoruce should be globally searchable.
      *
-     * @var bool
+     * @var boolean
      */
     public static $globallySearchable = false;
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Issue Status Types';
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -43,17 +59,19 @@ class Project extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Jira ID', 'jira_id')->rules('required_without:jira_key'),
+            BelongsTo::make('Project', 'project'),
 
-            Text::make('Jira Key', 'jira_key')->rules('required_without:jira_id'),
+            BelongsTo::make('Category', 'category', IssueStatusCategory::class),
 
-            Text::make('Display Name', 'display_name')->exceptOnForms(),
+            Text::make('Jira ID', 'jira_id'),
 
-            Datetime::make('Issues Synched At', 'issues_synched_at')->onlyOnDetail(),
+            Avatar::make('Icon')->thumbnail(function() {
+                return $this->icon_url;
+            })->maxWidth(16),
 
-            HasMany::make('Issue Status Categories', 'issueStatusCategories'),
+            Text::make('Display Name', 'display_name'),
 
-            HasMany::make('Issue Status Types', 'issueStatusTypes'),
+            Text::make('Description', 'description'),
 
         ];
     }
@@ -100,8 +118,7 @@ class Project extends Resource
     public function actions(Request $request)
     {
         return [
-            new \App\Nova\Actions\UpdateFromJira,
-            new \App\Nova\Actions\SyncIssuesFromJira,
+            // new \App\Nova\Actions\UpdateFromJira
         ];
     }
 }

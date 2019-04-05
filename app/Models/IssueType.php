@@ -82,4 +82,14 @@ class IssueType extends Model
 
         });
     }
+
+    /** 
+     * Returns the statuses associated to this issue type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function statuses()
+    {
+        return $this->belongsToMany(IssueStatusType::class, 'issue_type_status_types', 'issue_type_id', 'issue_status_type_id');
+    }
 }

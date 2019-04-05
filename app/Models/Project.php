@@ -208,8 +208,9 @@ class Project extends Model
      */
     protected function syncIssueStatusTypesFromJira(JiraProject $jira)
     {
-        // Initialize all status types
+        // Initialize all status types and categories
         $allStatusTypes = [];
+        $allStatusCategories = [];
 
         // Determine the issue status types for each issue type
         $issueTypes = Jira::projects()->getStatuses($this->jira_id);
@@ -229,8 +230,19 @@ class Project extends Model
             // Iterate through the issue status types
             foreach($statusTypes as $jiraStatusType) {
 
+                // Determine the jira status category
+                $jiraStatusCategory = $jiraStatusType->statuscategory;
+
+                // Determine the status category
+                $statusCategory = $allStatusCategories[$jiraStatusCategory->id] ?? IssueStatusCategory::createOrUpdateFromJira($jiraStatusCategory, [
+                    'project' => $this
+                ]);
+
                 // Determine the status type
-                $statusType = $allStatusTypes[$jiraStatusType->id] ?? IssueStatusType::createOrUpdate($jiraStatusType);
+                $statusType = $allStatusTypes[$jiraStatusType->id] ?? IssueStatusType::createOrUpdateFromJira($jiraStatusType, [
+                    'project' => $this,
+                    'category' => $statusCategory
+                ]);
 
                 // Add the status type id to the sync list
                 $sync[] = $statusType->id;
@@ -380,5 +392,25 @@ class Project extends Model
     public static function getJiraCache()
     {
         return Cache::store('jira');
+    }
+
+    /**
+     * Returns the issue status categories that belong to this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function issueStatusCategories()
+    {
+        return $this->hasMany(IssueStatusCategory::class, 'project_id');
+    }
+
+    /**
+     * Returns the issue status types that belong to this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function issueStatusTypes()
+    {
+        return $this->hasMany(IssueStatusType::class, 'project_id');
     }
 }
