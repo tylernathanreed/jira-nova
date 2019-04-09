@@ -32,6 +32,15 @@ class IssueStatusCategory extends Resource
     public static $displayInNavigation = false;
 
     /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'jira_key', 'display_name'
+    ];
+
+    /**
      * Indicates if the resoruce should be globally searchable.
      *
      * @var boolean

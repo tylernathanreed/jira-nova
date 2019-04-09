@@ -2,11 +2,19 @@
 
 namespace App\Nova\Actions;
 
+use Laravel\Nova\Fields\Boolean;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
 
 class UpdateFromJira extends Action
 {
+    /**
+     * The toggleable options.
+     *
+     * @var array
+     */
+    public $options = [];
+
     /**
      * Perform the action on the given models.
      *
@@ -21,7 +29,7 @@ class UpdateFromJira extends Action
         foreach($models as $model) {
 
             // Update each model from jira
-            $model->updateFromJira();
+            $model->updateFromJira($model->jira(), $fields->toArray());
 
         }
     }
@@ -33,6 +41,29 @@ class UpdateFromJira extends Action
      */
     public function fields()
     {
-        return [];
+        // Initialize the fields
+        $fields = [];
+
+        // Create a field for each option
+        foreach($this->options as $key => $name) {
+            $fields[] = Boolean::make($name, $key)->withMeta(['value' => 1]);
+        }
+
+        // Return the fields
+        return $fields;
+    }
+
+    /**
+     * Sets the toggleable options.
+     *
+     * @param  array  $options
+     *
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+
+        return $this;
     }
 }

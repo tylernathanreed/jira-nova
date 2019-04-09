@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 
 class IssueType extends Resource
 {
@@ -23,6 +24,15 @@ class IssueType extends Resource
      * @var string
      */
     public static $title = 'display_name';
+
+    /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'display_name'
+    ];
 
     /**
      * Indicates if the resoruce should be globally searchable.
@@ -61,6 +71,8 @@ class IssueType extends Resource
             Text::make('Display Name', 'display_name'),
 
             Text::make('Description', 'description'),
+
+            BelongsToMany::make('Issue Fields', 'fields')
 
         ];
     }

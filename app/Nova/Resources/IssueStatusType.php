@@ -32,6 +32,15 @@ class IssueStatusType extends Resource
     public static $displayInNavigation = false;
 
     /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'display_name'
+    ];
+
+    /**
      * Indicates if the resoruce should be globally searchable.
      *
      * @var boolean

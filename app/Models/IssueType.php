@@ -92,4 +92,14 @@ class IssueType extends Model
     {
         return $this->belongsToMany(IssueStatusType::class, 'issue_type_status_types', 'issue_type_id', 'issue_status_type_id');
     }
+
+    /** 
+     * Returns the issue fields associated to this issue type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function fields()
+    {
+        return $this->belongsToMany(IssueField::class, 'issue_type_fields', 'issue_type_id', 'issue_field_id');
+    }
 }

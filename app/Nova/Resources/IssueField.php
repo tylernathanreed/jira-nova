@@ -4,19 +4,20 @@ namespace App\Nova\Resources;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Avatar;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Datetime;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 
-class Project extends Resource
+class IssueField extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Project::class;
+    public static $model = \App\Models\IssueField::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -26,11 +27,37 @@ class Project extends Resource
     public static $title = 'display_name';
 
     /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'jira_key', 'display_name'
+    ];
+
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var boolean
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * Indicates if the resoruce should be globally searchable.
      *
      * @var bool
      */
     public static $globallySearchable = false;
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Issue Fields';
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -43,19 +70,25 @@ class Project extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Jira ID', 'jira_id')->rules('required_without:jira_key'),
+            BelongsTo::make('Project', 'project'),
 
-            Text::make('Jira Key', 'jira_key')->rules('required_without:jira_id'),
+            Text::make('Jira ID', 'jira_id'),
 
-            Text::make('Display Name', 'display_name')->exceptOnForms(),
+            Text::make('Jira ID', 'jira_key'),
 
-            Datetime::make('Issues Synched At', 'issues_synched_at')->onlyOnDetail(),
+            Text::make('Display Name', 'display_name'),
 
-            HasMany::make('Issue Status Categories', 'issueStatusCategories'),
+            Boolean::make('Required', 'required'),
 
-            HasMany::make('Issue Status Types', 'issueStatusTypes'),
+            Boolean::make('Has Default Value', 'has_default_value'),
 
-            HasMany::make('Issue Fields', 'issueFields'),
+            Text::make('Default Value', 'default_value'),
+
+            Code::make('Operations', 'operations')->onlyOnDetail()->json(),
+
+            Code::make('Allowed Values', 'allowed_values')->onlyOnDetail()->json(),
+
+            BelongsToMany::make('Issue Types', 'issueTypes')
 
         ];
     }
@@ -102,16 +135,7 @@ class Project extends Resource
     public function actions(Request $request)
     {
         return [
-            (new \App\Nova\Actions\UpdateFromJira)->setOptions([
-                'lead' => 'Sync Lead',
-                'components' => 'Sync Components',
-                'issue_types' => 'Sync Issue Types',
-                'versions' => 'Sync Versions',
-                'priorities' => 'Sync Priorities',
-                'issue_status_types' => 'Sync Issue Status Types',
-                'issue_fields' => 'Sync Issue Fields'
-            ]),
-            new \App\Nova\Actions\SyncIssuesFromJira,
+            // new \App\Nova\Actions\UpdateFromJira
         ];
     }
 }

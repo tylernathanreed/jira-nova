@@ -48,17 +48,15 @@ class Project extends Model
     /**
      * Syncs this model from jira.
      *
-     * @param  \JiraRestApi\User\User|null
+     * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return $this
      */
-    public function updateFromJira(JiraProject $jira = null)
+    public function updateFromJira(JiraProject $jira, $options = [])
     {
         // Perform all actions within a transaction
-        return $this->getConnection()->transaction(function() use ($jira) {
-
-            // If a jira user wasn't specified, find it
-            $jira = $jira ?: $this->jira();
+        return $this->getConnection()->transaction(function() use ($jira, $options) {
 
             // Assign the attributes from jira
             $this->syncAttributesFromJira($jira);
@@ -67,12 +65,13 @@ class Project extends Model
             $this->save();
 
             // Sync the related entities
-            $this->syncLeadFromJira($jira);
-            $this->syncComponentsFromJira($jira);
-            $this->syncIssueTypesFromJira($jira);
-            $this->syncVersionsFromJira($jira);
-            $this->syncPrioritiesFromJira($jira);
-            $this->syncIssueStatusTypesFromJira($jira);
+            $this->syncLeadFromJira($jira, $options);
+            $this->syncComponentsFromJira($jira, $options);
+            $this->syncIssueTypesFromJira($jira, $options);
+            $this->syncVersionsFromJira($jira, $options);
+            $this->syncPrioritiesFromJira($jira, $options);
+            $this->syncIssueStatusTypesFromJira($jira, $options);
+            $this->syncIssueFieldsFromJira($jira, $options);
 
             // Allow chaining
             return $this;
@@ -84,10 +83,11 @@ class Project extends Model
      * Syncs this attributes from jira.
      *
      * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return void
      */
-    protected function syncAttributesFromJira(JiraProject $jira)
+    protected function syncAttributesFromJira(JiraProject $jira, $options = [])
     {
         $this->jira_id = $jira->id;
         $this->jira_key = $jira->key;
@@ -98,11 +98,17 @@ class Project extends Model
      * Syncs the project lead from jira.
      *
      * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return void
      */
-    protected function syncLeadFromJira(JiraProject $jira)
+    protected function syncLeadFromJira(JiraProject $jira, $options = [])
     {
+        // Make sure the sync is enabled
+        if(!($options['lead'] ?? true)) {
+            return;
+        }
+
         // Determine the project lead
         $lead = $jira->lead;
 
@@ -117,11 +123,17 @@ class Project extends Model
      * Syncs the project components from jira.
      *
      * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return void
      */
-    protected function syncComponentsFromJira(JiraProject $jira)
+    protected function syncComponentsFromJira(JiraProject $jira, $options = [])
     {
+        // Make sure the sync is enabled
+        if(!($options['components'] ?? true)) {
+            return;
+        }
+
         // Determine the project components
         $components = $jira->components;
 
@@ -144,11 +156,17 @@ class Project extends Model
      * Syncs the issue types from jira.
      *
      * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return void
      */
-    protected function syncIssueTypesFromJira(JiraProject $jira)
+    protected function syncIssueTypesFromJira(JiraProject $jira, $options = [])
     {
+        // Make sure the sync is enabled
+        if(!($options['issue_types'] ?? true)) {
+            return;
+        }
+
         // Determine the issue types
         $issueTypes = $jira->issueTypes;
 
@@ -162,11 +180,17 @@ class Project extends Model
      * Syncs the project versions from jira.
      *
      * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return void
      */
-    protected function syncVersionsFromJira(JiraProject $jira)
+    protected function syncVersionsFromJira(JiraProject $jira, $options = [])
     {
+        // Make sure the sync is enabled
+        if(!($options['versions'] ?? true)) {
+            return;
+        }
+
         // Determine the versions
         $versions = $jira->versions;
 
@@ -185,11 +209,17 @@ class Project extends Model
      * Syncs the project priorities from jira.
      *
      * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return void
      */
-    protected function syncPrioritiesFromJira(JiraProject $jira)
+    protected function syncPrioritiesFromJira(JiraProject $jira, $options = [])
     {
+        // Make sure the sync is enabled
+        if(!($options['priorities'] ?? true)) {
+            return;
+        }
+
         // Determine the priorities
         $priorities = Jira::issues()->getAllPriorities();
 
@@ -203,11 +233,17 @@ class Project extends Model
      * Syncs the issue status types from jira.
      *
      * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
      *
      * @return void
      */
-    protected function syncIssueStatusTypesFromJira(JiraProject $jira)
+    protected function syncIssueStatusTypesFromJira(JiraProject $jira, $options = [])
     {
+        // Make sure the sync is enabled
+        if(!($options['issue_status_types'] ?? true)) {
+            return;
+        }
+
         // Initialize all status types and categories
         $allStatusTypes = [];
         $allStatusCategories = [];
@@ -251,6 +287,58 @@ class Project extends Model
 
             // Sync the status types to the issue type
             $issueType->statuses()->sync($sync);
+
+        }
+    }
+
+    /**
+     * Syncs the issue status types from jira.
+     *
+     * @param  \JiraRestApi\Project\Project  $jira
+     * @param  array                         $options
+     *
+     * @return void
+     */
+    protected function syncIssueFieldsFromJira(JiraProject $jira, $options = [])
+    {
+        // Make sure the sync is enabled
+        if(!($options['issue_fields'] ?? true)) {
+            return;
+        }
+
+        // Initialize all fields
+        $allFields = [];
+
+        // Determine the fields for each issue type
+        $issueTypes = Jira::issues()->getCreateMeta(['projectKeys' => $this->jira_key])->projects[0]->issuetypes;
+
+        // Iterate through the issue types
+        foreach($issueTypes as $jiraIssueType) {
+
+            // Find the corresponding issue type
+            $issueType = IssueType::where('jira_id', '=', $jiraIssueType->id)->firstOrFail();
+
+            // Determine the fields for the current issue type
+            (array) $fields = $jiraIssueType->fields;
+
+            // Initialize the sync list
+            $sync = [];
+
+            // Iterate through the issue fields
+            foreach($fields as $jiraKey => $jiraField) {
+
+                // Determine the issue field
+                $issueField = $allFields[$jiraKey] ?? IssueField::createOrUpdateFromJira($jiraField, [
+                    'project' => $this
+                ]);
+
+                // Add the issue field id to the sync list
+                $sync[] = $issueField->id;
+
+            }
+
+            // Sync the issue fields to the issue type
+            $issueType->fields()->sync($sync);
 
         }
     }
@@ -412,5 +500,15 @@ class Project extends Model
     public function issueStatusTypes()
     {
         return $this->hasMany(IssueStatusType::class, 'project_id');
+    }
+
+    /**
+     * Returns the issue fields that belong to this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function issueFields()
+    {
+        return $this->hasMany(IssueField::class, 'project_id');
     }
 }
