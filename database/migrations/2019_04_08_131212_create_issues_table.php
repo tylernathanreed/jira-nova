@@ -16,9 +16,10 @@ class CreateIssuesTable extends Migration
 
             $table->bigIncrements('id');
 
-            $table->string('jira_id', 20)->index();
+            $table->integer('jira_id')->unsigned()->index();
+            $table->string('jira_key', 20)->index();
             $table->bigBelongsTo('projects', 'project_id')->index();
-            $table->bigBelongsTo('issues', 'parent_issue_id')->nullable()->index();
+            $table->bigBelongsToColumn('parent_issue_id')->nullable()->index();
             $table->bigBelongsTo('issue_types', 'issue_type_id')->index();
             $table->bigBelongsTo('issue_categories', 'issue_category_id')->nullable()->index();
             $table->bigBelongsTo('priorities', 'priority_id')->index();
@@ -36,6 +37,10 @@ class CreateIssuesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+        });
+
+        Schema::table('issues', function (Blueprint $table) {
+            $table->belongsToForeign('issues', 'parent_issue_id');
         });
     }
 

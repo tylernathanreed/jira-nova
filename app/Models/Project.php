@@ -362,6 +362,12 @@ class Project extends Model
             ]);
 
         }
+
+        // Update the issue sync timestamp
+        $this->issues_synched_at = carbon();
+
+        // Save this project
+        $this->save();
     }
 
     /**
