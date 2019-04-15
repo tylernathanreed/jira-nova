@@ -13,6 +13,8 @@ class Action extends NovaAction
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
+    use Concerns\ManuallyCallable;
+
     /**
      * Creates a new action instance.
      *

@@ -350,15 +350,62 @@ class Project extends Model
      */
     public function syncIssuesFromJira()
     {
+        // Initialize all related entities
+        $allUsers = User::all()->keyBy('jira_id')->all();
+        $allTypes = IssueType::all()->keyBy('id')->all();
+        $allStatuses = IssueStatusType::all()->keyBy('jira_id')->all();
+        $allPriorities = Priority::all()->keyBy('jira_id')->all();
+
         // Determine the issues from jira
         $issues = $this->getUpdatedJiraIssues();
 
         // Create or update the issues from jira
         foreach($issues as $issue) {
 
+            // Determine the reporter
+            $reporter = !is_null($reporter = $issue->fields->reporter)
+                ? $allUsers[$reporter->accountId] ?? ($allUsers[$reporter->accountId] = User::createOrUpdateFromJira($reporter))
+                : null;
+
+            // Determine the creator
+            $creator = !is_null($creator = $issue->fields->creator)
+                ? $allUsers[$creator->accountId] ?? ($allUsers[$creator->accountId] = User::createOrUpdateFromJira($creator))
+                : null;
+
+            // Determine the assignee
+            $assignee = !is_null($assignee = $issue->fields->assignee)
+                ? $allUsers[$assignee->accountId] ?? ($allUsers[$assignee->accountId] = User::createOrUpdateFromJira($assignee))
+                : null;
+
+            // Determine the issue type
+            $type = !is_null($type = $issue->fields->issuetype)
+                ? $allTypes[$type->id] ?? ($allTypes[$type->id] = IssueType::createOrUpdateFromJira($type))
+                : null;
+
+            // Determine the issue status type
+            $status = !is_null($status = $issue->fields->status)
+                ? $allStatuses[$status->id] ?? ($allStatuses[$status->id] = IssueStatusType::createOrUpdateFromJira($status, [
+                    'project' => $this,
+                    'category' => IssueStatusCategory::createOrUpdateFromJira($status->statuscategory, [
+                        'project' => $this
+                    ])
+                ]))
+                : null;
+
+            // Determine the issue priority
+            $priority = !is_null($priority = $issue->fields->priority)
+                ? $allPriorities[$priority->id] ?? ($allPriorities[$priority->id] = Priority::createOrUpdateFromJira($priority))
+                : null;
+
             // Create or update each issue
             Issue::createOrUpdateFromJira($issue, [
-                'project' => $this
+                'project' => $this,
+                'reporter' => $reporter,
+                'creator' => $creator,
+                'assignee' => $assignee,
+                'type' => $type,
+                'status' => $status,
+                'priority' => $priority
             ]);
 
         }

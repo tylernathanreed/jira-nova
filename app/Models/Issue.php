@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Jira;
 use JiraRestApi\Issue\Issue as JiraIssue;
 
 class Issue extends Model
@@ -117,16 +118,15 @@ class Issue extends Model
             }
 
             // Assign the attributes
-            $this->jira_id = $jira->id;;
-            $this->jira_key = $jira->key;
-            $this->issue_categories = null;
-            $this->summary = $jira->summary;
-            $this->description = $jira->description;
-            $this->due_date = $jira->duedate;
-            $this->time_estimated = $jira->timeoriginalestimate;
-            $this->time_spent = $jira->timespent;
-            $this->time_remaining = $jira->timeestimate;
-            $this->last_viewed_at = optional($jira->lastViewed)->scalar;
+            $this->jira_id        = $jira->id;
+            $this->jira_key       = $jira->key;
+            $this->summary        = $jira->fields->summary;
+            $this->description    = $jira->fields->description;
+            $this->due_date       = $jira->fields->duedate;
+            $this->time_estimated = optional($jira->fields->timeoriginalestimate)->scalar;
+            $this->time_spent     = $jira->fields->timespent ?? null;
+            $this->time_remaining = $jira->fields->timeestimate ?? null;
+            $this->last_viewed_at = optional($jira->fields->lastViewed)->scalar;
 
             // Save
             $this->save();
@@ -135,6 +135,16 @@ class Issue extends Model
             return $this;
 
         });
+    }
+
+    /**
+     * Returns the jira project for this project.
+     *
+     * @return \JiraRestApi\User\User
+     */
+    public function jira()
+    {
+        return Jira::issues()->get($this->jira_key);
     }
 
     /** 
