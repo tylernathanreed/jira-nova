@@ -2,10 +2,10 @@
 
 namespace App\Nova\Actions\Concerns;
 
-use Laravel\Nova\Actions\Action;
-use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Actions\ActionMethod;
+use Laravel\Nova\Http\Requests\ActionRequest;
+use Laravel\Nova\Actions\ActionModelCollection;
 use Laravel\Nova\Exceptions\MissingActionHandlerException;
 
 trait ManuallyCallable
@@ -20,7 +20,7 @@ trait ManuallyCallable
      *
      * @throws \Laravel\Nova\Exceptions\MissingActionHandlerException
      */
-    public function call($fields = [], $models = [])
+    public function handleCollection($fields = [], $models = [])
     {
     	// Determine the method to invoke
     	$method = ActionMethod::determine($this, $request->targetModel());
@@ -36,17 +36,19 @@ trait ManuallyCallable
         // Resolve the fields
         $fields = $this->resolveFieldValues($fields);
 
-        // Convert the models to a collection
-        if(!$models instanceof Collection) {
-        	$models = new Collection($models);
+        // Check if the model list is not a collection
+        if(!$models instanceof ActionModelCollection) {
+
+        	// Convert the models to an action model collection
+        	$models = ActionModelCollection::make($models);
+
         }
 
-        // Chunk the models
-        $models->chunk(static::$chunkCount)->map(function($models) use ($fields, $method, &$wasExecuted) {
+        // Create a new action request
+        $request = app()->make(ActionRequest::class);
 
-	    	/**
-	    	 * @todo
-	    	 */
+        // Chunk the models
+        $models->chunk(static::$chunkCount)->map(function($models) use ($fields, $request, $method, &$wasExecuted) {
 
         	// Filter the models for execution
             $models = $models->filterForExecution($request);
@@ -57,7 +59,7 @@ trait ManuallyCallable
             }
 
             // Call this action for the specified models
-            return static::runForModels($this, $method, $models, $fields);
+            return ActionDispatcher::dispatchForCollection($this, $method, $models, $fields);
 
         });
 
@@ -88,40 +90,5 @@ trait ManuallyCallable
         return new ActionFields(collect($results), $results->filter(function($field) {
             return is_callable($field);
         }));
-    }
-
-    /**
-     * Runs ths specified action using the given models.
-     *
-     * @param  \Laravel\Nova\Actions\Action       $action
-     * @param  string                             $method
-     * @param  \Illuminate\Support\Collection     $models
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     *
-     * @return mixed
-     */
-    public static function runForModels(Action $action, $method, Collection $models, ActionFields $fields)
-    {
-    	/**
-    	 * @todo
-    	 */
-
-        if ($models->isEmpty()) {
-            return;
-        }
-
-        if ($action instanceof ShouldQueue) {
-            return static::queueForModels($request, $action, $method, $models);
-        }
-
-        return Transaction::run(function ($batchId) use ($fields, $request, $action, $method, $models) {
-            if (! $action->withoutActionEvents) {
-                ActionEvent::createForModels($request, $action, $batchId, $models);
-            }
-
-            return $action->withBatchId($batchId)->{$method}($fields, $models);
-        }, function ($batchId) {
-            ActionEvent::markBatchAsFinished($batchId);
-        });
     }
 }

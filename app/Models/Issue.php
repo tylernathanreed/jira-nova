@@ -184,7 +184,7 @@ class Issue extends Model
      */
     public function status()
     {
-        return $this->belongsTo(IssueStatusType::class, 'issue_status_type_id');
+        return $this->belongsTo(IssueStatusType::class, 'status_id');
     }
 
     /**

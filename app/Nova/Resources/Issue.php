@@ -124,7 +124,7 @@ class Issue extends Resource
     public function actions(Request $request)
     {
         return [
-            new \App\Nova\Actions\UpdateFromJira
+            new \App\Nova\Actions\SyncIssueFromJira
         ];
     }
 }

@@ -111,7 +111,7 @@ class Project extends Resource
                 'issue_status_types' => 'Sync Issue Status Types',
                 'issue_fields' => 'Sync Issue Fields'
             ]),
-            new \App\Nova\Actions\SyncIssuesFromJira,
+            new \App\Nova\Actions\SyncIssuesFromProject,
         ];
     }
 }

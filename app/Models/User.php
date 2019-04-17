@@ -43,55 +43,52 @@ class User extends Authenticatable
     /**
      * Creates or updates the specified user from jira.
      *
-     * @param  array  $attributes
+     * @param  mixed  $jira
+     * @param  array  $options
      *
      * @return static
      */
-    public static function createOrUpdateFromJira($attributes = [])
+    public static function createOrUpdateFromJira($jira, $options = [])
     {
-        // Determine the jira user
-        $jira = static::findJira($attributes);
+        // Try to find the existing issue type in our system
+        if(!is_null($issue = static::where('jira_id', '=', $jira->accountId)->first())) {
 
-        // Try to find the existing user in our system
-        if(!is_null($user = User::where('jira_id', '=', $jira->accountId)->first())) {
-
-            // Update the user
-            return $user->updateFromJira($jira);
+            // Update the issue type
+            return $issue->updateFromJira($jira, $options);
 
         }
 
-        // Create the user
-        return static::createFromJira($jira);
+        // Create the issue type
+        return static::createFromJira($jira, $options);
     }
 
     /**
-     * Creates a new user from the specified jira user.
+     * Creates and returns new user from the specified jira user.
      *
-     * @param  \JiraRestApi\User\User  $jira
+     * @param  mixed  $jira
+     * @param  array  $options
      *
      * @return static
      */
-    public static function createFromJira(JiraUser $jira)
+    public static function createFromJira($jira, $options = [])
     {
         // Create a new user
         $user = new static;
 
         // Update the user from jira
-        return $user->updateFromJira($jira);
+        return $user->updateFromJira($jira, $options = []);
     }
 
     /**
      * Updates this user from jira.
      *
-     * @param  \JiraRestApi\User\User|null
+     * @param  mixed  $jira
+     * @param  array  $options
      *
      * @return $this
      */
-    public function updateFromJira(JiraUser $jira = null)
+    public function updateFromJira($jira, $options = [])
     {
-        // If a jira user wasn't specified, find it
-        $jira = $jira ?: $this->jira();
-
         // Update the jira attributes
         $this->jira_id = $jira->accountId;
         $this->name = $jira->name;

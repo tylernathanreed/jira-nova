@@ -5,7 +5,7 @@ namespace App\Nova\Actions;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
 
-class SyncIssuesFromJira extends Action
+class SyncIssuesFromProject extends Action
 {
     /**
      * Perform the action on the given models.
@@ -17,11 +17,14 @@ class SyncIssuesFromJira extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        // Iterate through each model
-        foreach($models as $model) {
+        // Iterate through each project
+        foreach($models as $project) {
 
-            // Sync the issues from jira
-            $model->syncIssuesFromJira();
+            // Determine the jira issues
+            $issues = $project->getUpdatedJiraIssues();
+
+            // Sync the issues
+            (new SyncIssueFromJira(compact('project')))->handleCollection([], $issues);
 
         }
     }
