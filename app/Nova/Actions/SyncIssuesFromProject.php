@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Models\Issue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
 
@@ -21,10 +22,28 @@ class SyncIssuesFromProject extends Action
         foreach($models as $project) {
 
             // Determine the jira issues
-            $issues = $project->getUpdatedJiraIssues();
+            $jiras = $project->getUpdatedJiraIssues();
+
+            // Create new models for each jira
+            $issues = array_map(function($jira) use ($project) {
+
+                // Find or create the issue
+                $issue = Issue::firstOrCreate([
+                    'jira_id' => $jira->id,
+                    'jira_key' => $jira->key,
+                    'project_id' => $project->id
+                ]);
+
+                // Update the issue timestamps
+                $issue->touch();
+
+                // Return the issue
+                return $issue;
+
+            }, $jiras);
 
             // Sync the issues
-            (new SyncIssueFromJira(compact('project')))->handleCollection([], $issues);
+            (new SyncIssueFromJira)->setOptions(compact('project', 'jiras'))->handleCollection([], $issues);
 
         }
     }

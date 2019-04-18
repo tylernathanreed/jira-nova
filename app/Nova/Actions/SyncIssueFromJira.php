@@ -15,28 +15,21 @@ use Laravel\Nova\Fields\ActionFields;
 class SyncIssueFromJira extends Action
 {
     /**
-     * Creates a new action instance.
+     * The options for handling this action.
      *
-     * @param  array  $options
-     *
-     * @return $this
+     * @var array
      */
-    public function __construct($options = [])
-    {
-        parent::__construct($options);
-
-        $this->options = [];
-    }
+    public $options = [];
 
     /**
      * Perform the action on the given models.
      *
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection     $models
+     * @param  \Illuminate\Support\Collection     $issues
      *
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $issues)
     {
         // Initialize all related entities
         $allUsers = User::all()->keyBy('jira_id')->all();
@@ -46,12 +39,10 @@ class SyncIssueFromJira extends Action
         $allProjects = Project::all()->keyBy('jira_id')->all();
 
         // Determine the jira issues
-        $jiras = $models->first() instanceof Issue
-            ? collect(Jira::issues()->search('issuekey in (' . $models->pluck('jira_key')->implode(', ') . ')')->issues)->keyBy('id')
-            : $models;
+        $jiras = $this->options['jiras'] ?? collect(Jira::issues()->search('issuekey in (' . $issues->pluck('jira_key')->implode(', ') . ')')->issues)->keyBy('id');
 
         // Iterate through each issue
-        foreach($models as $issue) {
+        foreach($issues as $issue) {
 
             // Determine the jira instance for this issue
             $jira = $jiras[$issue->jira_id] ?? null;
@@ -125,5 +116,19 @@ class SyncIssueFromJira extends Action
     public function fields()
     {
         return [];
+    }
+
+    /**
+     * Sets the options for handling this action.
+     *
+     * @param  array  $options
+     *
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use DateTime;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
@@ -11,6 +12,8 @@ use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Actions\Transaction;
 use Laravel\Nova\Actions\CallQueuedAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Laravel\Nova\Http\Requests\ActionRequest;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class ActionDispatcher
 {
@@ -41,7 +44,7 @@ class ActionDispatcher
 
         	// If the action uses action events, create them
             if(!$action->withoutActionEvents) {
-                static::createActionEventForCollection($request, $action, $batchId, $models);
+                static::createActionEventForCollection($action, $batchId, $models);
             }
 
             // Handle the action
@@ -96,10 +99,10 @@ class ActionDispatcher
     public static function createActionEventForCollection(Action $action, $batchId, Collection $models, $status = 'running')
     {
     	// Map the models into action events
-        $models = $models->map(function($model) use ($action, $batchId, $status) {
+        $models = $models->map(function($model) use ($action, $batchId, $models, $status) {
 
         	// Merge the default attributes with the actionable overrides
-            return array_merge(static::defaultAttributes($action, $batchId, $status), [
+            return array_merge(static::defaultAttributes($action, $batchId, $models, $status), [
                 'actionable_id' => static::actionableKey($action, $model),
                 'target_id' => static::targetKey($action, $model),
                 'model_id' => $model->getKey(),
@@ -115,6 +118,59 @@ class ActionDispatcher
         // Prune the action events
         ActionEvent::prune($models);
     }
+
+    /**
+     * Get the default attributes for creating a new action event.
+     *
+     * @param  \Laravel\Nova\Actions\Action               $action
+     * @param  string                                     $batchId
+     * @param  \Illuminate\Support\Collection             $models
+     * @param  string                                     $status
+     *
+     * @return array
+     */
+    public static function defaultAttributes(Action $action, $batchId, Collection $models, $status = 'running')
+    {
+        // Check if the action is a pivot action
+        if(static::isPivotAction($action)) {
+
+            // Determine the pivot class
+            $pivotClass = static::pivotRelation($action)->getPivotClass();
+
+            // Determine the pivot model type
+            $modelType = collect(Relation::$morphMap)->filter(function($model, $alias) use ($pivotClass) {
+                return $model === $pivotClass;
+            })->keys()->first() ?? $pivotClass;
+
+        }
+
+        // Otherwise, use the model's morph class
+        else {
+            $modelType = $models->first()->getMorphClass();
+        }
+
+        // Determine the default model
+        $model = $models->first();
+
+        // Create a new action request
+        $request = app()->make(ActionRequest::class);
+
+        // Return the default attributes
+        return [
+            'batch_id' => $batchId,
+            'user_id' => auth()->user()->getAuthIdentifier(),
+            'name' => $action->name(),
+            'actionable_type' => (static::actionableModel($action) ?? $model)->getMorphClass(),
+            'target_type' => (static::model($action) ?? $model)->getMorphClass(),
+            'model_type' => $modelType,
+            'fields' => serialize($request->resolveFieldsForStorage()),
+            'status' => $status,
+            'exception' => '',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime,
+        ];
+    }
+
 
     /**
      * Extract the queue connection for the action.
@@ -141,6 +197,16 @@ class ActionDispatcher
     }
 
     /**
+     * Returns whether or not the specified action is a pivot action.
+     *
+     * @return boolean
+     */
+    public static function isPivotAction($action)
+    {
+        return property_exists($action, 'pivotAction') ? $action->pivotAction : false;
+    }
+
+    /**
      * Returns the key of model that lists the action on its dashboard.
      *
      * @param  \Laravel\Nova\Actions\Action         $action
@@ -153,6 +219,64 @@ class ActionDispatcher
         return static::isPivotAction($action)
 	        ? $model->{static::pivotRelation($action)->getForeignPivotKeyName()}
 	        : $model->getKey();
+    }
+
+    /**
+     * Returns the model instance that lists the action on its dashboard.
+     *
+     * @param  \Laravel\Nova\Actions\Action  $action
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function actionableModel($action)
+    {
+        return static::isPivotAction($action)
+                        ? static::newViaResource($action)->model()
+                        : static::model($action);
+    }
+
+    /**
+     * Returns the class name of the resource being requested.
+     *
+     * @param  \Laravel\Nova\Actions\Action  $action
+     *
+     * @return mixed
+     */
+    public static function resource($action)
+    {
+        return tap(Nova::resourceForKey(static::resourceKey($action)), function($resource) {
+            abort_if(is_null($resource), 404);
+        });
+    }
+
+    /**
+     * Returns the resource key for the specified action.
+     *
+     * @param  \Laravel\Nova\Actions\Action  $action
+     *
+     * @return string|null
+     */
+    public static function resourceKey($action)
+    {
+        return property_exists($action, 'resourceKey') ? $action->resourceKey : null;
+    }
+
+    /**
+     * Returns a new instance of the underlying model for the specified action.
+     *
+     * @param  \Laravel\Nova\Actions\Action  $action
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public static function model($action)
+    {
+        if(is_null(static::resourceKey($action))) {
+            return null;
+        }
+
+        $resource = static::resource($action);
+
+        return $resource::newModel();
     }
 
     /**
@@ -189,11 +313,15 @@ class ActionDispatcher
      *
      * @param  \Laravel\Nova\Actions\Action  $action
      *
-     * @return \Laravel\Nova\Resource
+     * @return \Laravel\Nova\Resource|null
      */
     public static function newViaResource($action)
     {
         $resource = static::viaResourceClass($action);
+
+        if(is_null($resource)) {
+            return null;
+        }
 
         return new $resource($resource::newModel());
     }

@@ -481,7 +481,7 @@ class Project extends Model
         }
 
         // Otherwise, load issues that have been updated since the project was synched
-        return "project = {$this->jira->key} and updated >= {$this->issues_synched_at}";
+        return "project = {$this->jira_key} and updated >= " . $this->issues_synched_at->toDateString();
     }
 
     /**

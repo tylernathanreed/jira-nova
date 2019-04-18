@@ -3,6 +3,7 @@
 namespace App\Nova\Actions\Concerns;
 
 use Laravel\Nova\Fields\ActionFields;
+use App\Nova\Actions\ActionDispatcher;
 use Laravel\Nova\Actions\ActionMethod;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Actions\ActionModelCollection;
@@ -23,7 +24,7 @@ trait ManuallyCallable
     public function handleCollection($fields = [], $models = [])
     {
     	// Determine the method to invoke
-    	$method = ActionMethod::determine($this, $request->targetModel());
+    	$method = ActionMethod::determine($this, head($models));
 
     	// Make sure the method exists
         if(!method_exists($this, $method)) {
@@ -48,7 +49,7 @@ trait ManuallyCallable
         $request = app()->make(ActionRequest::class);
 
         // Chunk the models
-        $models->chunk(static::$chunkCount)->map(function($models) use ($fields, $request, $method, &$wasExecuted) {
+        $results = $models->chunk(static::$chunkCount)->map(function($models) use ($fields, $request, $method, &$wasExecuted) {
 
         	// Filter the models for execution
             $models = $models->filterForExecution($request);

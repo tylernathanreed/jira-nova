@@ -13,7 +13,7 @@ class Issue extends Model
      * @var array
      */
     protected $fillable = [
-        'jira_id'
+        'jira_id', 'jira_key', 'project_id'
     ];
 
     /**
