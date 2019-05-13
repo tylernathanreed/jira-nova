@@ -24,14 +24,19 @@ class JiraBurdown extends Command
     protected $description = 'Assigns due dates based on time estimated and rank order.';
 
     /**
-     * Create a new command instance.
+     * The general weekly schedule for allocating time.
      *
-     * @return void
+     * @var array
      */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected static $weeklySchedule = [
+        Carbon::SUNDAY => 0,
+        Carbon::MONDAY => 4.5 * 60 * 60,
+        Carbon::TUESDAY => 0,
+        Carbon::WEDNESDAY => 5 * 60 * 60,
+        Carbon::THURSDAY => 0,
+        Carbon::FRIDAY => 5 * 60 * 60,
+        Carbon::SATURDAY => 0
+    ];
 
     /**
      * Execute the console command.
@@ -41,22 +46,22 @@ class JiraBurdown extends Command
     public function handle()
     {
         // Determine the jira issues
-        $this->info('Searching for Jira issues...');
+        $this->info('[1/3] Searching for Jira issues...');
         $benchmark = microtime(true);
         $issues = $this->getJiraIssues();
-        $this->info('Found [' . count($issues) . '] Jira issues in [' . ceil((microtime(true) - $benchmark) / 1000) . '] second(s).');
+        $this->info('[1/3] -> Found [' . count($issues) . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
 
         // Assign estimated completion dates to the issues
-        $this->info('Assigning estimated completion dates...');
+        $this->info('[2/3] Assigning estimated completion dates...');
         $benchmark = microtime(true);
         $issues = $this->assignEstimatedCompletionDates($issues);
-        $this->info('Assigned estimated completion dates in [' . ceil(((microtime(true) - $benchmark) / 1000)) . '] second(s).');
+        $this->info('[2/3] -> Assigned estimated completion dates in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
 
         // Update the issues in jira
-        $this->info('Updating Jira issues...');
+        $this->info('[3/3] Updating Jira issues...');
         $benchmark = microtime(true);
         $count = $this->updateJiraIssues($issues);
-        $this->info('Updated [' . $count . '] Jira issues in [' . ceil((microtime(true) - $benchmark) / 1000) . '] second(s).');
+        $this->info('[3/3] -> Updated [' . $count . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
     }
 
     /**
@@ -100,25 +105,10 @@ class JiraBurdown extends Command
      */
     public function assignEstimatedCompletionDates($issues)
     {
-        // Determine the allocatable seconds for each day of the week
-        $weeklySchedule = [
-            Carbon::SUNDAY => 0,
-            Carbon::MONDAY => 4.5 * 60 * 60,
-            Carbon::TUESDAY => 0,
-            Carbon::WEDNESDAY => 5 * 60 * 60,
-            Carbon::THURSDAY => 0,
-            Carbon::FRIDAY => 5 * 60 * 60,
-            Carbon::SATURDAY => 0,
-        ];
+        // Determine the first assignment date
+        $date = $this->getFirstAssignmentDate();
 
-        // Determine the start date range
-        $start = Carbon::now()->addDays(1)->startOfDay(); // Start no sooner than tomorrow
-        $end = Carbon::now()->addDays(8)->startOfDay(); // Start no later than a week after tomorrow
-
-        // Determine the first date where we can start assigning due dates
-        $date = array_reduce(array_keys($weeklySchedule), function($date, $key) use ($weeklySchedule, $start) {
-            return $weeklySchedule[$key] <= 0 ? $date : $date->min(($thisWeek = Carbon::now()->weekday($key)->startOfDay())->gt($start) ? $thisWeek : $thisWeek->addWeek());
-        }, $end);
+        $this->info('[2/3] -> Starting assignment for [' . $date->toDateString() . '].');
 
         // Iterate through each issue
         foreach($issues as &$issue) {
@@ -141,7 +131,7 @@ class JiraBurdown extends Command
                 // to the next day for the next issue, otherwise we'll loop forever.
 
                 // Check if we've run out of time for the day
-                if($allocated >= $weeklySchedule[$date->dayOfWeek]) {
+                if($allocated >= static::$weeklySchedule[$date->dayOfWeek]) {
 
                     // Advance to the next day
                     $date = $date->addDay()->startOfDay();
@@ -152,7 +142,7 @@ class JiraBurdown extends Command
                 }
 
                 // Determine how much time we can allocate for today
-                $allocatable = min($remaining, $weeklySchedule[$date->dayOfWeek] - $allocated);
+                $allocatable = min($remaining, static::$weeklySchedule[$date->dayOfWeek] - $allocated);
 
                 // Allocate the time
                 $date = $date->addSeconds($allocatable);
@@ -161,12 +151,12 @@ class JiraBurdown extends Command
                 $remaining -= $allocatable;
 
                 // If we have exceeded the daily limit, advance to the next day
-                if($allocated + $allocatable > $weeklySchedule[$date->dayOfWeek]) {
+                if($allocated + $allocatable > static::$weeklySchedule[$date->dayOfWeek]) {
                     $date = $date->addDay()->startOfDay();
                 }
 
                 // Skip dates that have no allocatable time
-                while($weeklySchedule[$date->dayOfWeek] <= 0) {
+                while(static::$weeklySchedule[$date->dayOfWeek] <= 0) {
                     $date = $date->addDay();
                 }
 
@@ -179,6 +169,34 @@ class JiraBurdown extends Command
 
         // Return the issues
         return $issues;
+    }
+
+    /**
+     * Returns the first assignment date for the schedule.
+     *
+     * @return \Carbon\Carbon
+     */
+    public function getFirstAssignmentDate()
+    {
+        // Until we have a better scheduling concept, we're going to
+        // base everything off of the default schedule, and probit
+        // issues from being scheduled same-day after 11:00 AM.
+
+        // Determine the soonest we can start scheduling
+        $start = Carbon::now()->lte(Carbon::parse('11 AM')) // If it's prior to 11 AM
+            ? Carbon::now()->startOfDay() // Start no sooner than today
+            : Carbon::now()->addDays(1)->startOfDay(); // Otherwise, start no sooner than tomorrow
+
+        // Determine the latest we can start scheduling
+        $end = Carbon::now()->addDays(8)->startOfDay(); // Start no later than a week after tomorrow
+
+        // Determine the first date where we can start assigning due dates
+        $date = array_reduce(array_keys(static::$weeklySchedule), function($date, $key) use ($start) {
+            return static::$weeklySchedule[$key] <= 0 ? $date : $date->min(($thisWeek = Carbon::now()->weekday($key)->startOfDay())->gte($start) ? $thisWeek : $thisWeek->addWeek());
+        }, $end);
+
+        // Return the date
+        return $date;
     }
 
     /**
