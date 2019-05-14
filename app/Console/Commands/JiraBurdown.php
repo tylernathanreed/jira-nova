@@ -10,6 +10,16 @@ use JiraRestApi\Issue\IssueField;
 class JiraBurdown extends Command
 {
     /**
+     * The field constants.
+     *
+     * @var string
+     */
+    const FIELD_DUE_DATE = 'duedate';
+    const FIELD_REMAINING_ESTIMATE = 'timeestimate';
+    const FIELD_RANK = 'customfield_10119';
+    const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
+
+    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -80,12 +90,12 @@ class JiraBurdown extends Command
         foreach($issues as $issue) {
 
             // If the issue doesn't need to be updated, skip it
-            if($issue['estimated_completion_date'] == $issue['original_due_date']) {
+            if($issue['new_estimated_completion_date'] == $issue['old_estimated_completion_date']) {
                 continue;
             }
 
             // Update the issue
-            Jira::issues()->update($issue['key'], (new IssueField(true))->setDueDate($issue['estimated_completion_date']));
+            Jira::issues()->update($issue['key'], (new IssueField(true))->addCustomField(static::FIELD_ESTIMATED_COMPLETION_DATE, $issue['new_estimated_completion_date']));
 
             // Increase the count
             $count++;
@@ -108,13 +118,11 @@ class JiraBurdown extends Command
         // Determine the first assignment date
         $date = $this->getFirstAssignmentDate();
 
-        $this->info('[2/3] -> Starting assignment for [' . $date->toDateString() . '].');
-
         // Iterate through each issue
         foreach($issues as &$issue) {
 
             // Determine the remaining estimate
-            $remaining = $issue['remaining_estimate'] ?? 1 * 60 * 60;
+            $remaining = max($issue['time_estimate'] ?? 0, 1 * 60 * 60);
 
             // Since an issue on its own can take longer than a day to complete,
             // we essentially have to chip away at the remaining estimate so
@@ -163,7 +171,7 @@ class JiraBurdown extends Command
             }
 
             // Assign the estimated completion date
-            $issue['estimated_completion_date'] = $date->toDateString();
+            $issue['new_estimated_completion_date'] = $date->toDateString();
 
         }
 
@@ -221,18 +229,20 @@ class JiraBurdown extends Command
 
             // Determine the search results
             $results = Jira::issues()->search($jql, $page * $count, $count, [
-                'duedate',
-                'timeestimate',
-                'customfield_10119'
+                static::FIELD_DUE_DATE,
+                static::FIELD_REMAINING_ESTIMATE,
+                static::FIELD_ESTIMATED_COMPLETION_DATE,
+                static::FIELD_RANK
             ], [], false);
 
             // Remap the issues to reference what we need
             $results = array_map(function($issue) {
                 return [
                     'key' => $issue->key,
-                    'original_due_date' => $issue->fields->duedate,
-                    'remaining_estimate' => $issue->fields->timeestimate,
-                    'rank' => $issue->fields->customfield_10119
+                    'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
+                    'time_estimate' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
+                    'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
+                    'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);
 
@@ -266,6 +276,6 @@ class JiraBurdown extends Command
      */
     public function newBurndownJiraIssuesExpression()
     {
-        return 'assignee in (tyler.reed) AND priority in (Medium, High) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development") AND ("Issue Category" = Dev OR "Issue Category" is EMPTY) ORDER BY Rank ASC';
+        return 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development") AND ("Issue Category" = Dev OR "Issue Category" is EMPTY) ORDER BY Rank ASC';
     }
 }
