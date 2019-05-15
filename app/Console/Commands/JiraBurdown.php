@@ -16,8 +16,35 @@ class JiraBurdown extends Command
      */
     const FIELD_DUE_DATE = 'duedate';
     const FIELD_REMAINING_ESTIMATE = 'timeestimate';
-    const FIELD_RANK = 'customfield_10119';
+    const FIELD_PRIORITY = 'priority';
+    const FIELD_ISSUE_CATEGORY = 'customfield_12005';
     const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
+    const FIELD_RANK = 'customfield_10119';
+
+    /**
+     * The focus constants.
+     *
+     * @var string
+     */
+    const FOCUS_DEV = 'Dev';
+    const FOCUS_TICKET = 'Ticket';
+    const FOCUS_OTHER = 'Other';
+
+    /**
+     * The priority constants.
+     *
+     * @var string
+     */
+    const PRIORITY_HIGHEST = 'Highest';
+
+    /**
+     * The issue category constants.
+     *
+     * @var string
+     */
+    const ISSUE_CATEGORY_DEV = 'Dev';
+    const ISSUE_CATEGORY_TICKET = 'Ticket';
+    const ISSUE_CATEGORY_DATA = 'Data';
 
     /**
      * The name and signature of the console command.
@@ -39,13 +66,13 @@ class JiraBurdown extends Command
      * @var array
      */
     protected static $weeklySchedule = [
-        Carbon::SUNDAY => 0,
-        Carbon::MONDAY => 4.5 * 60 * 60,
-        Carbon::TUESDAY => 0,
-        Carbon::WEDNESDAY => 5 * 60 * 60,
-        Carbon::THURSDAY => 0,
-        Carbon::FRIDAY => 5 * 60 * 60,
-        Carbon::SATURDAY => 0
+        Carbon::SUNDAY    => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 0],
+        Carbon::MONDAY    => [self::FOCUS_DEV => 4.5 * 60 * 60, self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3.5 * 60 * 60],
+        Carbon::TUESDAY   => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 5 * 60 * 60,   self::FOCUS_OTHER => 3 * 60 * 60],
+        Carbon::WEDNESDAY => [self::FOCUS_DEV => 5 * 60 * 60,   self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3 * 60 * 60],
+        Carbon::THURSDAY  => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 4.5 * 60 * 60, self::FOCUS_OTHER => 3.5 * 60 * 60],
+        Carbon::FRIDAY    => [self::FOCUS_DEV => 5 * 60 * 60,   self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3 * 60 * 60],
+        Carbon::SATURDAY  => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 0],
     ];
 
     /**
@@ -66,6 +93,8 @@ class JiraBurdown extends Command
         $benchmark = microtime(true);
         $issues = $this->assignEstimatedCompletionDates($issues);
         $this->info('[2/3] -> Assigned estimated completion dates in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
+
+        dd('Confirm that the following dates are correct:', compact('issues'));
 
         // Update the issues in jira
         $this->info('[3/3] Updating Jira issues...');
@@ -118,8 +147,28 @@ class JiraBurdown extends Command
         // Determine the first assignment date
         $date = $this->getFirstAssignmentDate();
 
+        // Our schedule is broken down into focus times. Issues can be allocated
+        // to one or more focuses, and these focus times are when we can work
+        // on these issues. We ought to respect the focus in the schedule.
+
+        // Initialize the dates for each focus
+        $dates = [
+            static::FOCUS_DEV => $date->copy(),
+            static::FOCUS_TICKET => $date->copy(),
+            static::FOCUS_OTHER => $date->copy()
+        ];
+
         // Iterate through each issue
         foreach($issues as &$issue) {
+
+            // Determine the issue focus
+            $focuses = $issue['priority'] == static::PRIORITY_HIGHEST
+                ? [static::FOCUS_DEV, static::FOCUS_TICKET, static::FOCUS_OTHER]
+                : (
+                    in_array($issue['issue_category'], [static::ISSUE_CATEGORY_TICKET, static::ISSUE_CATEGORY_DATA])
+                        ? [static::FOCUS_TICKET]
+                        : [static::FOCUS_DEV]
+                );
 
             // Determine the remaining estimate
             $remaining = max($issue['time_estimate'] ?? 0, 1 * 60 * 60);
@@ -131,6 +180,19 @@ class JiraBurdown extends Command
             // Allocate the remaining estimate in a time loop until its all gone
             while($remaining > 0) {
 
+                // Determine the applicable focus dates
+                $focusDates = array_only($dates, $focuses);
+
+                // Determine the earliest focus date
+                $date = array_reduce($focusDates, function($date, $focusDate) {
+                    return is_null($date) ? $focusDate : $date->min($focusDate);
+                }, null);
+
+                // Determine the focus with that date
+                $focus = array_last($focuses, function($focus) use ($focusDates, $date) {
+                    return $focusDates[$focus]->eq($date);
+                });
+
                 // Determine how much time as already been allocated for the day
                 $allocated = ($date->hour * 60 + $date->minute) * 60 + $date->second;
 
@@ -139,7 +201,7 @@ class JiraBurdown extends Command
                 // to the next day for the next issue, otherwise we'll loop forever.
 
                 // Check if we've run out of time for the day
-                if($allocated >= static::$weeklySchedule[$date->dayOfWeek]) {
+                if($allocated >= static::$weeklySchedule[$date->dayOfWeek][$focus]) {
 
                     // Advance to the next day
                     $date = $date->addDay()->startOfDay();
@@ -150,7 +212,7 @@ class JiraBurdown extends Command
                 }
 
                 // Determine how much time we can allocate for today
-                $allocatable = min($remaining, static::$weeklySchedule[$date->dayOfWeek] - $allocated);
+                $allocatable = min($remaining, static::$weeklySchedule[$date->dayOfWeek][$focus] - $allocated);
 
                 // Allocate the time
                 $date = $date->addSeconds($allocatable);
@@ -159,12 +221,12 @@ class JiraBurdown extends Command
                 $remaining -= $allocatable;
 
                 // If we have exceeded the daily limit, advance to the next day
-                if($allocated + $allocatable > static::$weeklySchedule[$date->dayOfWeek]) {
+                if($allocated + $allocatable > static::$weeklySchedule[$date->dayOfWeek][$focus]) {
                     $date = $date->addDay()->startOfDay();
                 }
 
                 // Skip dates that have no allocatable time
-                while(static::$weeklySchedule[$date->dayOfWeek] <= 0) {
+                while(static::$weeklySchedule[$date->dayOfWeek][$focus] <= 0) {
                     $date = $date->addDay();
                 }
 
@@ -231,6 +293,8 @@ class JiraBurdown extends Command
             $results = Jira::issues()->search($jql, $page * $count, $count, [
                 static::FIELD_DUE_DATE,
                 static::FIELD_REMAINING_ESTIMATE,
+                static::FIELD_PRIORITY,
+                static::FIELD_ISSUE_CATEGORY,
                 static::FIELD_ESTIMATED_COMPLETION_DATE,
                 static::FIELD_RANK
             ], [], false);
@@ -242,6 +306,8 @@ class JiraBurdown extends Command
                     'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
                     'time_estimate' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
                     'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
+                    'priority' => optional($issue->fields->{static::FIELD_PRIORITY})->name,
+                    'issue_category' => optional($issue->fields->{static::FIELD_ISSUE_CATEGORY})->value ?? 'Dev',
                     'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);
