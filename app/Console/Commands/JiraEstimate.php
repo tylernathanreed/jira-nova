@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use JiraRestApi\Issue\IssueField;
 
-class JiraBurdown extends Command
+class JiraEstimate extends Command
 {
     /**
      * The field constants.
@@ -51,7 +51,7 @@ class JiraBurdown extends Command
      *
      * @var string
      */
-    protected $signature = 'jira:burndown';
+    protected $signature = 'jira:estimate';
 
     /**
      * The console command description.
@@ -93,8 +93,6 @@ class JiraBurdown extends Command
         $benchmark = microtime(true);
         $issues = $this->assignEstimatedCompletionDates($issues);
         $this->info('[2/3] -> Assigned estimated completion dates in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
-
-        dd('Confirm that the following dates are correct:', compact('issues'));
 
         // Update the issues in jira
         $this->info('[3/3] Updating Jira issues...');
@@ -144,22 +142,19 @@ class JiraBurdown extends Command
      */
     public function assignEstimatedCompletionDates($issues)
     {
-        // Determine the first assignment date
-        $date = $this->getFirstAssignmentDate();
-
         // Our schedule is broken down into focus times. Issues can be allocated
         // to one or more focuses, and these focus times are when we can work
         // on these issues. We ought to respect the focus in the schedule.
 
         // Initialize the dates for each focus
         $dates = [
-            static::FOCUS_DEV => $date->copy(),
-            static::FOCUS_TICKET => $date->copy(),
-            static::FOCUS_OTHER => $date->copy()
+            static::FOCUS_DEV => $this->getFirstAssignmentDate(static::FOCUS_DEV),
+            static::FOCUS_TICKET => $this->getFirstAssignmentDate(static::FOCUS_TICKET),
+            static::FOCUS_OTHER => $this->getFirstAssignmentDate(static::FOCUS_OTHER)
         ];
 
         // Iterate through each issue
-        foreach($issues as &$issue) {
+        foreach($issues as $index => &$issue) {
 
             // Determine the issue focus
             $focuses = $issue['priority'] == static::PRIORITY_HIGHEST
@@ -196,12 +191,15 @@ class JiraBurdown extends Command
                 // Determine how much time as already been allocated for the day
                 $allocated = ($date->hour * 60 + $date->minute) * 60 + $date->second;
 
+                // Determine the daily focus limit
+                $limit = static::$weeklySchedule[$date->dayOfWeek][$focus];
+
                 // If the previous issue ended cleanly on the exact amount of allocatable
                 // time, we wanted it to end on that date. However, we have to advance
                 // to the next day for the next issue, otherwise we'll loop forever.
 
                 // Check if we've run out of time for the day
-                if($allocated >= static::$weeklySchedule[$date->dayOfWeek][$focus]) {
+                if($allocated >= $limit) {
 
                     // Advance to the next day
                     $date = $date->addDay()->startOfDay();
@@ -212,7 +210,7 @@ class JiraBurdown extends Command
                 }
 
                 // Determine how much time we can allocate for today
-                $allocatable = min($remaining, static::$weeklySchedule[$date->dayOfWeek][$focus] - $allocated);
+                $allocatable = min($remaining, $limit - $allocated);
 
                 // Allocate the time
                 $date = $date->addSeconds($allocatable);
@@ -221,8 +219,10 @@ class JiraBurdown extends Command
                 $remaining -= $allocatable;
 
                 // If we have exceeded the daily limit, advance to the next day
-                if($allocated + $allocatable > static::$weeklySchedule[$date->dayOfWeek][$focus]) {
+                if($allocated + $allocatable > $limit) {
+
                     $date = $date->addDay()->startOfDay();
+
                 }
 
                 // Skip dates that have no allocatable time
@@ -244,9 +244,11 @@ class JiraBurdown extends Command
     /**
      * Returns the first assignment date for the schedule.
      *
+     * @param  string  $focus
+     *
      * @return \Carbon\Carbon
      */
-    public function getFirstAssignmentDate()
+    public function getFirstAssignmentDate($focus)
     {
         // Until we have a better scheduling concept, we're going to
         // base everything off of the default schedule, and probit
@@ -261,8 +263,8 @@ class JiraBurdown extends Command
         $end = Carbon::now()->addDays(8)->startOfDay(); // Start no later than a week after tomorrow
 
         // Determine the first date where we can start assigning due dates
-        $date = array_reduce(array_keys(static::$weeklySchedule), function($date, $key) use ($start) {
-            return static::$weeklySchedule[$key] <= 0 ? $date : $date->min(($thisWeek = Carbon::now()->weekday($key)->startOfDay())->gte($start) ? $thisWeek : $thisWeek->addWeek());
+        $date = array_reduce(array_keys(static::$weeklySchedule), function($date, $key) use ($start, $focus) {
+            return static::$weeklySchedule[$key][$focus] <= 0 ? $date : $date->min(($thisWeek = Carbon::now()->weekday($key)->startOfDay())->gte($start) ? $thisWeek : $thisWeek->addWeek());
         }, $end);
 
         // Return the date
