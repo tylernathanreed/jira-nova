@@ -49,9 +49,7 @@ class Schedule extends Resource
                 ->sortable()
                 ->onlyOnDetail(),
 
-            Field::text('Display Name', 'display_name')
-                ->sortable()
-                ->rules('required', 'string', 'max:50'),
+            Field::displayName(),
 
             Field::text('System Name', 'system_name')
                 ->sortable()
