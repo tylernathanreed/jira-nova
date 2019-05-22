@@ -4,14 +4,17 @@ namespace App\Nova\Resources;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Integer;
 use Laravel\Nova\Fields\Datetime;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\MorphMany;
 
-class ScheduleWeekTemplate extends Resource
+class ScheduleDay extends Resource
 {
     /**
      * The logical group associated with the resource.
@@ -25,14 +28,14 @@ class ScheduleWeekTemplate extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\ScheduleWeekTemplate::class;
+    public static $model = \App\Models\ScheduleDay::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
+     * Indicates if the resource should be displayed in the sidebar.
      *
-     * @var string
+     * @var bool
      */
-    public static $title = 'display_name';
+    public static $displayInNavigation = false;
 
     /**
      * Indicates if the resoruce should be globally searchable.
@@ -40,6 +43,16 @@ class ScheduleWeekTemplate extends Resource
      * @var bool
      */
     public static $globallySearchable = false;
+
+    /**
+     * Returns the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return $this->schedule->display_name . ': Week ' . $this->week_number . ', Day ' . $this->day_in_week;
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -55,21 +68,21 @@ class ScheduleWeekTemplate extends Resource
                 ->sortable()
                 ->onlyOnDetail(),
 
-            Text::make('Display Name', 'display_name')
-                ->sortable()
-                ->rules('required', 'string', 'max:50'),
+            BelongsTo::make('Schedule', 'schedule', Schedule::class)
+                ->rules('required'),
 
-            Text::make('System Name', 'system_name')
-                ->sortable()
-                ->rules('nullable', 'string', 'max:50')
-                ->creationRules('unique:schedule_week_templates,system_name')
-                ->updateRules('unique:schedule_week_templates,system_name,{{resourceId}}'),
+            Text::make('Schedule System Name', 'schedule_system_name')
+                ->onlyOnDetail(),
 
-            Textarea::make('Description', 'description')
-                ->hideFromIndex()
-                ->rules('string', 'max:255'),
+            BelongsTo::make('Week', 'week', ScheduleWeek::class)
+                ->rules('required'),
 
-            Select::make('Due Date in Week', 'due_date_in_week')
+            Number::make('Week Number', 'week_number')
+                ->rules('required')
+                ->min(1)
+                ->step(1),
+
+            Select::make('Day in Week', 'day_in_week')
                 ->rules('required')
                 ->options([
                     0 => 'Sunday',
@@ -80,21 +93,25 @@ class ScheduleWeekTemplate extends Resource
                     5 => 'Friday',
                     6 => 'Saturday',
                 ]),
+                // ->creationRules('unique:schedule_days,day_in_week,NULL,id,schedule_id,{{schedule_id}},week_number,{{week_number}}')
+                // ->updateRules('unique:schedule_days,day_in_week,{{resourceId}},id,schedule_id,{{schedule_id}},week_number,{{week_number}}'),
 
-            Select::make('Allocation Type', 'allocation_type')
-                ->rules('required')
-                ->options([
-                    'weekly' => 'Weekly',
-                    'daily' => 'Daily'
-                ]),
+            BelongsTo::make('Templates', 'template', ScheduleDayTemplate::class)
+                ->rules('required'),
 
-            Datetime::make('Created At', 'created_at')->onlyOnDetail(),
+            Text::make('Day Template System Name', 'day_template_system_name')
+                ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')->onlyOnDetail(),
+            Date::make('Date', 'date')
+                ->rules('required'),
 
-            Datetime::make('Deleted At', 'deleted_at')->onlyOnDetail(),
+            Datetime::make('Created At', 'created_at')
+                ->onlyOnDetail(),
 
-            HasMany::make('Day Templates', 'dayTemplates', ScheduleDayTemplate::class)
+            Datetime::make('Updated At', 'updated_at')
+                ->onlyOnDetail(),
+
+            MorphMany::make('Allocations', 'allocations', ScheduleAllocation::class)
 
         ];
     }

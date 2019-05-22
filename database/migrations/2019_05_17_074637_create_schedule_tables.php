@@ -123,7 +123,6 @@ class CreateScheduleTables extends Migration
 
         });
 
-
         Schema::create('schedule_allocations', function (Blueprint $table) {
 
             // Identification

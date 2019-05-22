@@ -5,13 +5,12 @@ namespace App\Nova\Resources;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Integer;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Datetime;
-use Laravel\Nova\Fields\Textarea;
 
-class ScheduleWeekTemplate extends Resource
+class ScheduleAllocation extends Resource
 {
     /**
      * The logical group associated with the resource.
@@ -25,14 +24,14 @@ class ScheduleWeekTemplate extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\ScheduleWeekTemplate::class;
+    public static $model = \App\Models\ScheduleAllocation::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
+     * Indicates if the resource should be displayed in the sidebar.
      *
-     * @var string
+     * @var bool
      */
-    public static $title = 'display_name';
+    public static $displayInNavigation = false;
 
     /**
      * Indicates if the resoruce should be globally searchable.
@@ -40,6 +39,16 @@ class ScheduleWeekTemplate extends Resource
      * @var bool
      */
     public static $globallySearchable = false;
+
+    /**
+     * Returns the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return $this->reference_type . ': ' . $this->reference_id . ' (' . $this->focus_type . ')';
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -55,46 +64,34 @@ class ScheduleWeekTemplate extends Resource
                 ->sortable()
                 ->onlyOnDetail(),
 
-            Text::make('Display Name', 'display_name')
-                ->sortable()
-                ->rules('required', 'string', 'max:50'),
-
-            Text::make('System Name', 'system_name')
-                ->sortable()
-                ->rules('nullable', 'string', 'max:50')
-                ->creationRules('unique:schedule_week_templates,system_name')
-                ->updateRules('unique:schedule_week_templates,system_name,{{resourceId}}'),
-
-            Textarea::make('Description', 'description')
-                ->hideFromIndex()
-                ->rules('string', 'max:255'),
-
-            Select::make('Due Date in Week', 'due_date_in_week')
+            MorphTo::make('Reference', 'reference')
                 ->rules('required')
-                ->options([
-                    0 => 'Sunday',
-                    1 => 'Monday',
-                    2 => 'Tuesday',
-                    3 => 'Wednesday',
-                    4 => 'Thursday',
-                    5 => 'Friday',
-                    6 => 'Saturday',
+                ->types([
+                    ScheduleWeek::class,
+                    ScheduleDay::class
                 ]),
 
-            Select::make('Allocation Type', 'allocation_type')
+            Text::make('Reference System Name', 'reference_system_name')
+                ->onlyOnDetail(),
+
+            Select::make('Focus Type', 'focus_type')
                 ->rules('required')
                 ->options([
-                    'weekly' => 'Weekly',
-                    'daily' => 'Daily'
+                    'dev' => 'Dev',
+                    'ticket' => 'Ticket',
+                    'other' => 'Other'
                 ]),
 
-            Datetime::make('Created At', 'created_at')->onlyOnDetail(),
+            Number::make('Focus Allocation', 'focus_allocation')
+                ->rules('required')
+                ->min(0)
+                ->step(1),
 
-            Datetime::make('Updated At', 'updated_at')->onlyOnDetail(),
+            Datetime::make('Created At', 'created_at')
+                ->onlyOnDetail(),
 
-            Datetime::make('Deleted At', 'deleted_at')->onlyOnDetail(),
-
-            HasMany::make('Day Templates', 'dayTemplates', ScheduleDayTemplate::class)
+            Datetime::make('Updated At', 'updated_at')
+                ->onlyOnDetail()
 
         ];
     }

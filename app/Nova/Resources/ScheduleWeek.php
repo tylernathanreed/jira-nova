@@ -12,15 +12,30 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Datetime;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\MorphMany;
 
 class ScheduleWeek extends Resource
 {
+    /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Schedules';
+
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
     public static $model = \App\Models\ScheduleWeek::class;
+
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
 
     /**
      * Indicates if the resoruce should be globally searchable.
@@ -80,9 +95,15 @@ class ScheduleWeek extends Resource
                     'daily' => 'Daily'
                 ]),
 
-            Datetime::make('Created At', 'created_at')->onlyOnDetail(),
+            Datetime::make('Created At', 'created_at')
+                ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')->onlyOnDetail()
+            Datetime::make('Updated At', 'updated_at')
+                ->onlyOnDetail(),
+
+            HasMany::make('Days', 'days', ScheduleDay::class),
+
+            MorphMany::make('Allocations', 'allocations', ScheduleAllocation::class)
 
         ];
     }

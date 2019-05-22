@@ -11,6 +11,13 @@ use Laravel\Nova\Fields\BelongsTo;
 class IssueStatusCategory extends Resource
 {
     /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Issues';
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -23,22 +30,6 @@ class IssueStatusCategory extends Resource
      * @var string
      */
     public static $title = 'display_name';
-
-    /**
-     * Indicates if the resource should be displayed in the sidebar.
-     *
-     * @var boolean
-     */
-    public static $displayInNavigation = false;
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
-    public static $search = [
-        'jira_key', 'display_name'
-    ];
 
     /**
      * Indicates if the resoruce should be globally searchable.

@@ -11,6 +11,13 @@ use Laravel\Nova\Fields\BelongsTo;
 class IssueStatusType extends Resource
 {
     /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Issues';
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -30,15 +37,6 @@ class IssueStatusType extends Resource
      * @var boolean
      */
     public static $displayInNavigation = false;
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
-    public static $search = [
-        'display_name'
-    ];
 
     /**
      * Indicates if the resoruce should be globally searchable.

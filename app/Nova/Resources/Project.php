@@ -12,6 +12,13 @@ use Laravel\Nova\Fields\Datetime;
 class Project extends Resource
 {
     /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Issues';
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -56,6 +63,10 @@ class Project extends Resource
             HasMany::make('Issue Status Types', 'issueStatusTypes'),
 
             HasMany::make('Issue Fields', 'issueFields'),
+
+            HasMany::make('Components', 'components'),
+
+            HasMany::make('Versions', 'versions'),
 
         ];
     }

@@ -12,6 +12,13 @@ use Laravel\Nova\Fields\BelongsToMany;
 class IssueType extends Resource
 {
     /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Issues';
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string

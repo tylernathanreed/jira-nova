@@ -14,6 +14,13 @@ use Laravel\Nova\Fields\BelongsTo;
 class ScheduleDayTemplate extends Resource
 {
     /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Schedules';
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string

@@ -11,6 +11,15 @@ class ScheduleDay extends Model
      */
     protected $table = 'schedule_days';
 
+    /**
+     * The attributes that should be casted to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+    	'date'
+    ];
+
 	/**
 	 * Returns the schedule that this day belongs to.
 	 *

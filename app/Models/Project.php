@@ -536,6 +536,16 @@ class Project extends Model
     }
 
     /**
+     * Returns the components that belong to this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function components()
+    {
+        return $this->hasMany(Component::class, 'project_id');
+    }
+
+    /**
      * Returns the issue status categories that belong to this project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -563,5 +573,15 @@ class Project extends Model
     public function issueFields()
     {
         return $this->hasMany(IssueField::class, 'project_id');
+    }
+
+    /**
+     * Returns the versions that belong to this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function versions()
+    {
+        return $this->hasMany(Version::class, 'project_id');
     }
 }

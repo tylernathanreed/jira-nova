@@ -42,6 +42,16 @@ class ScheduleWeek extends Model
 	}
 
 	/**
+	 * Returns the days that belong to this week.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function days()
+	{
+		return $this->hasMany(ScheduleDay::class, 'schedule_week_id');
+	}
+
+	/**
 	 * Returns the focus allocations for this day.
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany

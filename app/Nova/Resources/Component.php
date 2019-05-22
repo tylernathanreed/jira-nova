@@ -10,6 +10,13 @@ use Laravel\Nova\Fields\BelongsTo;
 class Component extends Resource
 {
     /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Issues';
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -24,13 +31,18 @@ class Component extends Resource
     public static $title = 'display_name';
 
     /**
-     * The columns that should be searched.
+     * Indicates if the resource should be displayed in the sidebar.
      *
-     * @var array
+     * @var bool
      */
-    public static $search = [
-        'display_name'
-    ];
+    public static $displayInNavigation = false;
+
+    /**
+     * Indicates if the resoruce should be globally searchable.
+     *
+     * @var bool
+     */
+    public static $globallySearchable = false;
 
     /**
      * Get the fields displayed by the resource.
