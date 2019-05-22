@@ -2,13 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Datetime;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
 
 class Schedule extends Resource
 {
@@ -50,33 +45,36 @@ class Schedule extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()
+            Field::id()
                 ->sortable()
                 ->onlyOnDetail(),
 
-            Text::make('Display Name', 'display_name')
+            Field::text('Display Name', 'display_name')
                 ->sortable()
                 ->rules('required', 'string', 'max:50'),
 
-            Text::make('System Name', 'system_name')
+            Field::text('System Name', 'system_name')
                 ->sortable()
                 ->rules('nullable', 'string', 'max:50')
                 ->creationRules('unique:schedules,system_name')
                 ->updateRules('unique:schedules,system_name,{{resourceId}}'),
 
-            BelongsTo::make('Week Templates', 'weekTemplate', ScheduleWeekTemplate::class),
+            Field::belongsTo('Week Templates', 'weekTemplate', ScheduleWeekTemplate::class),
 
-            Textarea::make('Description', 'description')
+            Field::textarea('Description', 'description')
                 ->hideFromIndex()
                 ->rules('string', 'max:255'),
 
-            Datetime::make('Created At', 'created_at')->onlyOnDetail(),
+            Field::dateTime('Created At', 'created_at')
+                ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')->onlyOnDetail(),
+            Field::dateTime('Updated At', 'updated_at')
+                ->onlyOnDetail(),
 
-            Datetime::make('Deleted At', 'deleted_at')->onlyOnDetail(),
+            Field::dateTime('Deleted At', 'deleted_at')
+                ->onlyOnDetail(),
 
-            HasMany::make('Weeks', 'weeks', ScheduleWeek::class)
+            Field::hasMany('Weeks', 'weeks', ScheduleWeek::class)
 
         ];
     }

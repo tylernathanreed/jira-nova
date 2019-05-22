@@ -2,13 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Code;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
 
 class IssueField extends Resource
 {
@@ -75,27 +70,27 @@ class IssueField extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Field::id()->sortable(),
 
-            BelongsTo::make('Project', 'project'),
+            Field::belongsTo('Project', 'project'),
 
-            Text::make('Jira ID', 'jira_id'),
+            Field::text('Jira ID', 'jira_id'),
 
-            Text::make('Jira ID', 'jira_key'),
+            Field::text('Jira ID', 'jira_key'),
 
-            Text::make('Display Name', 'display_name'),
+            Field::text('Display Name', 'display_name'),
 
-            Boolean::make('Required', 'required'),
+            Field::boolean('Required', 'required'),
 
-            Boolean::make('Has Default Value', 'has_default_value'),
+            Field::boolean('Has Default Value', 'has_default_value'),
 
-            Text::make('Default Value', 'default_value'),
+            Field::text('Default Value', 'default_value'),
 
-            Code::make('Operations', 'operations')->onlyOnDetail()->json(),
+            Field::code('Operations', 'operations')->onlyOnDetail()->json(),
 
-            Code::make('Allowed Values', 'allowed_values')->onlyOnDetail()->json(),
+            Field::code('Allowed Values', 'allowed_values')->onlyOnDetail()->json(),
 
-            BelongsToMany::make('Issue Types', 'issueTypes')
+            Field::belongsToMany('Issue Types', 'issueTypes')
 
         ];
     }

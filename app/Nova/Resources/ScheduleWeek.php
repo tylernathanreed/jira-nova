@@ -2,17 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Datetime;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\MorphMany;
 
 class ScheduleWeek extends Resource
 {
@@ -64,46 +55,46 @@ class ScheduleWeek extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()
+            Field::id()
                 ->sortable()
                 ->onlyOnDetail(),
 
-            BelongsTo::make('Schedule', 'schedule', Schedule::class)
+            Field::belongsTo('Schedule', 'schedule', Schedule::class)
                 ->rules('required'),
 
-            Number::make('Week Number', 'week_number')
+            Field::number('Week Number', 'week_number')
                 ->rules('required')
                 ->min(1)
                 ->step(1),
                 // ->creationRules('unique:schedule_weeks,week_number,NULL,id,schedule_id,{{schedule_id}}')
                 // ->updateRules('unique:schedule_weeks,week_number,{{resourceId}},id,schedule_id,{{schedule_id}}'),
 
-            BelongsTo::make('Template', 'template', ScheduleWeekTemplate::class)
+            Field::belongsTo('Template', 'template', ScheduleWeekTemplate::class)
                 ->rules('required'),
 
-            Text::make('Template System Name', 'week_template_system_name')
+            Field::text('Template System Name', 'week_template_system_name')
                 ->onlyOnDetail(),
 
-            Date::make('Start Date', 'start_date'),
+            Field::date('Start Date', 'start_date'),
 
-            Date::make('Due Date', 'due_date'),
+            Field::date('Due Date', 'due_date'),
 
-            Select::make('Allocation Type', 'allocation_type')
+            Field::select('Allocation Type', 'allocation_type')
                 ->rules('required')
                 ->options([
                     'weekly' => 'Weekly',
                     'daily' => 'Daily'
                 ]),
 
-            Datetime::make('Created At', 'created_at')
+            Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')
+            Field::dateTime('Updated At', 'updated_at')
                 ->onlyOnDetail(),
 
-            HasMany::make('Days', 'days', ScheduleDay::class),
+            Field::hasMany('Days', 'days', ScheduleDay::class),
 
-            MorphMany::make('Allocations', 'allocations', ScheduleAllocation::class)
+            Field::morphMany('Allocations', 'allocations', ScheduleAllocation::class)
 
         ];
     }

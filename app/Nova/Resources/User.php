@@ -2,12 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Avatar;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Password;
 
 class User extends Resource
 {
@@ -50,33 +46,33 @@ class User extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Field::id()->sortable(),
 
-            Text::make('Account ID', function() {
+            Field::text('Account ID', function() {
                 return $this->jira()->accountId;
             })->onlyOnDetail(),
 
-            Text::make('Email Address', function() {
+            Field::text('Email Address', function() {
                 return $this->jira()->emailAddress;
             }),
 
-            Avatar::make('Avatar')->thumbnail(function() {
+            Field::avatar('Avatar')->thumbnail(function() {
                 return $this->jira()->avatarUrls->{"48x48"};
             })->maxWidth(48),
 
-            Text::make('Display Name', function() {
+            Field::text('Display Name', function() {
                 return $this->jira()->displayName;
             }),
 
-            Boolean::make('Active', function() {
+            Field::boolean('Active', function() {
                 return $this->jira()->active;
             }),
 
-            Text::make('Time Zone', function() {
+            Field::text('Time Zone', function() {
                 return $this->jira()->timeZone;
             })->onlyOnDetail(),
 
-            Text::make('Locale', function() {
+            Field::text('Locale', function() {
                 return $this->jira()->locale;
             })->onlyOnDetail()
         ];

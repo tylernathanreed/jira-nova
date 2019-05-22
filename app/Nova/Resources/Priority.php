@@ -2,10 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Avatar;
 
 class Priority extends Resource
 {
@@ -46,19 +44,19 @@ class Priority extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Field::id()->sortable(),
 
-            Text::make('Jira ID', 'jira_id')->sortable(),
+            Field::text('Jira ID', 'jira_id')->sortable(),
 
-            Avatar::make('Icon')->thumbnail(function() {
+            Field::avatar('Icon')->thumbnail(function() {
                 return $this->icon_url;
             })->maxWidth(16),
 
-            Text::make('Display Name', 'display_name'),
+            Field::text('Display Name', 'display_name'),
 
-            Text::make('Description', 'description'),
+            Field::text('Description', 'description'),
 
-            Text::make('Status Color', 'status_color')
+            Field::text('Status Color', 'status_color')
 
         ];
     }

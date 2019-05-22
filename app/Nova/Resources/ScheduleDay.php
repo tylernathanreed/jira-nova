@@ -2,17 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Integer;
-use Laravel\Nova\Fields\Datetime;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\MorphMany;
 
 class ScheduleDay extends Resource
 {
@@ -64,25 +55,25 @@ class ScheduleDay extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()
+            Field::id()
                 ->sortable()
                 ->onlyOnDetail(),
 
-            BelongsTo::make('Schedule', 'schedule', Schedule::class)
+            Field::belongsTo('Schedule', 'schedule', Schedule::class)
                 ->rules('required'),
 
-            Text::make('Schedule System Name', 'schedule_system_name')
+            Field::text('Schedule System Name', 'schedule_system_name')
                 ->onlyOnDetail(),
 
-            BelongsTo::make('Week', 'week', ScheduleWeek::class)
+            Field::belongsTo('Week', 'week', ScheduleWeek::class)
                 ->rules('required'),
 
-            Number::make('Week Number', 'week_number')
+            Field::number('Week Number', 'week_number')
                 ->rules('required')
                 ->min(1)
                 ->step(1),
 
-            Select::make('Day in Week', 'day_in_week')
+            Field::select('Day in Week', 'day_in_week')
                 ->rules('required')
                 ->options([
                     0 => 'Sunday',
@@ -96,22 +87,22 @@ class ScheduleDay extends Resource
                 // ->creationRules('unique:schedule_days,day_in_week,NULL,id,schedule_id,{{schedule_id}},week_number,{{week_number}}')
                 // ->updateRules('unique:schedule_days,day_in_week,{{resourceId}},id,schedule_id,{{schedule_id}},week_number,{{week_number}}'),
 
-            BelongsTo::make('Templates', 'template', ScheduleDayTemplate::class)
+            Field::belongsTo('Templates', 'template', ScheduleDayTemplate::class)
                 ->rules('required'),
 
-            Text::make('Day Template System Name', 'day_template_system_name')
+            Field::text('Day Template System Name', 'day_template_system_name')
                 ->onlyOnDetail(),
 
-            Date::make('Date', 'date')
+            Field::date('Date', 'date')
                 ->rules('required'),
 
-            Datetime::make('Created At', 'created_at')
+            Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')
+            Field::dateTime('Updated At', 'updated_at')
                 ->onlyOnDetail(),
 
-            MorphMany::make('Allocations', 'allocations', ScheduleAllocation::class)
+            Field::morphMany('Allocations', 'allocations', ScheduleAllocation::class)
 
         ];
     }

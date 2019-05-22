@@ -2,13 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\MorphTo;
-use Laravel\Nova\Fields\Datetime;
 
 class ScheduleAllocation extends Resource
 {
@@ -60,21 +55,21 @@ class ScheduleAllocation extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()
+            Field::id()
                 ->sortable()
                 ->onlyOnDetail(),
 
-            MorphTo::make('Reference', 'reference')
+            Field::morphTo('Reference', 'reference')
                 ->rules('required')
                 ->types([
                     ScheduleWeek::class,
                     ScheduleDay::class
                 ]),
 
-            Text::make('Reference System Name', 'reference_system_name')
+            Field::text('Reference System Name', 'reference_system_name')
                 ->onlyOnDetail(),
 
-            Select::make('Focus Type', 'focus_type')
+            Field::select('Focus Type', 'focus_type')
                 ->rules('required')
                 ->options([
                     'dev' => 'Dev',
@@ -82,15 +77,15 @@ class ScheduleAllocation extends Resource
                     'other' => 'Other'
                 ]),
 
-            Number::make('Focus Allocation', 'focus_allocation')
+            Field::number('Focus Allocation', 'focus_allocation')
                 ->rules('required')
                 ->min(0)
                 ->step(1),
 
-            Datetime::make('Created At', 'created_at')
+            Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')
+            Field::dateTime('Updated At', 'updated_at')
                 ->onlyOnDetail()
 
         ];

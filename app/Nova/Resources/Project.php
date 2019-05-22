@@ -2,12 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Avatar;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Datetime;
 
 class Project extends Resource
 {
@@ -48,25 +44,25 @@ class Project extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Field::id()->sortable(),
 
-            Text::make('Jira ID', 'jira_id')->rules('required_without:jira_key'),
+            Field::text('Jira ID', 'jira_id')->rules('required_without:jira_key'),
 
-            Text::make('Jira Key', 'jira_key')->rules('required_without:jira_id'),
+            Field::text('Jira Key', 'jira_key')->rules('required_without:jira_id'),
 
-            Text::make('Display Name', 'display_name')->exceptOnForms(),
+            Field::text('Display Name', 'display_name')->exceptOnForms(),
 
-            Datetime::make('Issues Synched At', 'issues_synched_at')->onlyOnDetail(),
+            Field::dateTime('Issues Synched At', 'issues_synched_at')->onlyOnDetail(),
 
-            HasMany::make('Issue Status Categories', 'issueStatusCategories'),
+            Field::hasMany('Issue Status Categories', 'issueStatusCategories'),
 
-            HasMany::make('Issue Status Types', 'issueStatusTypes'),
+            Field::hasMany('Issue Status Types', 'issueStatusTypes'),
 
-            HasMany::make('Issue Fields', 'issueFields'),
+            Field::hasMany('Issue Fields', 'issueFields'),
 
-            HasMany::make('Components', 'components'),
+            Field::hasMany('Components', 'components'),
 
-            HasMany::make('Versions', 'versions'),
+            Field::hasMany('Versions', 'versions'),
 
         ];
     }

@@ -2,12 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\BelongsTo;
 
 class Version extends Resource
 {
@@ -56,25 +52,25 @@ class Version extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Field::id()->sortable(),
 
-            BelongsTo::make('Project', 'project'),
+            Field::belongsTo('Project', 'project'),
 
-            Text::make('Jira ID', 'jira_id')->hideFromIndex(),
+            Field::text('Jira ID', 'jira_id')->hideFromIndex(),
 
-            Text::make('Display Name', 'display_name'),
+            Field::text('Display Name', 'display_name'),
 
-            Date::make('Start Date', 'start_date'),
+            Field::date('Start Date', 'start_date'),
 
-            Date::make('Release Date', 'release_date'),
+            Field::date('Release Date', 'release_date'),
 
-            Boolean::make('Archived', 'archived')->hideFromIndex(),
+            Field::boolean('Archived', 'archived')->hideFromIndex(),
 
-            Boolean::make('Released', 'released')->hideFromIndex(),
+            Field::boolean('Released', 'released')->hideFromIndex(),
 
-            Boolean::make('Overdue', 'overdue')->hideFromIndex(),
+            Field::boolean('Overdue', 'overdue')->hideFromIndex(),
 
-            Text::make('Status', function() {
+            Field::text('Status', function() {
 
                 return $this->archived
                     ? 'Archived'

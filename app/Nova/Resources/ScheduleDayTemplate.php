@@ -2,14 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Integer;
-use Laravel\Nova\Fields\Datetime;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
 
 class ScheduleDayTemplate extends Resource
 {
@@ -61,16 +55,16 @@ class ScheduleDayTemplate extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()
+            Field::id()
                 ->sortable()
                 ->onlyOnDetail(),
 
-            BelongsTo::make('Week Templates', 'weekTemplate', ScheduleWeekTemplate::class),
+            Field::belongsTo('Week Templates', 'weekTemplate', ScheduleWeekTemplate::class),
 
-            Text::make('Week Template System Name', 'week_template_system_name')
+            Field::text('Week Template System Name', 'week_template_system_name')
                 ->onlyOnDetail(),
 
-            Select::make('Day in Week', 'day_in_week')
+            Field::select('Day in Week', 'day_in_week')
                 ->rules('required')
                 ->options([
                     0 => 'Sunday',
@@ -82,9 +76,11 @@ class ScheduleDayTemplate extends Resource
                     6 => 'Saturday',
                 ]),
 
-            Datetime::make('Created At', 'created_at')->onlyOnDetail(),
+            Field::dateTime('Created At', 'created_at')
+                ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')->onlyOnDetail()
+            Field::dateTime('Updated At', 'updated_at')
+                ->onlyOnDetail()
         ];
     }
 

@@ -2,11 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Avatar;
-use Laravel\Nova\Fields\BelongsTo;
 
 class IssueStatusType extends Resource
 {
@@ -64,21 +61,21 @@ class IssueStatusType extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Field::id()->sortable(),
 
-            BelongsTo::make('Project', 'project'),
+            Field::belongsTo('Project', 'project'),
 
-            BelongsTo::make('Category', 'category', IssueStatusCategory::class),
+            Field::belongsTo('Category', 'category', IssueStatusCategory::class),
 
-            Text::make('Jira ID', 'jira_id'),
+            Field::text('Jira ID', 'jira_id'),
 
-            Avatar::make('Icon')->thumbnail(function() {
+            Field::avatar('Icon')->thumbnail(function() {
                 return $this->icon_url;
             })->maxWidth(16),
 
-            Text::make('Display Name', 'display_name'),
+            Field::text('Display Name', 'display_name'),
 
-            Text::make('Description', 'description'),
+            Field::text('Description', 'description'),
 
         ];
     }

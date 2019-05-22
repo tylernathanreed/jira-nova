@@ -2,12 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
 
 class Issue extends Resource
 {
@@ -50,41 +46,41 @@ class Issue extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable()->onlyOnDetail(),
+            Field::id()->sortable()->onlyOnDetail(),
 
-            BelongsTo::make('Type', 'type', IssueType::class),
+            Field::belongsTo('Type', 'type', IssueType::class),
 
-            BelongsTo::make('Priority', 'priority', Priority::class),
+            Field::belongsTo('Priority', 'priority', Priority::class),
 
-            Text::make('Key', 'jira_key')->sortable(),
+            Field::text('Key', 'jira_key')->sortable(),
 
-            Text::make('Summary', 'summary', function() {
+            Field::text('Summary', 'summary', function() {
                 return strlen($this->summary) > 80 ? substr($this->summary, 0, 80) . '...' : $this->summary;
             })->onlyOnIndex(),
 
-            Text::make('Summary', 'summary')->onlyOnDetail(),
+            Field::text('Summary', 'summary')->onlyOnDetail(),
 
-            BelongsTo::make('Assignee', 'assignee', User::class),
+            Field::belongsTo('Assignee', 'assignee', User::class),
 
-            BelongsTo::make('Status', 'status', IssueStatusType::class),
+            Field::belongsTo('Status', 'status', IssueStatusType::class),
 
-            // Text::make('Category', 'issue_category')->sortable(),
+            // Field::text('Category', 'issue_category')->sortable(),
 
-            BelongsTo::make('Reporter', 'reporter', User::class),
+            Field::belongsTo('Reporter', 'reporter', User::class),
 
-            Date::make('Due', 'due_date')->sortable(),
+            Field::date('Due', 'due_date')->sortable(),
 
-            Text::make('Original Estimate', 'time_estimated'),
+            Field::text('Original Estimate', 'time_estimated'),
 
-            Text::make('Remaining Estimate', 'time_remaining'),
+            Field::text('Remaining Estimate', 'time_remaining'),
 
-            Text::make('Jira ID', 'jira_id')->onlyOnDetail(),
+            Field::text('Jira ID', 'jira_id')->onlyOnDetail(),
 
-            BelongsTo::make('Project', 'project')->onlyOnDetail(),
+            Field::belongsTo('Project', 'project')->onlyOnDetail(),
 
-            BelongsTo::make('Parent', 'parent', static::class)->onlyOnDetail(),
+            Field::belongsTo('Parent', 'parent', static::class)->onlyOnDetail(),
 
-            Textarea::make('Description', 'description')->onlyOnDetail()
+            Field::textarea('Description', 'description')->onlyOnDetail()
 
         ];
     }

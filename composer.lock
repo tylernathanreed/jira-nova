@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fa0bc81f09dc38f66f783ff64083871",
+    "content-hash": "ba570e7be92bd8097d6a0b54cde9c6a8",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -2026,6 +2026,54 @@
                 "schema"
             ],
             "time": "2019-04-10T21:47:24+00:00"
+        },
+        {
+            "name": "reedware/nova-field-manager",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/reedware/nova-field-manager",
+                "reference": "626761d83fbd7f0ff5d35020c0e92ac2c59389df",
+                "shasum": null
+            },
+            "require": {
+                "illuminate/support": ">=5.1",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Reedware\\NovaFieldManager\\NovaFieldManagerServiceProvider"
+                    ],
+                    "aliases": {
+                        "Field": "Reedware\\NovaFieldManager\\Facade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Reedware\\NovaFieldManager\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tyler Reed",
+                    "email": "tylernathanreed@gmail.com"
+                }
+            ],
+            "description": "Creates a field facade for referencing fields.",
+            "keywords": [
+                "fields",
+                "laravel",
+                "nova"
+            ]
         },
         {
             "name": "spatie/once",
@@ -5087,7 +5135,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "reedware/laravel-blueprints": 20
+        "reedware/laravel-blueprints": 20,
+        "reedware/nova-field-manager": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

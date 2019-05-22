@@ -2,14 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Integer;
-use Laravel\Nova\Fields\Datetime;
-use Laravel\Nova\Fields\Textarea;
 
 class ScheduleWeekTemplate extends Resource
 {
@@ -51,25 +45,25 @@ class ScheduleWeekTemplate extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()
+            Field::id()
                 ->sortable()
                 ->onlyOnDetail(),
 
-            Text::make('Display Name', 'display_name')
+            Field::text('Display Name', 'display_name')
                 ->sortable()
                 ->rules('required', 'string', 'max:50'),
 
-            Text::make('System Name', 'system_name')
+            Field::text('System Name', 'system_name')
                 ->sortable()
                 ->rules('nullable', 'string', 'max:50')
                 ->creationRules('unique:schedule_week_templates,system_name')
                 ->updateRules('unique:schedule_week_templates,system_name,{{resourceId}}'),
 
-            Textarea::make('Description', 'description')
+            Field::textarea('Description', 'description')
                 ->hideFromIndex()
                 ->rules('string', 'max:255'),
 
-            Select::make('Due Date in Week', 'due_date_in_week')
+            Field::select('Due Date in Week', 'due_date_in_week')
                 ->rules('required')
                 ->options([
                     0 => 'Sunday',
@@ -81,20 +75,23 @@ class ScheduleWeekTemplate extends Resource
                     6 => 'Saturday',
                 ]),
 
-            Select::make('Allocation Type', 'allocation_type')
+            Field::select('Allocation Type', 'allocation_type')
                 ->rules('required')
                 ->options([
                     'weekly' => 'Weekly',
                     'daily' => 'Daily'
                 ]),
 
-            Datetime::make('Created At', 'created_at')->onlyOnDetail(),
+            Field::dateTime('Created At', 'created_at')
+                ->onlyOnDetail(),
 
-            Datetime::make('Updated At', 'updated_at')->onlyOnDetail(),
+            Field::dateTime('Updated At', 'updated_at')
+                ->onlyOnDetail(),
 
-            Datetime::make('Deleted At', 'deleted_at')->onlyOnDetail(),
+            Field::dateTime('Deleted At', 'deleted_at')
+                ->onlyOnDetail(),
 
-            HasMany::make('Day Templates', 'dayTemplates', ScheduleDayTemplate::class)
+            Field::hasMany('Day Templates', 'dayTemplates', ScheduleDayTemplate::class)
 
         ];
     }

@@ -2,11 +2,8 @@
 
 namespace App\Nova\Resources;
 
-use Laravel\Nova\Fields\ID;
+use Field;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\BelongsTo;
 
 class IssueStatusCategory extends Resource
 {
@@ -57,19 +54,19 @@ class IssueStatusCategory extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Field::id()->sortable(),
 
-            BelongsTo::make('Project', 'project'),
+            Field::belongsTo('Project', 'project'),
 
-            Text::make('Jira ID', 'jira_id'),
+            Field::text('Jira ID', 'jira_id'),
 
-            Text::make('Jira Key', 'jira_key'),
+            Field::text('Jira Key', 'jira_key'),
 
-            Text::make('Display Name', 'display_name'),
+            Field::text('Display Name', 'display_name'),
 
-            Text::make('Color Name', 'color_name'),
+            Field::text('Color Name', 'color_name'),
 
-            HasMany::make('Status Types', 'types', IssueStatusType::class)
+            Field::hasMany('Status Types', 'types', IssueStatusType::class)
 
         ];
     }
