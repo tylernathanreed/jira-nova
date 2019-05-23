@@ -102,6 +102,21 @@ class ScheduleDay extends Resource
             Field::dateTime('Updated At', 'updated_at')
                 ->onlyOnDetail(),
 
+            Field::number('Dev Allocation', 'allocations__dev')
+                ->rules('required')
+                ->min(0)
+                ->step(1),
+
+            Field::number('Ticket Allocation', 'allocations__ticket')
+                ->rules('required')
+                ->min(0)
+                ->step(1),
+
+            Field::number('Other Allocation', 'allocations__other')
+                ->rules('required')
+                ->min(0)
+                ->step(1),
+
             Field::morphMany('Allocations', 'allocations', ScheduleAllocation::class)
 
         ];

@@ -4,6 +4,15 @@ namespace App\Models;
 
 class ScheduleAllocation extends Model
 {
+	/**
+	 * The focus type constants.
+	 *
+	 * @var string
+	 */
+	const FOCUS_TYPE_DEV = 'dev';
+	const FOCUS_TYPE_TICKET = 'ticket';
+	const FOCUS_TYPE_OTHER = 'other';
+
     /**
      * The table associated to this model.
      *
