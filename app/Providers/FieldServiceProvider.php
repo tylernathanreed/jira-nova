@@ -41,5 +41,18 @@ class FieldServiceProvider extends ServiceProvider
                 ->rules('required', 'string', 'max:50');
 
         });
+
+        /**
+         * Creates and returns a new allocation field.
+         *
+         * @return \Laravel\Nova\Fields\Text
+         */
+        $fields->macro('allocation', function($label, $attribute = null) use ($fields) {
+
+            return $fields->number($label, $attribute)
+                ->min(0)
+                ->step(1);
+
+        });
     }
 }
