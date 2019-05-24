@@ -3,6 +3,8 @@
 namespace App\Nova\Resources;
 
 use Field;
+use Carbon\Carbon;
+use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
 
 class ScheduleWeek extends Resource
@@ -92,11 +94,83 @@ class ScheduleWeek extends Resource
             Field::dateTime('Updated At', 'updated_at')
                 ->onlyOnDetail(),
 
+            new Panel('Allocations', $this->getWeeklyAllocationFields()),
+
+            new Panel('Daily Allocations', $this->getDailyAllocationFields()),
+
             Field::hasMany('Days', 'days', ScheduleDay::class),
 
             Field::morphMany('Allocations', 'allocations', ScheduleAllocation::class)
 
         ];
+    }
+
+    /**
+     * Returns the weekly allocation fields.
+     *
+     * @return array
+     */
+    protected function getWeeklyAllocationFields()
+    {
+        return [
+
+            Field::number('Dev Allocation', 'allocations__dev')
+                ->rules('required_if:allocation_type,weekly')
+                ->min(0)
+                ->step(1),
+
+            Field::number('Ticket Allocation', 'allocations__ticket')
+                ->rules('required_if:allocation_type,weekly')
+                ->min(0)
+                ->step(1),
+
+            Field::number('Other Allocation', 'allocations__other')
+                ->rules('required_if:allocation_type,weekly')
+                ->min(0)
+                ->step(1)
+
+        ];
+    }
+
+    /**
+     * Returns the daily allocation fields.
+     *
+     * @return array
+     */
+    protected function getDailyAllocationFields()
+    {
+        // Initialize the list of fields
+        $fields = [];
+
+        // Initialize the list of days
+        $days = Carbon::getDays();
+
+        // Add the alloctions for each day
+        foreach($days as $index => $day) {
+
+            // Add the fields
+            $fields = array_merge($fields, [
+
+                Field::valueToggle(
+                    Field::allocation("{$day} Dev Allocation", "allocations__{$index}__dev")
+                        ->rules('required_if:allocation_type,daily'),
+                    function($toggle) {
+                        return $toggle->where('allocation_type', '=', 'daily');
+                    }
+                ),
+
+                Field::allocation("{$day} Ticket Allocation", "allocations__{$index}__ticket")
+                    ->rules('required_if:allocation_type,daily'),
+
+                Field::allocation("{$day} Other Allocation", "allocations__{$index}__other")
+                    ->rules('required_if:allocation_type,daily')
+
+            ]);
+
+        }
+
+        // Return the list of fields
+        return $fields;
     }
 
     /**

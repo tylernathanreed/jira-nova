@@ -41,6 +41,11 @@ return [
 	'morphOne'            => \Laravel\Nova\Fields\MorphOne::class,
 	'morphTo'             => \Laravel\Nova\Fields\MorphTo::class,
 	'morphToActionTarget' => \Laravel\Nova\Fields\MorphToActionTarget::class,
-	'morphToMany'         => \Laravel\Nova\Fields\MorphToMany::class
+	'morphToMany'         => \Laravel\Nova\Fields\MorphToMany::class,
+
+	/**
+	 * Package Fields
+	 */
+	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class
 
 ];
