@@ -23,6 +23,39 @@ class ScheduleDay extends Model
     	'date'
     ];
 
+    ////////////
+    //* Boot *//
+    ////////////
+    /**
+     * The boot method for this model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        // Call the parent method
+        parent::boot();
+
+        // When this model is being deleted...
+        static::deleting(function($model) {
+
+            // Cascade the deletion to its dependants
+            $model->deleteDependants();
+
+        });
+    }
+
+    /**
+     * Deletes the related models that are dependant upon this model to exist.
+     *
+     * @return void
+     */
+    public function deleteDependants()
+    {
+        // Delete the allocations
+        $this->allocations()->delete();
+    }
+
     ///////////////////
     //* Allocations *//
     ///////////////////
