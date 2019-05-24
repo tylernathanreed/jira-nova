@@ -4,6 +4,9 @@ namespace App\Models;
 
 class ScheduleWeek extends Model
 {
+	//////////////////
+	//* Attributes *//
+	//////////////////
     /**
      * The table associated to this model.
      *
@@ -21,6 +24,45 @@ class ScheduleWeek extends Model
     	'due_date'
     ];
 
+    ////////////
+    //* Boot *//
+    ////////////
+    /**
+     * The boot method for this model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        // Call the parent method
+        parent::boot();
+
+        // When this model is being deleted...
+        static::deleting(function($model) {
+
+            // Cascade the deletion to its dependants
+            $model->deleteDependants();
+
+        });
+    }
+
+    /**
+     * Deletes the related models that are dependant upon this model to exist.
+     *
+     * @return void
+     */
+    public function deleteDependants()
+    {
+    	// Delete the days
+    	$this->days()->delete();
+
+        // Delete the allocations
+        $this->allocations()->delete();
+    }
+
+    /////////////////
+    //* Relations *//
+    /////////////////
 	/**
 	 * Returns the schedule that this week belongs to.
 	 *
