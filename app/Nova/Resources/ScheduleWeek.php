@@ -117,17 +117,26 @@ class ScheduleWeek extends Resource
             Field::number('Dev Allocation', 'allocations__dev')
                 ->rules('required_if:allocation_type,weekly')
                 ->min(0)
-                ->step(1),
+                ->step(1)
+                ->valueToggle(function($toggle) {
+                    return $toggle->where('allocation_type', '=', 'weekly');
+                }),
 
             Field::number('Ticket Allocation', 'allocations__ticket')
                 ->rules('required_if:allocation_type,weekly')
                 ->min(0)
-                ->step(1),
+                ->step(1)
+                ->valueToggle(function($toggle) {
+                    return $toggle->where('allocation_type', '=', 'weekly');
+                }),
 
             Field::number('Other Allocation', 'allocations__other')
                 ->rules('required_if:allocation_type,weekly')
                 ->min(0)
                 ->step(1)
+                ->valueToggle(function($toggle) {
+                    return $toggle->where('allocation_type', '=', 'weekly');
+                })
 
         ];
     }
@@ -151,19 +160,23 @@ class ScheduleWeek extends Resource
             // Add the fields
             $fields = array_merge($fields, [
 
-                Field::valueToggle(
-                    Field::allocation("{$day} Dev Allocation", "allocations__{$index}__dev")
-                        ->rules('required_if:allocation_type,daily'),
-                    function($toggle) {
+                Field::allocation("{$day} Dev Allocation", "allocations__{$index}__dev")
+                    ->rules('required_if:allocation_type,daily')
+                    ->valueToggle(function($toggle) {
                         return $toggle->where('allocation_type', '=', 'daily');
-                    }
-                ),
+                    }),
 
                 Field::allocation("{$day} Ticket Allocation", "allocations__{$index}__ticket")
-                    ->rules('required_if:allocation_type,daily'),
+                    ->rules('required_if:allocation_type,daily')
+                    ->valueToggle(function($toggle) {
+                        return $toggle->where('allocation_type', '=', 'daily');
+                    }),
 
                 Field::allocation("{$day} Other Allocation", "allocations__{$index}__other")
                     ->rules('required_if:allocation_type,daily')
+                    ->valueToggle(function($toggle) {
+                        return $toggle->where('allocation_type', '=', 'daily');
+                    })
 
             ]);
 
