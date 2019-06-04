@@ -67,11 +67,11 @@ class JiraEstimate extends Command
      */
     protected static $weeklySchedule = [
         Carbon::SUNDAY    => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 0],
-        Carbon::MONDAY    => [self::FOCUS_DEV => 4.5 * 60 * 60, self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3.5 * 60 * 60],
-        Carbon::TUESDAY   => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 5 * 60 * 60,   self::FOCUS_OTHER => 3 * 60 * 60],
-        Carbon::WEDNESDAY => [self::FOCUS_DEV => 5 * 60 * 60,   self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3 * 60 * 60],
-        Carbon::THURSDAY  => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 4.5 * 60 * 60, self::FOCUS_OTHER => 3.5 * 60 * 60],
-        Carbon::FRIDAY    => [self::FOCUS_DEV => 5 * 60 * 60,   self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3 * 60 * 60],
+        Carbon::MONDAY    => [self::FOCUS_DEV => 4.5 * 60 * 60, self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3.5 * 60 * 60 * 0.5],
+        Carbon::TUESDAY   => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 5 * 60 * 60,   self::FOCUS_OTHER => 3 * 60 * 60 * 0.5],
+        Carbon::WEDNESDAY => [self::FOCUS_DEV => 5 * 60 * 60,   self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3 * 60 * 60 * 0.5],
+        Carbon::THURSDAY  => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 4.5 * 60 * 60, self::FOCUS_OTHER => 3.5 * 60 * 60 * 0.5],
+        Carbon::FRIDAY    => [self::FOCUS_DEV => 5 * 60 * 60,   self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 3 * 60 * 60 * 0.5],
         Carbon::SATURDAY  => [self::FOCUS_DEV => 0,             self::FOCUS_TICKET => 0,             self::FOCUS_OTHER => 0],
     ];
 
@@ -309,7 +309,7 @@ class JiraEstimate extends Command
                     'time_estimate' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
                     'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
                     'priority' => optional($issue->fields->{static::FIELD_PRIORITY})->name,
-                    'issue_category' => optional($issue->fields->{static::FIELD_ISSUE_CATEGORY})->value ?? 'Dev',
+                    'issue_category' => optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? 'Dev',
                     'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);
@@ -344,6 +344,6 @@ class JiraEstimate extends Command
      */
     public function newBurndownJiraIssuesExpression()
     {
-        return 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development") AND ("Issue Category" = Dev OR "Issue Category" is EMPTY) ORDER BY Rank ASC';
+        return 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development") ORDER BY Rank ASC';
     }
 }
