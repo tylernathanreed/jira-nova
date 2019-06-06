@@ -12,6 +12,22 @@ class CreateScheduleTables extends Migration
      */
     public function up()
     {
+        Schema::create('schedules', function (Blueprint $table) {
+
+            // Identification
+            $table->increments('id');
+
+            // Attributes
+            $table->string('display_name', 50);
+            $table->string('system_name', 50)->nullable()->index()->unique();
+            $table->string('description', 255)->nullable();
+
+            // Revision tracking
+            $table->timestamps();
+            $table->softDeletes();
+
+        });
+
         Schema::create('schedule_week_templates', function (Blueprint $table) {
 
             // Identification
@@ -23,6 +39,7 @@ class CreateScheduleTables extends Migration
             $table->string('description', 255)->nullable();
             $table->tinyInteger('due_date_in_week')->unsigned();
             $table->string('allocation_type', 20)->index();
+            $table->text('allocations');
 
             // Revision tracking
             $table->timestamps();
@@ -30,117 +47,32 @@ class CreateScheduleTables extends Migration
 
         });
 
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('schedule_associations', function (Blueprint $table) {
 
             // Identification
             $table->increments('id');
 
-            // Attributes
-            $table->string('display_name', 50);
-            $table->string('system_name', 50)->nullable()->index()->unique();
-            $table->string('description', 255)->nullable();
-
             // Relations
-            $table->belongsTo('schedule_week_templates', 'week_template_id')->index();
-            $table->string('week_template_system_name', 50)->nullable()->index();
+            $table->belongsTo('schedules', 'schedule_id');
+            $table->string('schedule_system_name', 50)->nullable();
+            $table->belongsTo('schedule_week_templates', 'schedule_week_template_id');
+            $table->string('schedule_week_template_system_name', 50)->nullable();
+
+            // Attributes
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->integer('hierarchy')->unsigned();
+
+            // Composite indexes
+            $table->index(['schedule_id', 'schedule_week_template_id']);
+            $table->index(['schedule_system_name', 'schedule_week_template_id']);
+
+            // Unique constraints
+            $table->unique(['schedule_id', 'hierarchy']);
 
             // Revision tracking
             $table->timestamps();
             $table->softDeletes();
-
-        });
-
-        Schema::create('schedule_day_templates', function (Blueprint $table) {
-
-            // Identification
-            $table->increments('id');
-
-            // Relations
-            $table->belongsTo('schedule_week_templates', 'week_template_id')->index();
-            $table->string('week_template_system_name', 50)->nullable()->index();
-
-            // Attributes
-            $table->tinyInteger('day_in_week')->unsigned();
-
-            // Constraints
-            $table->unique(['week_template_id', 'day_in_week']);
-
-            // Revision tracking
-            $table->timestamps();
-
-        });
-
-        Schema::create('schedule_weeks', function (Blueprint $table) {
-
-            // Identification
-            $table->increments('id');
-
-            // Relations
-            $table->belongsTo('schedules', 'schedule_id')->index();
-            $table->string('schedule_system_name', 50)->nullable()->index();
-            $table->integer('week_number')->unsigned();
-
-            $table->belongsTo('schedule_week_templates', 'week_template_id')->index();
-            $table->string('week_template_system_name', 50)->nullable()->index();
-
-            // Attributes
-            $table->date('start_date');
-            $table->date('due_date');
-            $table->string('allocation_type', 20);
-
-            // Constraints
-            $table->unique(['schedule_id', 'week_number']);
-
-            // Revision tracking
-            $table->timestamps();
-
-        });
-
-        Schema::create('schedule_days', function (Blueprint $table) {
-
-            // Identification
-            $table->increments('id');
-
-            // Relations
-            $table->belongsTo('schedules', 'schedule_id')->index();
-            $table->string('schedule_system_name', 50)->nullable()->index();
-
-            $table->belongsTo('schedule_weeks', 'schedule_week_id')->index();
-            $table->integer('week_number')->unsigned();
-            $table->tinyInteger('day_in_week')->unsigned();
-
-            $table->belongsTo('schedule_day_templates', 'day_template_id')->index();
-            $table->string('day_template_system_name', 50)->nullable()->index();
-
-            // Attributes
-            $table->date('date');
-
-            // Constraints
-            $table->unique(['schedule_id', 'week_number', 'day_in_week']);
-
-            // Revision tracking
-            $table->timestamps();
-
-        });
-
-        Schema::create('schedule_allocations', function (Blueprint $table) {
-
-            // Identification
-            $table->bigIncrements('id');
-
-            // Relations
-            $table->morphsTo('reference')->index();
-            $table->string('reference_system_name')->nullable()->index();
-
-            // Attributes
-            $table->string('focus_type', 20);
-            $table->integer('focus_allocation')->unsigned();
-
-            // Constraints
-            $table->unique(['reference_id', 'reference_type', 'focus_type']);
-
-            // Revision tracking
-            $table->timestamps();
 
         });
     }
@@ -152,11 +84,8 @@ class CreateScheduleTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedule_allocations');
-        Schema::dropIfExists('schedule_days');
-        Schema::dropIfExists('schedule_weeks');
-        Schema::dropIfExists('schedule_day_templates');
         Schema::dropIfExists('schedules');
         Schema::dropIfExists('schedule_week_templates');
+        Schema::dropIfExists('schedule_associations');
     }
 }

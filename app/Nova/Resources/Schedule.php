@@ -57,11 +57,9 @@ class Schedule extends Resource
                 ->creationRules('unique:schedules,system_name')
                 ->updateRules('unique:schedules,system_name,{{resourceId}}'),
 
-            Field::belongsTo('Week Templates', 'weekTemplate', ScheduleWeekTemplate::class),
-
             Field::textarea('Description', 'description')
                 ->hideFromIndex()
-                ->rules('string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
@@ -72,7 +70,7 @@ class Schedule extends Resource
             Field::dateTime('Deleted At', 'deleted_at')
                 ->onlyOnDetail(),
 
-            Field::hasMany('Weeks', 'weeks', ScheduleWeek::class)
+            Field::hasMany('Associations', 'associations', ScheduleAssociation::class)
 
         ];
     }

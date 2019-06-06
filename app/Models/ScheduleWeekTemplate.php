@@ -8,6 +8,9 @@ class ScheduleWeekTemplate extends Model
 {
     use SoftDeletes;
 
+    //////////////////
+    //* Attributes *//
+    //////////////////
     /**
      * The table associated to this model.
      *
@@ -16,32 +19,34 @@ class ScheduleWeekTemplate extends Model
     protected $table = 'schedule_week_templates';
 
     /**
+     * The attributes that should be casted.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'allocations' => 'json'
+    ];
+
+    /////////////////
+    //* Relations *//
+    /////////////////
+    /**
      * Returns the schedules that use this week template.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function schedules()
     {
-        return $this->hasMany(Schedule::class, 'week_template_id');
+        return $this->belongsToMany(Schedule::class, 'schedule_associations', 'schedule_week_template_id', 'schedule_id')->using(ScheduleAssocation::class);
     }
 
     /**
-     * Returns the day templates that belong to this week template.
+     * Returns the schedule associations for this week template.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function dayTemplates()
+    public function associations()
     {
-        return $this->hasMany(ScheduleDayTemplate::class, 'week_template_id');
-    }
-
-    /**
-     * Returns the weeks that belong to this week template.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function weeks()
-    {
-        return $this->hasMany(ScheduleWeek::class, 'week_template_id');
+        return $this->hasMany(ScheduleAssociation::class, 'schedule_week_template_id');
     }
 }

@@ -8,6 +8,9 @@ class Schedule extends Model
 {
     use SoftDeletes;
 
+    //////////////////
+    //* Attributes *//
+    //////////////////
     /**
      * The table associated to this model.
      *
@@ -15,23 +18,26 @@ class Schedule extends Model
      */
     protected $table = 'schedules';
 
+    /////////////////
+    //* Relations *//
+    /////////////////
     /**
-     * Returns the template for weeks within this schedule that have not been defined.
+     * Returns the week templates that govern this schedule.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function weekTemplate()
+    public function weekTemplates()
     {
-        return $this->belongsTo(ScheduleWeekTemplate::class, 'week_template_id');
+        return $this->belongsToMany(ScheduleWeekTemplate::class, 'schedule_associations', 'schedule_id', 'schedule_week_template_id')->using(ScheduleAssociation::class);
     }
 
     /**
-     * Returns the weeks that belong to this schedule.
+     * Returns the week template associations for this schedule.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function weeks()
+    public function associations()
     {
-        return $this->hasMany(ScheduleWeek::class, 'schedule_id');
+        return $this->hasMany(ScheduleAssociation::class, 'schedule_id');
     }
 }

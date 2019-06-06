@@ -61,7 +61,7 @@ class ScheduleWeekTemplate extends Resource
 
             Field::textarea('Description', 'description')
                 ->hideFromIndex()
-                ->rules('string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Field::select('Due Date in Week', 'due_date_in_week')
                 ->rules('required')
@@ -82,6 +82,10 @@ class ScheduleWeekTemplate extends Resource
                     'daily' => 'Daily'
                 ]),
 
+            Field::code('Allocations', 'allocations')
+                ->json()
+                ->rules('required', 'json'),
+
             Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
 
@@ -89,9 +93,7 @@ class ScheduleWeekTemplate extends Resource
                 ->onlyOnDetail(),
 
             Field::dateTime('Deleted At', 'deleted_at')
-                ->onlyOnDetail(),
-
-            Field::hasMany('Day Templates', 'dayTemplates', ScheduleDayTemplate::class)
+                ->onlyOnDetail()
 
         ];
     }

@@ -5,7 +5,7 @@ namespace App\Nova\Resources;
 use Field;
 use Illuminate\Http\Request;
 
-class ScheduleDayTemplate extends Resource
+class ScheduleAssociation extends Resource
 {
     /**
      * The logical group associated with the resource.
@@ -19,14 +19,7 @@ class ScheduleDayTemplate extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\ScheduleDayTemplate::class;
-
-    /**
-     * Indicates if the resource should be displayed in the sidebar.
-     *
-     * @var bool
-     */
-    public static $displayInNavigation = false;
+    public static $model = \App\Models\ScheduleAssociation::class;
 
     /**
      * Indicates if the resoruce should be globally searchable.
@@ -36,13 +29,13 @@ class ScheduleDayTemplate extends Resource
     public static $globallySearchable = false;
 
     /**
-     * Returns the value that should be displayed to represent the resource.
+     * Returns the title of this resource.
      *
      * @return string
      */
     public function title()
     {
-        return $this->weekTemplate->display_name . ': ' . $this->day_in_week;
+        return $this->schedule->display_name . ' / ' . $this->weekTemplate->display_name;
     }
 
     /**
@@ -59,28 +52,31 @@ class ScheduleDayTemplate extends Resource
                 ->sortable()
                 ->onlyOnDetail(),
 
-            Field::belongsTo('Week Templates', 'weekTemplate', ScheduleWeekTemplate::class),
+            Field::belongsTo('Schedule', 'schedule', Schedule::class),
 
-            Field::text('Week Template System Name', 'week_template_system_name')
-                ->onlyOnDetail(),
+            Field::belongsTo('Template', 'weekTemplate', ScheduleWeekTemplate::class),
 
-            Field::select('Day in Week', 'day_in_week')
-                ->rules('required')
-                ->options([
-                    0 => 'Sunday',
-                    1 => 'Monday',
-                    2 => 'Tuesday',
-                    3 => 'Wednesday',
-                    4 => 'Thursday',
-                    5 => 'Friday',
-                    6 => 'Saturday',
-                ]),
+            Field::date('Start Date', 'start_date')
+                ->rules('nullable', 'date'),
+
+            Field::date('End Date', 'end_date')
+                ->rules('nullable', 'date', 'after_or_equal:start_date'),
+
+            Field::number('Hierarchy', 'hierarchy')
+                ->min(1)
+                ->step(1)
+                ->rules('required', 'integer', 'min:1', 'unique:schedule_associations,hierarchy,{{resourceId}},id,schedule_id,{{request.schedule}}')
+                ->help('When associations overlap, the highest hierarchy wins.'),
 
             Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
 
             Field::dateTime('Updated At', 'updated_at')
-                ->onlyOnDetail()
+                ->onlyOnDetail(),
+
+            Field::dateTime('Deleted At', 'deleted_at')
+                ->onlyOnDetail(),
+
         ];
     }
 
