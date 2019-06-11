@@ -18,8 +18,7 @@
         "lesstif/php-jira-rest-client": "^1.37",
         "reedware/laravel-blueprints": "^1.0@dev",
         "reedware/nova-field-manager": "^0.1.0@dev",
-        "reedware/nova-value-toggle": "dev-master",
-        "nova-components/multiple": "*"
+        "reedware/nova-value-toggle": "dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -41,10 +40,6 @@
         {
             "type": "path",
             "url": "../../packages/reedware/nova-value-toggle"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/Multiple"
         }
     ],
     "config": {

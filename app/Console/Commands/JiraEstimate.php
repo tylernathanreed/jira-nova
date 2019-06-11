@@ -49,9 +49,15 @@ class JiraEstimate extends Command
     /**
      * The name and signature of the console command.
      *
+     * @option  {string}   only       The explicit focus groups to estimate.
+     * @option  {string}   except     The focus groups to ignore.
+     * @option  {boolean}  complain   Whether or not to report issues that are estimated to be completed after their due dates.
+     * @option  {boolean}  pretend    Whether or not to skip jira updates.
+     * @option  {integer}  threshold  The number of days past due an estimate must be before complaining.
+     *
      * @var string
      */
-    protected $signature = 'jira:estimate';
+    protected $signature = 'jira:estimate {--only=} {--except=} {--complain} {--threshold=7} {--pretend}';
 
     /**
      * The console command description.
@@ -82,6 +88,20 @@ class JiraEstimate extends Command
      */
     public function handle()
     {
+        // Estimate the jira issues
+        $issues = $this->estimateJiraIssues();
+
+        // Complain about delinquent estimates
+        $this->complain($issues);
+    }
+
+    /**
+     * Estimates the jira issues.
+     *
+     * @return array
+     */
+    public function estimateJiraIssues()
+    {
         // Determine the jira issues
         $this->info('[1/3] Searching for Jira issues...');
         $benchmark = microtime(true);
@@ -99,6 +119,41 @@ class JiraEstimate extends Command
         $benchmark = microtime(true);
         $count = $this->updateJiraIssues($issues);
         $this->info('[3/3] -> Updated [' . $count . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
+
+        // Return the updated jira issues
+        return $issues;
+    }
+
+    /**
+     * Complains about delinquent estimates.
+     *
+     * @param  array  $issues
+     *
+     * @return void
+     */
+    public function complain($issues)
+    {
+        // Determine the threshold
+        $threshold = $this->option('threshold');
+
+        // Determine the issues to complain about
+        $issues = array_filter($issues, function($issue) use ($threshold) {
+
+            // Ignore issues that are missing either date
+            if(is_null($due = $issue['due_date']) || is_null($est = $issue['new_estimated_completion_date'])) {
+                return false;
+            }
+
+            // Determine the diff in days
+            $delta = Carbon::parse($due)->diffInDays(Carbon::parse($est), false);
+
+            // If the delta meets or exceeds the threshold, complain
+            return $delta >= $threshold;
+
+        });
+
+        // Complain about the issue count
+        $this->info('[3/3] -> ' . count($issues) . ' are estimated to be completed ' . $threshold . ' days or later than their due date!');
     }
 
     /**
@@ -122,7 +177,9 @@ class JiraEstimate extends Command
             }
 
             // Update the issue
-            Jira::issues()->update($issue['key'], (new IssueField(true))->addCustomField(static::FIELD_ESTIMATED_COMPLETION_DATE, $issue['new_estimated_completion_date']));
+            if(!$this->option('pretend')) {
+                Jira::issues()->update($issue['key'], (new IssueField(true))->addCustomField(static::FIELD_ESTIMATED_COMPLETION_DATE, $issue['new_estimated_completion_date']));
+            }
 
             // Increase the count
             $count++;
@@ -344,6 +401,89 @@ class JiraEstimate extends Command
      */
     public function newBurndownJiraIssuesExpression()
     {
-        return 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development") ORDER BY Rank ASC';
+        // Determine the applicable focus groups
+        $groups = $this->getApplicableFocusGroups();
+
+        // Determine the base expression
+        $expression = 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development")';
+
+        // If the "dev" focus group is disabled, exclude them
+        if(!$groups['dev']) {
+            $expression .= ' AND NOT (("Issue Category" = "Dev" or "Issue Category" is empty) AND priority != Highest)';
+        }
+
+        // If the "ticket" focus group is disabled, exclude them
+        if(!$groups['ticket']) {
+            $expression .= ' AND NOT ("Issue Category" in ("Ticket", "Data") AND priority != Highest)';
+        }
+
+        // If the "other" focus group is disabled, exclude them
+        if(!$groups['other']) {
+            $expression .= ' AND priority != Highest';
+        }
+
+        // Add the order by clause
+        $expression .= ' ORDER BY Rank ASC';
+
+        // Return the expression
+        return $expression;
+    }
+
+    /**
+     * Returns the focus groups that are being estimated.
+     *
+     * @return array
+     */
+    public function getApplicableFocusGroups()
+    {
+        // Initialize the focus groups
+        $groups = [
+            'dev' => null,
+            'ticket' => null,
+            'other' => null,
+        ];
+
+        // Determine the "only" option
+        $only = !is_null($this->option('only'))
+            ? explode(',', strtolower($this->option('only')))
+            : null;
+
+        // If the option wasn't provided, assume all focus groups
+        if(empty($only)) {
+            $only = array_keys($groups);
+        }
+
+        // Otherwise, map the specific focus groups
+        else {
+            $only = array_values(array_intersect(array_keys($groups), $only));
+        }
+
+        // Populate the focus groups using the "only" option
+        foreach($groups as $group => &$value) {
+            $value = in_array($group, $only);
+        }
+
+        // Determine the "except" option
+        $except = !is_null($this->option('except'))
+            ? explode(',', strtolower($this->option('except')))
+            : null;
+
+        // If the option wasn't provided, assume no focus groups
+        if(empty($except)) {
+            $except = [];
+        }
+
+        // Otherwise, map the specific focus groups
+        else {
+            $except = array_values(array_intersect(array_keys($groups), $except));
+        }
+
+        // Disable focus groups using the "except" option
+        foreach($except as $group) {
+            $groups[$group] = false;
+        }
+
+        // Return the focus groups
+        return $groups;
     }
 }
