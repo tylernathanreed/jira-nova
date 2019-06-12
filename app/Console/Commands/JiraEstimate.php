@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Jira;
 use Carbon\Carbon;
+use App\Support\CsvWriter;
 use Illuminate\Console\Command;
 use JiraRestApi\Issue\IssueField;
 
@@ -14,6 +15,7 @@ class JiraEstimate extends Command
      *
      * @var string
      */
+    const FIELD_SUMMARY = 'summary';
     const FIELD_DUE_DATE = 'duedate';
     const FIELD_REMAINING_ESTIMATE = 'timeestimate';
     const FIELD_PRIORITY = 'priority';
@@ -103,22 +105,22 @@ class JiraEstimate extends Command
     public function estimateJiraIssues()
     {
         // Determine the jira issues
-        $this->info('[1/3] Searching for Jira issues...');
+        $this->info('[1/4] Searching for Jira issues...');
         $benchmark = microtime(true);
         $issues = $this->getJiraIssues();
-        $this->info('[1/3] -> Found [' . count($issues) . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
+        $this->info('[1/4] -> Found [' . count($issues) . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
 
         // Assign estimated completion dates to the issues
-        $this->info('[2/3] Assigning estimated completion dates...');
+        $this->info('[2/4] Assigning estimated completion dates...');
         $benchmark = microtime(true);
         $issues = $this->assignEstimatedCompletionDates($issues);
-        $this->info('[2/3] -> Assigned estimated completion dates in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
+        $this->info('[2/4] -> Assigned estimated completion dates in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
 
         // Update the issues in jira
-        $this->info('[3/3] Updating Jira issues...');
+        $this->info('[3/4] Updating Jira issues...');
         $benchmark = microtime(true);
         $count = $this->updateJiraIssues($issues);
-        $this->info('[3/3] -> Updated [' . $count . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
+        $this->info('[3/4] -> Updated [' . $count . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
 
         // Return the updated jira issues
         return $issues;
@@ -133,6 +135,8 @@ class JiraEstimate extends Command
      */
     public function complain($issues)
     {
+        $this->info('[4/4] Complaining about Jira issues...');
+
         // Determine the threshold
         $threshold = $this->option('threshold');
 
@@ -153,7 +157,32 @@ class JiraEstimate extends Command
         });
 
         // Complain about the issue count
-        $this->info('[3/3] -> ' . count($issues) . ' are estimated to be completed ' . $threshold . ' days or later than their due date!');
+        $this->info('[4/4] -> ' . count($issues) . ' are estimated to be completed ' . $threshold . ' days or later than their due date!');
+
+        // If complaining is enabled, create a report of the issues that exceed the threshold
+        if($this->option('complain')) {
+
+            // Determine the name of the output file
+            $filename = "Issues Estimated At Least {$threshold} Days Deliquent " . date('Y-m-d') . '.csv';
+
+            // Write the issues to an output file
+            $this->info("[4/4] -> Writing issues to [{$filename}].");
+            $writer = (new CsvWriter($filename))->map($issues, function($issue) {
+
+                // Map each issue into fields
+                return [
+                    'Key' => $issue['key'],
+                    'Priority' => $issue['priority'],
+                    'Category' => $issue['issue_category'],
+                    'Summary' => $issue['summary'],
+                    'Due Date' => Carbon::parse($issue['due_date'])->toDateString(),
+                    'Est Date' => Carbon::parse($issue['new_estimated_completion_date'])->toDateString(),
+                    'Delta' => Carbon::parse($issue['due_date'])->diffInDays(Carbon::parse($issue['new_estimated_completion_date']), false)
+                ];
+
+            }, true, true);
+
+        }
     }
 
     /**
@@ -350,6 +379,7 @@ class JiraEstimate extends Command
 
             // Determine the search results
             $results = Jira::issues()->search($jql, $page * $count, $count, [
+                static::FIELD_SUMMARY,
                 static::FIELD_DUE_DATE,
                 static::FIELD_REMAINING_ESTIMATE,
                 static::FIELD_PRIORITY,
@@ -362,6 +392,7 @@ class JiraEstimate extends Command
             $results = array_map(function($issue) {
                 return [
                     'key' => $issue->key,
+                    'summary' => $issue->fields->{static::FIELD_SUMMARY},
                     'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
                     'time_estimate' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
                     'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
