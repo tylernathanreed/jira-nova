@@ -177,6 +177,7 @@ class JiraEstimate extends Command
                     'Summary' => $issue['summary'],
                     'Due Date' => Carbon::parse($issue['due_date'])->toDateString(),
                     'Est Date' => Carbon::parse($issue['new_estimated_completion_date'])->toDateString(),
+                    'Rem Hours' => round($issue['time_estimate'] / 60 / 60, 2),
                     'Delta' => Carbon::parse($issue['due_date'])->diffInDays(Carbon::parse($issue['new_estimated_completion_date']), false)
                 ];
 
