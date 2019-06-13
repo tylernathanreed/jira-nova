@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Jira;
 use Carbon\Carbon;
 use App\Support\CsvWriter;
+use JiraRestApi\JiraException;
 use Illuminate\Console\Command;
 use JiraRestApi\Issue\IssueField;
 
@@ -53,13 +54,14 @@ class JiraEstimate extends Command
      *
      * @option  {string}   only       The explicit focus groups to estimate.
      * @option  {string}   except     The focus groups to ignore.
-     * @option  {boolean}  complain   Whether or not to report issues that are estimated to be completed after their due dates.
      * @option  {boolean}  pretend    Whether or not to skip jira updates.
+     * @option  {boolean}  commit     Whether or not to commit the estimated date as due dates.
+     * @option  {boolean}  complain   Whether or not to report issues that are estimated to be completed after their due dates.
      * @option  {integer}  threshold  The number of days past due an estimate must be before complaining.
      *
      * @var string
      */
-    protected $signature = 'jira:estimate {--only=} {--except=} {--complain} {--threshold=7} {--pretend}';
+    protected $signature = 'jira:estimate {--only=} {--except=} {--complain} {--threshold=7} {--pretend} {--commit}';
 
     /**
      * The console command description.
@@ -121,6 +123,10 @@ class JiraEstimate extends Command
         $benchmark = microtime(true);
         $count = $this->updateJiraIssues($issues);
         $this->info('[3/4] -> Updated [' . $count . '] Jira issues in [' . round((microtime(true) - $benchmark), 2) . '] seconds.');
+
+        if($this->options('commit')) {
+            $this->info('[3/4] -> Committed estimated dates as due dates.');
+        }
 
         // Return the updated jira issues
         return $issues;
@@ -192,6 +198,8 @@ class JiraEstimate extends Command
      * @param  array  $issues
      *
      * @return integer
+     *
+     * @throws \JiraRestApi\JiraException
      */
     public function updateJiraIssues($issues)
     {
@@ -202,13 +210,38 @@ class JiraEstimate extends Command
         foreach($issues as $issue) {
 
             // If the issue doesn't need to be updated, skip it
-            if($issue['new_estimated_completion_date'] == $issue['old_estimated_completion_date']) {
+            if(!$this->isIssueDirty($issue)) {
                 continue;
             }
 
-            // Update the issue
+            // Make sure pretend is not enabled
             if(!$this->option('pretend')) {
-                Jira::issues()->update($issue['key'], (new IssueField(true))->addCustomField(static::FIELD_ESTIMATED_COMPLETION_DATE, $issue['new_estimated_completion_date']));
+
+                // Create a new field set
+                $fields = new IssueField(true);
+
+                // Add the new estimated completion date
+                $fields->addCustomField(static::FIELD_ESTIMATED_COMPLETION_DATE, $issue['new_estimated_completion_date']);
+
+                // If we're committing, include the due date
+                if($this->option('commit')) {
+                    $fields->setDueDate($issue['new_estimated_completion_date']);
+                }
+
+                // Update the issue
+                try {
+                    Jira::issues()->update($issue['key'], $fields);
+                }
+
+                // Catch jira exceptions
+                catch(JiraException $ex) {
+
+                    // Log the exception
+                    $this->info("[3/4] -> Failed to update issue [{$issue['key']}].");
+                    throw $ex;
+
+                }
+
             }
 
             // Increase the count
@@ -218,6 +251,29 @@ class JiraEstimate extends Command
 
         // Return the count of updated jira issues
         return $count;
+    }
+
+    /**
+     * Returns whether or not the issue needs to be updated.
+     *
+     * @param  array  $issue
+     *
+     * @return boolean
+     */
+    protected function isIssueDirty($issue)
+    {
+        // If we're committing, then the check the due date
+        if($this->option('commit') && $issue['due_date'] != $issue['new_estimated_completion_date']) {
+            return true;
+        }
+
+        // Otherwise, check the estimated date
+        if($issue['new_estimated_completion_date'] != $issue['old_estimated_completion_date']) {
+            return true;
+        }
+
+        // Issue is not dirty
+        return false;
     }
 
     /**
