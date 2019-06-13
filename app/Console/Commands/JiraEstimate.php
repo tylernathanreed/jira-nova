@@ -18,6 +18,7 @@ class JiraEstimate extends Command
      */
     const FIELD_SUMMARY = 'summary';
     const FIELD_DUE_DATE = 'duedate';
+    const FIELD_STATUS = 'status';
     const FIELD_REMAINING_ESTIMATE = 'timeestimate';
     const FIELD_PRIORITY = 'priority';
     const FIELD_ISSUE_CATEGORY = 'customfield_12005';
@@ -181,6 +182,7 @@ class JiraEstimate extends Command
                     'Priority' => $issue['priority'],
                     'Category' => $issue['issue_category'],
                     'Summary' => $issue['summary'],
+                    'Status' => $issue['status'],
                     'Due Date' => Carbon::parse($issue['due_date'])->toDateString(),
                     'Est Date' => Carbon::parse($issue['new_estimated_completion_date'])->toDateString(),
                     'Rem Hours' => round($issue['time_estimate'] / 60 / 60, 2),
@@ -438,6 +440,7 @@ class JiraEstimate extends Command
             $results = Jira::issues()->search($jql, $page * $count, $count, [
                 static::FIELD_SUMMARY,
                 static::FIELD_DUE_DATE,
+                static::FIELD_STATUS,
                 static::FIELD_REMAINING_ESTIMATE,
                 static::FIELD_PRIORITY,
                 static::FIELD_ISSUE_CATEGORY,
@@ -451,6 +454,7 @@ class JiraEstimate extends Command
                     'key' => $issue->key,
                     'summary' => $issue->fields->{static::FIELD_SUMMARY},
                     'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
+                    'status' => $issue->fields->{static::FIELD_STATUS}->name,
                     'time_estimate' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
                     'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
                     'priority' => optional($issue->fields->{static::FIELD_PRIORITY})->name,
