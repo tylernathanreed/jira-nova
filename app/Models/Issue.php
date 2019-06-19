@@ -21,8 +21,11 @@ class Issue extends Model
     const FIELD_DUE_DATE = 'duedate';
     const FIELD_REMAINING_ESTIMATE = 'timeestimate';
     const FIELD_PRIORITY = 'priority';
+    const FIELD_REPORTER = 'reporter';
+    const FIELD_ASSIGNEE = 'assignee';
     const FIELD_ISSUE_CATEGORY = 'customfield_12005';
     const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
+    const FIELD_EPIC_KEY = 'customfield_12000';
     const FIELD_RANK = 'customfield_10119';
 
     //////////////////
@@ -79,8 +82,11 @@ class Issue extends Model
                 static::FIELD_DUE_DATE,
                 static::FIELD_REMAINING_ESTIMATE,
                 static::FIELD_PRIORITY,
+                static::FIELD_REPORTER,
+                static::FIELD_ASSIGNEE,
                 static::FIELD_ISSUE_CATEGORY,
                 static::FIELD_ESTIMATED_COMPLETION_DATE,
+                static::FIELD_EPIC_KEY,
                 static::FIELD_RANK
             ], [], false);
 
@@ -88,6 +94,7 @@ class Issue extends Model
             $results = array_map(function($issue) {
                 return [
                     'key' => $issue->key,
+                    'url' => rtrim(config('services.jira.host'), '/') . '/browse/' . $issue->key,
                     'type' => $issue->fields->{static::FIELD_ISSUE_TYPE}->name,
                     'type_icon_url' => $issue->fields->{static::FIELD_ISSUE_TYPE}->iconUrl,
                     'status' => $issue->fields->{static::FIELD_STATUS}->name,
@@ -98,7 +105,14 @@ class Issue extends Model
                     'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
                     'priority' => optional($issue->fields->{static::FIELD_PRIORITY})->name,
                     'priority_icon_url' => optional($issue->fields->{static::FIELD_PRIORITY})->iconUrl,
+                    'reporter_name' => optional($issue->fields->{static::FIELD_REPORTER})->displayName,
+                    'reporter_icon_url' => optional($issue->fields->{static::FIELD_REPORTER})->avatarUrls['16x16'] ?? null,
+                    'assignee_name' => optional($issue->fields->{static::FIELD_ASSIGNEE})->displayName,
+                    'assignee_icon_url' => optional($issue->fields->{static::FIELD_ASSIGNEE})->avatarUrls['16x16'] ?? null,
                     'issue_category' => optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? 'Dev',
+                    'epic_key' => $issue->fields->{static::FIELD_EPIC_KEY} ?? null,
+                    'epic_name' => null,
+                    'epic_color' => null,
                     'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);
@@ -121,6 +135,11 @@ class Issue extends Model
             $page++;
 
         } while ($countResults == $count);
+
+        // Determine the epic keys
+        $epics = array_values(array_unique(array_filter(array_column($issues, 'epic_key'))));
+
+        dd(__FILE__ . ':' . __LINE__, compact('epics'));
 
         // Return the list of issues
         return $issues;
