@@ -26,6 +26,8 @@ class Issue extends Model
     const FIELD_ISSUE_CATEGORY = 'customfield_12005';
     const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
     const FIELD_EPIC_KEY = 'customfield_12000';
+    const FIELD_EPIC_NAME = 'customfield_10002';
+    const FIELD_EPIC_COLOR = 'customfield_10004';
     const FIELD_RANK = 'customfield_10119';
 
     //////////////////
@@ -87,6 +89,8 @@ class Issue extends Model
                 static::FIELD_ISSUE_CATEGORY,
                 static::FIELD_ESTIMATED_COMPLETION_DATE,
                 static::FIELD_EPIC_KEY,
+                static::FIELD_EPIC_NAME,
+                static::FIELD_EPIC_COLOR,
                 static::FIELD_RANK
             ], [], false);
 
@@ -110,9 +114,10 @@ class Issue extends Model
                     'assignee_name' => optional($issue->fields->{static::FIELD_ASSIGNEE})->displayName,
                     'assignee_icon_url' => optional($issue->fields->{static::FIELD_ASSIGNEE})->avatarUrls['16x16'] ?? null,
                     'issue_category' => optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? 'Dev',
-                    'epic_key' => $issue->fields->{static::FIELD_EPIC_KEY} ?? null,
-                    'epic_name' => null,
-                    'epic_color' => null,
+                    'epic_key' => $epicKey = ($issue->fields->{static::FIELD_EPIC_KEY} ?? null),
+                    'epic_url' => !is_null($epicKey) ? rtrim(config('services.jira.host'), '/') . '/browse/' . $epicKey : null,
+                    'epic_name' => $issue->fields->{static::FIELD_EPIC_NAME} ?? null,
+                    'epic_color' => $issue->fields->{static::FIELD_EPIC_COLOR} ?? null,
                     'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);
@@ -139,7 +144,43 @@ class Issue extends Model
         // Determine the epic keys
         $epics = array_values(array_unique(array_filter(array_column($issues, 'epic_key'))));
 
-        dd(__FILE__ . ':' . __LINE__, compact('epics'));
+        // Check if any epics were found
+        if(!empty($epics)) {
+
+            // Map the epics into issues
+            $epics = static::getIssuesFromJira([
+                'keys' => $epics
+            ]);
+
+            // Key the epics by their jira key
+            $epics = array_combine(array_column($epics, 'key'), $epics);
+
+            // Fill in the epic details for the non-epic issues
+            $issues = array_map(function($issue) use ($epics) {
+
+                // If the issue does not have an epic key, return it as-is
+                if(is_null($issue['epic_key'])) {
+                    return $issue;
+                }
+
+                // Determine the associated epic
+                $epic = $epics[$issue['epic_key']] ?? null;
+
+                // If the epic couldn't be found, return it as-is
+                if(is_null($epic)) {
+                    return $issue;
+                }
+
+                // Fill in the epic information
+                $issue['epic_name'] = $epic['epic_name'];
+                $issue['epic_color'] = $epic['epic_color'];
+
+                // Return the issue
+                return $issue;
+
+            }, $issues);
+
+        }
 
         // Return the list of issues
         return $issues;
@@ -154,6 +195,11 @@ class Issue extends Model
      */
     public static function newIssuesFromJiraExpression($options = [])
     {
+        // Check for a list of issues
+        if(!empty($keys = ($options['keys'] ?? []))) {
+            return 'issuekey in (' . implode(', ', $keys) . ')';
+        }
+
         // Determine the applicable focus groups
         $groups = $options['groups'] ?? [
             'dev' => true,

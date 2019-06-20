@@ -19,8 +19,16 @@
 								<img class="icon" src="{{ $issue['priority_icon_url'] }}"/>
 							</div>
 
-							<div class="swimlane-issue-field" data-field="key">
-								<a href="{{ $issue['url'] }}" target="_blank">{{ $issue['key'] }}</a>
+							<div class="swimlane-issue-field-group text-center" style="min-width: 80px; max-width: 80px">
+								<div class="swimlane-issue-field text-center" data-field="key">
+									<a href="{{ $issue['url'] }}" target="_blank">{{ $issue['key'] }}</a>
+								</div>
+
+								@if(isset($issue['epic_key']))
+									<div class="swimlane-issue-field text-center epic-label {{ $issue['epic_color'] }}" data-field="epic">
+										<a href="{{ $issue['epic_url'] }}" target="_blank">{{ $issue['epic_name'] }}</a>
+									</div>
+								@endif
 							</div>
 
 							<div class="swimlane-issue-field" data-field="summary" style="flex: 1; color: #777">
@@ -64,29 +72,37 @@
 							</div>
 
 							<div class="swimlane-issue-field-group">
-								<div class="swimlane-issue-field" data-field="due-date" style="min-width: 80px; text-align: center">
-									<div class="flex">
+								<div class="swimlane-issue-field" data-field="due-date" style="min-width: 90px; text-align: center">
+									<div class="flex items-center">
 										<label>D</label>
 										<div class="flex-1">
-											@if(!is_null($date = $issue['due_date']))
-												{{ \Carbon\Carbon::parse($date)->format('n/d/Y') }}
+											@if(!is_null($due = $issue['due_date']))
+												{{ \Carbon\Carbon::parse($due)->format('n/d/Y') }}
 											@else
 												<span class="text-gray">TBD</span>
 											@endif
 										</div>
+										<i class="fas fa-fw fa-edit"></i>
 									</div>
 								</div>
 
-								<div class="swimlane-issue-field" data-field="estimated-completion-date" style="min-width: 80px; text-align: center">
-									<div class="flex">
+								<div class="swimlane-issue-field" data-field="estimated-completion-date" style="min-width: 90px; text-align: center">
+									<div class="flex items-center">
 										<label>E</label>
 										<div class="flex-1">
-											@if(!is_null($date = $issue['old_estimated_completion_date']))
-												{{ \Carbon\Carbon::parse($date)->format('n/d/Y') }}
+											@if(!is_null($est = $issue['old_estimated_completion_date']))
+												{{ \Carbon\Carbon::parse($est)->format('n/d/Y') }}
 											@else
 												<span class="text-gray">TBD</span>
 											@endif
 										</div>
+										@if(is_null($due) || is_null($est) || $due == $est)
+											<span>&emdash;</span>
+										@elseif($due > $est)
+											<i class="fas fa-fw fa-level-up-alt"></i>
+										@else
+											<i class="fas fa-fw fa-level-down-alt"></i>
+										@endif
 									</div>
 								</div>
 							</div>
@@ -181,6 +197,48 @@
 			border-color: #b3d4ff;
 		}
 
+		.epic-label {
+			display: inline-block;
+			border-radius: 3px;
+			font-size: 12px;
+			font-weight: normal;
+			line-height: 1;
+			padding: 1px 5px;
+			margin-left: 3px;
+			margin-right: 3px;
+		}
+
+		.epic-label a,
+		.epic-label a:active,
+		.epic-label a:hover,
+		.epic-label a:focus {
+			color: #fff;
+		}
+
+		.ghx-label-7 {
+			color: #fff;
+			background-color: #8777d9;
+			border-color: #8777d9;
+		}
+
+		.ghx-label-9 {
+			color: #fff;
+			background-color: #ff7452;
+			border-color: #ff7452;
+		}
+
+		.ghx-label-11 {
+			color: #42526e;
+			background-color: #79e2f2;
+			border-color: #79e2f2;
+		}
+
+		.ghx-label-14 {
+			color: #fff;
+			background-color: #ff8f73;
+			border-color: #ff8f73;
+		}
+
 		img.icon {
 			width: 16px;
 			height: 16px;
@@ -200,6 +258,10 @@
 
 		.flex-1 {
 			flex: 1;
+		}
+
+		.text-center {
+			text-align: center;
 		}
 
 		label {
