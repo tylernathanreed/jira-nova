@@ -82,7 +82,6 @@
 												<span class="text-gray">TBD</span>
 											@endif
 										</div>
-										<i class="fas fa-fw fa-edit"></i>
 									</div>
 								</div>
 
@@ -96,19 +95,37 @@
 												<span class="text-gray">TBD</span>
 											@endif
 										</div>
-										@if(is_null($due) || is_null($est) || $due == $est)
-											<span>&emdash;</span>
-										@elseif($due > $est)
-											<i class="fas fa-fw fa-level-up-alt"></i>
-										@else
-											<i class="fas fa-fw fa-level-down-alt"></i>
-										@endif
 									</div>
 								</div>
 							</div>
 
+							<div class="swimlane-issue-field" data-field="estimated-offset" style="min-width: 32px; max-width: 32px; text-align: center">
+								@if(is_null($due) || is_null($est) || $due == $est)
+									<span>&mdash;</span>
+								@else
+									<?php $offset = \Carbon\Carbon::parse($est)->diffInDays($due, false); ?>
+
+									@if($offset > 0)
+										<span class="text-green">(+{{ $offset > 99 ? '++' : $offset }})</span>
+									@else
+										<span class="text-red">(-{{ $offset < -99 ? '--' : abs($offset) }})</span>
+									@endif
+								@endif
+							</div>
+
 							<div class="swimlane-issue-field" data-field="time-estimate" style="min-width: 40px; text-align: right">
 								{{ number_format($issue['time_estimate'] / 3600, 2) }}
+							</div>
+
+							<div class="swimlane-issue-field" data-field="links" style="min-width: 40px; max-width: 40px; text-align: center">
+								<div class="flex space-between">
+									<div class="link-block-red">1</div>
+									<div class="link-block-blue">1</div>
+								</div>
+								<div class="flex space-between">
+									<div class="link-block-green">1</div>
+									<div class="link-block-yellow">1</div>
+								</div>
 							</div>
 						</div>
 					</li>
@@ -256,12 +273,68 @@
 			align-items: center;
 		}
 
+		.space-between {
+			justify-content: space-between;
+		}
+
 		.flex-1 {
 			flex: 1;
 		}
 
 		.text-center {
 			text-align: center;
+		}
+
+		.text-green {
+			color: #008800;
+		}
+
+		.text-red {
+			color: #ff0000;
+		}
+
+		.link-block-red {
+			width: 16px;
+			height: 16px;
+			margin: 1px;
+			font-size: 10px;
+			font-weight: bold;
+
+			color: white;
+			background-color: #f55;
+		}
+
+		.link-block-blue {
+			width: 16px;
+			height: 16px;
+			margin: 1px;
+			font-size: 10px;
+			font-weight: bold;
+
+			color: white;
+			background-color: #0052cc;
+		}
+
+		.link-block-green {
+			width: 16px;
+			height: 16px;
+			margin: 1px;
+			font-size: 10px;
+			font-weight: bold;
+
+			color: white;
+			background-color: #064;
+		}
+
+		.link-block-yellow {
+			width: 16px;
+			height: 16px;
+			margin: 1px;
+			font-size: 10px;
+			font-weight: bold;
+
+			color: white;
+			background-color: #e8a800;
 		}
 
 		label {

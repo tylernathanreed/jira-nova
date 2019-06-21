@@ -28,6 +28,7 @@ class Issue extends Model
     const FIELD_EPIC_KEY = 'customfield_12000';
     const FIELD_EPIC_NAME = 'customfield_10002';
     const FIELD_EPIC_COLOR = 'customfield_10004';
+    const FIELD_LINKS = 'issuelinks';
     const FIELD_RANK = 'customfield_10119';
 
     //////////////////
@@ -91,6 +92,7 @@ class Issue extends Model
                 static::FIELD_EPIC_KEY,
                 static::FIELD_EPIC_NAME,
                 static::FIELD_EPIC_COLOR,
+                static::FIELD_LINKS,
                 static::FIELD_RANK
             ], [], false);
 
@@ -118,6 +120,7 @@ class Issue extends Model
                     'epic_url' => !is_null($epicKey) ? rtrim(config('services.jira.host'), '/') . '/browse/' . $epicKey : null,
                     'epic_name' => $issue->fields->{static::FIELD_EPIC_NAME} ?? null,
                     'epic_color' => $issue->fields->{static::FIELD_EPIC_COLOR} ?? null,
+                    'links' => $issue->fields->{static::FIELD_LINKS} ?? [],
                     'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);
@@ -182,8 +185,55 @@ class Issue extends Model
 
         }
 
+        // Determine the block map from the jira issues
+        $blocks = static::getBlockMapFromJiraIssues($issues);
+
         // Return the list of issues
         return $issues;
+    }
+
+    /**
+     * Returns the block map for the specified jira issues.
+     *
+     * @param  array  $issues
+     *
+     * @return array
+     */
+    public static function getBlockMapFromJiraIssues($issues)
+    {
+        return [
+            [
+                'id' => 'ac6e469b-b525-47c6-9c38-3de4e085a415',
+                'depths' => [
+                    'UAS-8116' => 1,
+                    'UAS-8115' => 2,
+                    'UAS-8106' => 2,
+                    'UAS-8104' => 3,
+                ],
+                'head' => [
+                    'issue' => 'UAS-8116',
+                    'depth' => 1,
+                    'blocks' => [
+                        [
+                            'issue' => 'UAS-8115',
+                            'depth' => 2,
+                            'blocks' => []
+                        ],
+                        [
+                            'issue' => 'UAS-8106',
+                            'depth' => 2,
+                            'blocks' => [
+                                [
+                                    'issue' => 'UAS-8104',
+                                    'depth' => 3,
+                                    'blocks' => []
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
