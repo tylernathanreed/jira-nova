@@ -152,7 +152,8 @@ class Issue extends Model
 
             // Map the epics into issues
             $epics = static::getIssuesFromJira([
-                'keys' => $epics
+                'keys' => $epics,
+                'epics' => true
             ]);
 
             // Key the epics by their jira key
@@ -186,7 +187,9 @@ class Issue extends Model
         }
 
         // Determine the block map from the jira issues
-        $blocks = static::getBlockMapFromJiraIssues($issues);
+        if(!($options['epics'] ?? false)) {
+            $blocks = static::getBlockMapFromJiraIssues($issues);
+        }
 
         // Return the list of issues
         return $issues;
@@ -201,39 +204,136 @@ class Issue extends Model
      */
     public static function getBlockMapFromJiraIssues($issues)
     {
-        return [
-            [
-                'id' => 'ac6e469b-b525-47c6-9c38-3de4e085a415',
-                'depths' => [
-                    'UAS-8116' => 1,
-                    'UAS-8115' => 2,
-                    'UAS-8106' => 2,
-                    'UAS-8104' => 3,
-                ],
-                'head' => [
-                    'issue' => 'UAS-8116',
-                    'depth' => 1,
-                    'blocks' => [
-                        [
-                            'issue' => 'UAS-8115',
-                            'depth' => 2,
-                            'blocks' => []
-                        ],
-                        [
-                            'issue' => 'UAS-8106',
-                            'depth' => 2,
-                            'blocks' => [
-                                [
-                                    'issue' => 'UAS-8104',
-                                    'depth' => 3,
-                                    'blocks' => []
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
+        // Determine all of the block relations
+        $relations = static::getAllBlockRelationsFromJiraIssues($issues);
+
+        dump(compact('relations'));
+    }
+
+    /**
+     * Returns all of the block relations from the specified jira issues.
+     *
+     * @param  array  $issues
+     *
+     * @return array
+     */
+    protected static function getAllBlockRelationsFromJiraIssues($issues)
+    {
+        // Initialize the list of known issues
+        $keys = array_column($issues, 'key');
+
+        // Determine the block links between each issue
+        $relations = static::getBlockRelationsFromJiraIssues($issues);
+
+        // Find all of the related issues that we don't have
+        $missing = array_values(array_diff(array_values(array_collapse(array_collapse($relations))), $keys));
+
+        // Loop until no issues are missing
+        for($i = 0; count($missing) > 0 && $i < 10; $i++) {
+
+            // Find the links for the missing issues
+            $results = Jira::issues()->search('issuekey in (' . implode(', ', $missing) . ')', 0, count($missing), [
+                static::FIELD_LINKS
+            ], [], false);
+
+            // Map the results into issues
+            $issues = array_map(function($issue) {
+                return [
+                    'key' => $issue->key,
+                    'links' => $issue->fields->{static::FIELD_LINKS}
+                ];
+            }, $results->issues);
+
+            // Determine the new keys
+            $newKeys = array_column($issues, 'key');
+
+            // Add the keys to the list of known issues
+            $keys = array_merge($keys, $newKeys);
+
+            // Determine the new set of relations
+            $newRelations = static::getBlockRelationsFromJiraIssues($issues);
+
+            // Add the new relations to the old relations
+            $relations['blocks'] = array_merge($relations['blocks'], $newRelations['blocks']);
+            $relations['blockedBy'] = array_merge($relations['blockedBy'], $newRelations['blockedBy']);
+
+            // Update the list of missing issues
+            $missing = array_values(array_diff(array_values(array_collapse(array_collapse($relations))), $keys));
+
+        }
+
+        // Return the relations
+        return $relations;
+    }
+
+    /**
+     * Returns the block relations from the specified jira issues.
+     *
+     * @param  array  $issues
+     *
+     * @return array
+     */
+    protected static function getBlockRelationsFromJiraIssues($issues)
+    {
+        return array_reduce($issues, function($relations, $issue) {
+
+            // Initialize the blocks and blocked-by lists
+            $blocks = [];
+            $blockedBy = [];
+
+            // Determine the links
+            $links = $issue['links'];
+
+            // Skip issues without links
+            if(empty($links)) {
+                return $relations;
+            }
+
+            // Find the block-type links
+            $links = array_filter($links, function($link) {
+
+                // Ignore non-block type links
+                if($link->type->name != 'Blocks') {
+                    return false;
+                }
+
+                // Determine the related issue
+                $related = $link->inwardIssue ?? $link->outwardIssue;
+
+                // If the related issue is done or cancelled, then we don't care
+                if(in_array($related->fields->{static::FIELD_STATUS}->name, ['Done', 'Canceled'])) {
+                    return false;
+                }
+
+                // Keep the link
+                return true;
+
+            });
+
+            // Skip issues without block-type links
+            if(empty($links)) {
+                return $relations;
+            }
+
+            // Loop through the links again, this time categorizing them
+            foreach($links as $link) {
+                ${isset($link->inwardIssue) ? 'blockedBy' : 'blocks'}[] = ($link->inwardIssue ?? $link->outwardIssue)->key;
+            }
+
+            // Append the blocks to the relations
+            if(!empty($blocks)) {
+                $relations['blocks'][$issue['key']] = $blocks;
+            }
+
+            // Append the blocked by to the relations
+            if(!empty($blockedBy)) {
+                $relations['blockedBy'][$issue['key']] = $blockedBy;
+            }
+
+            // Return the relations
+            return $relations;
+
+        }, ['blocks' => [], 'blockedBy' => []]);
     }
 
     /**
