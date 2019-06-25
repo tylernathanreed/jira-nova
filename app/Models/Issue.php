@@ -186,9 +186,14 @@ class Issue extends Model
 
         }
 
-        // Determine the block map from the jira issues
+        // Check if we're not handling epics
         if(!($options['epics'] ?? false)) {
+
+            // Determine the block map from the jira issues
             $blocks = static::getBlockMapFromJiraIssues($issues);
+
+            dump(compact('blocks'));
+
         }
 
         // Return the list of issues
@@ -207,7 +212,76 @@ class Issue extends Model
         // Determine all of the block relations
         $relations = static::getAllBlockRelationsFromJiraIssues($issues);
 
-        dump(compact('relations'));
+        // Find the top-level issues
+        $heads = array_values(array_diff(array_keys($relations['blocks']), array_keys($relations['blockedBy'])));
+
+        // Sort the top-level issues
+        sort($heads);
+
+        // Initialize the chain depths
+        $depths = [];
+
+        // Iterate through the top-level issues
+        foreach($heads as $index => $head) {
+
+            // Add each head as a chain
+            $depths[$head] = [[
+                'chain' => $index,
+                'depth' => 1
+            ]];
+
+        }
+
+        // Initialize the current level
+        $level = $heads;
+
+        // Determine the blocking issues
+        $blocks = $relations['blocks'];
+
+        // Process the blocking issues until they're all gone
+        for($i = 0; count($blocks) > 0 && $i < 10; $i++) {
+
+            // Determine the next set of blocking issues to process
+            $next = array_only($blocks, $level);
+
+            // If we've run out of issues to process, then there's some
+            // sort of cyclical chain of issues. We do not support a
+            // relationship like this, so we will bail out early.
+
+            // Stop if there aren't any nodes to process
+            if(empty($next)) {
+                break;
+            }
+
+            // Iterate through each blocking set
+            foreach($next as $parent => $children) {
+
+                // Determine the parent depth node
+                $node = $depths[$parent][0];
+
+                // Iterate through each child
+                foreach($children as $child) {
+
+                    // Add each child to the depth map
+                    $depths[$child] = [[
+                        'chain' => $node['chain'],
+                        'depth' => $node['depth'] + 1
+                    ]];
+
+                }
+
+            }
+
+            // Update the list of remaining blocking issues
+            $blocks = array_except($blocks, array_keys($next));
+
+            // Update the next level
+            $level = array_collapse($next);
+
+        }
+
+        // Return the depth map
+        return $depths;
     }
 
     /**
