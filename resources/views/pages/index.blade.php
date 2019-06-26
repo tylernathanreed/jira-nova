@@ -117,15 +117,42 @@
 								{{ number_format($issue['time_estimate'] / 3600, 2) }}
 							</div>
 
-							<div class="swimlane-issue-field" data-field="links" style="min-width: 40px; max-width: 40px; text-align: center">
-								<div class="flex space-between">
-									<div class="link-block-red">1</div>
-									<div class="link-block-blue">1</div>
-								</div>
-								<div class="flex space-between">
-									<div class="link-block-green">1</div>
-									<div class="link-block-yellow">1</div>
-								</div>
+							<div class="swimlane-issue-field" data-field="links" style="min-width: 50px; max-width: 50px; text-align: center">
+								<?php $blocks = array_values($issue['blocks']); ?>
+
+								@if(!empty($blocks))
+									<div class="flex justify-center">
+										<div class="block chain-{{ $blocks[0]['chain'] }}">
+											{{ $blocks[0]['depth'] }}
+										</div>
+
+										@if(isset($blocks[1]) && isset($blocks[3]))
+											<div class="block chain-{{ $blocks[1]['chain'] }}">
+												{{ $blocks[1]['depth'] }}
+											</div>
+										@endif
+									</div>
+
+									@if(isset($blocks[2]))
+										<div class="flex justify-center">
+											@if(isset($blocks[1]) && !isset($blocks[3]))
+												<div class="block chain-{{ $blocks[1]['chain'] }}">
+													{{ $blocks[1]['depth'] }}
+												</div>
+											@elseif(isset($blocks[2]))
+												<div class="block chain-{{ $blocks[2]['chain'] }}">
+													{{ $blocks[2]['depth'] }}
+												</div>
+											@endif
+
+											@if(isset($blocks[3]))
+												<div class="block chain-{{ $blocks[3]['chain'] }}">
+													{{ $blocks[3]['depth'] }}
+												</div>
+											@endif
+										</div>
+									@endif
+								@endif
 							</div>
 						</div>
 					</li>
@@ -220,7 +247,10 @@
 			font-size: 12px;
 			font-weight: normal;
 			line-height: 1;
-			padding: 1px 5px;
+			padding-top: 1px;
+			padding-left: 5px;
+			padding-right: 5px;
+			padding-bottom: 2px;
 			margin-left: 3px;
 			margin-right: 3px;
 		}
@@ -229,7 +259,19 @@
 		.epic-label a:active,
 		.epic-label a:hover,
 		.epic-label a:focus {
+			color: inherit;
+		}
+
+		.ghx-label-4 {
 			color: #fff;
+			background-color: #2684ff;
+			border-color: #2684ff;
+		}
+
+		.ghx-label-6 {
+			color: #42526e;
+			background-color: #abf5d1;
+			border-color: #abf5d1;
 		}
 
 		.ghx-label-7 {
@@ -277,6 +319,10 @@
 			justify-content: space-between;
 		}
 
+		.justify-center {
+			justify-content: center;
+		}
+
 		.flex-1 {
 			flex: 1;
 		}
@@ -293,49 +339,47 @@
 			color: #ff0000;
 		}
 
-		.link-block-red {
+		.block {
 			width: 16px;
 			height: 16px;
 			margin: 1px;
 			font-size: 10px;
+			line-height: 12px;
 			font-weight: bold;
-
+			border: 1px solid black;
 			color: white;
-			background-color: #f55;
+			text-shadow:
+				 0px  0px 1px black,
+				 0px  1px 1px black,
+				 0px -1px 1px black,
+				 1px  0px 1px black,
+				 1px  1px 1px black,
+				 1px -1px 1px black,
+				-1px  0px 1px black,
+				-1px  1px 1px black,
+				-1px -1px 1px black;
+
+			background-color: white;
 		}
 
-		.link-block-blue {
-			width: 16px;
-			height: 16px;
-			margin: 1px;
-			font-size: 10px;
-			font-weight: bold;
-
-			color: white;
-			background-color: #0052cc;
-		}
-
-		.link-block-green {
-			width: 16px;
-			height: 16px;
-			margin: 1px;
-			font-size: 10px;
-			font-weight: bold;
-
-			color: white;
-			background-color: #064;
-		}
-
-		.link-block-yellow {
-			width: 16px;
-			height: 16px;
-			margin: 1px;
-			font-size: 10px;
-			font-weight: bold;
-
-			color: white;
-			background-color: #e8a800;
-		}
+		.chain-0 { background-color: black; }
+		.chain-1 { background-color: red; }
+		.chain-2 { background-color: steelblue; }
+		.chain-3 { background-color: green; }
+		.chain-4 { background-color: darkorange; }
+		.chain-5 { background-color: blueviolet; }
+		.chain-6 { background-color: lightseagreen; }
+		.chain-7 { background-color: hotpink; }
+		.chain-8 { background-color: yellow; }
+		.chain-9 { background-color: lime; }
+		.chain-10 { background-color: dimgray; }
+		.chain-11 { background-color: sienna; }
+		.chain-12 { background-color: olive; }
+		.chain-13 { background-color: darkslategray; }
+		.chain-14 { background-color: lightgray; }
+		.chain-15 { background-color: rosybrown; }
+		.chain-16 { background-color: darkseagreen; }
+		.chain-17 { background-color: tan; }
 
 		label {
 			margin: 0;

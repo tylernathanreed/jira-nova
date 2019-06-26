@@ -121,6 +121,7 @@ class Issue extends Model
                     'epic_name' => $issue->fields->{static::FIELD_EPIC_NAME} ?? null,
                     'epic_color' => $issue->fields->{static::FIELD_EPIC_COLOR} ?? null,
                     'links' => $issue->fields->{static::FIELD_LINKS} ?? [],
+                    'blocks' => [],
                     'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);
@@ -144,6 +145,9 @@ class Issue extends Model
 
         } while ($countResults == $count);
 
+        // Kep the issues by their jira key
+        $issues = array_combine(array_column($issues, 'key'), $issues);
+
         // Determine the epic keys
         $epics = array_values(array_unique(array_filter(array_column($issues, 'epic_key'))));
 
@@ -155,9 +159,6 @@ class Issue extends Model
                 'keys' => $epics,
                 'epics' => true
             ]);
-
-            // Key the epics by their jira key
-            $epics = array_combine(array_column($epics, 'key'), $epics);
 
             // Fill in the epic details for the non-epic issues
             $issues = array_map(function($issue) use ($epics) {
@@ -192,7 +193,10 @@ class Issue extends Model
             // Determine the block map from the jira issues
             $blocks = static::getBlockMapFromJiraIssues($issues);
 
-            dump(compact('blocks'));
+            // Assign the blocks to each issue
+            foreach($issues as $key => &$issue) {
+                $issue['blocks'] = $blocks[$key] ?? [];
+            }
 
         }
 
@@ -225,58 +229,60 @@ class Issue extends Model
         foreach($heads as $index => $head) {
 
             // Add each head as a chain
-            $depths[$head] = [[
+            $depths[$head][] = [
                 'chain' => $index,
                 'depth' => 1
-            ]];
+            ];
 
-        }
+            // Determine the blocking issues
+            $blocks = $relations['blocks'];
 
-        // Initialize the current level
-        $level = $heads;
+            // Initialize the current level
+            $level = [$head];
 
-        // Determine the blocking issues
-        $blocks = $relations['blocks'];
+            // Process the blocking issues until they're all gone
+            for($i = 0; count($blocks) > 0 && $i < 10; $i++) {
 
-        // Process the blocking issues until they're all gone
-        for($i = 0; count($blocks) > 0 && $i < 10; $i++) {
+                // Determine the next set of blocking issues to process
+                $next = array_only($blocks, $level);
 
-            // Determine the next set of blocking issues to process
-            $next = array_only($blocks, $level);
+                // If we've run out of issues to process, then there's some
+                // sort of cyclical chain of issues. We do not support a
+                // relationship like this, so we will bail out early.
 
-            // If we've run out of issues to process, then there's some
-            // sort of cyclical chain of issues. We do not support a
-            // relationship like this, so we will bail out early.
+                // Stop if there aren't any nodes to process
+                if(empty($next)) {
+                    break;
+                }
 
-            // Stop if there aren't any nodes to process
-            if(empty($next)) {
-                break;
-            }
+                // Iterate through each blocking set
+                foreach($next as $parent => $children) {
 
-            // Iterate through each blocking set
-            foreach($next as $parent => $children) {
+                    // Iterate through each child
+                    foreach($children as $child) {
 
-                // Determine the parent depth node
-                $node = $depths[$parent][0];
+                        // Make sure the child is not already in the chain
+                        if(isset($depths[$child]) && !is_null(array_first($depths[$child], function($link) use ($index) { return $link['chain'] == $index; }))) {
+                            continue;
+                        }
 
-                // Iterate through each child
-                foreach($children as $child) {
+                        // Add each child to the depth map
+                        $depths[$child][] = [
+                            'chain' => $index,
+                            'depth' => $i + 2
+                        ];
 
-                    // Add each child to the depth map
-                    $depths[$child] = [[
-                        'chain' => $node['chain'],
-                        'depth' => $node['depth'] + 1
-                    ]];
+                    }
 
                 }
 
+                // Update the list of remaining blocking issues
+                $blocks = array_except($blocks, array_keys($next));
+
+                // Update the next level
+                $level = array_collapse($next);
+
             }
-
-            // Update the list of remaining blocking issues
-            $blocks = array_except($blocks, array_keys($next));
-
-            // Update the next level
-            $level = array_collapse($next);
 
         }
 
