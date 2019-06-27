@@ -7,9 +7,9 @@
 			<div class="swimline-header">
 			</div>
 
-			<ul class="swimlane-content ui-sortable">
+			<draggable class="swimlane-content ui-sortable">
 				@foreach($issues as $issue)
-					<li class="swimlane-issue-wrapper">
+					<div class="swimlane-issue-wrapper">
 						<div class="swimlane-issue" data-issue="{{ $issue['key'] }}">
 							<div class="swimlane-issue-field" data-field="type">
 								<img class="icon" src="{{ $issue['type_icon_url'] }}"/>
@@ -155,9 +155,9 @@
 								@endif
 							</div>
 						</div>
-					</li>
+					</div>
 				@endforeach
-			</ul>
+			</draggable>
 		</div>
 	</div>
 
