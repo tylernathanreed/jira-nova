@@ -7,155 +7,9 @@
 			<div class="swimline-header">
 			</div>
 
-			<draggable class="swimlane-content ui-sortable">
+			<draggable class="swimlane-content ui-sortable" ghost-class="ghost">
 				@foreach($issues as $issue)
-					<div class="swimlane-issue-wrapper">
-						<div class="swimlane-issue" data-issue="{{ $issue['key'] }}">
-							<div class="swimlane-issue-field" data-field="type">
-								<img class="icon" src="{{ $issue['type_icon_url'] }}"/>
-							</div>
-
-							<div class="swimlane-issue-field" data-field="priority">
-								<img class="icon" src="{{ $issue['priority_icon_url'] }}"/>
-							</div>
-
-							<div class="swimlane-issue-field-group text-center" style="min-width: 80px; max-width: 80px">
-								<div class="swimlane-issue-field text-center" data-field="key">
-									<a href="{{ $issue['url'] }}" target="_blank">{{ $issue['key'] }}</a>
-								</div>
-
-								@if(isset($issue['epic_key']))
-									<div class="swimlane-issue-field text-center epic-label {{ $issue['epic_color'] }}" data-field="epic">
-										<a href="{{ $issue['epic_url'] }}" target="_blank">{{ $issue['epic_name'] }}</a>
-									</div>
-								@endif
-							</div>
-
-							<div class="swimlane-issue-field" data-field="summary" style="flex: 1; color: #777">
-								{{ $issue['summary'] }}
-							</div>
-
-							<div class="swimlane-issue-field issue-status-{{ $issue['status_color'] }}" data-field="status" style="min-width: 90px; text-align: center">
-								{{ $issue['status'] }}
-							</div>
-
-							<div class="swimlane-issue-field" data-field="issue-category" style="min-width: 60px; text-align: center">
-								{{ $issue['issue_category'] }}
-							</div>
-
-							<div class="swimlane-issue-field-group">
-								<div class="swimlane-issue-field" data-field="reporter">
-									<div class="flex items-center">
-										<label>R</label>
-										<div class="flex-1 px-1">
-											@if(!is_null($src = $issue['reporter_icon_url']))
-												<img src="{{ $src }}" class="icon rounded-full" />
-											@else
-												<span class="text-gray">?</span>
-											@endif
-										</div>
-									</div>
-								</div>
-
-								<div class="swimlane-issue-field" data-field="assignee">
-									<div class="flex items-center">
-										<label>A</label>
-										<div class="flex-1 px-1">
-											@if(!is_null($src = $issue['assignee_icon_url']))
-												<img src="{{ $src }}" class="icon rounded-full" />
-											@else
-												<span class="text-gray">?</span>
-											@endif
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="swimlane-issue-field-group">
-								<div class="swimlane-issue-field" data-field="due-date" style="min-width: 90px; text-align: center">
-									<div class="flex items-center">
-										<label>D</label>
-										<div class="flex-1">
-											@if(!is_null($due = $issue['due_date']))
-												{{ \Carbon\Carbon::parse($due)->format('n/d/Y') }}
-											@else
-												<span class="text-gray">TBD</span>
-											@endif
-										</div>
-									</div>
-								</div>
-
-								<div class="swimlane-issue-field" data-field="estimated-completion-date" style="min-width: 90px; text-align: center">
-									<div class="flex items-center">
-										<label>E</label>
-										<div class="flex-1">
-											@if(!is_null($est = $issue['old_estimated_completion_date']))
-												{{ \Carbon\Carbon::parse($est)->format('n/d/Y') }}
-											@else
-												<span class="text-gray">TBD</span>
-											@endif
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="swimlane-issue-field" data-field="estimated-offset" style="min-width: 32px; max-width: 32px; text-align: center">
-								@if(is_null($due) || is_null($est) || $due == $est)
-									<span>&mdash;</span>
-								@else
-									<?php $offset = \Carbon\Carbon::parse($est)->diffInDays($due, false); ?>
-
-									@if($offset > 0)
-										<span class="text-green">(+{{ $offset > 99 ? '++' : $offset }})</span>
-									@else
-										<span class="text-red">(-{{ $offset < -99 ? '--' : abs($offset) }})</span>
-									@endif
-								@endif
-							</div>
-
-							<div class="swimlane-issue-field" data-field="time-estimate" style="min-width: 40px; text-align: right">
-								{{ number_format($issue['time_estimate'] / 3600, 2) }}
-							</div>
-
-							<div class="swimlane-issue-field" data-field="links" style="min-width: 50px; max-width: 50px; text-align: center">
-								<?php $blocks = array_values($issue['blocks']); ?>
-
-								@if(!empty($blocks))
-									<div class="flex justify-center">
-										<div class="block chain-{{ $blocks[0]['chain'] }}">
-											{{ $blocks[0]['depth'] }}
-										</div>
-
-										@if(isset($blocks[1]) && isset($blocks[3]))
-											<div class="block chain-{{ $blocks[1]['chain'] }}">
-												{{ $blocks[1]['depth'] }}
-											</div>
-										@endif
-									</div>
-
-									@if(isset($blocks[2]))
-										<div class="flex justify-center">
-											@if(isset($blocks[1]) && !isset($blocks[3]))
-												<div class="block chain-{{ $blocks[1]['chain'] }}">
-													{{ $blocks[1]['depth'] }}
-												</div>
-											@elseif(isset($blocks[2]))
-												<div class="block chain-{{ $blocks[2]['chain'] }}">
-													{{ $blocks[2]['depth'] }}
-												</div>
-											@endif
-
-											@if(isset($blocks[3]))
-												<div class="block chain-{{ $blocks[3]['chain'] }}">
-													{{ $blocks[3]['depth'] }}
-												</div>
-											@endif
-										</div>
-									@endif
-								@endif
-							</div>
-						</div>
-					</div>
+					<swimlane-issue :issue='{{ json_encode($issue) }}'/>
 				@endforeach
 			</draggable>
 		</div>
@@ -195,22 +49,33 @@
 			user-select: none;
 		}
 
+		.swimlane-issue-wrapper:hover {
+			background-color: #f8f8ff;
+		}
+
 		.swimlane-issue {
 			display: flex;
 			align-items: center;
 			margin: 0 -3px;
 			width: 100%;
+			transition: transform 0.5s;
 		}
 
 		.swimlane-issue-field {
 			padding: 0 3px;
 		}
 
-		.swimlane-placeholder {
+		.swimlane-placeholder, .ghost {
 			height: 2rem;
-			border: 1px dashed #ccc;
+			border: 1px dashed #aaa;
 			border-radius: 3px;
 			background-color: rgba(0, 0, 0, 0.05);
+			opacity: 1;
+			z-index: 50;
+		}
+
+		.sortable-drag {
+		   opacity: 0;
 		}
 
 		.issue-status-blue-gray {
