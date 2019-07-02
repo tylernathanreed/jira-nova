@@ -22,6 +22,8 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('swimlane-issue', require('./components/SwimlaneIssue.vue').default);
+Vue.component('swimlane', require('./components/Swimlane.vue').default);
+Vue.component('draggable', draggable);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,8 +32,5 @@ Vue.component('swimlane-issue', require('./components/SwimlaneIssue.vue').defaul
  */
 
 const app = new Vue({
-    el: '#app',
-    components: {
-    	draggable
-    }
+    el: '#app'
 });

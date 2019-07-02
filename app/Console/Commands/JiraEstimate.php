@@ -365,9 +365,7 @@ class JiraEstimate extends Command
 
                 // If we have exceeded the daily limit, advance to the next day
                 if($allocated + $allocatable > $limit) {
-
                     $date = $date->addDay()->startOfDay();
-
                 }
 
                 // Skip dates that have no allocatable time
