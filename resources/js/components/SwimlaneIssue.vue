@@ -60,7 +60,7 @@
                         <div class="flex-1">
                             <span
                                 :class="due ? '' : 'text-gray'"
-                                v-text="due ? date(due).toLocaleDateString() : 'TBD'"
+                                v-text="due ? moment(due).toDate().toLocaleDateString() : 'TBD'"
                             />
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         <div class="flex-1">
                             <span
                                 :class="est ? '' : 'text-gray'"
-                                v-text="est ? date(est).toLocaleDateString() : 'TBD'"
+                                v-text="est ? moment(est).toDate().toLocaleDateString() : 'TBD'"
                             />
                         </div>
                     </div>
@@ -135,22 +135,7 @@
 
         methods: {
 
-            /**
-             * Converts the specified date string into a date object.
-             *
-             * @param  {string}  str
-             *
-             * @return {Date}
-             */
-            date: function(str) {
-
-                // Determine the date parts
-                let parts = str.split('-');
-
-                // Return the new date
-                return new Date(parts[0], parts[1], parts[2]);
-
-            }
+            moment: window.moment
 
         },
 
@@ -166,17 +151,14 @@
 
             offset: function() {
 
-                let a = this.date(this.due);
-                let b = this.date(this.est);
-
-                if(!a || !b) {
+                if(!this.due || !this.est) {
                     return null;
                 }
 
-                let utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-                let utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+                let a = moment(this.due);
+                let b = moment(this.est);
 
-                return Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24));
+                return a.diff(b, 'days', 0);
 
             },
 

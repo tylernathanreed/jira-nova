@@ -28,13 +28,13 @@
             return {
                 dragging: false,
                 schedule: {
-                    0: {'dev': 0,             'ticket': 0,             'other' : 0},
-                    1: {'dev': 4.5 * 60 * 60, 'ticket': 0,             'other' : 3.5 * 60 * 60 * 0.5},
-                    2: {'dev': 0,             'ticket': 5 * 60 * 60,   'other' : 3 * 60 * 60 * 0.5},
-                    3: {'dev': 5 * 60 * 60,   'ticket': 0,             'other' : 3 * 60 * 60 * 0.5},
-                    4: {'dev': 0,             'ticket': 4.5 * 60 * 60, 'other' : 3.5 * 60 * 60 * 0.5},
-                    5: {'dev': 5 * 60 * 60,   'ticket': 0,             'other' : 3 * 60 * 60 * 0.5},
-                    6: {'dev': 0,             'ticket': 0,             'other' : 0}
+                    0: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 0},
+                    1: {[Constants.FOCUS_DEV]: 4.5 * 60 * 60, [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 3.5 * 60 * 60 * 0.5},
+                    2: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 5 * 60 * 60,   [Constants.FOCUS_OTHER]: 3 * 60 * 60 * 0.5},
+                    3: {[Constants.FOCUS_DEV]: 5 * 60 * 60,   [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 3 * 60 * 60 * 0.5},
+                    4: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 4.5 * 60 * 60, [Constants.FOCUS_OTHER]: 3.5 * 60 * 60 * 0.5},
+                    5: {[Constants.FOCUS_DEV]: 5 * 60 * 60,   [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 3 * 60 * 60 * 0.5},
+                    6: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 0}
 
                 }
             };
@@ -151,7 +151,9 @@
 
                         // If we have exceeded the daily limit, advance to the next day
                         if(allocated + allocatable > limit) {
+
                             date = date.add(1, 'day').startOf('day');
+
                         }
 
                         // Skip dates that have no allocatable time
@@ -161,17 +163,10 @@
 
                         // Update the focus date
                         dates[focus] = date;
-
                     }
 
                     // Assign the estimated completion date
                     issue['new_estimated_completion_date'] = date.format('YYYY-MM-DD');
-
-                    console.log({
-                        [Constants.FOCUS_DEV]: dates[Constants.FOCUS_DEV].format('YYYY-MM-DD'),
-                        [Constants.FOCUS_TICKET]: dates[Constants.FOCUS_TICKET].format('YYYY-MM-DD'),
-                        [Constants.FOCUS_OTHER]: dates[Constants.FOCUS_OTHER].format('YYYY-MM-DD')
-                    });
 
                 }
 

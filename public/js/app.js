@@ -1786,44 +1786,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['issues'],
   data: function data() {
+    var _2, _3, _4, _5, _6, _7, _8;
+
     return {
       dragging: false,
       schedule: {
-        0: {
-          'dev': 0,
-          'ticket': 0,
-          'other': 0
-        },
-        1: {
-          'dev': 4.5 * 60 * 60,
-          'ticket': 0,
-          'other': 3.5 * 60 * 60 * 0.5
-        },
-        2: {
-          'dev': 0,
-          'ticket': 5 * 60 * 60,
-          'other': 3 * 60 * 60 * 0.5
-        },
-        3: {
-          'dev': 5 * 60 * 60,
-          'ticket': 0,
-          'other': 3 * 60 * 60 * 0.5
-        },
-        4: {
-          'dev': 0,
-          'ticket': 4.5 * 60 * 60,
-          'other': 3.5 * 60 * 60 * 0.5
-        },
-        5: {
-          'dev': 5 * 60 * 60,
-          'ticket': 0,
-          'other': 3 * 60 * 60 * 0.5
-        },
-        6: {
-          'dev': 0,
-          'ticket': 0,
-          'other': 0
-        }
+        0: (_2 = {}, _defineProperty(_2, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, 0), _defineProperty(_2, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, 0), _defineProperty(_2, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, 0), _2),
+        1: (_3 = {}, _defineProperty(_3, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, 4.5 * 60 * 60), _defineProperty(_3, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, 0), _defineProperty(_3, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _3),
+        2: (_4 = {}, _defineProperty(_4, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, 0), _defineProperty(_4, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, 5 * 60 * 60), _defineProperty(_4, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _4),
+        3: (_5 = {}, _defineProperty(_5, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_5, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, 0), _defineProperty(_5, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _5),
+        4: (_6 = {}, _defineProperty(_6, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, 0), _defineProperty(_6, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, 4.5 * 60 * 60), _defineProperty(_6, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _6),
+        5: (_7 = {}, _defineProperty(_7, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_7, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, 0), _defineProperty(_7, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _7),
+        6: (_8 = {}, _defineProperty(_8, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, 0), _defineProperty(_8, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, 0), _defineProperty(_8, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, 0), _8)
       }
     };
   },
@@ -1856,8 +1830,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var dates = (_dates = {}, _defineProperty(_dates, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, this.getFirstAssignmentDate(_support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV)), _defineProperty(_dates, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, this.getFirstAssignmentDate(_support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET)), _defineProperty(_dates, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, this.getFirstAssignmentDate(_support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER)), _dates); // Iterate through each issue
 
       var _loop = function _loop(i) {
-        var _console$log;
-
         // Determine the current issue
         var issue = _this.issues[i]; // Determine the issue focus
 
@@ -1929,7 +1901,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
         issue['new_estimated_completion_date'] = date.format('YYYY-MM-DD');
-        console.log((_console$log = {}, _defineProperty(_console$log, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV, dates[_support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_DEV].format('YYYY-MM-DD')), _defineProperty(_console$log, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET, dates[_support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_TICKET].format('YYYY-MM-DD')), _defineProperty(_console$log, _support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER, dates[_support_constants_js__WEBPACK_IMPORTED_MODULE_0__["default"].FOCUS_OTHER].format('YYYY-MM-DD')), _console$log));
       };
 
       for (var i = 0; i < this.issues.length; i++) {
@@ -2134,19 +2105,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['issue'],
   methods: {
-    /**
-     * Converts the specified date string into a date object.
-     *
-     * @param  {string}  str
-     *
-     * @return {Date}
-     */
-    date: function date(str) {
-      // Determine the date parts
-      var parts = str.split('-'); // Return the new date
-
-      return new Date(parts[0], parts[1], parts[2]);
-    }
+    moment: window.moment
   },
   computed: {
     due: function due() {
@@ -2156,16 +2115,13 @@ __webpack_require__.r(__webpack_exports__);
       return this.issue.new_estimated_completion_date || this.issue.old_estimated_completion_date;
     },
     offset: function offset() {
-      var a = this.date(this.due);
-      var b = this.date(this.est);
-
-      if (!a || !b) {
+      if (!this.due || !this.est) {
         return null;
       }
 
-      var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-      var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-      return Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24));
+      var a = moment(this.due);
+      var b = moment(this.est);
+      return a.diff(b, 'days', 0);
     },
     blocks: function blocks() {
       return this.issue.blocks;
@@ -58207,7 +58163,12 @@ var render = function() {
                     class: _vm.due ? "" : "text-gray",
                     domProps: {
                       textContent: _vm._s(
-                        _vm.due ? _vm.date(_vm.due).toLocaleDateString() : "TBD"
+                        _vm.due
+                          ? _vm
+                              .moment(_vm.due)
+                              .toDate()
+                              .toLocaleDateString()
+                          : "TBD"
                       )
                     }
                   })
@@ -58232,7 +58193,12 @@ var render = function() {
                     class: _vm.est ? "" : "text-gray",
                     domProps: {
                       textContent: _vm._s(
-                        _vm.est ? _vm.date(_vm.est).toLocaleDateString() : "TBD"
+                        _vm.est
+                          ? _vm
+                              .moment(_vm.est)
+                              .toDate()
+                              .toLocaleDateString()
+                          : "TBD"
                       )
                     }
                   })
@@ -73915,15 +73881,14 @@ if (token) {
 /*!**********************************************!*\
   !*** ./resources/js/components/Swimlane.vue ***!
   \**********************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Swimlane_vue_vue_type_template_id_8f944842___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Swimlane.vue?vue&type=template&id=8f944842& */ "./resources/js/components/Swimlane.vue?vue&type=template&id=8f944842&");
 /* harmony import */ var _Swimlane_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Swimlane.vue?vue&type=script&lang=js& */ "./resources/js/components/Swimlane.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Swimlane_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Swimlane_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _Swimlane_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Swimlane.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/Swimlane.vue?vue&type=style&index=0&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _Swimlane_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Swimlane.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/Swimlane.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -73955,7 +73920,7 @@ component.options.__file = "resources/js/components/Swimlane.vue"
 /*!***********************************************************************!*\
   !*** ./resources/js/components/Swimlane.vue?vue&type=script&lang=js& ***!
   \***********************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
