@@ -1,5 +1,5 @@
 <template>
-    <div class="swimlane-issue-wrapper">
+    <div class="swimlane-issue-wrapper" :class="{'delinquent': offset < -7}">
         <div class="swimlane-issue" :data-issue="issue.key">
             <div class="swimlane-issue-field" data-field="type">
                 <img class="icon" :src="issue.type_icon_url"/>
@@ -191,8 +191,17 @@
         user-select: none;
     }
 
+    .swimlane-issue-wrapper.delinquent {
+        border-color: #dbb;
+        background: #fee;
+    }
+
     .swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {
         background-color: #f8f8ff;
+    }
+
+    .swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {
+        background-color: #fff2f2;
     }
 
     .swimlane-issue {
@@ -284,6 +293,12 @@
         color: #42526e;
         background-color: #79e2f2;
         border-color: #79e2f2;
+    }
+
+    .ghx-label-12 {
+        color: #fff;
+        background-color: #7a869a;
+        border-color: #7a869a;
     }
 
     .ghx-label-14 {
