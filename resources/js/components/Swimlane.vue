@@ -9,7 +9,7 @@
             @end="onDragEnd"
             :component-data="getComponentData()"
         >
-            <swimlane-issue v-for="issue in issues" :issue="issue" :key="issue.key"/>
+            <swimlane-issue v-for="issue in issues" :issue-key="issue.key" :key="issue.key"/>
         </draggable>
     </div>
 </template>
@@ -26,6 +26,7 @@
         data: function() {
 
             return {
+                updatedIssues: this.issues,
                 dragging: false,
                 schedule: {
                     0: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 0},
@@ -44,15 +45,32 @@
         methods: {
 
             onDragStart: function() {
+
                 this.dragging = true;
+
+                this.updateIssues();
+
             },
 
             onDragEnd: function() {
+
                 this.dragging = false;
+
+                this.updateIssues();
+
             },
 
+
             onDragChange: function() {
-                this.issues = this.assignEstimatedCompletionDates(this.issues);
+                this.updateIssues();
+            },
+
+            getIssue: function(key) {
+                return _.find(this.updatedIssues, {'key': key});
+            },
+
+            updateIssues: function() {
+                this.updatedIssues = this.assignEstimatedCompletionDates(this.issues);
             },
 
             /**
@@ -75,11 +93,11 @@
                     [Constants.FOCUS_OTHER]: this.getFirstAssignmentDate(Constants.FOCUS_OTHER)
                 };
 
-                // Iterate through each issue
-                for(let i = 0; i < this.issues.length; i++) {
+                // Determine the schedule
+                let schedule = this.schedule;
 
-                    // Determine the current issue
-                    let issue = this.issues[i];
+                // Remap the issues
+                return issues.map(function(issue) {
 
                     // Determine the issue focus
                     let focuses = issue['priority'] == Constants.PRIORITY_HIGHEST
@@ -120,7 +138,7 @@
                         let allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
 
                         // Determine the daily focus limit
-                        let limit = this.schedule[date.weekday()][focus];
+                        let limit = schedule[date.weekday()][focus];
 
                         // If the previous issue ended cleanly on the exact amount of allocatable
                         // time, we wanted it to end on that date. However, we have to advance
@@ -157,7 +175,7 @@
                         }
 
                         // Skip dates that have no allocatable time
-                        while(this.schedule[date.weekday()][focus] <= 0) {
+                        while(schedule[date.weekday()][focus] <= 0) {
                             date = date.add(1, 'day');
                         }
 
@@ -168,10 +186,10 @@
                     // Assign the estimated completion date
                     issue['new_estimated_completion_date'] = date.format('YYYY-MM-DD');
 
-                }
+                    // Return the issue
+                    return issue;
 
-                // Return the issues
-                return issues;
+                });
 
             },
 
@@ -234,12 +252,6 @@
                 }
 
             }
-
-        },
-
-        computed: {
-
-
 
         }
 
