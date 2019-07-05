@@ -1,5 +1,5 @@
 <template>
-    <div class="swimlane-issue-wrapper">
+    <div class="swimlane-issue-wrapper" :class="{'delinquent': offset <= -7}">
         <div class="swimlane-issue" :data-issue="issue.key">
             <div class="swimlane-issue-field" data-field="type">
                 <img class="icon" :src="issue.type_icon_url"/>
@@ -195,8 +195,17 @@
         user-select: none;
     }
 
+    .swimlane-issue-wrapper.delinquent {
+        background: #fee;
+        border-color: #daa;
+    }
+
     .swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {
         background-color: #f8f8ff;
+    }
+
+    .swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {
+        background-color: #fff4f4;
     }
 
     .swimlane-issue {

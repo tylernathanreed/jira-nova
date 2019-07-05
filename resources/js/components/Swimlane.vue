@@ -45,32 +45,23 @@
         methods: {
 
             onDragStart: function() {
-
                 this.dragging = true;
-
-                this.updateIssues();
-
             },
 
             onDragEnd: function() {
 
                 this.dragging = false;
 
-                this.updateIssues();
+                this.updatedIssues = this.assignEstimatedCompletionDates(this.issues);
 
             },
 
-
-            onDragChange: function() {
-                this.updateIssues();
+            onDragChange: function(e) {
+                //
             },
 
             getIssue: function(key) {
                 return _.find(this.updatedIssues, {'key': key});
-            },
-
-            updateIssues: function() {
-                this.updatedIssues = this.assignEstimatedCompletionDates(this.issues);
             },
 
             /**
