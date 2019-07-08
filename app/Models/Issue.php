@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Jira;
+use App\Support\Jira\RankingOperation;
 use JiraRestApi\Issue\Issue as JiraIssue;
 
 class Issue extends Model
@@ -572,6 +573,19 @@ class Issue extends Model
             return $this;
 
         });
+    }
+
+    /**
+     * Performs the ranking operations to sort the old list into the new list.
+     *
+     * @param  array  $oldOrder
+     * @param  array  $newOrder
+     *
+     * @return void
+     */
+    public static function updateOrderByRank($oldOrder, $newOrder)
+    {
+        RankingOperation::execute($oldOrder, $newOrder);
     }
 
     /**

@@ -9,7 +9,7 @@
             @end="onDragEnd"
             :component-data="getComponentData()"
         >
-            <swimlane-issue v-for="issue in issues" :issue-key="issue.key" :key="issue.key"/>
+            <swimlane-issue v-for="(issue, index) in issues" :issue-key="issue.key" :key="issue.key" :index="index"/>
         </draggable>
     </div>
 </template>

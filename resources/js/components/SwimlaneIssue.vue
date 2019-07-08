@@ -1,5 +1,11 @@
 <template>
     <div class="swimlane-issue-wrapper" :class="{'delinquent': offset <= -7}">
+
+        <input type="hidden" :name="`issues[${index}][key]`" :value="issue.key"/>
+        <input type="hidden" :name="`issues[${index}][index]`" :value="index"/>
+        <input type="hidden" :name="`issues[${index}][order]`" :value="order"/>
+        <input type="hidden" :name="`issues[${index}][est]`" :value="est"/>
+
         <div class="swimlane-issue" :data-issue="issue.key">
             <div class="swimlane-issue-field" data-field="type">
                 <img class="icon" :src="issue.type_icon_url"/>
@@ -130,8 +136,17 @@
     export default {
 
         props: [
-            'issueKey'
+            'issueKey',
+            'index'
         ],
+
+        data: function() {
+
+            return {
+                'order': this.index
+            }
+
+        },
 
         methods: {
 

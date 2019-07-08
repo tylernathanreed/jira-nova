@@ -2100,8 +2100,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['issueKey'],
+  props: ['issueKey', 'index'],
+  data: function data() {
+    return {
+      'order': this.index
+    };
+  },
   methods: {
     moment: window.moment
   },
@@ -57958,10 +57969,10 @@ var render = function() {
           },
           on: { start: _vm.onDragStart, end: _vm.onDragEnd }
         },
-        _vm._l(_vm.issues, function(issue) {
+        _vm._l(_vm.issues, function(issue, index) {
           return _c("swimlane-issue", {
             key: issue.key,
-            attrs: { "issue-key": issue.key }
+            attrs: { "issue-key": issue.key, index: index }
           })
         }),
         1
@@ -57999,6 +58010,26 @@ var render = function() {
       class: { delinquent: _vm.offset <= -7 }
     },
     [
+      _c("input", {
+        attrs: { type: "hidden", name: "issues[" + _vm.index + "][key]" },
+        domProps: { value: _vm.issue.key }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { type: "hidden", name: "issues[" + _vm.index + "][index]" },
+        domProps: { value: _vm.index }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { type: "hidden", name: "issues[" + _vm.index + "][order]" },
+        domProps: { value: _vm.order }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { type: "hidden", name: "issues[" + _vm.index + "][est]" },
+        domProps: { value: _vm.est }
+      }),
+      _vm._v(" "),
       _c(
         "div",
         {
@@ -74138,8 +74169,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! S:\Docroot\personal\jira-nova\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! S:\Docroot\personal\jira-nova\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\Program Files (x86)\Wamp\3.1.7\www\projects\jira-nova\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\Program Files (x86)\Wamp\3.1.7\www\projects\jira-nova\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

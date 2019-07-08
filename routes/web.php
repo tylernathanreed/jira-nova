@@ -12,8 +12,13 @@
 */
 
 Route::get('/', [
-	'as' => 'pages.index',
-	'uses' => 'PagesController@index'
+	'as' => 'issues.index',
+	'uses' => 'IssuesController@index'
+]);
+
+Route::post('/', [
+	'as' => 'issues.submit',
+	'uses' => 'IssuesController@submit'
 ]);
 
 Auth::routes();
