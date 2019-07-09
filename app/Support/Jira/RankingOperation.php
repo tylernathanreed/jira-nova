@@ -67,16 +67,96 @@ class RankingOperation
         // Iterate through the old order
         foreach($oldOrder as $key => $issue) {
 
-            // If the current group doesn't have a head, give it one
+            // Check if the current group doesn't have a head
             if(!isset($group['head'])) {
-                $group['head'] = $key;
+
+                // Initialize the group with a single issue
+                $group['head'] = $issue;
+                $group['issues'] = [$key];
+                $group['tail'] = $issue;
+
+                // Skip to the next issue
+                continue;
+
             }
 
-            // 
+            // Determine the tail issue
+            $tail = $group['tail'];
+
+            // If the next issue links to the tail, then expand the group
+            if($newOrder[$tail['key']]['after'] == $key) {
+
+                // Add the issue to the group and move the tail
+                $group['issues'][] = $key;
+                $group['tail'] = $issue;
+
+            }
+
+            // Otherwise, we need to start a new group
+            else {
+
+                // Add the group to the list of groups
+                $groups[] = $group;
+
+                // Initialize the next group
+                $group = [
+                    'head' => $issue,
+                    'issues' => [$key],
+                    'tail' => $issue
+                ];
+
+            }
 
         }
 
-        dd(compact('oldOrder', 'newOrder'));
+        // Add the final group to the list of groups
+        $groups[] = $group;
+
+        // If an issue is moved out of a group, since we only tracked
+        // one group at a time, the group would technically be split
+        // in two. We should find connecting groups and link them.
+
+        // Link connecting groups
+        $groups = array_reduce($groups, function($groups, $group) {
+
+            // If we don't have any groups yet, add one
+            if(empty($groups)) {
+                return [$group];
+            }
+
+            // Determine the last group
+            $last = array_pop($groups);
+
+            // Check if the next group should be linked
+            if($last['tail']['after'] == $group['head']['key']) {
+
+                // Merge the two groups
+                $group = [
+                    'head' => $last['head'],
+                    'issues' => array_merge($last['issues'], $group['issues']),
+                    'tail' => $group['tail']
+                ];
+
+                // Add the merged group in
+                $groups[] = $group;
+
+            }
+
+            // Otherwise, the next group should be separate
+            else {
+
+                // Add both groups separately
+                $groups[] = $last;
+                $groups[] = $group;
+
+            }
+
+            // Return the list of groups
+            return $groups;
+
+        }, []);
+
+        dd(compact('groups', 'oldOrder', 'newOrder'));
 
         // Return the groups
         return $groups;
