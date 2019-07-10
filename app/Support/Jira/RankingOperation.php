@@ -45,6 +45,18 @@ class RankingOperation
     }
 
     /**
+     * Creates and returns the ranking operations to sort the specified groups.
+     *
+     * @param  array  $groups
+     *
+     * @return array
+     */
+    public static function calculateForGroups($groups)
+    {
+        dd(compact('groups'));
+    }
+
+    /**
      * Returns the ranking groups that need to be sorted based on the specified old and new order.
      *
      * @param  array  $oldOrder
@@ -67,13 +79,16 @@ class RankingOperation
         // Iterate through the old order
         foreach($oldOrder as $key => $issue) {
 
+            // Determine the new issue
+            $newIssue = $newOrder[$issue['key']];
+
             // Check if the current group doesn't have a head
             if(!isset($group['head'])) {
 
                 // Initialize the group with a single issue
-                $group['head'] = $issue;
+                $group['head'] = $newIssue;
                 $group['issues'] = [$key];
-                $group['tail'] = $issue;
+                $group['tail'] = $newIssue;
 
                 // Skip to the next issue
                 continue;
@@ -88,7 +103,7 @@ class RankingOperation
 
                 // Add the issue to the group and move the tail
                 $group['issues'][] = $key;
-                $group['tail'] = $issue;
+                $group['tail'] = $newIssue;
 
             }
 
@@ -100,9 +115,9 @@ class RankingOperation
 
                 // Initialize the next group
                 $group = [
-                    'head' => $issue,
+                    'head' => $newIssue,
                     'issues' => [$key],
-                    'tail' => $issue
+                    'tail' => $newIssue
                 ];
 
             }
@@ -156,7 +171,26 @@ class RankingOperation
 
         }, []);
 
-        dd(compact('groups', 'oldOrder', 'newOrder'));
+        // Determine the group order based on the head index
+        $ordered = collect($groups)->sortBy('head.index')->values()->all();
+
+        // Assign the intended order to each group
+        foreach($ordered as $index => $order) {
+
+            // Iterate through each group
+            foreach($groups as &$group) {
+
+                // Make sure the head matches
+                if($group['head']['key'] != $order['head']['key']) {
+                    continue;
+                }
+
+                // Assign the group order
+                $group['order'] = $index;
+
+            }
+
+        }
 
         // Return the groups
         return $groups;
@@ -188,6 +222,9 @@ class RankingOperation
             $issue['after'] = isset($issues[$index + 1])
                 ? $issues[$index + 1]['key']
                 : null;
+
+            // Add the "index" entry
+            $issue['index'] = $index;
 
         }
 

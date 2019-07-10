@@ -7,6 +7,11 @@
         <input type="hidden" :name="`issues[${index}][est]`" :value="est"/>
 
         <div class="swimlane-issue" :data-issue="issue.key">
+            <div class="swimlane-issue-field">
+                <div>{{ index }}</div>
+                <div>{{ order }}</div>
+            </div>
+
             <div class="swimlane-issue-field" data-field="type">
                 <img class="icon" :src="issue.type_icon_url"/>
             </div>

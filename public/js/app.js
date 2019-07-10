@@ -2106,6 +2106,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['issueKey', 'index'],
   data: function data() {
@@ -58037,6 +58042,12 @@ var render = function() {
           attrs: { "data-issue": _vm.issue.key }
         },
         [
+          _c("div", { staticClass: "swimlane-issue-field" }, [
+            _c("div", [_vm._v(_vm._s(_vm.index))]),
+            _vm._v(" "),
+            _c("div", [_vm._v(_vm._s(_vm.order))])
+          ]),
+          _vm._v(" "),
           _c(
             "div",
             {

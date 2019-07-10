@@ -40,8 +40,8 @@ class IssuesController extends Controller
         $issues = collect($request->issues);
 
         // Determine the old and new orders
-        $oldOrder = $issues->sortBy('index')->pluck('key')->toArray();
-        $newOrder = $issues->sortBy('order')->pluck('key')->toArray();
+        $oldOrder = $issues->sortBy('order')->pluck('key')->toArray();
+        $newOrder = $issues->sortBy('index')->pluck('key')->toArray();
 
         // Perform the ranking operations to sort the old list into the new list
         Issue::updateOrderByRank($oldOrder, $newOrder);
