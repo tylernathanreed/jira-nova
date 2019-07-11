@@ -4,6 +4,96 @@ namespace App\Support\Jira;
 
 class RankingOperation
 {
+    /////////////////
+    //* Constants *//
+    /////////////////
+    /**
+     * The maximum group size that is allowed to be moved.
+     *
+     * @var integer
+     */
+    const MAXIMUM_OPERATION_SIZE = 50;
+
+    /**
+     * The relative relation constants.
+     *
+     * @var string
+     */
+    const RELATION_BEFORE = 'before';
+    const RELATION_AFTER = 'after';
+
+    //////////////////
+    //* Attributes *//
+    //////////////////
+    /**
+     * The current state of the issue groups.
+     *
+     * @var array
+     */
+    public $groups;
+
+    /**
+     * The group index being moved.
+     *
+     * @var integer
+     */
+    public $moveIndex;
+
+    /**
+     * The direction in relation to the adjacent index the group is being moved.
+     *
+     * @var string
+     */
+    public $relation;
+
+    /**
+     * The adjacent index the group is being moved next to.
+     *
+     * @var integer|null
+     */
+    public $adjacentIndex;
+
+    //////////////////
+    //* Constuctor *//
+    //////////////////
+    /**
+     * Creates and returns a new ranking operation.
+     *
+     * @param  array         $groups
+     * @param  integer       $moveIndex
+     * @param  string        $relation
+     * @param  integer|null  $adjacentIndex
+     *
+     * @return $this
+     */
+    public function __construct($groups, $moveIndex, $relation, $adjacentIndex)
+    {
+        $this->groups = $groups;
+        $this->moveIndex = $moveIndex;
+        $this->relation = $relation;
+        $this->adjacentIndex = $adjacentIndex;
+    }
+
+    /////////////////
+    //* Accessors *//
+    /////////////////
+    /**
+     * Returns the unique identifier for this move.
+     *
+     * @return string
+     */
+    public function getKey()
+    {
+        return static::getGroupArrangementIdentifier($this->groups) . ';' . $this->moveIndex . ';' . (
+            $this->relation == static::RELATION_BEFORE
+                ? $this->moveIndex . '=>' . ($this->adjacentIndex ?: 'NULL')
+                : ($this->adjacentIndex ?: 'NULL') . '=>' . $this->moveIndex
+        );
+    }
+
+    /////////////////////////
+    //* Static Operations *//
+    /////////////////////////
     /**
      * Executes the ranking operations to sort the old list into the new list.
      *
@@ -53,7 +143,177 @@ class RankingOperation
      */
     public static function calculateForGroups($groups)
     {
-        dd(compact('groups'));
+        // If there is only one group, then everything is sorted
+        if(count($groups) <= 1) {
+            return [];
+        }
+
+        // Determine the identifier for this arrangement
+        $identifier = static::getGroupArrangementIdentifier($groups);
+
+        // Determine the potential ranking operations for this arrangement
+        $operations = static::getGroupArrangementAvailableOperations($groups);
+
+        dd(compact('groups', 'identifier', 'operations'));
+    }
+
+    /**
+     * Returns the group arrangement identifier for the specified groups.
+     *
+     * @param  array  $groups
+     *
+     * @return string
+     */
+    public static function getGroupArrangementIdentifier($groups)
+    {
+        // Reduce the groups to an identifier
+        return json_encode(array_reduce($groups, function($identifier, $group) {
+
+            // Determine the individual identifier for the group
+            $individual = $group['order'] . ';' . $group['head']['key'] . ':' . $group['tail']['key'] . ';' . count($group['issues']);
+
+            // Add the individual identifier to the list
+            $identifier[] = $individual;
+
+            // Return the new identifier
+            return $identifier;
+
+        }, []));
+    }
+
+    /**
+     * Returns the available ranking operations that could be used on the specified groups.
+     *
+     * @param  array  $groups
+     *
+     * @return array
+     */
+    public static function getGroupArrangementAvailableOperations($groups)
+    {
+        // The available operations will include moving groups that are
+        // not in the correct order, but won't include groups whose
+        // issue count exceeds the maximum for moving. Easy-ish.
+
+        // Initialize the list of moveable groups
+        $movable = [];
+
+        // Determine the count of groups
+        $count = count($groups);
+
+        // Iterate through each group
+        foreach($groups as $index => $group) {
+
+            // If the group exceeds the maximum operation size, it cannot be moved
+            if(count($group['issues']) > static::MAXIMUM_OPERATION_SIZE) {
+                continue;
+            }
+
+            // Check for the first group
+            if($index == 0) {
+
+                // If the first group is meant to be first, it shouldn't be moved
+                if($group['order'] == 0) {
+                    continue;
+                }
+
+            }
+
+            // Check for the last group
+            else if($index == $count - 1) {
+
+                // If the last group is meant to be last, it shouldn't be moved
+                if($group['order'] == $count - 1) {
+                    continue;
+                }
+
+            }
+
+            // The group is somewhere in the middle
+            else {
+
+                // Determine the neighboring groups
+                $previous = $groups[$index - 1];
+                $next = $groups[$index + 1];
+
+                // If the group is already in order (in relation to the groups around it), it shouldn't be moved
+                if($previous['order'] == $group['order'] - 1 && $next['order'] == $group['order'] + 1) {
+                    continue;
+                }
+
+            }
+
+            // The group can be moved
+            $movable[] = $index;
+
+        }
+
+        // If there are no movable groups, then there are no available operations
+        if(empty($movable)) {
+            return [];
+        }
+
+        // From the set of movable groups, we can generate the total set
+        // of moves. This will essentially be moving any group to be
+        // adjacent to any other group. The search space is huge.
+
+        // Determine the lowest group that can be ordered, and set that as the minimum
+        $minimum = min($movable);
+
+        // Determine the greatest group that can be ordered, and set that as the maximum
+        $maximum = max($movable);
+
+        // Initialize the set of moves
+        $moves = [];
+
+        // Iterate through each moveable index
+        foreach($movable as $index) {
+
+            // Determine the intended order
+            $order = $groups[$index]['order'];
+
+            // Each out of order group has two places where it can go,
+            // being after its correct previous group or before its
+            // correct subsequent group. No global positioning.
+
+            // Intialize the previous and subsequent group indexes
+            $previous = null;
+            $next = null;
+
+            // Iterate through each group
+            foreach($groups as $position => $group) {
+
+                // Check for the previous group
+                if(is_null($previous) && $group['order'] == $order - 1) {
+                    $previous = $position;
+                }
+
+                // Check for the next group
+                else if(is_null($next) && $group['order'] == $order + 1) {
+                    $next = $position;
+                }
+
+                // If both positions have been found, we can stop searching
+                if(!is_null($previous) && !is_null($next)) {
+                    break;
+                }
+
+            }
+
+            // Create the "before" and "after" ranking operations
+            $before = new static($groups, $index, static::RELATION_BEFORE, $next);
+            $after = new static($groups, $index, static::RELATION_AFTER, $previous);
+
+            // Add the moves to the list
+            $moves[$before->getKey()] = $before;
+            $moves[$after->getKey()] = $after;
+
+        }
+
+        // Just because a group is movable doesn't mean that we actually
+        // want to move it. We should further limit the total set of
+        // moves to ones that make sense. This reduces the time.
+
+        dd(compact('groups', 'movable', 'moves'));
     }
 
     /**
