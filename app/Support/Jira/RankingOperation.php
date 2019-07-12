@@ -22,6 +22,14 @@ class RankingOperation
     const RELATION_BEFORE = 'before';
     const RELATION_AFTER = 'after';
 
+    /**
+     * The cost multipliers.
+     *
+     * @var float
+     */
+    const COST_BASIS = 1;
+    const COST_PER_ISSUE = 1;
+
     //////////////////
     //* Attributes *//
     //////////////////
@@ -53,6 +61,13 @@ class RankingOperation
      */
     public $adjacentIndex;
 
+    /**
+     * The cost of performing the operation.
+     *
+     * @var float
+     */
+    public $cost;
+
     //////////////////
     //* Constuctor *//
     //////////////////
@@ -72,6 +87,7 @@ class RankingOperation
         $this->moveIndex = $moveIndex;
         $this->relation = $relation;
         $this->adjacentIndex = $adjacentIndex;
+        $this->cost = static::COST_BASIS + count($groups[$moveIndex]['issues']) * static::COST_PER_ISSUE;
     }
 
     /////////////////
@@ -86,8 +102,8 @@ class RankingOperation
     {
         return static::getGroupArrangementIdentifier($this->groups) . ';' . $this->moveIndex . ';' . (
             $this->relation == static::RELATION_BEFORE
-                ? $this->moveIndex . '=>' . ($this->adjacentIndex ?: 'NULL')
-                : ($this->adjacentIndex ?: 'NULL') . '=>' . $this->moveIndex
+                ? $this->moveIndex . '=>' . (is_null($this->adjacentIndex) ? 'NULL' : $this->adjacentIndex)
+                : $this->moveIndex . '<=' . (is_null($this->adjacentIndex) ? 'NULL' : $this->adjacentIndex)
         );
     }
 
@@ -154,6 +170,17 @@ class RankingOperation
         // Determine the potential ranking operations for this arrangement
         $operations = static::getGroupArrangementAvailableOperations($groups);
 
+        // Identify the list of visited states
+        $visted = [$identifier];
+
+        // Consider the outcome of each operation
+
+        /**
+         * Need parent operation tracking (so that the goal state has the move set).
+         * Need method to identify if the operation will reach the goal state.
+         * Need ability to internally move groups to simulate what the operation will do.
+         */
+
         dd(compact('groups', 'identifier', 'operations'));
     }
 
@@ -190,62 +217,8 @@ class RankingOperation
      */
     public static function getGroupArrangementAvailableOperations($groups)
     {
-        // The available operations will include moving groups that are
-        // not in the correct order, but won't include groups whose
-        // issue count exceeds the maximum for moving. Easy-ish.
-
-        // Initialize the list of moveable groups
-        $movable = [];
-
-        // Determine the count of groups
-        $count = count($groups);
-
-        // Iterate through each group
-        foreach($groups as $index => $group) {
-
-            // If the group exceeds the maximum operation size, it cannot be moved
-            if(count($group['issues']) > static::MAXIMUM_OPERATION_SIZE) {
-                continue;
-            }
-
-            // Check for the first group
-            if($index == 0) {
-
-                // If the first group is meant to be first, it shouldn't be moved
-                if($group['order'] == 0) {
-                    continue;
-                }
-
-            }
-
-            // Check for the last group
-            else if($index == $count - 1) {
-
-                // If the last group is meant to be last, it shouldn't be moved
-                if($group['order'] == $count - 1) {
-                    continue;
-                }
-
-            }
-
-            // The group is somewhere in the middle
-            else {
-
-                // Determine the neighboring groups
-                $previous = $groups[$index - 1];
-                $next = $groups[$index + 1];
-
-                // If the group is already in order (in relation to the groups around it), it shouldn't be moved
-                if($previous['order'] == $group['order'] - 1 && $next['order'] == $group['order'] + 1) {
-                    continue;
-                }
-
-            }
-
-            // The group can be moved
-            $movable[] = $index;
-
-        }
+        // Determine the movable groups
+        $movable = static::getGroupArrangementMoveableIndexes($groups);
 
         // If there are no movable groups, then there are no available operations
         if(empty($movable)) {
@@ -309,11 +282,102 @@ class RankingOperation
 
         }
 
-        // Just because a group is movable doesn't mean that we actually
-        // want to move it. We should further limit the total set of
-        // moves to ones that make sense. This reduces the time.
+        // Return the list of moves
+        return $moves;
+    }
 
-        dd(compact('groups', 'movable', 'moves'));
+    /**
+     * Returns the groups that can be moved by an operation.
+     *
+     * @param  array  $groups
+     *
+     * @return array
+     */
+    public static function getGroupArrangementMoveableIndexes($groups)
+    {
+        // The available operations will include moving groups that are
+        // not in the correct order, but won't include groups whose
+        // issue count exceeds the maximum for moving. Easy-ish.
+
+        // Initialize the list of moveable groups
+        $movable = [];
+
+        // Determine the count of groups
+        $count = count($groups);
+
+        // Iterate through each group
+        foreach($groups as $index => $group) {
+
+            // If the group exceeds the maximum operation size, it cannot be moved
+            if(count($group['issues']) > static::MAXIMUM_OPERATION_SIZE) {
+                continue;
+            }
+
+            // Check for the first group
+            if($index == 0) {
+
+                // If the first group is meant to be first, it shouldn't be moved
+                if($group['order'] == 0) {
+                    continue;
+                }
+
+            }
+
+            // Check for the last group
+            else if($index == $count - 1) {
+
+                // If the last group is meant to be last, it shouldn't be moved
+                if($group['order'] == $count - 1) {
+                    continue;
+                }
+
+            }
+
+            // The group is somewhere in the middle
+            else {
+
+                // Determine the neighboring groups
+                $previous = $groups[$index - 1];
+                $next = $groups[$index + 1];
+
+                // If the group is already in order (in relation to the groups around it), it shouldn't be moved
+                if($previous['order'] == $group['order'] - 1 && $next['order'] == $group['order'] + 1) {
+                    continue;
+                }
+
+            }
+
+            // The group can be moved
+            $movable[] = $index;
+
+        }
+
+        // Return the movable group indexes
+        return $movable;
+    }
+
+    /**
+     * Returns the heuristic cost of the specified group arrangement.
+     *
+     * @param  array  $groups
+     *
+     * @return float
+     */
+    public static function getGroupArrangementHeuristic($groups)
+    {
+        // Determine the movable group indexes
+        $movable = static::getGroupArrangementMoveableIndexes($groups);
+
+        // Initialize the cost
+        $cost = 0;
+
+        // Add the group cost for each group that can be moved
+        foreach($movable as $index) {
+            $cost += static::COST_BASIS + count($groups[$index]['issues']) * static::COST_PER_ISSUE;
+        }
+
+        // Return the cost
+        return $cost;
     }
 
     /**
