@@ -2,6 +2,8 @@
 
 namespace App\Support\Jira;
 
+use SplPriorityQueue;
+
 class RankingOperation
 {
     /////////////////
@@ -62,11 +64,25 @@ class RankingOperation
     public $adjacentIndex;
 
     /**
-     * The cost of performing the operation.
+     * The cost of performing this operation.
      *
      * @var float
      */
     public $cost;
+
+    /**
+     * The priority of this ranking operation.
+     *
+     * @var float
+     */
+    public $priority;
+
+    /**
+     * The ranking operation made before this one.
+     *
+     * @var static|null
+     */
+    public $parent;
 
     //////////////////
     //* Constuctor *//
@@ -78,15 +94,18 @@ class RankingOperation
      * @param  integer       $moveIndex
      * @param  string        $relation
      * @param  integer|null  $adjacentIndex
+     * @param  static|null   $parent
      *
      * @return $this
      */
-    public function __construct($groups, $moveIndex, $relation, $adjacentIndex)
+    public function __construct($groups, $moveIndex, $relation, $adjacentIndex, $parent = null)
     {
         $this->groups = $groups;
         $this->moveIndex = $moveIndex;
         $this->relation = $relation;
         $this->adjacentIndex = $adjacentIndex;
+        $this->parent = $parent;
+
         $this->cost = static::COST_BASIS + count($groups[$moveIndex]['issues']) * static::COST_PER_ISSUE;
     }
 
@@ -173,6 +192,9 @@ class RankingOperation
         // Identify the list of visited states
         $visted = [$identifier];
 
+        // Create a priority queue
+        $queue = new SplPriorityQueue;
+
         // Consider the outcome of each operation
 
         /**
@@ -181,7 +203,7 @@ class RankingOperation
          * Need ability to internally move groups to simulate what the operation will do.
          */
 
-        dd(compact('groups', 'identifier', 'operations'));
+        dd(compact('groups', 'identifier', 'operations', 'queue'));
     }
 
     /**
