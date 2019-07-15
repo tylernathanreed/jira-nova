@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Support\Jira;
+namespace App\Support\Astar;
 
 use Closure;
 use RuntimeException;
-use SplPriorityQueue;
 
-class Astar
+class Algorithm
 {
 	//////////////////
 	//* Attributes *//
@@ -19,7 +18,7 @@ class Astar
 	protected $initial;
 
 	/**
-	 * The state key resolver.
+	 * The key resolver.
 	 *
 	 * @var \Closure|null
 	 */
@@ -31,6 +30,13 @@ class Astar
 	 * @var \Closure|null
 	 */
 	protected $costResolver;
+
+	/**
+	 * The move resolver.
+	 *
+	 * @var \Closure|null
+	 */
+	protected $moveResolver;
 
 	/**
 	 * The states that have been visited.
@@ -56,7 +62,7 @@ class Astar
 	 */
 	public function __construct()
 	{
-		$this->queue = new SplPriorityQueue;
+		$this->queue = new Queue;
 	}
 
 	/////////////
@@ -105,6 +111,20 @@ class Astar
 	}
 
 	/**
+	 * Sets the move resolver.
+	 *
+	 * @param  \Closure  $callback
+	 *
+	 * @return
+	 */
+	public function setMoveResolver(Closure $callback)
+	{
+		$this->moveResolver = $callback;
+
+		return $this;
+	}
+
+	/**
 	 * Resets the algorithm to run again.
 	 *
 	 * @return $this
@@ -115,7 +135,7 @@ class Astar
 		$this->visited = [];
 
 		// Flush the queue
-		$this->queue = new SplPriorityQueue;
+		$this->queue = new Queue;
 
 		// Allow chaining
 		return $this;
@@ -131,6 +151,9 @@ class Astar
 	 */
 	public function solve()
 	{
+		// Reset the algorithm
+		$this->reset();
+
 		// Determine the initial state node
 		$initial = $this->initial;
 
@@ -163,8 +186,29 @@ class Astar
 					// Replace the state with this one
 					$this->visited[$next->key] = $next;
 
+					// Replace the parents of the previous children
+					foreach($previous->children as $child) {
+						$child->parent = $next;
+					}
+
 				}
 
+				// Skip this state, since we've already visited it
+				continue;
+
+			}
+
+			// Otherwise, mark the state as visited
+			else {
+				$this->visited[$next->key] = $next;
+			}
+
+			// Determine the child next state nodes
+			$children = $this->getStateNodeMoves($next);
+
+			// Add the children to the queue
+			foreach($children as $child) {
+				$this->queue->insert($child, $child->cost);
 			}
 
 		}
@@ -174,7 +218,16 @@ class Astar
 			return false;
 		}
 
-		dd(compact('goal'));
+		// Initialize the path
+		$path = [];
+
+		// Walk backwards up the parent tree to obtain the reverse path
+		for($step = $goal; !is_null($step->parent); $step = $step->parent) {
+			$path[] = $step->state;
+		}
+
+		// Reverse the path
+		return array_reverse($path);
 	}
 
 	/**
@@ -198,7 +251,7 @@ class Astar
 		$children = [];
 
 		// Determine the state node
-		$node = new AstarNode(compact('state', 'key', 'parent', 'moveCost', 'estimatedCost'));
+		$node = new Node(compact('state', 'key', 'parent', 'moveCost', 'estimatedCost'));
 
 		// Add this node to the parent
 		if(!is_null($parent)) {
@@ -268,5 +321,42 @@ class Astar
 
 		// Return the cost
 		return $cost;
+	}
+
+	/**
+	 * Returns the states accessible from the specified node.
+	 *
+	 * @param  \App\Support\Jira\AstarNode  $node
+	 *
+	 * @return array
+	 *
+	 * @throws \RuntimeException
+	 */
+	public function getStateNodeMoves($node)
+	{
+		// Make sure the resolver is defined
+		if(is_null($resolver = $this->moveResolver)) {
+			throw new RuntimeException("The move resolver has not been set.");
+		}
+
+		// Determine the available moves
+		$moves = $resolver($node->state);
+
+		// Convert each move into a state node
+		return array_map(function($move) use ($node) {
+
+			// Make sure a cost and state were provided
+			if(!isset($move['cost']) || !isset($move['state'])) {
+				throw new RuntimeException("The available moves must contain a cost and state.");
+			}
+
+			// Determine the cost and state
+			$cost = $move['cost'];
+			$child = $move['state'];
+
+			// Create and return the child state node
+			return $this->getStateNode($child, $cost, $node);
+
+		}, $moves);
 	}
 }

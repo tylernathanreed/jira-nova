@@ -2,7 +2,7 @@
 
 namespace App\Support\Jira;
 
-use SplPriorityQueue;
+use App\Support\Astar\Algorithm;
 
 class RankingOperation
 {
@@ -63,27 +63,6 @@ class RankingOperation
      */
     public $adjacentIndex;
 
-    /**
-     * The cost of performing this operation.
-     *
-     * @var float
-     */
-    public $cost;
-
-    /**
-     * The priority of this ranking operation.
-     *
-     * @var float
-     */
-    public $priority;
-
-    /**
-     * The ranking operation made before this one.
-     *
-     * @var static|null
-     */
-    public $parent;
-
     //////////////////
     //* Constuctor *//
     //////////////////
@@ -94,19 +73,15 @@ class RankingOperation
      * @param  integer       $moveIndex
      * @param  string        $relation
      * @param  integer|null  $adjacentIndex
-     * @param  static|null   $parent
      *
      * @return $this
      */
-    public function __construct($groups, $moveIndex, $relation, $adjacentIndex, $parent = null)
+    public function __construct($groups, $moveIndex, $relation, $adjacentIndex)
     {
         $this->groups = $groups;
         $this->moveIndex = $moveIndex;
         $this->relation = $relation;
         $this->adjacentIndex = $adjacentIndex;
-        $this->parent = $parent;
-
-        $this->cost = static::COST_BASIS + count($groups[$moveIndex]['issues']) * static::COST_PER_ISSUE;
     }
 
     /////////////////
@@ -124,6 +99,63 @@ class RankingOperation
                 ? $this->moveIndex . '=>' . (is_null($this->adjacentIndex) ? 'NULL' : $this->adjacentIndex)
                 : $this->moveIndex . '<=' . (is_null($this->adjacentIndex) ? 'NULL' : $this->adjacentIndex)
         );
+    }
+
+    /**
+     * Returns the move cost of this operation.
+     *
+     * @return integer|float
+     */
+    public function getAlgorithmMoveCost()
+    {
+        return static::COST_BASIS + count($this->groups[$this->moveIndex]['issues']) * static::COST_PER_ISSUE;
+    }
+
+    /**
+     * Returns the simulated group arrangement after performing this operation.
+     *
+     * @return array
+     */
+    public function getSimulatedResult()
+    {
+        // Initialize the result
+        $result = [];
+
+        // Iterate through each group
+        foreach($this->groups as $index => $group) {
+
+            // Skip the move index
+            if($index == $this->moveIndex) {
+                continue;
+            }
+
+            // Check for the adjacent index
+            if($index == $this->adjacentIndex) {
+
+                // If the move index goes before, add it now
+                if($this->relation == static::RELATION_BEFORE) {
+                    $result[] = $this->groups[$this->moveIndex];
+                }
+
+                // Add the adjacent group to the result
+                $result[] = $group;
+
+                // If the move index goes after, add it now
+                if($this->relation == static::RELATION_AFTER) {
+                    $result[] = $this->groups[$this->moveIndex];
+                }
+
+            }
+
+            // Otherwise, just add the group
+            else {
+                $result[] = $group;
+            }
+
+        }
+
+        // Return the result
+        return $result;
     }
 
     /////////////////////////
@@ -178,32 +210,65 @@ class RankingOperation
      */
     public static function calculateForGroups($groups)
     {
-        // If there is only one group, then everything is sorted
-        if(count($groups) <= 1) {
-            return [];
-        }
+        // Create a new search algorithm
+        $algorithm = static::newSearchAlgorithm([
+            'move' => null,
+            'groups' => $groups
+        ]);
 
-        // Determine the identifier for this arrangement
-        $identifier = static::getGroupArrangementIdentifier($groups);
+        // Solve the algorithm
+        $solution = $algorithm->solve();
 
-        // Determine the potential ranking operations for this arrangement
-        $operations = static::getGroupArrangementAvailableOperations($groups);
+        dd(compact('solution'));
 
-        // Identify the list of visited states
-        $visted = [$identifier];
+    }
 
-        // Create a priority queue
-        $queue = new SplPriorityQueue;
+    /**
+     * Creates and returns the state search algorithm.
+     *
+     * @param  array  $initial
+     *
+     * @return \App\Support\Astar\Algorithm
+     */
+    public static function newSearchAlgorithm($initial)
+    {
+        // Create a new search algorithm
+        $algorithm = new Algorithm;
 
-        // Consider the outcome of each operation
+        // Set the key resolver
+        $algorithm->setKeyResolver(function($state) {
+            return static::getGroupArrangementIdentifier($state['groups']);
+        });
 
-        /**
-         * Need parent operation tracking (so that the goal state has the move set).
-         * Need method to identify if the operation will reach the goal state.
-         * Need ability to internally move groups to simulate what the operation will do.
-         */
+        // Set the cost resolver
+        $algorithm->setEstimatedCostResolver(function($state) {
+            return static::getGroupArrangementHeuristic($state['groups']);
+        });
 
-        dd(compact('groups', 'identifier', 'operations', 'queue'));
+        // Set the move resolver
+        $algorithm->setMoveResolver(function($state) {
+
+            // Determine the available operations
+            $moves = static::getGroupArrangementAvailableOperations($state['groups']);
+
+            // Cast each operation into a move
+            return array_map(function($move) {
+                return [
+                    'cost' => $move->getAlgorithmMoveCost(),
+                    'state' => [
+                        'move' => $move,
+                        'groups' => $move->getSimulatedResult()
+                    ]
+                ];
+            }, $moves);
+
+        });
+
+        // Set the initial state
+        $algorithm->setInitialState($initial);
+
+        // Return the algorithm
+        return $algorithm;
     }
 
     /**

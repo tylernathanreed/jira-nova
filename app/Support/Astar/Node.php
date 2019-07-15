@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Support\Jira;
+namespace App\Support\Astar;
 
 use InvalidArgumentException;
 
-class AstarNode
+class Node
 {
 	//////////////////
 	//* Attributes *//
@@ -82,7 +82,7 @@ class AstarNode
 		$cost = $this->moveCost;
 
 		// Add the move cost of each parent node
-		while($parent = $this->parent; !is_null($parent); $parent = $parent->parent) {
+		for($parent = $this->parent; !is_null($parent); $parent = $parent->parent) {
 			$cost += $parent->moveCost;
 		}
 
