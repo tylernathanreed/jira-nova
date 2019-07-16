@@ -1,0 +1,31 @@
+{
+    "name": "mnobrega/php-jira-agile-rest-client",
+    "description": "JIRA Agile REST API Client for PHP Users.",
+    "type": "library",
+    "keywords": ["jira", "rest", "jira-php", "jira-rest","jira-agile"],
+    "require": {
+        "php": ">=5.5.9",
+        "netresearch/jsonmapper": "~0.11|^1.0",
+        "monolog/monolog": "~1.12",
+        "vlucas/phpdotenv": "~1.0|~2.0|~3.0",
+        "illuminate/support": "^5.5",
+        "symfony/dotenv": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=5.7 <6",
+        "mockery/mockery": "^0.9.4",
+        "symfony/var-dumper": "~2.8|~3.0"
+    },
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Marcio Nobrega",
+            "email": "marcio.nobrega@sapo.pt"
+        }
+    ],
+    "autoload": {
+        "psr-4" : {
+            "JiraAgileRestApi\\" : "src"
+        }
+    }
+}

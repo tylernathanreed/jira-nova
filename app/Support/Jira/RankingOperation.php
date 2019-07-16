@@ -2,7 +2,9 @@
 
 namespace App\Support\Jira;
 
+use Jira;
 use App\Support\Astar\Algorithm;
+use JiraAgileRestApi\IssueRank\IssueRank;
 
 class RankingOperation
 {
@@ -31,6 +33,13 @@ class RankingOperation
      */
     const COST_BASIS = 1;
     const COST_PER_ISSUE = 1;
+
+    /**
+     * The field constants.
+     *
+     * @var string
+     */
+    const FIELD_RANK = 10119;
 
     //////////////////
     //* Attributes *//
@@ -158,6 +167,61 @@ class RankingOperation
         return $result;
     }
 
+    //////////////////
+    //* Operations *//
+    //////////////////
+    /**
+     * Performs this operation.
+     *
+     * @return void
+     */
+    public function perform()
+    {
+        // Create a new issue rank
+        $rank = $this->newIssueRank();
+
+        // Perform the ranking operation
+        return Jira::issueRanks()->update($rank);
+    }
+
+    /**
+     * Creates and returns a new issue rank instance.
+     *
+     * @link https://developer.atlassian.com/cloud/jira/software/rest/#api-rest-agile-1-0-board-boardId-issue-post
+     *
+     * @return \JiraAgileRestApi\IssueRank\IssueRank
+     */
+    public function newIssueRank()
+    {
+        // Create the issue rank
+        $rank = new IssueRank;
+
+        // Set the issues
+        $rank->issues = $this->groups[$this->moveIndex]['issues'];
+
+        // Set the custom rank field id
+        $rank->rankCustomFieldId = static::FIELD_RANK;
+
+        // Check if the issues come before the adjacent issue
+        if($this->relation == static::RELATION_BEFORE) {
+
+            // Set the rank before issue
+            $rank->rankBeforeIssue = $this->groups[$this->adjacentIndex]['head']['key'];
+
+        }
+
+        // The issues come after the adjacent issue
+        else {
+
+            // Set the rank after issue
+            $rank->rankAfterIssue = $this->groups[$this->adjacentIndex]['tail']['key'];
+
+        }
+
+        // Return the issue rank
+        return $rank;
+    }
+
     /////////////////////////
     //* Static Operations *//
     /////////////////////////
@@ -219,8 +283,11 @@ class RankingOperation
         // Solve the algorithm
         $solution = $algorithm->solve();
 
-        dd(compact('solution'));
+        // Determine the ranking operations
+        $operations = array_column($solution, 'move');
 
+        // Return the operations
+        return $operations;
     }
 
     /**
