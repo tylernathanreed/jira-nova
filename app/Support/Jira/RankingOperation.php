@@ -3,6 +3,7 @@
 namespace App\Support\Jira;
 
 use Jira;
+use Unirest\Request;
 use App\Support\Astar\Algorithm;
 use JiraAgileRestApi\IssueRank\IssueRank;
 
@@ -180,6 +181,21 @@ class RankingOperation
         // Create a new issue rank
         $rank = $this->newIssueRank();
 
+        Request::auth(config('services.jira.username'), config('services.jira.password'));
+        Request::verifyPeer(false);
+
+        $url = rtrim(config('services.jira.host'), '/') . '/rest/agile/1.0/issue/rank';
+        $headers = [
+            'Content-Type' => 'application/json'
+        ];
+        $body = json_encode($rank);
+
+        // dd(compact('url', 'headers', 'body'));
+
+        $response = Request::put($url, $headers, $body);
+
+        dd(compact('response'));
+
         // Perform the ranking operation
         return Jira::issueRanks()->update($rank);
     }
@@ -187,7 +203,7 @@ class RankingOperation
     /**
      * Creates and returns a new issue rank instance.
      *
-     * @link https://developer.atlassian.com/cloud/jira/software/rest/#api-rest-agile-1-0-board-boardId-issue-post
+     * @link https://developer.atlassian.com/cloud/jira/software/rest/#api-rest-agile-1-0-issue-rank-put
      *
      * @return \JiraAgileRestApi\IssueRank\IssueRank
      */
