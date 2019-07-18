@@ -43,9 +43,13 @@ class IssuesController extends Controller
         $oldOrder = $issues->sortBy('order')->pluck('key')->toArray();
         $newOrder = $issues->sortBy('index')->pluck('key')->toArray();
 
-        // Perform the ranking operations to sort the old list into the new list
-        Issue::updateOrderByRank($oldOrder, $newOrder);
+        // Determine the subtasks
+        $subtasks = $issues->where('is_subtask', '=', 1)->pluck('key')->toArray();
 
-        dd($request);
+        // Perform the ranking operations to sort the old list into the new list
+        Issue::updateOrderByRank($oldOrder, $newOrder, $subtasks);
+
+        // Redirect back to the index page
+        return redirect()->route('issues.index');
     }
 }

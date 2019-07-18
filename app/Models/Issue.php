@@ -104,6 +104,7 @@ class Issue extends Model
                     'url' => rtrim(config('services.jira.host'), '/') . '/browse/' . $issue->key,
                     'type' => $issue->fields->{static::FIELD_ISSUE_TYPE}->name,
                     'type_icon_url' => $issue->fields->{static::FIELD_ISSUE_TYPE}->iconUrl,
+                    'is_subtask' => $issue->fields->{static::FIELD_ISSUE_TYPE}->subtask,
                     'status' => $issue->fields->{static::FIELD_STATUS}->name,
                     'status_color' => $issue->fields->{static::FIELD_STATUS}->statuscategory->colorName,
                     'summary' => $issue->fields->{static::FIELD_SUMMARY},
@@ -580,12 +581,13 @@ class Issue extends Model
      *
      * @param  array  $oldOrder
      * @param  array  $newOrder
+     * @param  array  $subtasks
      *
      * @return void
      */
-    public static function updateOrderByRank($oldOrder, $newOrder)
+    public static function updateOrderByRank($oldOrder, $newOrder, $subtasks = [])
     {
-        RankingOperation::execute($oldOrder, $newOrder);
+        RankingOperation::execute($oldOrder, $newOrder, $subtasks);
     }
 
     /**

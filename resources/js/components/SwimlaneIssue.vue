@@ -5,13 +5,9 @@
         <input type="hidden" :name="`issues[${index}][index]`" :value="index"/>
         <input type="hidden" :name="`issues[${index}][order]`" :value="order"/>
         <input type="hidden" :name="`issues[${index}][est]`" :value="est"/>
+        <input type="hidden" :name="`issues[${index}][is_subtask]`" :value="issue.is_subtask ? 1 : 0"/>
 
         <div class="swimlane-issue" :data-issue="issue.key">
-            <div class="swimlane-issue-field">
-                <div>{{ index }}</div>
-                <div>{{ order }}</div>
-            </div>
-
             <div class="swimlane-issue-field" data-field="type">
                 <img class="icon" :src="issue.type_icon_url"/>
             </div>

@@ -192,12 +192,12 @@ class RankingOperation
 
         // dd(compact('url', 'headers', 'body'));
 
+        dump(compact('url', 'headers', 'body'));
         $response = Request::put($url, $headers, $body);
-
-        dd(compact('response'));
+        dump(compact('response'));
 
         // Perform the ranking operation
-        return Jira::issueRanks()->update($rank);
+        // return Jira::issueRanks()->update($rank);
     }
 
     /**
@@ -246,13 +246,14 @@ class RankingOperation
      *
      * @param  array  $oldOrder
      * @param  array  $newOrder
+     * @param  array  $subtasks
      *
      * @return void
      */
-    public static function execute($oldOrder, $newOrder)
+    public static function execute($oldOrder, $newOrder, $subtasks = [])
     {
         // Calculate the ranking operations
-        $operations = static::calculate($oldOrder, $newOrder);
+        $operations = static::calculate($oldOrder, $newOrder, $subtasks);
 
         // Perform each operation
         foreach($operations as $operation) {
@@ -265,14 +266,19 @@ class RankingOperation
      *
      * @param  array  $oldOrder
      * @param  array  $newOrder
+     * @param  array  $subtasks
      *
      * @return array
      */
-    public static function calculate($oldOrder, $newOrder)
+    public static function calculate($oldOrder, $newOrder, $subtasks = [])
     {
         // We can simplify this problem by grouping the old order into
         // groups of issues that are already in the new order. We'll
         // use relative order, as this will act as a linked list.
+
+        /**
+         * @todo incorperate subtasks
+         */
 
         // Determine the issue groups
         $groups = static::getRankingGroups($oldOrder, $newOrder);

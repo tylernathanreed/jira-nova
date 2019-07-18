@@ -2107,10 +2107,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['issueKey', 'index'],
   data: function data() {
@@ -58035,6 +58031,14 @@ var render = function() {
         domProps: { value: _vm.est }
       }),
       _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "hidden",
+          name: "issues[" + _vm.index + "][is_subtask]"
+        },
+        domProps: { value: _vm.issue.is_subtask ? 1 : 0 }
+      }),
+      _vm._v(" "),
       _c(
         "div",
         {
@@ -58042,12 +58046,6 @@ var render = function() {
           attrs: { "data-issue": _vm.issue.key }
         },
         [
-          _c("div", { staticClass: "swimlane-issue-field" }, [
-            _c("div", [_vm._v(_vm._s(_vm.index))]),
-            _vm._v(" "),
-            _c("div", [_vm._v(_vm._s(_vm.order))])
-          ]),
-          _vm._v(" "),
           _c(
             "div",
             {
