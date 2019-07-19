@@ -55,7 +55,7 @@ class CreateIssueFieldsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issue_fields');
         Schema::dropIfExists('issue_type_fields');
+        Schema::dropIfExists('issue_fields');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Support\Jira;
 
 use Illuminate\Support\ServiceProvider;
+use App\Support\Jira\Auth\JiraUserProvider;
 
 class JiraServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,7 @@ class JiraServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerJiraService();
+        $this->registerJiraAuthProvider();
     }
 
     /**
@@ -25,6 +27,13 @@ class JiraServiceProvider extends ServiceProvider
     {
         $this->app->singleton(JiraService::class, function($app) {
             return new JiraService;
+        });
+    }
+
+    protected function registerJiraAuthProvider()
+    {
+        $this->app->auth->provider('jira', function($app, $config) {
+            return new JiraUserProvider($this->app->make(JiraService::class), $this->app['hash'], $config['model']);
         });
     }
 

@@ -29,6 +29,13 @@ class ScheduleAssociation extends Resource
     public static $globallySearchable = false;
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * Returns the title of this resource.
      *
      * @return string

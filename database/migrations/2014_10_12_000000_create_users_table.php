@@ -14,13 +14,23 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+
+            // Identification
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('email')->unique();
+
+            // Attributes
+            $table->string('jira_id', 32)->nullable()->index();
+            $table->string('display_name', 100);
+            $table->string('email_address')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password', 80)->nullable();
+            $table->string('api_token', 80)->unique()->nullable();
             $table->rememberToken();
+
+            // Revision tracking
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

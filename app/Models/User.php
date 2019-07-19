@@ -151,4 +151,14 @@ class User extends Authenticatable
     {
         return Cache::store('jira');
     }
+
+    /**
+     * Returns the attribute name of the identifier used for jira authentication.
+     *
+     * @return string
+     */
+    public function getAuthJiraIdentifierName()
+    {
+        return 'email';
+    }
 }

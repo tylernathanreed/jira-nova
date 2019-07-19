@@ -84,8 +84,8 @@ class CreateScheduleTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedules');
-        Schema::dropIfExists('schedule_week_templates');
         Schema::dropIfExists('schedule_associations');
+        Schema::dropIfExists('schedule_week_templates');
+        Schema::dropIfExists('schedules');
     }
 }

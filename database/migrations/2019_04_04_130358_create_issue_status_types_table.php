@@ -62,8 +62,8 @@ class CreateIssueStatusTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issue_status_categories');
-        Schema::dropIfExists('issue_status_types');
         Schema::dropIfExists('issue_type_status_types');
+        Schema::dropIfExists('issue_status_types');
+        Schema::dropIfExists('issue_status_categories');
     }
 }

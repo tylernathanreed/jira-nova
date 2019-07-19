@@ -20,6 +20,7 @@ class CreateProjectsTable extends Migration
             $table->integer('jira_id')->unsigned()->index();
             $table->string('jira_key', 50)->index();
             $table->string('display_name', 50);
+            $table->datetime('issues_synched_at')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

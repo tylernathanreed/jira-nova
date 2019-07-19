@@ -29,6 +29,13 @@ class Issue extends Resource
     public static $title = 'summary';
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * The columns that should be searched.
      *
      * @var array
@@ -76,7 +83,7 @@ class Issue extends Resource
 
             Field::text('Jira ID', 'jira_id')->onlyOnDetail(),
 
-            Field::belongsTo('Project', 'project')->onlyOnDetail(),
+            Field::belongsTo('Project', 'project', Project::class)->onlyOnDetail(),
 
             Field::belongsTo('Parent', 'parent', static::class)->onlyOnDetail(),
 

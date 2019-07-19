@@ -36,6 +36,13 @@ class IssueStatusCategory extends Resource
     public static $globallySearchable = false;
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * Get the displayable label of the resource.
      *
      * @return string
