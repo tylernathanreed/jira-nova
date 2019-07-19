@@ -391,24 +391,38 @@
         background-color: white;
     }
 
-    .chain-0 { background-color: black; }
-    .chain-1 { background-color: red; }
-    .chain-2 { background-color: steelblue; }
-    .chain-3 { background-color: green; }
-    .chain-4 { background-color: darkorange; }
-    .chain-5 { background-color: blueviolet; }
-    .chain-6 { background-color: lightseagreen; }
-    .chain-7 { background-color: hotpink; }
-    .chain-8 { background-color: yellow; }
-    .chain-9 { background-color: lime; }
-    .chain-10 { background-color: dimgray; }
-    .chain-11 { background-color: sienna; }
-    .chain-12 { background-color: olive; }
-    .chain-13 { background-color: darkslategray; }
-    .chain-14 { background-color: lightgray; }
-    .chain-15 { background-color: rosybrown; }
-    .chain-16 { background-color: darkseagreen; }
-    .chain-17 { background-color: tan; }
+    .chain-0 { background-color: red; }
+    .chain-1 { background-color: yellow; }
+    .chain-2 { background-color: blue; }
+    .chain-3 { background-color: orange; }
+    .chain-4 { background-color: green; }
+    .chain-5 { background-color: darkmagenta; }
+    .chain-6 { background-color: lime; }
+    .chain-7 { background-color: cyan; }
+    .chain-8 { background-color: magenta; }
+    .chain-9 { background-color: #faa; }
+    .chain-10 { background-color: khaki; }
+    .chain-11 { background-color: #cbf; }
+    .chain-12 { background-color: tan; }
+    .chain-13 { background-color: greenyellow; }
+    .chain-14 { background-color: mediumorchid; }
+    .chain-15 { background-color: #cfc; }
+    .chain-16 { background-color: #8cf; }
+    .chain-17 { background-color: #fdf; }
+    .chain-18 { background-color: firebrick; }
+    .chain-19 { background-color: darkgoldenrod; }
+    .chain-20 { background-color: cornflowerblue; }
+    .chain-21 { background-color: #c60; }
+    .chain-22 { background-color: olive; }
+    .chain-23 { background-color: darkslateblue; }
+    .chain-24 { background-color: mediumseagreen; }
+    .chain-25 { background-color: #08a; }
+    .chain-26 { background-color: #f4a; }
+    .chain-27 { background-color: black; }
+    .chain-28 { background-color: darkslategray; }
+    .chain-29 { background-color: #888; }
+    .chain-30 { background-color: silver; }
+    .chain-31 { background-color: white; }
 
     label {
         margin: 0;

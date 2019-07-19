@@ -117,7 +117,7 @@
 
                         // Determine the earliest focus date
                         date = Object.values(focusDates).reduce(function(date, focusDate) {
-                            return date == null ? focusDate : moment.min(date, focusDate);
+                            return date == null ? focusDate : moment(moment.min(date, focusDate));
                         }, null);
 
                         // Determine the focus with that date
@@ -160,9 +160,7 @@
 
                         // If we have exceeded the daily limit, advance to the next day
                         if(allocated + allocatable > limit) {
-
                             date = date.add(1, 'day').startOf('day');
-
                         }
 
                         // Skip dates that have no allocatable time
@@ -172,6 +170,7 @@
 
                         // Update the focus date
                         dates[focus] = date;
+
                     }
 
                     // Assign the estimated completion date
