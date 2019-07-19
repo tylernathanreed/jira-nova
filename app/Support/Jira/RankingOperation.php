@@ -3,7 +3,7 @@
 namespace App\Support\Jira;
 
 use Jira;
-use Unirest\Request;
+use RuntimeException;
 use App\Support\Astar\Algorithm;
 use JiraAgileRestApi\IssueRank\IssueRank;
 
@@ -181,23 +181,8 @@ class RankingOperation
         // Create a new issue rank
         $rank = $this->newIssueRank();
 
-        Request::auth(config('services.jira.username'), config('services.jira.password'));
-        Request::verifyPeer(false);
-
-        $url = rtrim(config('services.jira.host'), '/') . '/rest/agile/1.0/issue/rank';
-        $headers = [
-            'Content-Type' => 'application/json'
-        ];
-        $body = json_encode($rank);
-
-        // dd(compact('url', 'headers', 'body'));
-
-        dump(compact('url', 'headers', 'body'));
-        $response = Request::put($url, $headers, $body);
-        dump(compact('response'));
-
         // Perform the ranking operation
-        // return Jira::issueRanks()->update($rank);
+        return Jira::issueRanks()->update($rank);
     }
 
     /**
@@ -276,34 +261,38 @@ class RankingOperation
         // groups of issues that are already in the new order. We'll
         // use relative order, as this will act as a linked list.
 
-        /**
-         * @todo incorperate subtasks
-         */
-
         // Determine the issue groups
         $groups = static::getRankingGroups($oldOrder, $newOrder);
 
         // Calculate the ranking operations for the groups
-        return static::calculateForGroups($groups);
+        return static::calculateForGroups($groups, $subtasks);
     }
 
     /**
      * Creates and returns the ranking operations to sort the specified groups.
      *
      * @param  array  $groups
+     * @param  array  $subtasks
      *
      * @return array
+     *
+     * @throws \RuntimeException
      */
-    public static function calculateForGroups($groups)
+    public static function calculateForGroups($groups, $subtasks = [])
     {
         // Create a new search algorithm
         $algorithm = static::newSearchAlgorithm([
             'move' => null,
             'groups' => $groups
-        ]);
+        ], $subtasks);
 
         // Solve the algorithm
         $solution = $algorithm->solve();
+
+        // If the algorithm failed, throw an exception
+        if($solution === false) {
+            throw new RuntimeException("Unable to calculate ranking operations. An invalid ranking order was likely used.");
+        }
 
         // Determine the ranking operations
         $operations = array_column($solution, 'move');
@@ -316,10 +305,11 @@ class RankingOperation
      * Creates and returns the state search algorithm.
      *
      * @param  array  $initial
+     * @param  array  $subtasks
      *
      * @return \App\Support\Astar\Algorithm
      */
-    public static function newSearchAlgorithm($initial)
+    public static function newSearchAlgorithm($initial, $subtasks = [])
     {
         // Create a new search algorithm
         $algorithm = new Algorithm;
@@ -335,10 +325,10 @@ class RankingOperation
         });
 
         // Set the move resolver
-        $algorithm->setMoveResolver(function($state) {
+        $algorithm->setMoveResolver(function($state) use ($subtasks) {
 
             // Determine the available operations
-            $moves = static::getGroupArrangementAvailableOperations($state['groups']);
+            $moves = static::getGroupArrangementAvailableOperations($state['groups'], $subtasks);
 
             // Cast each operation into a move
             return array_map(function($move) {
@@ -388,13 +378,14 @@ class RankingOperation
      * Returns the available ranking operations that could be used on the specified groups.
      *
      * @param  array  $groups
+     * @param  array  $subtasks
      *
      * @return array
      */
-    public static function getGroupArrangementAvailableOperations($groups)
+    public static function getGroupArrangementAvailableOperations($groups, $subtasks = [])
     {
         // Determine the movable groups
-        $movable = static::getGroupArrangementMoveableIndexes($groups);
+        $movable = static::getGroupArrangementMoveableIndexes($groups, $subtasks);
 
         // If there are no movable groups, then there are no available operations
         if(empty($movable)) {
@@ -448,13 +439,27 @@ class RankingOperation
 
             }
 
-            // Create the "before" and "after" ranking operations
-            $before = new static($groups, $index, static::RELATION_BEFORE, $next);
-            $after = new static($groups, $index, static::RELATION_AFTER, $previous);
+            // Due to how subtasks are unusually ranked, they cannot be used
+            // as adjacent issues. If the previous or next issue ends up
+            // being a subtask, we'll have to find another way around.
 
-            // Add the moves to the list
-            $moves[$before->getKey()] = $before;
-            $moves[$after->getKey()] = $after;
+            // Clear the previous and/or next issues if they're subtasks
+            $previous = count(array_intersect($groups[$previous]['issues'], $subtasks)) == 0 ? $previous : null;
+            $next = count(array_intersect($groups[$next]['issues'], $subtasks)) == 0 ? $next : null;
+
+            // Create the "before" and "after" ranking operations
+            $before = !is_null($next) ? new static($groups, $index, static::RELATION_BEFORE, $next) : null;
+            $after = !is_null($previous) ? new static($groups, $index, static::RELATION_AFTER, $previous) : null;
+
+            // Add the "before" operation to the move list
+            if(!is_null($before)) {
+                $moves[$before->getKey()] = $before;
+            }
+
+            // Add the "after" operation to the move list
+            if(!is_null($after)) {
+                $moves[$after->getKey()] = $after;
+            }
 
         }
 
@@ -466,10 +471,11 @@ class RankingOperation
      * Returns the groups that can be moved by an operation.
      *
      * @param  array  $groups
+     * @param  array  $subtasks
      *
      * @return array
      */
-    public static function getGroupArrangementMoveableIndexes($groups)
+    public static function getGroupArrangementMoveableIndexes($groups, $subtasks = [])
     {
         // The available operations will include moving groups that are
         // not in the correct order, but won't include groups whose
@@ -527,6 +533,15 @@ class RankingOperation
             $movable[] = $index;
 
         }
+
+        // Unfortunately, subtasks behave too strangely to be able to
+        // move them around. Any group that contains a subtask is
+        // one that we'll have to keep still and dance around.
+
+        // Remove indexes that contain subtasks
+        $movable = array_filter($movable, function($index) use ($groups, $subtasks) {
+            return count(array_intersect($groups[$index]['issues'], $subtasks)) == 0;
+        });
 
         // Return the movable group indexes
         return $movable;

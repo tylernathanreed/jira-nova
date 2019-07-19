@@ -16,7 +16,6 @@
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "lesstif/php-jira-rest-client": "^1.37",
-        "mashape/unirest-php": "^3.0",
         "mnobrega/php-jira-agile-rest-client": "dev-master",
         "reedware/laravel-blueprints": "^1.0@dev",
         "reedware/nova-field-manager": "^0.1.0@dev",
