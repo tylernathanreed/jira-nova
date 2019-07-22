@@ -11,20 +11,42 @@
 |
 */
 
-Route::get('/', [
-	'as' => 'issues.index',
-	'uses' => 'IssuesController@index'
-]);
-
-Route::post('/', [
-	'as' => 'issues.submit',
-	'uses' => 'IssuesController@submit'
-]);
-
+/**
+ * Authentication Routes
+ */
 Auth::routes([
 	'register' => false,
 	'reset' => false,
 	'verify' => false
 ]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+/**
+ * Authenticated Routes
+ */
+Route::group(['middleware' => 'auth'], function() {
+
+	/**
+	 * Issues
+	 */
+	Route::group(['prefix' => 'issues'], function() {
+
+		// Issues
+		Route::get('/', [
+			'as' => 'issues.index',
+			'uses' => 'IssuesController@index'
+		]);
+
+		// Issues
+		Route::post('/', [
+			'as' => 'issues.submit',
+			'uses' => 'IssuesController@submit'
+		]);
+
+	});
+
+});
+
+/**
+ * Unauthenticated Routes
+ */
+Route::get('/', 'PagesController@index')->name('pages.index');

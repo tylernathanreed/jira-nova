@@ -6,10 +6,47 @@ use JiraRestApi\User\UserService;
 use JiraRestApi\Issue\IssueService;
 use JiraRestApi\Project\ProjectService;
 use JiraRestApi\Priority\PriorityService;
+use Illuminate\Contracts\Foundation\Application;
 use JiraAgileRestApi\IssueRank\IssueRankService;
+use JiraRestApi\Configuration\ConfigurationInterface;
 
 class JiraService
 {
+	/**
+	 * The application instance.
+	 *
+	 * @var \Illuminate\Contracts\Foundation\Application
+	 */
+	protected $app;
+
+	/**
+	 * The client api configuration.
+	 *
+	 * @var \JiraRestApi\Configuration\ConfigurationInterface
+	 */
+	protected $config;
+
+	/**
+	 * The services that have been instantiated.
+	 *
+	 * @var array
+	 */
+	protected $services = [];
+
+	/**
+	 * Creates a new jira service instance.
+	 *
+	 * @param  \Illuminate\Contracts\Foundation\Application       $app
+	 * @param  \JiraRestApi\Configuration\ConfigurationInterface  $config
+	 *
+	 * @return $this
+	 */
+	public function __construct(Application $app, ConfigurationInterface $config)
+	{
+		$this->app = $app;
+		$this->config = $config;
+	}
+
 	/**
 	 * Returns the issue service.
 	 *
@@ -17,7 +54,7 @@ class JiraService
 	 */
 	public function issues()
 	{
-		return new IssueService;
+		return $this->service(IssueService::class);
 	}
 
 	/**
@@ -27,7 +64,7 @@ class JiraService
 	 */
 	public function issueRanks()
 	{
-		return new IssueRankService;
+		return $this->service(IssueRankService::class);
 	}
 
 	/**
@@ -37,7 +74,7 @@ class JiraService
 	 */
 	public function priorities()
 	{
-		return new PriorityService;
+		return $this->service(PriorityService::class);
 	}
 
 	/**
@@ -47,7 +84,7 @@ class JiraService
 	 */
 	public function projects()
 	{
-		return new ProjectService;
+		return $this->service(ProjectService::class);
 	}
 
 	/**
@@ -57,6 +94,30 @@ class JiraService
 	 */
 	public function users()
 	{
-		return new UserService;
+		return $this->service(UserService::class);
+	}
+
+	/**
+	 * Returns the specified service.
+	 *
+	 * @param  string  $class
+	 *
+	 * @return mixed
+	 */
+	public function service($class)
+	{
+		return $this->services[$class] = $this->services[$class] ?? $this->app->make($class, [
+			'configuration' => $this->config
+		]);
+	}
+
+	/**
+	 * Returns the configuration for the jira services.
+	 *
+	 * @return \JiraRestApi\Configuration\ConfigurationInterface
+	 */
+	public function getConfiguration()
+	{
+		return $this->config;
 	}
 }

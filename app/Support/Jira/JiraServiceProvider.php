@@ -4,6 +4,8 @@ namespace App\Support\Jira;
 
 use Illuminate\Support\ServiceProvider;
 use App\Support\Jira\Auth\JiraUserProvider;
+use App\Support\Jira\Config\SharedConfiguration;
+use JiraRestApi\Configuration\ConfigurationInterface;
 
 class JiraServiceProvider extends ServiceProvider
 {
@@ -26,7 +28,7 @@ class JiraServiceProvider extends ServiceProvider
     protected function registerJiraService()
     {
         $this->app->singleton(JiraService::class, function($app) {
-            return new JiraService;
+            return new JiraService($app, $app->make(SharedConfiguration::class));
         });
     }
 

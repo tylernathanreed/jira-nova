@@ -2,6 +2,7 @@
 
 namespace App\Support\Jira\Auth;
 
+use Throwable;
 use Illuminate\Support\Str;
 use App\Support\Jira\JiraService;
 use Illuminate\Auth\EloquentUserProvider;
@@ -58,17 +59,58 @@ class JiraUserProvider extends EloquentUserProvider
             return $user;
         }
 
-        // Try to find the jira user
-        $user = $this->jira->users()->findUsers(['username' => $credentials[$this->getAuthIdentifierName()]])[0] ?? null;
+        // Determine the jira configuration
+        $config = $this->jira->getConfiguration();
 
-        // At this point, we have confirmed that the user exists within Jira,
-        // but we haven't confirmed that the password is correct. The next
-        // step is to confirm that the password can be used to log in.
+        // Remember the original username and password
+        $original = [
+            'username' => $config->getJiraUser(),
+            'password' => $config->getJiraPassword()
+        ];
 
-        /**
-         * @todo Verify
-         */
-        dd(compact('credentials', 'user'));
+        // Try to find the user with their credentials
+        try {
+
+            // Change the api credentials to the one provided
+            $credentials = [
+                'username' => $credentials[$this->getAuthIdentifierName()],
+                'password' => $credentials['password']
+            ];
+
+            $config->setJiraUser($original['username']);
+            $config->setJiraPassword($original['password']);
+
+            // Determine the jira user
+            $user = $this->jira->users()->findUsers(['username' => $credentials['username']])[0] ?? null;
+
+        }
+
+        // Suppress all exceptions
+        catch(Throwable $ex) {
+
+            // Nothing to do
+
+        }
+
+        finally {
+
+            // No matter what happens, reset the configuration
+            $config->setJiraUser($original['username']);
+            $config->setJiraPassword($original['password']);
+
+        }
+
+        // If a jira user couldn't be found, return null
+        if(!isset($user)) {
+            return null;
+        }
+
+        // At this point, we've found the user within jira. We need to
+        // create or update our local version of the user so that we
+        // don't have to reach out to jira for every single login.
+
+        // Create/update and return the user model
+        return $this->createModel()::createOrUpdateFromJira($user, $credentials);
     }
 
     /**

@@ -105,25 +105,25 @@
             <div class="swimlane-issue-field" data-field="links" style="min-width: 50px; max-width: 50px; text-align: center">
                 <div v-if="blocks.length > 0">
                     <div class="flex justify-center">
-                        <div :class="'block chain-' + blocks[0]['chain']">
+                        <div :class="'link-block chain-' + blocks[0]['chain']">
                             {{ blocks[0]['depth'] }}
                         </div>
 
-                        <div v-if="blocks[1] && blocks[3]" :class="'block chain-' + blocks[1]['chain']">
+                        <div v-if="blocks[1] && blocks[3]" :class="'link-block chain-' + blocks[1]['chain']">
                             {{ blocks[1]['depth'] }}
                         </div>
                     </div>
 
                     <div v-if="blocks[2]" class="flex justify-center">
-                        <div v-if="blocks[2] && !blocks[3]" :class="'block chain-' + blocks[1]['chain']">
+                        <div v-if="blocks[2] && !blocks[3]" :class="'link-block chain-' + blocks[1]['chain']">
                             {{ $blocks[1]['depth'] }}
                         </div>
 
-                        <div v-else-if="blocks[2]" :class="'block chain-' + blocks[2]['chain']">
+                        <div v-else-if="blocks[2]" :class="'link-block chain-' + blocks[2]['chain']">
                             {{ $blocks[2]['depth'] }}
                         </div>
 
-                        <div v-if="blocks[3]" :class="'block chain-' + blocks[3]['chain']">
+                        <div v-if="blocks[3]" :class="'link-block chain-' + blocks[3]['chain']">
                             {{ $blocks[3]['depth'] }}
                         </div>
                     </div>
@@ -368,7 +368,7 @@
         color: #ff0000;
     }
 
-    .block {
+    .link-block {
         width: 16px;
         height: 16px;
         margin: 1px;

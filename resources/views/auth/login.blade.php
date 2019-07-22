@@ -1,73 +1,63 @@
-@extends('layouts.app')
+@extends('layouts.app', [
+    'body' => [
+        'class' => 'bg-40 text-black h-full'
+    ]
+])
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+@push('styles')
+    <link rel="stylesheet" href="{{ mix('app.css', 'vendor/nova') }}">
+@endpush
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+@section('app')
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <div class="px-view py-view mx-auto">
+        <div class="mx-auto py-8 max-w-sm text-center text-90 flex items-center justify-center">
+            <i class="fab fa-jira fa-fw fa-2x pr-4"></i> <span class="text-2xl"><b>Jira</b> Issue Management</span>
         </div>
+
+        <form
+            class="bg-white shadow rounded-lg p-8 max-w-login mx-auto"
+            method="POST"
+            action="{{ route('login') }}"
+        >
+            {{ csrf_field() }}
+
+            <h2 class="text-2xl text-center font-normal mb-6 text-90">
+                {{ __('Welcome Back!') }}
+            </h2>
+
+            <svg class="block mx-auto mb-6" xmlns="http://www.w3.org/2000/svg" width="100" height="2" viewBox="0 0 100 2">
+                <g id="Page-1" fill="none" fill-rule="evenodd">
+                    <g id="08-login" fill="#D8E3EC" transform="translate(-650 -371)">
+                        <path id="Rectangle-15" d="M650 371h100v2H650z"/>
+                    </g>
+                </g>
+            </svg>
+
+            @if($errors->any())
+                <p class="text-center font-semibold text-danger my-3">
+                    @if($errors->has('email_address'))
+                        {{ $errors->first('email_address') }}
+                    @else
+                        {{ $errors->first('password') }}
+                    @endif
+                </p>
+            @endif
+
+            <div class="mb-6 {{ $errors->has('email') ? ' has-error' : '' }}">
+                <label class="block font-bold mb-2" for="email_address">{{ __('Email Address') }}</label>
+                <input class="form-control form-input form-input-bordered w-full" id="email_address" type="email" name="email_address" value="{{ old('email') }}" required autofocus>
+            </div>
+
+            <div class="mb-6 {{ $errors->has('password') ? ' has-error' : '' }}">
+                <label class="block font-bold mb-2" for="password">{{ __('Password') }}</label>
+                <input class="form-control form-input form-input-bordered w-full" id="password" type="password" name="password" required>
+            </div>
+
+            <button class="w-full btn btn-default btn-primary hover:bg-primary-dark py-0" type="submit">
+                {{ __('Login') }}
+            </button>
+        </form>
     </div>
-</div>
+
 @endsection

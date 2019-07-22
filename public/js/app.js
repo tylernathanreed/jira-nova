@@ -6620,7 +6620,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.swimlane-issue-wrapper {\n    display: flex;\n    align-items: center;\n    min-height: 3rem;\n    width: 100%;\n    margin: 5px 0;\n    padding: 5px;\n    font-size: 12px;\n    font-family: 'Segoe UI';\n    line-height: 1rem;\n    background: #fff;\n    border: 1px solid #ddd;\n    border-radius: 3px;\n    box-shadow: 0 1px 2px 0 rgba(9, 30, 66, 0.25);\n    color: #333;\n    cursor: move;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n.swimlane-issue-wrapper.delinquent {\n    background: #fee;\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: flex;\n    align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.epic-label a,\n.epic-label a:active,\n.epic-label a:hover,\n.epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\nimg.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.flex {\n    display: flex;\n}\n.items-center {\n    align-items: center;\n}\n.space-between {\n    justify-content: space-between;\n}\n.justify-center {\n    justify-content: center;\n}\n.flex-1 {\n    flex: 1;\n}\n.text-center {\n    text-align: center;\n}\n.text-green {\n    color: #008800;\n}\n.text-red {\n    color: #ff0000;\n}\n.block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.chain-0 { background-color: red;\n}\n.chain-1 { background-color: yellow;\n}\n.chain-2 { background-color: blue;\n}\n.chain-3 { background-color: orange;\n}\n.chain-4 { background-color: green;\n}\n.chain-5 { background-color: darkmagenta;\n}\n.chain-6 { background-color: lime;\n}\n.chain-7 { background-color: cyan;\n}\n.chain-8 { background-color: magenta;\n}\n.chain-9 { background-color: #faa;\n}\n.chain-10 { background-color: khaki;\n}\n.chain-11 { background-color: #cbf;\n}\n.chain-12 { background-color: tan;\n}\n.chain-13 { background-color: greenyellow;\n}\n.chain-14 { background-color: mediumorchid;\n}\n.chain-15 { background-color: #cfc;\n}\n.chain-16 { background-color: #8cf;\n}\n.chain-17 { background-color: #fdf;\n}\n.chain-18 { background-color: firebrick;\n}\n.chain-19 { background-color: darkgoldenrod;\n}\n.chain-20 { background-color: cornflowerblue;\n}\n.chain-21 { background-color: #c60;\n}\n.chain-22 { background-color: olive;\n}\n.chain-23 { background-color: darkslateblue;\n}\n.chain-24 { background-color: mediumseagreen;\n}\n.chain-25 { background-color: #08a;\n}\n.chain-26 { background-color: #f4a;\n}\n.chain-27 { background-color: black;\n}\n.chain-28 { background-color: darkslategray;\n}\n.chain-29 { background-color: #888;\n}\n.chain-30 { background-color: silver;\n}\n.chain-31 { background-color: white;\n}\nlabel {\n    margin: 0;\n}\n.px-1 {\n    padding-left: 0.25rem;\n    padding-right: 0.25rem;\n}\n.rounded-full {\n    border-radius: 9999px;\n}\na {\n    color: #0052cc;\n    text-decoration: none;\n}\na:active, a:hover, a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\n.swimlane-issue-wrapper {\n    display: flex;\n    align-items: center;\n    min-height: 3rem;\n    width: 100%;\n    margin: 5px 0;\n    padding: 5px;\n    font-size: 12px;\n    font-family: 'Segoe UI';\n    line-height: 1rem;\n    background: #fff;\n    border: 1px solid #ddd;\n    border-radius: 3px;\n    box-shadow: 0 1px 2px 0 rgba(9, 30, 66, 0.25);\n    color: #333;\n    cursor: move;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n.swimlane-issue-wrapper.delinquent {\n    background: #fee;\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: flex;\n    align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.epic-label a,\n.epic-label a:active,\n.epic-label a:hover,\n.epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\nimg.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.flex {\n    display: flex;\n}\n.items-center {\n    align-items: center;\n}\n.space-between {\n    justify-content: space-between;\n}\n.justify-center {\n    justify-content: center;\n}\n.flex-1 {\n    flex: 1;\n}\n.text-center {\n    text-align: center;\n}\n.text-green {\n    color: #008800;\n}\n.text-red {\n    color: #ff0000;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.chain-0 { background-color: red;\n}\n.chain-1 { background-color: yellow;\n}\n.chain-2 { background-color: blue;\n}\n.chain-3 { background-color: orange;\n}\n.chain-4 { background-color: green;\n}\n.chain-5 { background-color: darkmagenta;\n}\n.chain-6 { background-color: lime;\n}\n.chain-7 { background-color: cyan;\n}\n.chain-8 { background-color: magenta;\n}\n.chain-9 { background-color: #faa;\n}\n.chain-10 { background-color: khaki;\n}\n.chain-11 { background-color: #cbf;\n}\n.chain-12 { background-color: tan;\n}\n.chain-13 { background-color: greenyellow;\n}\n.chain-14 { background-color: mediumorchid;\n}\n.chain-15 { background-color: #cfc;\n}\n.chain-16 { background-color: #8cf;\n}\n.chain-17 { background-color: #fdf;\n}\n.chain-18 { background-color: firebrick;\n}\n.chain-19 { background-color: darkgoldenrod;\n}\n.chain-20 { background-color: cornflowerblue;\n}\n.chain-21 { background-color: #c60;\n}\n.chain-22 { background-color: olive;\n}\n.chain-23 { background-color: darkslateblue;\n}\n.chain-24 { background-color: mediumseagreen;\n}\n.chain-25 { background-color: #08a;\n}\n.chain-26 { background-color: #f4a;\n}\n.chain-27 { background-color: black;\n}\n.chain-28 { background-color: darkslategray;\n}\n.chain-29 { background-color: #888;\n}\n.chain-30 { background-color: silver;\n}\n.chain-31 { background-color: white;\n}\nlabel {\n    margin: 0;\n}\n.px-1 {\n    padding-left: 0.25rem;\n    padding-right: 0.25rem;\n}\n.rounded-full {\n    border-radius: 9999px;\n}\na {\n    color: #0052cc;\n    text-decoration: none;\n}\na:active, a:hover, a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
 
 // exports
 
@@ -58333,7 +58333,7 @@ var render = function() {
                     _c("div", { staticClass: "flex justify-center" }, [
                       _c(
                         "div",
-                        { class: "block chain-" + _vm.blocks[0]["chain"] },
+                        { class: "link-block chain-" + _vm.blocks[0]["chain"] },
                         [
                           _vm._v(
                             "\n                        " +
@@ -58346,7 +58346,10 @@ var render = function() {
                       _vm.blocks[1] && _vm.blocks[3]
                         ? _c(
                             "div",
-                            { class: "block chain-" + _vm.blocks[1]["chain"] },
+                            {
+                              class:
+                                "link-block chain-" + _vm.blocks[1]["chain"]
+                            },
                             [
                               _vm._v(
                                 "\n                        " +
@@ -58364,7 +58367,8 @@ var render = function() {
                             ? _c(
                                 "div",
                                 {
-                                  class: "block chain-" + _vm.blocks[1]["chain"]
+                                  class:
+                                    "link-block chain-" + _vm.blocks[1]["chain"]
                                 },
                                 [
                                   _vm._v(
@@ -58378,7 +58382,8 @@ var render = function() {
                             ? _c(
                                 "div",
                                 {
-                                  class: "block chain-" + _vm.blocks[2]["chain"]
+                                  class:
+                                    "link-block chain-" + _vm.blocks[2]["chain"]
                                 },
                                 [
                                   _vm._v(
@@ -58394,7 +58399,8 @@ var render = function() {
                             ? _c(
                                 "div",
                                 {
-                                  class: "block chain-" + _vm.blocks[3]["chain"]
+                                  class:
+                                    "link-block chain-" + _vm.blocks[3]["chain"]
                                 },
                                 [
                                   _vm._v(
@@ -74178,8 +74184,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! S:\Docroot\personal\jira-nova\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! S:\Docroot\personal\jira-nova\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\Program Files (x86)\Wamp\3.1.7\www\projects\jira-nova\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\Program Files (x86)\Wamp\3.1.7\www\projects\jira-nova\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

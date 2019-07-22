@@ -45,9 +45,43 @@ return [
     ],
 
     'jira' => [
+
         'host' => env('JIRA_HOST'),
         'username' => env('JIRA_USER'),
-        'password' => env('JIRA_PASS')
+        'password' => env('JIRA_PASS'),
+
+        'version' => env('JIRA_VERSION', '7.9.2'),
+        'use_v3_rest_api' => env('JIRA_REST_API_V3'),
+
+        'oauth' => [
+            'token' => env('JIRA_OAUTH_ACCESS_TOKEN')
+        ],
+
+        'cookies' => [
+            'enabled' => env('JIRA_COOKIE_AUTH_ENABLED', false),
+            'file' => env('JIRA_COOKIE_AUTH_FILE', 'jira-cookie.txt')
+        ],
+
+        'logs' => [
+            'enabled' => env('JIRA_LOG_ENABLED', true),
+            'level' => env('JIRA_LOG_LEVEL', 'WARNING'),
+            'file' => env('JIRA_LOG_FILE', 'jira-rest-client.log')
+        ],
+
+        'curl' => [
+            'verify_host' => env('JIRA_CURLOPT_SSL_VERIFYHOST', false),
+            'verify_peer' => env('JIRA_CURLOPT_SSL_VERIFYPEER', false),
+            'user_agent' => env('JIRA_CURLOPT_USERAGENT', sprintf('curl/%s (%s)', ($curl = curl_version())['version'], $curl['host'])),
+            'verbose' => env('JIRA_CURLOPT_VERBOSE', false)
+        ],
+
+        'proxy' => [
+            'server' => env('JIRA_PROXY_SERVER'),
+            'port' => env('JIRA_PROXY_PORT'),
+            'user' => env('JIRA_PROXY_USER'),
+            'password' => env('JIRA_PROXY_PASSWORD'),
+        ]
+
     ]
 
 ];

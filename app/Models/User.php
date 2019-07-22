@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email_address', 'password',
     ];
 
     /**
@@ -50,15 +50,15 @@ class User extends Authenticatable
      */
     public static function createOrUpdateFromJira($jira, $options = [])
     {
-        // Try to find the existing issue type in our system
-        if(!is_null($issue = static::where('jira_id', '=', $jira->accountId)->first())) {
+        // Try to find the existing user in the system
+        if(!is_null($user = static::where('jira_id', '=', $jira->accountId)->first())) {
 
-            // Update the issue type
-            return $issue->updateFromJira($jira, $options);
+            // Update the user
+            return $user->updateFromJira($jira, $options);
 
         }
 
-        // Create the issue type
+        // Create the user
         return static::createFromJira($jira, $options);
     }
 
@@ -91,8 +91,13 @@ class User extends Authenticatable
     {
         // Update the jira attributes
         $this->jira_id = $jira->accountId;
-        $this->name = $jira->name;
-        $this->email = $jira->emailAddress;
+        $this->display_name = $jira->displayName;
+        $this->email_address = $jira->emailAddress;
+
+        // If a password was provided, hasn and store it
+        if(isset($options['password'])) {
+            $this->password = bcrypt($options['password']);
+        }
 
         // Save
         $this->save();
@@ -138,7 +143,7 @@ class User extends Authenticatable
     {
         return static::findJira([
             'accountId' => $this->jira_id,
-            'email' => $this->email
+            'email' => $this->email_address
         ]);
     }
 
@@ -159,6 +164,6 @@ class User extends Authenticatable
      */
     public function getAuthJiraIdentifierName()
     {
-        return 'email';
+        return 'email_address';
     }
 }

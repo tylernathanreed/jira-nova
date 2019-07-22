@@ -24,7 +24,7 @@ class IssuesController extends Controller
     	]);
 
     	// Return the response
-        return view('pages.index', compact('issues'));
+        return view('models.issues.index', compact('issues'));
     }
 
     /**

@@ -2,32 +2,13 @@
 
 namespace JiraAgileRestApi\Configuration;
 
+use JiraRestApi\Configuration\AbstractConfiguration as BaseAbstractConfiguration;
+
 /**
  * Class AbstractConfiguration.
  */
-abstract class AbstractConfiguration implements ConfigurationInterface
+abstract class AbstractConfiguration extends BaseAbstractConfiguration
 {
-    /**
-     * Jira host.
-     *
-     * @var string
-     */
-    protected $jiraHost;
-
-    /**
-     * Jira login.
-     *
-     * @var string
-     */
-    protected $jiraUser;
-
-    /**
-     * Jira password.
-     *
-     * @var string
-     */
-    protected $jiraPassword;
-
     /**
      * Jira Version.
      *
@@ -35,107 +16,8 @@ abstract class AbstractConfiguration implements ConfigurationInterface
      */
     protected $jiraVersion;
 
-    /**
-     * Path to log file.
-     *
-     * @var string
-     */
-    protected $jiraLogFile;
-
-    /**
-     * Log level (DEBUG, INFO, ERROR, WARNING).
-     *
-     * @var string
-     */
-    protected $jiraLogLevel;
-
-    /**
-     * Curl options CURLOPT_SSL_VERIFYHOST.
-     *
-     * @var bool
-     */
-    protected $curlOptSslVerifyHost;
-
-    /**
-     * Curl options CURLOPT_SSL_VERIFYPEER.
-     *
-     * @var bool
-     */
-    protected $curlOptSslVerifyPeer;
-
-    /**
-     * Curl options CURLOPT_VERBOSE.
-     *
-     * @var bool
-     */
-    protected $curlOptVerbose;
-
-    /**
-     * @return string
-     */
-    public function getJiraHost()
-    {
-        return $this->jiraHost;
-    }
-
-    /**
-     * @return string
-     */
-    public function getJiraUser()
-    {
-        return $this->jiraUser;
-    }
-
-    /**
-     * @return string
-     */
-    public function getJiraPassword()
-    {
-        return $this->jiraPassword;
-    }
-
     public function getJiraVersion()
     {
         return $this->jiraVersion;
-    }
-
-    /**
-     * @return string
-     */
-    public function getJiraLogFile()
-    {
-        return $this->jiraLogFile;
-    }
-
-    /**
-     * @return string
-     */
-    public function getJiraLogLevel()
-    {
-        return $this->jiraLogLevel;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCurlOptSslVerifyHost()
-    {
-        return $this->curlOptSslVerifyHost;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCurlOptSslVerifyPeer()
-    {
-        return $this->curlOptSslVerifyPeer;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCurlOptVerbose()
-    {
-        return $this->curlOptVerbose;
     }
 }
