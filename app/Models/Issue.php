@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Jira;
+use JiraRestApi\Issue\IssueField;
 use App\Support\Jira\RankingOperation;
 use JiraRestApi\Issue\Issue as JiraIssue;
 
@@ -440,7 +441,7 @@ class Issue extends Model
         ];
 
         // Determine the base expression
-        $expression = 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development")';
+        $expression = 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development", "In Design")';
 
         // If the "dev" focus group is disabled, exclude them
         if(!$groups['dev']) {
@@ -588,6 +589,30 @@ class Issue extends Model
     public static function updateOrderByRank($oldOrder, $newOrder, $subtasks = [])
     {
         RankingOperation::execute($oldOrder, $newOrder, $subtasks);
+    }
+
+    /**
+     * Updates the estimated completion date from the given list of issues.
+     *
+     * @param  array  $estimates
+     *
+     * @return void
+     */
+    public static function updateEstimates($estimates)
+    {
+        // Iterate through each issue
+        foreach($estimates as $key => $estimate) {
+
+            // Create a new field set
+            $fields = new IssueField(true);
+
+            // Add the new estimated completion date
+            $fields->addCustomField(static::FIELD_ESTIMATED_COMPLETION_DATE, $estimate);
+
+            // Update the issue
+            Jira::issues()->update($key, $fields);
+
+        }
     }
 
     /**

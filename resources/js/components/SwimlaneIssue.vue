@@ -2,10 +2,11 @@
     <div class="swimlane-issue-wrapper" :class="{'delinquent': offset <= -7}">
 
         <input type="hidden" :name="`issues[${index}][key]`" :value="issue.key"/>
-        <input type="hidden" :name="`issues[${index}][index]`" :value="index"/>
-        <input type="hidden" :name="`issues[${index}][order]`" :value="order"/>
+        <input type="hidden" :name="`issues[${index}][order]`" :value="index"/>
         <input type="hidden" :name="`issues[${index}][est]`" :value="est"/>
         <input type="hidden" :name="`issues[${index}][is_subtask]`" :value="issue.is_subtask ? 1 : 0"/>
+        <input type="hidden" :name="`issues[${index}][original][order]`" :value="order"/>
+        <input type="hidden" :name="`issues[${index}][original][est]`" :value="issue.old_estimated_completion_date"/>
 
         <div class="swimlane-issue" :data-issue="issue.key">
             <div class="swimlane-issue-field" data-field="type">

@@ -40,14 +40,22 @@ class IssuesController extends Controller
         $issues = collect($request->issues);
 
         // Determine the old and new orders
-        $oldOrder = $issues->sortBy('order')->pluck('key')->toArray();
-        $newOrder = $issues->sortBy('index')->pluck('key')->toArray();
+        $oldOrder = $issues->sortBy('original.order')->pluck('key')->toArray();
+        $newOrder = $issues->sortBy('order')->pluck('key')->toArray();
 
         // Determine the subtasks
         $subtasks = $issues->where('is_subtask', '=', 1)->pluck('key')->toArray();
 
+        // Determine the issues with new estimates
+        $estimates = $issues->filter(function($issue) {
+            return $issue['est'] != $issue['original']['est'];
+        })->pluck('est', 'key');
+
         // Perform the ranking operations to sort the old list into the new list
         Issue::updateOrderByRank($oldOrder, $newOrder, $subtasks);
+
+        // Update the estimated completion dates
+        Issue::updateEstimates($estimates);
 
         // Redirect back to the index page
         return redirect()->route('issues.index');

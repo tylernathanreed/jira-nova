@@ -444,8 +444,8 @@ class RankingOperation
             // being a subtask, we'll have to find another way around.
 
             // Clear the previous and/or next issues if they're subtasks
-            $previous = count(array_intersect($groups[$previous]['issues'], $subtasks)) == 0 ? $previous : null;
-            $next = count(array_intersect($groups[$next]['issues'], $subtasks)) == 0 ? $next : null;
+            $previous = !is_null($previous) ? (count(array_intersect($groups[$previous]['issues'], $subtasks)) == 0 ? $previous : null) : null;
+            $next = !is_null($next) ? (count(array_intersect($groups[$next]['issues'], $subtasks)) == 0 ? $next : null) : null;
 
             // Create the "before" and "after" ranking operations
             $before = !is_null($next) ? new static($groups, $index, static::RELATION_BEFORE, $next) : null;

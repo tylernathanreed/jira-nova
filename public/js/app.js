@@ -2107,6 +2107,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['issueKey', 'index'],
   data: function data() {
@@ -58017,13 +58018,8 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("input", {
-        attrs: { type: "hidden", name: "issues[" + _vm.index + "][index]" },
-        domProps: { value: _vm.index }
-      }),
-      _vm._v(" "),
-      _c("input", {
         attrs: { type: "hidden", name: "issues[" + _vm.index + "][order]" },
-        domProps: { value: _vm.order }
+        domProps: { value: _vm.index }
       }),
       _vm._v(" "),
       _c("input", {
@@ -58037,6 +58033,22 @@ var render = function() {
           name: "issues[" + _vm.index + "][is_subtask]"
         },
         domProps: { value: _vm.issue.is_subtask ? 1 : 0 }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "hidden",
+          name: "issues[" + _vm.index + "][original][order]"
+        },
+        domProps: { value: _vm.order }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "hidden",
+          name: "issues[" + _vm.index + "][original][est]"
+        },
+        domProps: { value: _vm.issue.old_estimated_completion_date }
       }),
       _vm._v(" "),
       _c(
