@@ -93,11 +93,27 @@ class JiraEstimate extends Command
      */
     public function handle()
     {
+        // Log into jira
+        $this->login();
+
         // Estimate the jira issues
         $issues = $this->estimateJiraIssues();
 
         // Complain about delinquent estimates
         $this->complain($issues);
+    }
+
+    /**
+     * Logs into the jira api.
+     *
+     * @return void
+     */
+    public function login()
+    {
+        $config = Jira::getConfiguration();
+
+        $config->setJiraUser(env('_JIRA_USER'));
+        $config->setJiraPassword(env('_JIRA_PASS'));
     }
 
     /**

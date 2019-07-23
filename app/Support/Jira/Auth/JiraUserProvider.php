@@ -77,8 +77,8 @@ class JiraUserProvider extends EloquentUserProvider
                 'password' => $credentials['password']
             ];
 
-            $config->setJiraUser($original['username']);
-            $config->setJiraPassword($original['password']);
+            $config->setJiraUser($credentials['username']);
+            $config->setJiraPassword($credentials['password']);
 
             // Determine the jira user
             $user = $this->jira->users()->findUsers(['username' => $credentials['username']])[0] ?? null;

@@ -76,7 +76,7 @@ class User extends Authenticatable
         $user = new static;
 
         // Update the user from jira
-        return $user->updateFromJira($jira, $options = []);
+        return $user->updateFromJira($jira, $options);
     }
 
     /**
