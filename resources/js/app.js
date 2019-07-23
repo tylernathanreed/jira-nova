@@ -6,24 +6,16 @@
  */
 
 require('./bootstrap');
-import draggable from 'vuedraggable';
 
 window.Vue = require('vue');
 
 /**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Next, we will setup some of the Vue components that need to be global
+ * so that they are always available. Then, we will be ready to create
+ * the actual Vue instance and start up the JavaScript application.
  */
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('swimlane-issue', require('./components/SwimlaneIssue.vue').default);
-Vue.component('swimlane', require('./components/Swimlane.vue').default);
-Vue.component('draggable', draggable);
+import './components';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

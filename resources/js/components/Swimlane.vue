@@ -42,6 +42,13 @@
 
         },
 
+        /**
+         * Mount the component and retrieve its initial data.
+         */
+        async created() {
+            this.assignEstimatedCompletionDates(this.issues);
+        },
+
         methods: {
 
             onDragStart: function() {

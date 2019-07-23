@@ -10685,3 +10685,19 @@ a.text-dark:focus {
   font-weight: bold;
 }
 
+.svg-inline {
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+}
+
+.text-jira {
+  color: #0747A6;
+}
+
+.bg-jira {
+  background-color: #0747A6;
+}
+

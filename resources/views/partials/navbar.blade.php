@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
+            <icon-jira class="text-jira"></icon-jira>
             {{ config('app.name', 'Laravel') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -29,19 +30,19 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            <i class="fas fa-user"></i> {{ Auth::user()->display_name }} <span class="caret"></span>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <icon-user class="mr-1"></icon-user> {{ Auth::user()->display_name }} <span class="caret"></span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('issues.index') }}">
-                                <i class="fas fa-home fa-fw fa-fw -ml-3 mr-1"></i> {{ __('Dashboard') }}
+                                <icon-home class="fa-fw -ml-3 mr-1"></icon-home> {{ __('Dashboard') }}
                             </a>
 
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
-                                <i class="fas fa-sign-out-alt fa-fw -ml-3 mr-1"></i> {{ __('Logout') }}
+                                <icon-logout class="fa-fw -ml-3 mr-1"></icon-logout> {{ __('Logout') }}
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

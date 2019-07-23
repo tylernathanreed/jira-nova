@@ -14,26 +14,42 @@
 }
 
 .-ml-3 {
-	margin-left: -0.75rem;
+    margin-left: -0.75rem;
 }
 
 .mr-1 {
-	margin-right: 0.25rem;
+    margin-right: 0.25rem;
 }
 
 .py-8 {
-	padding-top: 2rem;
-	padding-bottom: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .text-2xl {
-	font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 .text-5xl {
-	font-size: 3rem;
+    font-size: 3rem;
 }
 
 .bold {
-	font-weight: bold;
+    font-weight: bold;
+}
+
+.svg-inline {
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+}
+
+.text-jira {
+    color: #0747A6;
+}
+
+.bg-jira {
+    background-color: #0747A6;
 }

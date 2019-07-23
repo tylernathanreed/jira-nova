@@ -78,10 +78,8 @@
                     <div class="flex items-center">
                         <label>E</label>
                         <div class="flex-1">
-                            <span
-                                :class="est ? '' : 'text-gray'"
-                                v-text="est ? moment(est).toDate().toLocaleDateString() : 'TBD'"
-                            />
+                            <span v-if="est" v-text="moment(est).toDate().toLocaleDateString()"/>
+                            <loader v-else class="text-gray" />
                         </div>
                     </div>
                 </div>
@@ -135,6 +133,8 @@
 </template>
 
 <script>
+    import moment from 'moment';
+
     export default {
 
         props: [
@@ -152,7 +152,7 @@
 
         methods: {
 
-            moment: window.moment
+            moment: moment
 
         },
 
@@ -167,7 +167,7 @@
             },
 
             est: function() {
-                return this.issue.new_estimated_completion_date || this.issue.old_estimated_completion_date;
+                return this.issue.new_estimated_completion_date;
             },
 
             offset: function() {
@@ -176,8 +176,8 @@
                     return null;
                 }
 
-                let a = moment(this.due);
-                let b = moment(this.est);
+                let a = this.moment(this.due);
+                let b = this.moment(this.est);
 
                 return a.diff(b, 'days', 0);
 
