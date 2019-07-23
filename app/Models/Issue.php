@@ -450,7 +450,7 @@ class Issue extends Model
 
         // If the "ticket" focus group is disabled, exclude them
         if(!$groups['ticket']) {
-            $expression .= ' AND ("Issue Category" is empty or "Issue Category" not in ("Ticket", "Data"))';
+            $expression .= ' AND ("Issue Category" is empty or "Issue Category" not in ("Ticket", "Data") or priority = Highest)';
         }
 
         // If the "other" focus group is disabled, exclude them

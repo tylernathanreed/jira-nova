@@ -159,7 +159,7 @@
         computed: {
 
             issue: function() {
-                return this.$parent.$parent.getIssue(this.issueKey);
+                return this.$parent.$parent.$parent.getIssue(this.issueKey);
             },
 
             due: function() {

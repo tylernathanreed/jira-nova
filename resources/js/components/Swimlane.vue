@@ -1,17 +1,19 @@
 <template>
-    <div class="swimlane">
-        <draggable
-            class="swimlane-content"
-            :class="{ 'dragging': dragging }"
-            :list="issues"
-            ghost-class="ghost"
-            @start="onDragStart"
-            @end="onDragEnd"
-            :component-data="getComponentData()"
-        >
-            <swimlane-issue v-for="(issue, index) in issues" :issue-key="issue.key" :key="issue.key" :index="index"/>
-        </draggable>
-    </div>
+    <loading-view :loading="initialLoading">
+        <div class="swimlane">
+            <draggable
+                class="swimlane-content"
+                :class="{ 'dragging': dragging }"
+                :list="issues"
+                ghost-class="ghost"
+                @start="onDragStart"
+                @end="onDragEnd"
+                :component-data="getComponentData()"
+            >
+                <swimlane-issue v-for="(issue, index) in issues" :issue-key="issue.key" :key="issue.key" :index="index"/>
+            </draggable>
+        </div>
+    </loading-view>
 </template>
 
 <script>
@@ -26,6 +28,8 @@
         data: function() {
 
             return {
+                initialLoading: true,
+
                 updatedIssues: this.issues,
                 dragging: false,
                 schedule: {
@@ -46,7 +50,27 @@
          * Mount the component and retrieve its initial data.
          */
         async created() {
+
+            // Determine the issues
+            // await this.getIssues();
+
+            // Assign the estimated completion dates
             this.assignEstimatedCompletionDates(this.issues);
+
+            // Mark the initial loading as completed
+            this.initialLoading = false;
+
+            this.$watch(
+                () => {
+                    return (
+                        this.encodedFilters
+                    )
+                },
+                () => {
+                    this.getResources()
+                }
+            );
+
         },
 
         methods: {
