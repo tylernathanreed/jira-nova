@@ -47,6 +47,25 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 /**
+ * Jira API
+ */
+Route::group(['prefix' => 'jira-api'], function() {
+
+	/**
+	 * Issues
+	 */
+	Route::group(['prefix' => 'issues'], function() {
+
+		// Index
+		Route::get('/', [
+			'uses' => 'IssuesController@index'
+		]);
+
+	});
+
+});
+
+/**
  * Unauthenticated Routes
  */
 Route::get('/', 'PagesController@index')->name('pages.index');

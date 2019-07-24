@@ -17,6 +17,8 @@
         "laravel/tinker": "^1.0",
         "lesstif/php-jira-rest-client": "^1.37",
         "mnobrega/php-jira-agile-rest-client": "dev-master",
+        "nova-components/jira-issue-manager": "*",
+        "rcknr/nova-multiselect-filter": "^1.2",
         "reedware/laravel-blueprints": "^1.0@dev",
         "reedware/nova-field-manager": "^0.1.0@dev",
         "reedware/nova-value-toggle": "dev-master"
@@ -45,6 +47,14 @@
         {
             "type": "path",
             "url": "./packages/mnobrega/php-jira-agile-rest-client"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/JiraIssueManager"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/JiraIssueSwimlane"
         }
     ],
     "config": {

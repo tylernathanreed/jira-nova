@@ -13,18 +13,3 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::group(['middleware' => 'auth:api'], function() {
-
-	/**
-	 * Issues
-	 */
-	Route::group(['prefix' => 'issues'], function() {
-
-		// Index
-		Route::get('/', [
-			'uses' => 'IssuesController@index'
-		]);
-
-	});
-
-// });
