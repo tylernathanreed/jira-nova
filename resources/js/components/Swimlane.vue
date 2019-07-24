@@ -19,6 +19,18 @@
 <script>
     import Constants from '../support/constants.js';
 
+    import {
+        // Errors,
+        // Deletable,
+        // Filterable,
+        // HasCards,
+        Minimum,
+        // Paginatable,
+        // PerPageable,
+        // InteractsWithQueryString,
+        // InteractsWithResourceInformation,
+    } from 'laravel-nova'
+
     export default {
 
         props: [
@@ -52,7 +64,7 @@
         async created() {
 
             // Determine the issues
-            // await this.getIssues();
+            await this.getResources();
 
             // Assign the estimated completion dates
             this.assignEstimatedCompletionDates(this.issues);
@@ -272,7 +284,94 @@
                     }
                 }
 
-            }
+            },
+
+            /**
+             * Get the resources based on the current page, search, filters, etc.
+             */
+            getResources() {
+                this.loading = true
+
+                this.$nextTick(() => {
+
+                    return Minimum(
+                        Nova.request().get('/nova-api/' + this.resourceName, {
+                            params: this.resourceRequestQueryString,
+                        }),
+                        500
+                    ).then(({ data }) => {
+                        this.resources = []
+
+                        this.resourceResponse = data
+                        this.resources = data.resources
+                        this.softDeletes = data.softDeletes
+                        this.perPage = data.per_page
+
+                        this.loading = false
+
+                        this.getAllMatchingResourceCount()
+
+                        Nova.$emit('resources-loaded')
+                    })
+
+                });
+            },
+
+        },
+
+        computed: {
+
+            resourceName() {
+                return 'jira-issue';
+            },
+
+            /**
+             * Determine if the resource has any filters
+             */
+            hasFilters() {
+                return this.$store.getters[`${this.resourceName}/hasFilters`]
+            },
+
+            /**
+             * Build the resource request query string.
+             */
+            resourceRequestQueryString() {
+                return {
+                    // search: this.currentSearch,
+                    filters: this.encodedFilters,
+                    // orderBy: this.currentOrderBy,
+                    // orderByDirection: this.currentOrderByDirection,
+                    // perPage: this.currentPerPage,
+                    // trashed: this.currentTrashed,
+                    // page: this.currentPage,
+                    // viaResource: this.viaResource,
+                    // viaResourceId: this.viaResourceId,
+                    // viaRelationship: this.viaRelationship,
+                    // viaResourceRelationship: this.viaResourceRelationship,
+                    // relationshipType: this.relationshipType,
+                }
+            },
+
+            /**
+             * Determine if there are any resources for the view
+             */
+            hasResources() {
+                return Boolean(this.resources.length > 0)
+            },
+
+            /**
+             * Return the currently encoded filter string from the store
+             */
+            encodedFilters() {
+                return this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
+            },
+
+            /**
+             * Return the initial encoded filters from the query string
+             */
+            initialEncodedFilters() {
+                return this.$route.query[this.filterParameter] || ''
+            },
 
         }
 
