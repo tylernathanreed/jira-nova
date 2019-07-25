@@ -91,6 +91,7 @@ class User extends Authenticatable
     {
         // Update the jira attributes
         $this->jira_id = $jira->accountId;
+        $this->jira_key = $jira->key;
         $this->display_name = $jira->displayName;
         $this->email_address = $jira->emailAddress;
 

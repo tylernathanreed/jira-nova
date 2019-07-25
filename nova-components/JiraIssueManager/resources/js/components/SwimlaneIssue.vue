@@ -30,7 +30,7 @@
                     <a :href="issue.url" target="_blank" v-text="issue.key"/>
                 </div>
 
-                <div v-if="issue.epic_key" :class="'swimlane-issue-field text-center epic-label ' + issue.epic_color" data-field="epic">
+                <div v-if="issue.epic_key" :class="'swimlane-issue-field text-center epic-label ' + (issue.epic_color || 'ghx-label-0')" data-field="epic">
                     <a :href="issue.epic_url" target="_blank" v-text="issue.epic_name"/>
                 </div>
             </div>
@@ -295,6 +295,19 @@
     .epic-label a:hover,
     .epic-label a:focus {
         color: inherit;
+    }
+
+    .ghx-label-0 {
+        color: #0065ff;
+        background-color: #f5f5f5;
+        border-color: #ccc;
+        border-width: 1px;
+    }
+
+    .ghx-label-2 {
+        color: #172B4D;
+        background-color: #ffc400;
+        border-color: #ffc400;
     }
 
     .ghx-label-4 {

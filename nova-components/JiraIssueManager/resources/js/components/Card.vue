@@ -44,6 +44,7 @@
 
 <script>
     import Constants from '../support/constants.js';
+    import defaults from 'lodash/defaults';
 
     import {
         // Errors,
@@ -126,6 +127,13 @@
 
         },
 
+        beforeRouteUpdate(to, from, next) {
+
+            next();
+            this.initializeState(false);
+
+        },
+
         methods: {
 
             onDragStart: function(ev) {
@@ -158,7 +166,8 @@
              * Get the resources based on the current page, search, filters, etc.
              */
             getResources() {
-                this.loading = true
+
+                this.loading = true;
 
                 this.$nextTick(() => {
 
@@ -169,7 +178,7 @@
                         500
                     ).then(({ data }) => {
 
-                        this.resources = []
+                        this.resources = [];
 
                         this.resourceResponse = data;
                         this.resources = data.resources;
@@ -180,9 +189,23 @@
 
                         Nova.$emit('resources-loaded');
 
-                    })
+                    });
 
                 });
+
+            },
+
+            /**
+             * Update the given query string values.
+             */
+            updateQueryString(value) {
+
+                // Remove the "per page" parameter
+                delete value[this.pageParameter];
+
+                // Update the query string
+                this.$router.push({ query: defaults(value, this.$route.query) });
+
             },
 
             getComponentData() {
@@ -378,6 +401,33 @@
              */
             pageParameter() {
                 return this.resourceName + '_page'
+            },
+
+            /**
+             * Build the resource request query string.
+             */
+            resourceRequestQueryString() {
+                return {
+                    // search: this.currentSearch,
+                    filters: this.encodedFilters,
+                    // orderBy: this.currentOrderBy,
+                    // orderByDirection: this.currentOrderByDirection,
+                    // perPage: this.currentPerPage,
+                    // trashed: this.currentTrashed,
+                    // page: this.currentPage,
+                    // viaResource: this.viaResource,
+                    // viaResourceId: this.viaResourceId,
+                    // viaRelationship: this.viaRelationship,
+                    // viaResourceRelationship: this.viaResourceRelationship,
+                    // relationshipType: this.relationshipType,
+                }
+            },
+
+            /**
+             * Return the currently encoded filter string from the store
+             */
+            encodedFilters() {
+                return this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
             },
 
         },

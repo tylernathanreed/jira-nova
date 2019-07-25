@@ -440,8 +440,11 @@ class Issue extends Model
             'other' => true
         ];
 
+        // Determine the assignees
+        $assignees = implode(', ', $options['assignee'] ?? ['tyler.reed']);
+
         // Determine the base expression
-        $expression = 'assignee in (tyler.reed) AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development", "In Design")';
+        $expression = 'assignee in (' . $assignees . ') AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development", "In Design")';
 
         // If the "dev" focus group is disabled, exclude them
         if(!$groups['dev']) {

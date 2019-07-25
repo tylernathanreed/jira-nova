@@ -21,6 +21,23 @@ class IssueFocus extends MultiSelectFilter
     }
 
     /**
+     * Apply the filter to the given jira options.
+     *
+     * @param  array  $options
+     * @param  mixed  $value
+     *
+     * @return void
+     */
+    public function applyToJiraOptions(&$options, $value)
+    {
+        $options['groups'] = [
+            'dev' => in_array('dev', $value),
+            'ticket' => in_array('ticket', $value),
+            'other' => in_array('other', $value)
+        ];
+    }
+
+    /**
      * Get the filter's available options.
      *
      * @param  \Illuminate\Http\Request  $request

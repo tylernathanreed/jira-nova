@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
 
             // Attributes
             $table->string('jira_id', 32)->nullable()->index();
+            $table->string('jira_key', 32)->nullable()->index();
             $table->string('display_name', 100);
             $table->string('email_address')->unique();
             $table->timestamp('email_verified_at')->nullable();

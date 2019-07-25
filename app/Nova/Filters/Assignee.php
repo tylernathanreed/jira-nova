@@ -22,6 +22,19 @@ class Assignee extends SelectFilter
     }
 
     /**
+     * Apply the filter to the given jira options.
+     *
+     * @param  array  $options
+     * @param  mixed  $value
+     *
+     * @return void
+     */
+    public function applyToJiraOptions(&$options, $value)
+    {
+        $options['assignee'] = (array) $value;
+    }
+
+    /**
      * Get the filter's available options.
      *
      * @param  \Illuminate\Http\Request  $request
