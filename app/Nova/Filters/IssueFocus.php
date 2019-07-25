@@ -4,7 +4,7 @@ namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
 
-class IssueFocus extends MultiSelectFilter
+class IssueFocus extends SelectFilter
 {
     /**
      * Apply the filter to the given query.
@@ -31,9 +31,9 @@ class IssueFocus extends MultiSelectFilter
     public function applyToJiraOptions(&$options, $value)
     {
         $options['groups'] = [
-            'dev' => in_array('dev', $value),
-            'ticket' => in_array('ticket', $value),
-            'other' => in_array('other', $value)
+            'dev' => $value == 'dev' || $value == 'all',
+            'ticket' => $value == 'ticket' || $value == 'all',
+            'other' => true
         ];
     }
 
@@ -49,7 +49,7 @@ class IssueFocus extends MultiSelectFilter
         return array_flip([
             'dev' => 'Dev',
             'ticket' => 'Ticket',
-            'other' => 'Other'
+            'all' => 'All'
         ]);
     }
 }

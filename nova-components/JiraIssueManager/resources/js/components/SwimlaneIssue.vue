@@ -9,13 +9,6 @@
         }"
     >
 
-        <input type="hidden" :name="`issues[${index}][key]`" :value="issue.key"/>
-        <input type="hidden" :name="`issues[${index}][order]`" :value="index"/>
-        <input type="hidden" :name="`issues[${index}][est]`" :value="est"/>
-        <input type="hidden" :name="`issues[${index}][is_subtask]`" :value="issue.is_subtask ? 1 : 0"/>
-        <input type="hidden" :name="`issues[${index}][original][order]`" :value="order"/>
-        <input type="hidden" :name="`issues[${index}][original][est]`" :value="issue.old_estimated_completion_date"/>
-
         <div class="swimlane-issue" :data-issue="issue.key">
             <div class="swimlane-issue-field" data-field="type">
                 <img class="icon" :src="issue.type_icon_url"/>
@@ -200,6 +193,21 @@
 
             blocks: function() {
                 return this.issue.blocks;
+            },
+
+            resourceData: function() {
+
+                return {
+                    'key': this.issue.key,
+                    'order': this.index,
+                    'est': this.est,
+                    'is_subtask': this.issue.is_subtask ? 1 : 0,
+                    'original': {
+                        'order': this.order,
+                        'est': this.issue.old_estimated_completion_date
+                    }
+                };
+
             }
 
         }

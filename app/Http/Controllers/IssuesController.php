@@ -40,8 +40,6 @@ class IssuesController extends Controller
             $filter->filter->applyToJiraOptions($options, $filter->value);
         }
 
-        dump(compact('filters', 'options'));
-
     	// Determine the jira issues
     	$issues = Issue::getIssuesFromJira($options);
 

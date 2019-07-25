@@ -16,7 +16,24 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function boot()
     {
+        // Call the parent method
         parent::boot();
+
+        // Alias the login controller
+        $this->aliasLoginController();
+    }
+
+    /**
+     * Aliases the login controller to use a custom one.
+     *
+     * @return void
+     */
+    protected function aliasLoginController()
+    {
+        $this->app->alias(
+            \App\Http\Controllers\Nova\LoginController::class,
+            \Laravel\Nova\Http\Controllers\LoginController::class
+        );
     }
 
     /**
@@ -79,6 +96,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        //
+
     }
 }

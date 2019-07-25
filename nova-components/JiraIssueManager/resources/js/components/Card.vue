@@ -3,7 +3,23 @@
         <loading-view :loading="initialLoading">
 
             <card class="py-3 flex items-center bg-white border border-50 rounded mb-2">
-                <div class="flex items-center ml-auto px-3">
+                <div class="flex items-center justify-between w-full px-3">
+
+                    <div class="flex-1">
+                        <div v-if="resources.length">
+                            {{ resources.length == 1 ? '1 Issue' : (resources.length + ' Issues') }}
+                        </div>
+                    </div>
+
+                    <button
+                        v-if="resources.length"
+                        class="btn btm-sm btn-default btn-primary text-white rounded mr-3 h-dropdown-trigger"
+                        :class="{ 'btn-disabled': working }"
+                        :disabled="working"
+                        @click.prevent="saveChanges"
+                    >
+                        Save Changes
+                    </button>
 
                     <!-- Filters -->
                     <filter-menu
@@ -23,7 +39,7 @@
 
             <card class="bg-white border border-50 shadow p-1">
                 <loading-view :loading="loading">
-                    <div class="bg-30 border border-50 rounded p-1">
+                    <div v-if="resources.length" class="bg-30 border border-50 rounded p-1">
                         <draggable
                             class="-my-2"
                             :class="{ 'dragging': dragging }"
@@ -33,8 +49,13 @@
                             @end="onDragEnd"
                             :component-data="getComponentData()"
                         >
-                            <jira-swimlane-issue v-for="(issue, index) in resources" :issue-key="issue.key" :key="issue.key" :index="index" :swimlane="this"/>
+                            <jira-swimlane-issue v-for="(issue, index) in resources" :issue-key="issue.key" :key="issue.key" :index="index" ref="issue"/>
                         </draggable>
+                    </div>
+                    <div v-else>
+                        <h3 class="text-base text-80 font-normal py-3 text-center">
+                            No issues matched the given criteria.
+                        </h3>
                     </div>
                 </loading-view>
             </card>
@@ -47,7 +68,7 @@
     import defaults from 'lodash/defaults';
 
     import {
-        // Errors,
+        Errors,
         // Deletable,
         Filterable,
         // HasCards,
@@ -83,11 +104,14 @@
             return {
                 initialLoading: true,
                 loading: true,
+                working: false,
 
                 resources: [],
 
                 resourceName: 'jira-issues',
                 viaResource: 'jira-issues',
+                selectedActionKey: 'save-swimlane-changes',
+
                 dragging: false,
                 schedule: {
                     0: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 0},
@@ -171,6 +195,8 @@
 
                 this.$nextTick(() => {
 
+                    this.resources = [];
+
                     return Minimum(
                         Nova.request().get('/jira-api/issues', {
                             params: this.resourceRequestQueryString,
@@ -208,6 +234,81 @@
 
             },
 
+            /**
+             * Saves the changes made to the issues
+             */
+            saveChanges() {
+
+                this.working = true;
+
+                Nova.request({
+                    method: 'post',
+                    url: `/nova-api/${this.resourceName}/action`,
+                    params: this.actionRequestQueryString,
+                    data: this.actionFormData(),
+                })
+                    .then(response => {
+
+                        this.handleActionResponse(response.data);
+                        this.working = false;
+
+                    })
+                    .catch(error => {
+
+                        this.working = false;
+
+                        if(error.response.status == 422) {
+                            this.errors = new Errors(error.response.data.errors);
+                        }
+
+                    })
+            },
+
+            /**
+             * Gather the action FormData for the given action.
+             */
+            actionFormData() {
+
+                return _.tap(new FormData(), formData => {
+
+                    formData.append('resources', _.map(this.resources, 'key'));
+                    formData.append('resourceData', JSON.stringify(_.map(this.$refs.issue, 'resourceData')));
+
+                });
+
+            },
+
+            /**
+             * Handle the action response. Typically either a message, download or a redirect.
+             */
+            handleActionResponse(response) {
+
+                if (response.message) {
+                    this.$emit('actionExecuted')
+                    this.$toasted.show(response.message, { type: 'success' })
+                } else if (response.deleted) {
+                    this.$emit('actionExecuted')
+                } else if (response.danger) {
+                    this.$emit('actionExecuted')
+                    this.$toasted.show(response.danger, { type: 'error' })
+                } else if (response.download) {
+                    let link = document.createElement('a')
+                    link.href = response.download
+                    link.download = response.name
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+                } else if (response.redirect) {
+                    window.location = response.redirect
+                } else if (response.openInNewTab) {
+                    window.open(response.openInNewTab, '_blank')
+                } else {
+                    this.$emit('actionExecuted')
+                    this.$toasted.show(this.__('The changes were saved successfully!'), { type: 'success' })
+                }
+
+            },
+
             getComponentData() {
 
                 return {
@@ -227,6 +328,11 @@
 
                 // Determine the issues
                 let issues = this.resources;
+
+                // Make sure issues have been provided
+                if(typeof issues === 'undefined') {
+                    return [];
+                }
 
                 // Our schedule is broken down into focus times. Issues can be allocated
                 // to one or more focuses, and these focus times are when we can work
@@ -424,10 +530,33 @@
             },
 
             /**
+             * Get the query string for an action request.
+             */
+            actionRequestQueryString() {
+                return {
+                    action: this.selectedActionKey,
+                    // pivotAction: this.selectedActionIsPivotAction,
+                    // search: this.queryString.currentSearch,
+                    filters: this.encodedFilters,
+                    // trashed: this.queryString.currentTrashed,
+                    // viaResource: this.queryString.viaResource,
+                    // viaResourceId: this.queryString.viaResourceId,
+                    // viaRelationship: this.queryString.viaRelationship,
+                }
+            },
+
+            /**
              * Return the currently encoded filter string from the store
              */
             encodedFilters() {
                 return this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
+            },
+
+            /**
+             * Return the initial encoded filters from the query string
+             */
+            initialEncodedFilters() {
+                return this.$route.query[this.filterParameter] || ''
             },
 
         },
