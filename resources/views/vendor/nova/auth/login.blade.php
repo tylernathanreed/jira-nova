@@ -2,7 +2,9 @@
 
 @section('content')
 
-@include('nova::auth.partials.header')
+    <div class="mx-auto py-8 max-w-sm text-center text-90 flex items-center justify-center">
+        <icon-jira></icon-jira> <span class="text-2xl"><b>Jira</b> Issue Manager</span>
+    </div>
 
 <form
     class="bg-white shadow rounded-lg p-8 max-w-login mx-auto"

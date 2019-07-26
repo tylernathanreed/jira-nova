@@ -52,4 +52,14 @@ class IssueFocus extends SelectFilter
             'all' => 'All'
         ]);
     }
+
+    /**
+     * Returns the default options for the filter.
+     *
+     * @return array|mixed
+     */
+    public function default()
+    {
+        return 'dev';
+    }
 }

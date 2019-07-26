@@ -33,6 +33,35 @@ class Issue extends Model
     const FIELD_LINKS = 'issuelinks';
     const FIELD_RANK = 'customfield_10119';
 
+    /**
+     * The priority constants.
+     *
+     * @var string
+     */
+    const PRIORITY_HIGHEST = 'Highest';
+    const PRIORITY_HIGH = 'High';
+    const PRIORITY_MEDIUM = 'Medium';
+    const PRIORITY_LOW = 'Low';
+    const PRIORITY_LOWEST = 'Lowest';
+
+    /**
+     * The focus constants.
+     *
+     * @var string
+     */
+    const FOCUS_DEV = 'Dev';
+    const FOCUS_TICKET = 'Ticket';
+    const FOCUS_OTHER = 'Other';
+
+    /**
+     * The issue category constants.
+     *
+     * @var string
+     */
+    const ISSUE_CATEGORY_DEV = 'Dev';
+    const ISSUE_CATEGORY_TICKET = 'Ticket';
+    const ISSUE_CATEGORY_DATA = 'Data';
+
     //////////////////
     //* Attributes *//
     //////////////////
@@ -112,13 +141,14 @@ class Issue extends Model
                     'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
                     'time_estimate' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
                     'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
-                    'priority' => optional($issue->fields->{static::FIELD_PRIORITY})->name,
+                    'priority' => $priority = (optional($issue->fields->{static::FIELD_PRIORITY})->name),
                     'priority_icon_url' => optional($issue->fields->{static::FIELD_PRIORITY})->iconUrl,
                     'reporter_name' => optional($issue->fields->{static::FIELD_REPORTER})->displayName,
                     'reporter_icon_url' => optional($issue->fields->{static::FIELD_REPORTER})->avatarUrls['16x16'] ?? null,
                     'assignee_name' => optional($issue->fields->{static::FIELD_ASSIGNEE})->displayName,
                     'assignee_icon_url' => optional($issue->fields->{static::FIELD_ASSIGNEE})->avatarUrls['16x16'] ?? null,
-                    'issue_category' => optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? 'Dev',
+                    'issue_category' => $category = (optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? static::ISSUE_CATEGORY_DEV),
+                    'focus' => $priority == static::PRIORITY_HIGHEST ? static::FOCUS_OTHER : ($category == static::ISSUE_CATEGORY_DEV ? static::FOCUS_DEV : static::FOCUS_TICKET),
                     'epic_key' => $epicKey = ($issue->fields->{static::FIELD_EPIC_KEY} ?? null),
                     'epic_url' => !is_null($epicKey) ? rtrim(config('services.jira.host'), '/') . '/browse/' . $epicKey : null,
                     'epic_name' => $issue->fields->{static::FIELD_EPIC_NAME} ?? null,

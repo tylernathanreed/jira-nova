@@ -1,130 +1,132 @@
 <template>
-    <div
-        class="my-2 p-2 flex items-center border rounded min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
-        :class="{
-            'bg-white border-50': !dragging && (!est || offset > -7),
-            'bg-delinquent border-delinquent': !dragging && (offset <= -7),
-            'hover:bg-white-50%': !dragging && (!est || offset > -7) && !getSwimlane().dragging,
-            'bg-50 border-60': dragging
-        }"
-    >
+    <div :class="'swimlane-issue-focus mr-2 rounded focus-' + issue.focus.toLowerCase()">
+        <div
+            class="my-2 p-2 ml-2 flex items-center border rounded min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
+            :class="{
+                'bg-white border-50': !dragging && (!est || offset > -7),
+                'bg-delinquent border-delinquent': !dragging && (offset <= -7),
+                'hover:bg-white-50%': !dragging && (!est || offset > -7) && !getSwimlane().dragging,
+                'bg-50 border-60': dragging
+            }"
+        >
+            <div class="swimlane-issue" :data-issue="issue.key">
 
-        <div class="swimlane-issue" :data-issue="issue.key">
-            <div class="swimlane-issue-field" data-field="type">
-                <img class="icon" :src="issue.type_icon_url"/>
-            </div>
-
-            <div class="swimlane-issue-field" data-field="priority">
-                <img class="icon" :src="issue.priority_icon_url"/>
-            </div>
-
-            <div class="swimlane-issue-field-group text-center" style="min-width: 80px; max-width: 80px">
-                <div class="swimlane-issue-field text-center" data-field="key">
-                    <a :href="issue.url" target="_blank" v-text="issue.key"/>
+                <div class="swimlane-issue-field" data-field="type">
+                    <img class="icon" :src="issue.type_icon_url"/>
                 </div>
 
-                <div v-if="issue.epic_key" :class="'swimlane-issue-field text-center epic-label ' + (issue.epic_color || 'ghx-label-0')" data-field="epic">
-                    <a :href="issue.epic_url" target="_blank" v-text="issue.epic_name"/>
+                <div class="swimlane-issue-field" data-field="priority">
+                    <img class="icon" :src="issue.priority_icon_url"/>
                 </div>
-            </div>
 
-            <div class="swimlane-issue-field" data-field="summary" style="flex: 1; color: #777">
-                {{ issue.summary }}
-            </div>
+                <div class="swimlane-issue-field-group text-center" style="min-width: 80px; max-width: 80px">
+                    <div class="swimlane-issue-field text-center" data-field="key">
+                        <a :href="issue.url" target="_blank" v-text="issue.key"/>
+                    </div>
 
-            <div :class="'swimlane-issue-field issue-status-' + issue.status_color" data-field="status" style="min-width: 90px; text-align: center">
-                {{ issue.status }}
-            </div>
+                    <div v-if="issue.epic_key" :class="'swimlane-issue-field text-center epic-label ' + (issue.epic_color || 'ghx-label-0')" data-field="epic">
+                        <a :href="issue.epic_url" target="_blank" v-text="issue.epic_name"/>
+                    </div>
+                </div>
 
-            <div class="swimlane-issue-field" data-field="issue-category" style="min-width: 60px; text-align: center">
-                {{ issue.issue_category }}
-            </div>
+                <div class="swimlane-issue-field" data-field="summary" style="flex: 1; color: #777">
+                    {{ issue.summary }}
+                </div>
 
-            <div class="swimlane-issue-field-group">
-                <div class="swimlane-issue-field" data-field="reporter">
-                    <div class="flex items-center">
-                        <label>R</label>
-                        <div class="flex-1 px-1">
-                            <img v-if="issue.reporter_icon_url" :src="issue.reporter_icon_url" class="icon rounded-full" />
-                            <span v-else class="text-gray">?</span>
+                <div :class="'swimlane-issue-field issue-status-' + issue.status_color" data-field="status" style="min-width: 90px; text-align: center">
+                    {{ issue.status }}
+                </div>
+
+                <div class="swimlane-issue-field" data-field="issue-category" style="min-width: 60px; text-align: center">
+                    {{ issue.issue_category }}
+                </div>
+
+                <div class="swimlane-issue-field-group">
+                    <div class="swimlane-issue-field" data-field="reporter">
+                        <div class="flex items-center">
+                            <label>R</label>
+                            <div class="flex-1 px-1">
+                                <img v-if="issue.reporter_icon_url" :src="issue.reporter_icon_url" class="icon rounded-full" />
+                                <span v-else class="text-gray">?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swimlane-issue-field" data-field="assignee">
+                        <div class="flex items-center">
+                            <label>A</label>
+                            <div class="flex-1 px-1">
+                                <img v-if="issue.assignee_icon_url" :src="issue.assignee_icon_url" class="icon rounded-full" />
+                                <span v-else class="text-gray">?</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="swimlane-issue-field" data-field="assignee">
-                    <div class="flex items-center">
-                        <label>A</label>
-                        <div class="flex-1 px-1">
-                            <img v-if="issue.assignee_icon_url" :src="issue.assignee_icon_url" class="icon rounded-full" />
-                            <span v-else class="text-gray">?</span>
+                <div class="swimlane-issue-field-group">
+                    <div class="swimlane-issue-field" data-field="due-date" style="min-width: 90px; text-align: center">
+                        <div class="flex items-center">
+                            <label>D</label>
+                            <div class="flex-1">
+                                <span
+                                    :class="due ? '' : 'text-gray'"
+                                    v-text="due ? moment(due).toDate().toLocaleDateString() : 'TBD'"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swimlane-issue-field" data-field="estimated-completion-date" style="min-width: 90px; text-align: center">
+                        <div class="flex items-center">
+                            <label>E</label>
+                            <div class="flex-1">
+                                <span v-if="est" v-text="moment(est).toDate().toLocaleDateString()"/>
+                                <loader v-else class="text-gray" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="swimlane-issue-field-group">
-                <div class="swimlane-issue-field" data-field="due-date" style="min-width: 90px; text-align: center">
-                    <div class="flex items-center">
-                        <label>D</label>
-                        <div class="flex-1">
-                            <span
-                                :class="due ? '' : 'text-gray'"
-                                v-text="due ? moment(due).toDate().toLocaleDateString() : 'TBD'"
-                            />
-                        </div>
-                    </div>
+                <div class="swimlane-issue-field" data-field="estimated-offset" style="min-width: 32px; max-width: 32px; text-align: center">
+                    <span v-if="!due || !est || due == est">&mdash;</span>
+                    <span v-else-if="offset > 0"
+                        class="text-success"
+                        v-text="'(+' + (offset > 99 ? '++' : offset) + ')'"
+                    />
+                    <span v-else
+                        class="text-danger"
+                        v-text="'(-' + (offset < -99 ? '--' : Math.abs(offset)) + ')'"
+                    />
                 </div>
 
-                <div class="swimlane-issue-field" data-field="estimated-completion-date" style="min-width: 90px; text-align: center">
-                    <div class="flex items-center">
-                        <label>E</label>
-                        <div class="flex-1">
-                            <span v-if="est" v-text="moment(est).toDate().toLocaleDateString()"/>
-                            <loader v-else class="text-gray" />
-                        </div>
-                    </div>
+                <div class="swimlane-issue-field" data-field="time-estimate" style="min-width: 40px; text-align: right">
+                    {{ (issue.time_estimate / 3600).toFixed(2) }}
                 </div>
-            </div>
 
-            <div class="swimlane-issue-field" data-field="estimated-offset" style="min-width: 32px; max-width: 32px; text-align: center">
-                <span v-if="!due || !est || due == est">&mdash;</span>
-                <span v-else-if="offset > 0"
-                    class="text-success"
-                    v-text="'(+' + (offset > 99 ? '++' : offset) + ')'"
-                />
-                <span v-else
-                    class="text-danger"
-                    v-text="'(-' + (offset < -99 ? '--' : Math.abs(offset)) + ')'"
-                />
-            </div>
+                <div class="swimlane-issue-field" data-field="links" style="min-width: 50px; max-width: 50px; text-align: center">
+                    <div v-if="blocks.length > 0">
+                        <div class="flex justify-center">
+                            <div :class="'link-block bg-range-' + blocks[0]['chain']">
+                                {{ blocks[0]['depth'] }}
+                            </div>
 
-            <div class="swimlane-issue-field" data-field="time-estimate" style="min-width: 40px; text-align: right">
-                {{ (issue.time_estimate / 3600).toFixed(2) }}
-            </div>
-
-            <div class="swimlane-issue-field" data-field="links" style="min-width: 50px; max-width: 50px; text-align: center">
-                <div v-if="blocks.length > 0">
-                    <div class="flex justify-center">
-                        <div :class="'link-block bg-range-' + blocks[0]['chain']">
-                            {{ blocks[0]['depth'] }}
+                            <div v-if="blocks[1] && blocks[3]" :class="'link-block bg-range-' + blocks[1]['chain']">
+                                {{ blocks[1]['depth'] }}
+                            </div>
                         </div>
 
-                        <div v-if="blocks[1] && blocks[3]" :class="'link-block bg-range-' + blocks[1]['chain']">
-                            {{ blocks[1]['depth'] }}
-                        </div>
-                    </div>
+                        <div v-if="blocks[2]" class="flex justify-center">
+                            <div v-if="blocks[2] && !blocks[3]" :class="'link-block bg-range-' + blocks[1]['chain']">
+                                {{ $blocks[1]['depth'] }}
+                            </div>
 
-                    <div v-if="blocks[2]" class="flex justify-center">
-                        <div v-if="blocks[2] && !blocks[3]" :class="'link-block bg-range-' + blocks[1]['chain']">
-                            {{ $blocks[1]['depth'] }}
-                        </div>
+                            <div v-else-if="blocks[2]" :class="'link-block bg-range-' + blocks[2]['chain']">
+                                {{ $blocks[2]['depth'] }}
+                            </div>
 
-                        <div v-else-if="blocks[2]" :class="'link-block bg-range-' + blocks[2]['chain']">
-                            {{ $blocks[2]['depth'] }}
-                        </div>
-
-                        <div v-if="blocks[3]" :class="'link-block bg-range-' + blocks[3]['chain']">
-                            {{ $blocks[3]['depth'] }}
+                            <div v-if="blocks[3]" :class="'link-block bg-range-' + blocks[3]['chain']">
+                                {{ $blocks[3]['depth'] }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -358,6 +360,18 @@
         color: #fff;
         background-color: #ff8f73;
         border-color: #ff8f73;
+    }
+
+    .focus-other {
+        background: #c0504d;
+    }
+
+    .focus-dev {
+        background: #94c4fe;
+    }
+
+    .focus-ticket {
+        background: #d0cf9a;
     }
 
     img.icon {

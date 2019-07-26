@@ -2,6 +2,7 @@
 
 namespace App\Nova\Filters;
 
+use Auth;
 use Jira;
 use Illuminate\Http\Request;
 
@@ -46,5 +47,15 @@ class Assignee extends SelectFilter
         return array_flip(
             collect(Jira::users()->findAssignableUsers(['project' => 'UAS']))->pluck('displayName', 'key')->all()
         );
+    }
+
+    /**
+     * Returns the default options for the filter.
+     *
+     * @return array|mixed
+     */
+    public function default()
+    {
+        return Auth::user()->jira_key;
     }
 }

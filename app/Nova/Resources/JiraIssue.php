@@ -72,6 +72,7 @@ class JiraIssue extends Resource
             Field::text('assignee_name', 'assignee_name'),
             Field::text('assignee_icon_url', 'assignee_icon_url'),
             Field::text('issue_category', 'issue_category'),
+            Field::text('focus', 'focus'),
             Field::text('epic_key', 'epic_key'),
             Field::text('epic_url', 'epic_url'),
             Field::text('epic_name', 'epic_name'),

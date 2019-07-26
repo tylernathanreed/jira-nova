@@ -36394,7 +36394,7 @@ exports = module.exports = __webpack_require__(195)(false);
 
 
 // module
-exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.epic-label a,\n.epic-label a:active,\n.epic-label a:hover,\n.epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\nimg.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.flex {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.items-center {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.space-between {\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n}\n.justify-center {\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n.flex-1 {\n    -webkit-box-flex: 1;\n        -ms-flex: 1;\n            flex: 1;\n}\n.text-center {\n    text-align: center;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\nlabel {\n    margin: 0;\n}\n.px-1 {\n    padding-left: 0.25rem;\n    padding-right: 0.25rem;\n}\n.rounded-full {\n    border-radius: 9999px;\n}\na {\n    color: #0052cc;\n    text-decoration: none;\n}\na:active, a:hover, a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.epic-label a,\n.epic-label a:active,\n.epic-label a:hover,\n.epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\n.focus-other {\n    background: #c0504d;\n}\n.focus-dev {\n    background: #94c4fe;\n}\n.focus-ticket {\n    background: #d0cf9a;\n}\nimg.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.flex {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.items-center {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.space-between {\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n}\n.justify-center {\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n.flex-1 {\n    -webkit-box-flex: 1;\n        -ms-flex: 1;\n            flex: 1;\n}\n.text-center {\n    text-align: center;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\nlabel {\n    margin: 0;\n}\n.px-1 {\n    padding-left: 0.25rem;\n    padding-right: 0.25rem;\n}\n.rounded-full {\n    border-radius: 9999px;\n}\na {\n    color: #0052cc;\n    text-decoration: none;\n}\na:active, a:hover, a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
 
 // exports
 
@@ -36750,6 +36750,8 @@ module.exports = function listToStyles (parentId, list) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
+//
 //
 //
 //
@@ -37243,350 +37245,365 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass:
-        "my-2 p-2 flex items-center border rounded min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none",
-      class: {
-        "bg-white border-50": !_vm.dragging && (!_vm.est || _vm.offset > -7),
-        "bg-delinquent border-delinquent": !_vm.dragging && _vm.offset <= -7,
-        "hover:bg-white-50%":
-          !_vm.dragging &&
-          (!_vm.est || _vm.offset > -7) &&
-          !_vm.getSwimlane().dragging,
-        "bg-50 border-60": _vm.dragging
-      }
+      class:
+        "swimlane-issue-focus mr-2 rounded focus-" +
+        _vm.issue.focus.toLowerCase()
     },
     [
       _c(
         "div",
         {
-          staticClass: "swimlane-issue",
-          attrs: { "data-issue": _vm.issue.key }
+          staticClass:
+            "my-2 p-2 ml-2 flex items-center border rounded min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none",
+          class: {
+            "bg-white border-50":
+              !_vm.dragging && (!_vm.est || _vm.offset > -7),
+            "bg-delinquent border-delinquent":
+              !_vm.dragging && _vm.offset <= -7,
+            "hover:bg-white-50%":
+              !_vm.dragging &&
+              (!_vm.est || _vm.offset > -7) &&
+              !_vm.getSwimlane().dragging,
+            "bg-50 border-60": _vm.dragging
+          }
         },
         [
           _c(
             "div",
             {
-              staticClass: "swimlane-issue-field",
-              attrs: { "data-field": "type" }
-            },
-            [
-              _c("img", {
-                staticClass: "icon",
-                attrs: { src: _vm.issue.type_icon_url }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "swimlane-issue-field",
-              attrs: { "data-field": "priority" }
-            },
-            [
-              _c("img", {
-                staticClass: "icon",
-                attrs: { src: _vm.issue.priority_icon_url }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "swimlane-issue-field-group text-center",
-              staticStyle: { "min-width": "80px", "max-width": "80px" }
+              staticClass: "swimlane-issue",
+              attrs: { "data-issue": _vm.issue.key }
             },
             [
               _c(
                 "div",
                 {
-                  staticClass: "swimlane-issue-field text-center",
-                  attrs: { "data-field": "key" }
+                  staticClass: "swimlane-issue-field",
+                  attrs: { "data-field": "type" }
                 },
                 [
-                  _c("a", {
-                    attrs: { href: _vm.issue.url, target: "_blank" },
-                    domProps: { textContent: _vm._s(_vm.issue.key) }
+                  _c("img", {
+                    staticClass: "icon",
+                    attrs: { src: _vm.issue.type_icon_url }
                   })
                 ]
               ),
               _vm._v(" "),
-              _vm.issue.epic_key
-                ? _c(
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field",
+                  attrs: { "data-field": "priority" }
+                },
+                [
+                  _c("img", {
+                    staticClass: "icon",
+                    attrs: { src: _vm.issue.priority_icon_url }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field-group text-center",
+                  staticStyle: { "min-width": "80px", "max-width": "80px" }
+                },
+                [
+                  _c(
                     "div",
                     {
-                      class:
-                        "swimlane-issue-field text-center epic-label " +
-                        (_vm.issue.epic_color || "ghx-label-0"),
-                      attrs: { "data-field": "epic" }
+                      staticClass: "swimlane-issue-field text-center",
+                      attrs: { "data-field": "key" }
                     },
                     [
                       _c("a", {
-                        attrs: { href: _vm.issue.epic_url, target: "_blank" },
-                        domProps: { textContent: _vm._s(_vm.issue.epic_name) }
+                        attrs: { href: _vm.issue.url, target: "_blank" },
+                        domProps: { textContent: _vm._s(_vm.issue.key) }
                       })
                     ]
-                  )
-                : _vm._e()
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "swimlane-issue-field",
-              staticStyle: { flex: "1", color: "#777" },
-              attrs: { "data-field": "summary" }
-            },
-            [
-              _vm._v(
-                "\n            " + _vm._s(_vm.issue.summary) + "\n        "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              class:
-                "swimlane-issue-field issue-status-" + _vm.issue.status_color,
-              staticStyle: { "min-width": "90px", "text-align": "center" },
-              attrs: { "data-field": "status" }
-            },
-            [_vm._v("\n            " + _vm._s(_vm.issue.status) + "\n        ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "swimlane-issue-field",
-              staticStyle: { "min-width": "60px", "text-align": "center" },
-              attrs: { "data-field": "issue-category" }
-            },
-            [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm.issue.issue_category) +
-                  "\n        "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "swimlane-issue-field-group" }, [
-            _c(
-              "div",
-              {
-                staticClass: "swimlane-issue-field",
-                attrs: { "data-field": "reporter" }
-              },
-              [
-                _c("div", { staticClass: "flex items-center" }, [
-                  _c("label", [_vm._v("R")]),
+                  ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "flex-1 px-1" }, [
-                    _vm.issue.reporter_icon_url
-                      ? _c("img", {
-                          staticClass: "icon rounded-full",
-                          attrs: { src: _vm.issue.reporter_icon_url }
-                        })
-                      : _c("span", { staticClass: "text-gray" }, [_vm._v("?")])
-                  ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "swimlane-issue-field",
-                attrs: { "data-field": "assignee" }
-              },
-              [
-                _c("div", { staticClass: "flex items-center" }, [
-                  _c("label", [_vm._v("A")]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "flex-1 px-1" }, [
-                    _vm.issue.assignee_icon_url
-                      ? _c("img", {
-                          staticClass: "icon rounded-full",
-                          attrs: { src: _vm.issue.assignee_icon_url }
-                        })
-                      : _c("span", { staticClass: "text-gray" }, [_vm._v("?")])
-                  ])
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "swimlane-issue-field-group" }, [
-            _c(
-              "div",
-              {
-                staticClass: "swimlane-issue-field",
-                staticStyle: { "min-width": "90px", "text-align": "center" },
-                attrs: { "data-field": "due-date" }
-              },
-              [
-                _c("div", { staticClass: "flex items-center" }, [
-                  _c("label", [_vm._v("D")]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "flex-1" }, [
-                    _c("span", {
-                      class: _vm.due ? "" : "text-gray",
-                      domProps: {
-                        textContent: _vm._s(
-                          _vm.due
-                            ? _vm
-                                .moment(_vm.due)
-                                .toDate()
-                                .toLocaleDateString()
-                            : "TBD"
-                        )
-                      }
-                    })
-                  ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "swimlane-issue-field",
-                staticStyle: { "min-width": "90px", "text-align": "center" },
-                attrs: { "data-field": "estimated-completion-date" }
-              },
-              [
-                _c("div", { staticClass: "flex items-center" }, [
-                  _c("label", [_vm._v("E")]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "flex-1" },
-                    [
-                      _vm.est
-                        ? _c("span", {
-                            domProps: {
-                              textContent: _vm._s(
-                                _vm
-                                  .moment(_vm.est)
-                                  .toDate()
-                                  .toLocaleDateString()
-                              )
-                            }
-                          })
-                        : _c("loader", { staticClass: "text-gray" })
-                    ],
-                    1
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "swimlane-issue-field",
-              staticStyle: {
-                "min-width": "32px",
-                "max-width": "32px",
-                "text-align": "center"
-              },
-              attrs: { "data-field": "estimated-offset" }
-            },
-            [
-              !_vm.due || !_vm.est || _vm.due == _vm.est
-                ? _c("span", [_vm._v("—")])
-                : _vm.offset > 0
-                ? _c("span", {
-                    staticClass: "text-success",
-                    domProps: {
-                      textContent: _vm._s(
-                        "(+" + (_vm.offset > 99 ? "++" : _vm.offset) + ")"
-                      )
-                    }
-                  })
-                : _c("span", {
-                    staticClass: "text-danger",
-                    domProps: {
-                      textContent: _vm._s(
-                        "(-" +
-                          (_vm.offset < -99 ? "--" : Math.abs(_vm.offset)) +
-                          ")"
-                      )
-                    }
-                  })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "swimlane-issue-field",
-              staticStyle: { "min-width": "40px", "text-align": "right" },
-              attrs: { "data-field": "time-estimate" }
-            },
-            [
-              _vm._v(
-                "\n            " +
-                  _vm._s((_vm.issue.time_estimate / 3600).toFixed(2)) +
-                  "\n        "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "swimlane-issue-field",
-              staticStyle: {
-                "min-width": "50px",
-                "max-width": "50px",
-                "text-align": "center"
-              },
-              attrs: { "data-field": "links" }
-            },
-            [
-              _vm.blocks.length > 0
-                ? _c("div", [
-                    _c("div", { staticClass: "flex justify-center" }, [
-                      _c(
+                  _vm.issue.epic_key
+                    ? _c(
                         "div",
                         {
-                          class: "link-block bg-range-" + _vm.blocks[0]["chain"]
+                          class:
+                            "swimlane-issue-field text-center epic-label " +
+                            (_vm.issue.epic_color || "ghx-label-0"),
+                          attrs: { "data-field": "epic" }
                         },
                         [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(_vm.blocks[0]["depth"]) +
-                              "\n                    "
-                          )
+                          _c("a", {
+                            attrs: {
+                              href: _vm.issue.epic_url,
+                              target: "_blank"
+                            },
+                            domProps: {
+                              textContent: _vm._s(_vm.issue.epic_name)
+                            }
+                          })
                         ]
-                      ),
+                      )
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field",
+                  staticStyle: { flex: "1", color: "#777" },
+                  attrs: { "data-field": "summary" }
+                },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.issue.summary) +
+                      "\n            "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  class:
+                    "swimlane-issue-field issue-status-" +
+                    _vm.issue.status_color,
+                  staticStyle: { "min-width": "90px", "text-align": "center" },
+                  attrs: { "data-field": "status" }
+                },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.issue.status) +
+                      "\n            "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field",
+                  staticStyle: { "min-width": "60px", "text-align": "center" },
+                  attrs: { "data-field": "issue-category" }
+                },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.issue.issue_category) +
+                      "\n            "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "swimlane-issue-field-group" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "swimlane-issue-field",
+                    attrs: { "data-field": "reporter" }
+                  },
+                  [
+                    _c("div", { staticClass: "flex items-center" }, [
+                      _c("label", [_vm._v("R")]),
                       _vm._v(" "),
-                      _vm.blocks[1] && _vm.blocks[3]
-                        ? _c(
+                      _c("div", { staticClass: "flex-1 px-1" }, [
+                        _vm.issue.reporter_icon_url
+                          ? _c("img", {
+                              staticClass: "icon rounded-full",
+                              attrs: { src: _vm.issue.reporter_icon_url }
+                            })
+                          : _c("span", { staticClass: "text-gray" }, [
+                              _vm._v("?")
+                            ])
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "swimlane-issue-field",
+                    attrs: { "data-field": "assignee" }
+                  },
+                  [
+                    _c("div", { staticClass: "flex items-center" }, [
+                      _c("label", [_vm._v("A")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "flex-1 px-1" }, [
+                        _vm.issue.assignee_icon_url
+                          ? _c("img", {
+                              staticClass: "icon rounded-full",
+                              attrs: { src: _vm.issue.assignee_icon_url }
+                            })
+                          : _c("span", { staticClass: "text-gray" }, [
+                              _vm._v("?")
+                            ])
+                      ])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "swimlane-issue-field-group" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "swimlane-issue-field",
+                    staticStyle: {
+                      "min-width": "90px",
+                      "text-align": "center"
+                    },
+                    attrs: { "data-field": "due-date" }
+                  },
+                  [
+                    _c("div", { staticClass: "flex items-center" }, [
+                      _c("label", [_vm._v("D")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "flex-1" }, [
+                        _c("span", {
+                          class: _vm.due ? "" : "text-gray",
+                          domProps: {
+                            textContent: _vm._s(
+                              _vm.due
+                                ? _vm
+                                    .moment(_vm.due)
+                                    .toDate()
+                                    .toLocaleDateString()
+                                : "TBD"
+                            )
+                          }
+                        })
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "swimlane-issue-field",
+                    staticStyle: {
+                      "min-width": "90px",
+                      "text-align": "center"
+                    },
+                    attrs: { "data-field": "estimated-completion-date" }
+                  },
+                  [
+                    _c("div", { staticClass: "flex items-center" }, [
+                      _c("label", [_vm._v("E")]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "flex-1" },
+                        [
+                          _vm.est
+                            ? _c("span", {
+                                domProps: {
+                                  textContent: _vm._s(
+                                    _vm
+                                      .moment(_vm.est)
+                                      .toDate()
+                                      .toLocaleDateString()
+                                  )
+                                }
+                              })
+                            : _c("loader", { staticClass: "text-gray" })
+                        ],
+                        1
+                      )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field",
+                  staticStyle: {
+                    "min-width": "32px",
+                    "max-width": "32px",
+                    "text-align": "center"
+                  },
+                  attrs: { "data-field": "estimated-offset" }
+                },
+                [
+                  !_vm.due || !_vm.est || _vm.due == _vm.est
+                    ? _c("span", [_vm._v("—")])
+                    : _vm.offset > 0
+                    ? _c("span", {
+                        staticClass: "text-success",
+                        domProps: {
+                          textContent: _vm._s(
+                            "(+" + (_vm.offset > 99 ? "++" : _vm.offset) + ")"
+                          )
+                        }
+                      })
+                    : _c("span", {
+                        staticClass: "text-danger",
+                        domProps: {
+                          textContent: _vm._s(
+                            "(-" +
+                              (_vm.offset < -99 ? "--" : Math.abs(_vm.offset)) +
+                              ")"
+                          )
+                        }
+                      })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field",
+                  staticStyle: { "min-width": "40px", "text-align": "right" },
+                  attrs: { "data-field": "time-estimate" }
+                },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s((_vm.issue.time_estimate / 3600).toFixed(2)) +
+                      "\n            "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field",
+                  staticStyle: {
+                    "min-width": "50px",
+                    "max-width": "50px",
+                    "text-align": "center"
+                  },
+                  attrs: { "data-field": "links" }
+                },
+                [
+                  _vm.blocks.length > 0
+                    ? _c("div", [
+                        _c("div", { staticClass: "flex justify-center" }, [
+                          _c(
                             "div",
                             {
                               class:
-                                "link-block bg-range-" + _vm.blocks[1]["chain"]
+                                "link-block bg-range-" + _vm.blocks[0]["chain"]
                             },
                             [
                               _vm._v(
-                                "\n                        " +
-                                  _vm._s(_vm.blocks[1]["depth"]) +
-                                  "\n                    "
+                                "\n                            " +
+                                  _vm._s(_vm.blocks[0]["depth"]) +
+                                  "\n                        "
                               )
                             ]
-                          )
-                        : _vm._e()
-                    ]),
-                    _vm._v(" "),
-                    _vm.blocks[2]
-                      ? _c("div", { staticClass: "flex justify-center" }, [
-                          _vm.blocks[2] && !_vm.blocks[3]
+                          ),
+                          _vm._v(" "),
+                          _vm.blocks[1] && _vm.blocks[3]
                             ? _c(
                                 "div",
                                 {
@@ -37596,51 +37613,74 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                        " +
-                                      _vm._s(_vm.$blocks[1]["depth"]) +
-                                      "\n                    "
-                                  )
-                                ]
-                              )
-                            : _vm.blocks[2]
-                            ? _c(
-                                "div",
-                                {
-                                  class:
-                                    "link-block bg-range-" +
-                                    _vm.blocks[2]["chain"]
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                        " +
-                                      _vm._s(_vm.$blocks[2]["depth"]) +
-                                      "\n                    "
-                                  )
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.blocks[3]
-                            ? _c(
-                                "div",
-                                {
-                                  class:
-                                    "link-block bg-range-" +
-                                    _vm.blocks[3]["chain"]
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                        " +
-                                      _vm._s(_vm.$blocks[3]["depth"]) +
-                                      "\n                    "
+                                    "\n                            " +
+                                      _vm._s(_vm.blocks[1]["depth"]) +
+                                      "\n                        "
                                   )
                                 ]
                               )
                             : _vm._e()
-                        ])
-                      : _vm._e()
-                  ])
-                : _vm._e()
+                        ]),
+                        _vm._v(" "),
+                        _vm.blocks[2]
+                          ? _c("div", { staticClass: "flex justify-center" }, [
+                              _vm.blocks[2] && !_vm.blocks[3]
+                                ? _c(
+                                    "div",
+                                    {
+                                      class:
+                                        "link-block bg-range-" +
+                                        _vm.blocks[1]["chain"]
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(_vm.$blocks[1]["depth"]) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm.blocks[2]
+                                ? _c(
+                                    "div",
+                                    {
+                                      class:
+                                        "link-block bg-range-" +
+                                        _vm.blocks[2]["chain"]
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(_vm.$blocks[2]["depth"]) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.blocks[3]
+                                ? _c(
+                                    "div",
+                                    {
+                                      class:
+                                        "link-block bg-range-" +
+                                        _vm.blocks[3]["chain"]
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(_vm.$blocks[3]["depth"]) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ])
+                          : _vm._e()
+                      ])
+                    : _vm._e()
+                ]
+              )
             ]
           )
         ]

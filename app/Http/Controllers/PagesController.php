@@ -13,7 +13,6 @@ class PagesController extends Controller
      */
     public function index()
     {
-        // return view('pages.index');
-        return redirect()->route('issues.index');
+        return redirect()->to(config('nova.path'));
     }
 }
