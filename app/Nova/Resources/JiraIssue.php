@@ -67,6 +67,7 @@ class JiraIssue extends Resource
             Field::text('due_date', 'due_date'),
             Field::text('estimate_remaining', 'estimate_remaining'),
             Field::text('estimate_date', 'estimate_date'),
+            Field::text('estimate_diff', 'estimate_diff'),
             Field::text('priority_name', 'priority_name'),
             Field::text('priority_icon_url', 'priority_icon_url'),
             Field::text('reporter_name', 'reporter_name'),
@@ -95,7 +96,9 @@ class JiraIssue extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Metrics\DelinquentIssuesByDiff
+        ];
     }
 
     /**

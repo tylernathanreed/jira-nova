@@ -1,6 +1,21 @@
 <template>
     <div>
         <loading-view :loading="initialLoading">
+            <div v-if="shouldShowCards">
+                <cards
+                    v-if="smallCards.length > 0"
+                    :cards="smallCards"
+                    class="mb-3"
+                    :resource-name="resourceName"
+                />
+
+                <cards
+                    v-if="largeCards.length > 0"
+                    :cards="largeCards"
+                    size="large"
+                    :resource-name="resourceName"
+                />
+            </div>
 
             <card class="py-3 flex items-center bg-white border border-50 rounded mb-2">
                 <div class="flex items-center justify-between w-full px-3">
@@ -72,7 +87,7 @@
         Errors,
         // Deletable,
         Filterable,
-        // HasCards,
+        HasCards,
         Minimum,
         // Paginatable,
         // PerPageable,
@@ -84,7 +99,7 @@
         mixins: [
             // Deletable,
             Filterable,
-            // HasCards,
+            HasCards,
             // Paginatable,
             // PerPageable,
             // InteractsWithResourceInformation,
@@ -362,7 +377,7 @@
                         );
 
                     // Determine the remaining estimate
-                    let remaining = Math.max(issue['time_estimate'] || 0, 1 * 60 * 60);
+                    let remaining = Math.max(issue['estimate_remaining'] || 0, 1 * 60 * 60);
 
                     // Since an issue on its own can take longer than a day to complete,
                     // we essentially have to chip away at the remaining estimate so
@@ -502,6 +517,29 @@
         },
 
         computed: {
+
+            /**
+             * Determine if the resource should show any cards
+             */
+            shouldShowCards() {
+                return this.cards.length > 0;
+            },
+
+            /**
+             * Get the endpoint for this resource's metrics.
+             */
+            cardsEndpoint() {
+                return `/nova-api/${this.resourceName}/cards`
+            },
+
+            /**
+             * Get the extra card params to pass to the endpoint.
+             */
+            extraCardParams() {
+
+                return null;
+
+            },
 
             /**
              * Get the name of the page query string variable.

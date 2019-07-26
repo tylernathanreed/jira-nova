@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Jira;
+use Carbon\Carbon;
+use App\Nova\Filters\Filter;
 use JiraRestApi\Issue\IssueField;
 use App\Support\Jira\RankingOperation;
 use JiraRestApi\Issue\Issue as JiraIssue;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Resources\JiraIssue as IssueResource;
 
 class Issue extends Model
 {
@@ -143,10 +147,11 @@ class Issue extends Model
                     'issue_category' => $category = (optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? static::ISSUE_CATEGORY_DEV),
                     'focus' => $priority == static::PRIORITY_HIGHEST ? static::FOCUS_OTHER : ($category == static::ISSUE_CATEGORY_DEV ? static::FOCUS_DEV : static::FOCUS_TICKET),
 
-                    'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
+                    'due_date' => $due = $issue->fields->{static::FIELD_DUE_DATE},
 
                     'estimate_remaining' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
-                    'estimate_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
+                    'estimate_date' => $est = ($issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null),
+                    'estimate_diff' => (is_null($due) || is_null($est)) ? null : Carbon::parse($est)->diffInDays(Carbon::parse($due), false),
 
                     'type_name' => $issue->fields->{static::FIELD_ISSUE_TYPE}->name,
                     'type_icon_url' => $issue->fields->{static::FIELD_ISSUE_TYPE}->iconUrl,
@@ -251,6 +256,39 @@ class Issue extends Model
 
         // Return the list of issues
         return $issues;
+    }
+
+    /**
+     * Returns the issues specified by the given request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     *
+     * @return array
+     */
+    public static function getIssuesFromRequest(NovaRequest $request)
+    {
+        // Determine the filters from the request
+        $filters = Filter::getFiltersFromRequest($request, new IssueResource(new static));
+
+        // Initialize the options
+        $options = [
+            'assignee' => [
+                $request->user()->jira_key
+            ],
+            'groups' => [
+                'dev' => true,
+                'ticket' => false,
+                'other' => true
+            ]
+        ];
+
+        // Apply the filters to the options
+        foreach($filters as $filter) {
+            $filter->filter->applyToJiraOptions($options, $filter->value);
+        }
+
+        // Return the jira issues
+        return static::getIssuesFromJira($options);
     }
 
     /**
