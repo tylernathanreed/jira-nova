@@ -15,7 +15,7 @@ window.Vue = require('vue');
  * the actual Vue instance and start up the JavaScript application.
  */
 
-import './components';
+//
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

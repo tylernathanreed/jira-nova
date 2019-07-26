@@ -12,41 +12,6 @@
 */
 
 /**
- * Authentication Routes
- */
-Auth::routes([
-	'register' => false,
-	'reset' => false,
-	'verify' => false
-]);
-
-/**
- * Authenticated Routes
- */
-Route::group(['middleware' => 'auth'], function() {
-
-	/**
-	 * Issues
-	 */
-	Route::group(['prefix' => 'issues'], function() {
-
-		// Issues
-		Route::get('/', [
-			'as' => 'issues.index',
-			'uses' => 'IssuesController@index'
-		]);
-
-		// Issues
-		Route::post('/', [
-			'as' => 'issues.submit',
-			'uses' => 'IssuesController@submit'
-		]);
-
-	});
-
-});
-
-/**
  * Jira API
  */
 Route::group(['prefix' => 'jira-api'], function() {
