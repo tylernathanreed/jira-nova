@@ -37,7 +37,7 @@ class SaveSwimlaneChanges extends Action
         Issue::updateOrderByRank($oldOrder, $newOrder, $subtasks);
 
         // Update the estimated completion dates
-        // Issue::updateEstimates($estimates);
+        Issue::updateEstimates($estimates);
     }
 
     /**

@@ -16,6 +16,7 @@
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "lesstif/php-jira-rest-client": "^1.37",
+        "mad-web/nova-telescope-link": "^2.0",
         "mnobrega/php-jira-agile-rest-client": "dev-master",
         "nova-components/jira-issue-manager": "*",
         "rcknr/nova-multiselect-filter": "^1.2",

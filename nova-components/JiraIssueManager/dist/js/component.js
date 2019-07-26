@@ -17398,7 +17398,7 @@ Nova.booting(function (Vue, router, store) {
     Vue.component('icon-jira', __webpack_require__(146));
     Vue.component('icon-logout', __webpack_require__(148));
 
-    Vue.component('jira-swimlane', __webpack_require__(150));
+    Vue.component('jira-swimlane', __webpack_require__(208));
     Vue.component('jira-swimlane-issue', __webpack_require__(192));
 
     Vue.component('draggable', __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a);
@@ -23325,636 +23325,8 @@ if (false) {
 }
 
 /***/ }),
-/* 150 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(151)
-/* template */
-var __vue_template__ = __webpack_require__(191)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Card.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b9bc2c0a", Component.options)
-  } else {
-    hotAPI.reload("data-v-b9bc2c0a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 151 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_constants_js__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_defaults__ = __webpack_require__(156);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_defaults___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_defaults__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__);
-
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [
-    // Deletable,
-    __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Filterable"],
-    // HasCards,
-    // Paginatable,
-    // PerPageable,
-    // InteractsWithResourceInformation,
-    __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["InteractsWithQueryString"]],
-
-    props: ['card'],
-
-    data: function data() {
-        var _2, _3, _4, _5, _6, _7, _8;
-
-        return {
-            initialLoading: true,
-            loading: true,
-            working: false,
-
-            resources: [],
-
-            resourceName: 'jira-issues',
-            viaResource: 'jira-issues',
-            selectedActionKey: 'save-swimlane-changes',
-
-            dragging: false,
-            schedule: {
-                0: (_2 = {}, _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 0), _2),
-                1: (_3 = {}, _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 4.5 * 60 * 60), _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _3),
-                2: (_4 = {}, _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 5 * 60 * 60), _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _4),
-                3: (_5 = {}, _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _5),
-                4: (_6 = {}, _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 4.5 * 60 * 60), _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _6),
-                5: (_7 = {}, _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _7),
-                6: (_8 = {}, _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 0), _8)
-
-            }
-        };
-    },
-
-    /**
-     * Mount the component and retrieve its initial data.
-     */
-    created: function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-            var _this = this;
-
-            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            _context.next = 2;
-                            return this.initializeFilters();
-
-                        case 2:
-                            _context.next = 4;
-                            return this.getResources();
-
-                        case 4:
-
-                            // Mark the initial loading as completed
-                            this.initialLoading = false;
-
-                            this.$watch(function () {
-                                return _this.encodedFilters;
-                            }, function () {
-                                _this.getResources();
-                            });
-
-                        case 6:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, this);
-        }));
-
-        function created() {
-            return _ref.apply(this, arguments);
-        }
-
-        return created;
-    }(),
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-
-        next();
-        this.initializeState(false);
-    },
-
-
-    methods: {
-
-        onDragStart: function onDragStart(ev) {
-
-            this.dragging = true;
-            this.draggingComponent = ev.item.__vue__;
-            this.draggingComponent.dragging = true;
-        },
-
-        onDragEnd: function onDragEnd() {
-
-            this.dragging = false;
-            this.draggingComponent.dragging = false;
-            this.draggingComponent = null;
-
-            this.assignEstimatedCompletionDates();
-        },
-
-        onDragChange: function onDragChange(e) {
-            //
-        },
-
-        getIssue: function getIssue(key) {
-            return _.find(this.resources, { 'key': key });
-        },
-
-        /**
-         * Get the resources based on the current page, search, filters, etc.
-         */
-        getResources: function getResources() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            this.$nextTick(function () {
-
-                _this2.resources = [];
-
-                return Object(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Minimum"])(Nova.request().get('/jira-api/issues', {
-                    params: _this2.resourceRequestQueryString
-                }), 500).then(function (_ref2) {
-                    var data = _ref2.data;
-
-
-                    _this2.resources = [];
-
-                    _this2.resourceResponse = data;
-                    _this2.resources = data.resources;
-
-                    _this2.loading = false;
-
-                    _this2.assignEstimatedCompletionDates();
-
-                    Nova.$emit('resources-loaded');
-                });
-            });
-        },
-
-
-        /**
-         * Update the given query string values.
-         */
-        updateQueryString: function updateQueryString(value) {
-
-            // Remove the "per page" parameter
-            delete value[this.pageParameter];
-
-            // Update the query string
-            this.$router.push({ query: __WEBPACK_IMPORTED_MODULE_2_lodash_defaults___default()(value, this.$route.query) });
-        },
-
-
-        /**
-         * Saves the changes made to the issues
-         */
-        saveChanges: function saveChanges() {
-            var _this3 = this;
-
-            this.working = true;
-
-            Nova.request({
-                method: 'post',
-                url: '/nova-api/' + this.resourceName + '/action',
-                params: this.actionRequestQueryString,
-                data: this.actionFormData()
-            }).then(function (response) {
-
-                _this3.handleActionResponse(response.data);
-                _this3.working = false;
-            }).catch(function (error) {
-
-                _this3.working = false;
-
-                if (error.response.status == 422) {
-                    _this3.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
-                }
-            });
-        },
-
-
-        /**
-         * Gather the action FormData for the given action.
-         */
-        actionFormData: function actionFormData() {
-            var _this4 = this;
-
-            return _.tap(new FormData(), function (formData) {
-
-                formData.append('resources', _.map(_this4.resources, 'key'));
-                formData.append('resourceData', JSON.stringify(_.map(_this4.$refs.issue, 'resourceData')));
-            });
-        },
-
-
-        /**
-         * Handle the action response. Typically either a message, download or a redirect.
-         */
-        handleActionResponse: function handleActionResponse(response) {
-
-            if (response.message) {
-                this.$emit('actionExecuted');
-                this.$toasted.show(response.message, { type: 'success' });
-            } else if (response.deleted) {
-                this.$emit('actionExecuted');
-            } else if (response.danger) {
-                this.$emit('actionExecuted');
-                this.$toasted.show(response.danger, { type: 'error' });
-            } else if (response.download) {
-                var link = document.createElement('a');
-                link.href = response.download;
-                link.download = response.name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else if (response.redirect) {
-                window.location = response.redirect;
-            } else if (response.openInNewTab) {
-                window.open(response.openInNewTab, '_blank');
-            } else {
-                this.$emit('actionExecuted');
-                this.$toasted.show(this.__('The changes were saved successfully!'), { type: 'success' });
-            }
-        },
-        getComponentData: function getComponentData() {
-
-            return {
-                on: {
-                    change: this.onDragChange
-                }
-            };
-        },
-
-
-        /**
-         * Assigns estimated complete dates to the issues.
-         *
-         * @return {Array}
-         */
-        assignEstimatedCompletionDates: function assignEstimatedCompletionDates() {
-            var _dates;
-
-            // Determine the issues
-            var issues = this.resources;
-
-            // Make sure issues have been provided
-            if (typeof issues === 'undefined') {
-                return [];
-            }
-
-            // Our schedule is broken down into focus times. Issues can be allocated
-            // to one or more focuses, and these focus times are when we can work
-            // on these issues. We ought to respect the focus in the schedule.
-
-            // Initialize the dates for each focus
-            var dates = (_dates = {}, _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER)), _dates);
-
-            // Determine the schedule
-            var schedule = this.schedule;
-
-            // Remap the issues
-            this.resources = issues.map(function (issue) {
-
-                // Determine the issue focus
-                var focuses = issue['priority'] == __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0 ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV];
-
-                // Determine the remaining estimate
-                var remaining = Math.max(issue['time_estimate'] || 0, 1 * 60 * 60);
-
-                // Since an issue on its own can take longer than a day to complete,
-                // we essentially have to chip away at the remaining estimate so
-                // that we can correctly spread the work effort into many days.
-
-                // Initialize the date
-                var date = null;
-
-                // Allocate the remaining estimate in a time loop until its all gone
-
-                var _loop = function _loop() {
-
-                    // Determine the applicable focus dates
-                    var focusDates = _.pick(dates, focuses);
-
-                    // Determine the earliest focus date
-                    date = Object.values(focusDates).reduce(function (date, focusDate) {
-                        return date == null ? focusDate : moment(moment.min(date, focusDate));
-                    }, null);
-
-                    // Determine the focus with that date
-                    var focus = _.last(focuses.filter(function (focus) {
-                        return focusDates[focus].isSame(date);
-                    }));
-
-                    // Determine how much time as already been allocated for the day
-                    var allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
-
-                    // Determine the daily focus limit
-                    var limit = schedule[date.weekday()][focus];
-
-                    // If the previous issue ended cleanly on the exact amount of allocatable
-                    // time, we wanted it to end on that date. However, we have to advance
-                    // to the next day for the next issue, otherwise we'll loop forever.
-
-                    // Check if we've run out of time for the day
-                    if (allocated >= limit) {
-
-                        // Advance to the next day
-                        date = date.add(1, 'day').startOf('day');
-
-                        // Update the focus date
-                        dates[focus] = date;
-
-                        // Try again
-                        return 'continue';
-                    }
-
-                    // Determine how much time we can allocate for today
-                    var allocatable = Math.min(remaining, limit - allocated);
-
-                    // Allocate the time
-                    date = date.add(allocatable, 'second');
-
-                    // Reduce the remaining time by how much was allocated
-                    remaining -= allocatable;
-
-                    // If we have exceeded the daily limit, advance to the next day
-                    if (allocated + allocatable > limit) {
-                        date = date.add(1, 'day').startOf('day');
-                    }
-
-                    // Skip dates that have no allocatable time
-                    while (schedule[date.weekday()][focus] <= 0) {
-                        date = date.add(1, 'day');
-                    }
-
-                    // Update the focus date
-                    dates[focus] = date;
-                };
-
-                while (remaining > 0) {
-                    var _ret = _loop();
-
-                    if (_ret === 'continue') continue;
-                }
-
-                // Assign the estimated completion date
-                issue['new_estimated_completion_date'] = date.format('YYYY-MM-DD');
-
-                // Return the issue
-                return issue;
-            });
-        },
-
-        /**
-         * Returns the first assignment date for the schedule.
-         *
-         * @param  {string}  focus
-         *
-         * @return {Date}
-         */
-        getFirstAssignmentDate: function getFirstAssignmentDate(focus) {
-
-            // Determine the schedule
-            var schedule = this.schedule;
-
-            // Until we have a better scheduling concept, we're going to
-            // base everything off of the default schedule, and probit
-            // issues from being scheduled same-day after 11:00 AM.
-
-            // Determine the soonest we can start scheduling
-            var start = moment().isBefore(moment().startOf('day').add(11, 'hours')) // If it's prior to 11 AM
-            ? moment().startOf('day') // Start no sooner than today
-            : moment().add(1, 'day').startOf('day'); // Otherwise, start no sooner than tomorrow
-
-            // Determine the latest we can start scheduling
-            var end = moment().add(8, 'days').startOf('day'); // Start no later than a week after tomorrow
-
-            // Determine the first date where we can start assigning due dates
-            var date = Object.keys(schedule).reduce(function (date, key) {
-
-                // If the schedule has no focus allocation, don't change the date
-                if (schedule[key][focus] <= 0) {
-                    return date;
-                }
-
-                // Determine the date for this week
-                var thisWeek = moment().weekday(key).startOf('day');
-
-                // Make sure this week comes after the start date
-                if (thisWeek.isBefore(start)) {
-                    thisWeek = thisWeek.add(1, 'week');
-                }
-
-                // Use the smaller of the two dates
-                return moment.min(date, thisWeek);
-            }, end);
-
-            // Return the date
-            return date;
-        },
-
-        getSwimlane: function getSwimlane() {
-            return this;
-        }
-    },
-
-    computed: {
-
-        /**
-         * Get the name of the page query string variable.
-         */
-        pageParameter: function pageParameter() {
-            return this.resourceName + '_page';
-        },
-
-
-        /**
-         * Build the resource request query string.
-         */
-        resourceRequestQueryString: function resourceRequestQueryString() {
-            return {
-                // search: this.currentSearch,
-                filters: this.encodedFilters
-                // orderBy: this.currentOrderBy,
-                // orderByDirection: this.currentOrderByDirection,
-                // perPage: this.currentPerPage,
-                // trashed: this.currentTrashed,
-                // page: this.currentPage,
-                // viaResource: this.viaResource,
-                // viaResourceId: this.viaResourceId,
-                // viaRelationship: this.viaRelationship,
-                // viaResourceRelationship: this.viaResourceRelationship,
-                // relationshipType: this.relationshipType,
-            };
-        },
-
-
-        /**
-         * Get the query string for an action request.
-         */
-        actionRequestQueryString: function actionRequestQueryString() {
-            return {
-                action: this.selectedActionKey,
-                // pivotAction: this.selectedActionIsPivotAction,
-                // search: this.queryString.currentSearch,
-                filters: this.encodedFilters
-                // trashed: this.queryString.currentTrashed,
-                // viaResource: this.queryString.viaResource,
-                // viaResourceId: this.queryString.viaResourceId,
-                // viaRelationship: this.queryString.viaRelationship,
-            };
-        },
-
-
-        /**
-         * Return the currently encoded filter string from the store
-         */
-        encodedFilters: function encodedFilters() {
-            return this.$store.getters[this.resourceName + '/currentEncodedFilters'];
-        },
-
-
-        /**
-         * Return the initial encoded filters from the query string
-         */
-        initialEncodedFilters: function initialEncodedFilters() {
-            return this.$route.query[this.filterParameter] || '';
-        }
-    },
-
-    provide: function provide() {
-
-        return {
-            getIssue: this.getIssue,
-            getSwimlane: this.getSwimlane
-        };
-    },
-
-    mounted: function mounted() {
-        //
-    }
-});
-
-/***/ }),
+/* 150 */,
+/* 151 */,
 /* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36152,165 +35524,7 @@ module.exports = g;
 });
 
 /***/ }),
-/* 191 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "loading-view",
-        { attrs: { loading: _vm.initialLoading } },
-        [
-          _c(
-            "card",
-            {
-              staticClass:
-                "py-3 flex items-center bg-white border border-50 rounded mb-2"
-            },
-            [
-              _c(
-                "div",
-                {
-                  staticClass: "flex items-center justify-between w-full px-3"
-                },
-                [
-                  _c("div", { staticClass: "flex-1" }, [
-                    _vm.resources.length
-                      ? _c("div", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(
-                                _vm.resources.length == 1
-                                  ? "1 Issue"
-                                  : _vm.resources.length + " Issues"
-                              ) +
-                              "\n                    "
-                          )
-                        ])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _vm.resources.length
-                    ? _c(
-                        "button",
-                        {
-                          staticClass:
-                            "btn btm-sm btn-default btn-primary text-white rounded mr-3 h-dropdown-trigger",
-                          class: { "btn-disabled": _vm.working },
-                          attrs: { disabled: _vm.working },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.saveChanges($event)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    Save Changes\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("filter-menu", {
-                    attrs: {
-                      "resource-name": _vm.resourceName,
-                      "soft-deletes": false,
-                      "via-resource": _vm.viaResource,
-                      "via-has-one": false,
-                      trashed: "",
-                      "per-page": 100,
-                      "per-page-options": {}
-                    },
-                    on: {
-                      "clear-selected-filters": _vm.clearSelectedFilters,
-                      "filter-changed": _vm.filterChanged
-                    }
-                  })
-                ],
-                1
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "card",
-            { staticClass: "bg-white border border-50 shadow p-1" },
-            [
-              _c("loading-view", { attrs: { loading: _vm.loading } }, [
-                _vm.resources.length
-                  ? _c(
-                      "div",
-                      { staticClass: "bg-30 border border-50 rounded p-1" },
-                      [
-                        _c(
-                          "draggable",
-                          {
-                            staticClass: "-my-2",
-                            class: { dragging: _vm.dragging },
-                            attrs: {
-                              list: _vm.resources,
-                              "ghost-class": "ghost",
-                              "component-data": _vm.getComponentData(),
-                              options: { forceFallback: true }
-                            },
-                            on: { start: _vm.onDragStart, end: _vm.onDragEnd }
-                          },
-                          _vm._l(_vm.resources, function(issue, index) {
-                            return _c("jira-swimlane-issue", {
-                              key: issue.key,
-                              ref: "issue",
-                              refInFor: true,
-                              attrs: { "issue-key": issue.key, index: index }
-                            })
-                          }),
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  : _c("div", [
-                      _c(
-                        "h3",
-                        {
-                          staticClass:
-                            "text-base text-80 font-normal py-3 text-center"
-                        },
-                        [
-                          _vm._v(
-                            "\n                        No issues matched the given criteria.\n                    "
-                          )
-                        ]
-                      )
-                    ])
-              ])
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b9bc2c0a", module.exports)
-  }
-}
-
-/***/ }),
+/* 191 */,
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -37823,6 +37037,798 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(209)
+/* template */
+var __vue_template__ = __webpack_require__(210)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Swimlane.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8f944842", Component.options)
+  } else {
+    hotAPI.reload("data-v-8f944842", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 209 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_constants_js__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_defaults__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_defaults___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_defaults__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [
+    // Deletable,
+    __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Filterable"],
+    // HasCards,
+    // Paginatable,
+    // PerPageable,
+    // InteractsWithResourceInformation,
+    __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["InteractsWithQueryString"]],
+
+    props: ['card'],
+
+    data: function data() {
+        var _2, _3, _4, _5, _6, _7, _8;
+
+        return {
+            initialLoading: true,
+            loading: true,
+            working: false,
+
+            resources: [],
+
+            resourceName: 'jira-issues',
+            viaResource: 'jira-issues',
+            selectedActionKey: 'save-swimlane-changes',
+
+            dragging: false,
+            schedule: {
+                0: (_2 = {}, _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 0), _2),
+                1: (_3 = {}, _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 4.5 * 60 * 60), _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _3),
+                2: (_4 = {}, _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 5 * 60 * 60), _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _4),
+                3: (_5 = {}, _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _5),
+                4: (_6 = {}, _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 4.5 * 60 * 60), _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _6),
+                5: (_7 = {}, _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _7),
+                6: (_8 = {}, _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 0), _8)
+
+            }
+        };
+    },
+
+    /**
+     * Mount the component and retrieve its initial data.
+     */
+    created: function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            var _this = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.next = 2;
+                            return this.initializeFilters();
+
+                        case 2:
+                            _context.next = 4;
+                            return this.getResources();
+
+                        case 4:
+
+                            // Mark the initial loading as completed
+                            this.initialLoading = false;
+
+                            this.$watch(function () {
+                                return _this.encodedFilters;
+                            }, function () {
+                                _this.getResources();
+                            });
+
+                        case 6:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, this);
+        }));
+
+        function created() {
+            return _ref.apply(this, arguments);
+        }
+
+        return created;
+    }(),
+    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+
+        next();
+        this.initializeState(false);
+    },
+
+
+    methods: {
+
+        onDragStart: function onDragStart(ev) {
+
+            this.dragging = true;
+            this.draggingComponent = ev.item.__vue__;
+            this.draggingComponent.dragging = true;
+        },
+
+        onDragEnd: function onDragEnd() {
+
+            this.dragging = false;
+            this.draggingComponent.dragging = false;
+            this.draggingComponent = null;
+
+            this.assignEstimatedCompletionDates();
+        },
+
+        onDragChange: function onDragChange(e) {
+            //
+        },
+
+        getIssue: function getIssue(key) {
+            return _.find(this.resources, { 'key': key });
+        },
+
+        /**
+         * Get the resources based on the current page, search, filters, etc.
+         */
+        getResources: function getResources() {
+            var _this2 = this;
+
+            this.loading = true;
+
+            this.$nextTick(function () {
+
+                _this2.resources = [];
+
+                return Object(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Minimum"])(Nova.request().get('/jira-api/issues', {
+                    params: _this2.resourceRequestQueryString
+                }), 500).then(function (_ref2) {
+                    var data = _ref2.data;
+
+
+                    _this2.resources = [];
+
+                    _this2.resourceResponse = data;
+                    _this2.resources = data.resources;
+
+                    _this2.loading = false;
+
+                    _this2.assignEstimatedCompletionDates();
+
+                    Nova.$emit('resources-loaded');
+                });
+            });
+        },
+
+
+        /**
+         * Update the given query string values.
+         */
+        updateQueryString: function updateQueryString(value) {
+
+            // Remove the "per page" parameter
+            delete value[this.pageParameter];
+
+            // Update the query string
+            this.$router.push({ query: __WEBPACK_IMPORTED_MODULE_2_lodash_defaults___default()(value, this.$route.query) });
+        },
+
+
+        /**
+         * Saves the changes made to the issues
+         */
+        saveChanges: function saveChanges() {
+            var _this3 = this;
+
+            this.working = true;
+
+            Nova.request({
+                method: 'post',
+                url: '/nova-api/' + this.resourceName + '/action',
+                params: this.actionRequestQueryString,
+                data: this.actionFormData()
+            }).then(function (response) {
+
+                _this3.handleActionResponse(response.data);
+                _this3.working = false;
+            }).catch(function (error) {
+
+                _this3.working = false;
+
+                if (error.response.status == 422) {
+                    _this3.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
+                }
+            });
+        },
+
+
+        /**
+         * Gather the action FormData for the given action.
+         */
+        actionFormData: function actionFormData() {
+            var _this4 = this;
+
+            return _.tap(new FormData(), function (formData) {
+
+                formData.append('resources', _.map(_this4.resources, 'key'));
+                formData.append('resourceData', JSON.stringify(_.map(_this4.$refs.issue, 'resourceData')));
+            });
+        },
+
+
+        /**
+         * Handle the action response. Typically either a message, download or a redirect.
+         */
+        handleActionResponse: function handleActionResponse(response) {
+
+            if (response.message) {
+                this.$emit('actionExecuted');
+                this.$toasted.show(response.message, { type: 'success' });
+            } else if (response.deleted) {
+                this.$emit('actionExecuted');
+            } else if (response.danger) {
+                this.$emit('actionExecuted');
+                this.$toasted.show(response.danger, { type: 'error' });
+            } else if (response.download) {
+                var link = document.createElement('a');
+                link.href = response.download;
+                link.download = response.name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (response.redirect) {
+                window.location = response.redirect;
+            } else if (response.openInNewTab) {
+                window.open(response.openInNewTab, '_blank');
+            } else {
+                this.$emit('actionExecuted');
+                this.$toasted.show(this.__('The changes were saved successfully!'), { type: 'success' });
+            }
+        },
+        getComponentData: function getComponentData() {
+
+            return {
+                on: {
+                    change: this.onDragChange
+                }
+            };
+        },
+
+
+        /**
+         * Assigns estimated complete dates to the issues.
+         *
+         * @return {Array}
+         */
+        assignEstimatedCompletionDates: function assignEstimatedCompletionDates() {
+            var _dates;
+
+            // Determine the issues
+            var issues = this.resources;
+
+            // Make sure issues have been provided
+            if (typeof issues === 'undefined') {
+                return [];
+            }
+
+            // Our schedule is broken down into focus times. Issues can be allocated
+            // to one or more focuses, and these focus times are when we can work
+            // on these issues. We ought to respect the focus in the schedule.
+
+            // Initialize the dates for each focus
+            var dates = (_dates = {}, _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER)), _dates);
+
+            // Determine the schedule
+            var schedule = this.schedule;
+
+            // Remap the issues
+            this.resources = issues.map(function (issue) {
+
+                // Determine the issue focus
+                var focuses = issue['priority'] == __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0 ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV];
+
+                // Determine the remaining estimate
+                var remaining = Math.max(issue['time_estimate'] || 0, 1 * 60 * 60);
+
+                // Since an issue on its own can take longer than a day to complete,
+                // we essentially have to chip away at the remaining estimate so
+                // that we can correctly spread the work effort into many days.
+
+                // Initialize the date
+                var date = null;
+
+                // Allocate the remaining estimate in a time loop until its all gone
+
+                var _loop = function _loop() {
+
+                    // Determine the applicable focus dates
+                    var focusDates = _.pick(dates, focuses);
+
+                    // Determine the earliest focus date
+                    date = Object.values(focusDates).reduce(function (date, focusDate) {
+                        return date == null ? focusDate : moment(moment.min(date, focusDate));
+                    }, null);
+
+                    // Determine the focus with that date
+                    var focus = _.last(focuses.filter(function (focus) {
+                        return focusDates[focus].isSame(date);
+                    }));
+
+                    // Determine how much time as already been allocated for the day
+                    var allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
+
+                    // Determine the daily focus limit
+                    var limit = schedule[date.weekday()][focus];
+
+                    // If the previous issue ended cleanly on the exact amount of allocatable
+                    // time, we wanted it to end on that date. However, we have to advance
+                    // to the next day for the next issue, otherwise we'll loop forever.
+
+                    // Check if we've run out of time for the day
+                    if (allocated >= limit) {
+
+                        // Advance to the next day
+                        date = date.add(1, 'day').startOf('day');
+
+                        // Update the focus date
+                        dates[focus] = date;
+
+                        // Try again
+                        return 'continue';
+                    }
+
+                    // Determine how much time we can allocate for today
+                    var allocatable = Math.min(remaining, limit - allocated);
+
+                    // Allocate the time
+                    date = date.add(allocatable, 'second');
+
+                    // Reduce the remaining time by how much was allocated
+                    remaining -= allocatable;
+
+                    // If we have exceeded the daily limit, advance to the next day
+                    if (allocated + allocatable > limit) {
+                        date = date.add(1, 'day').startOf('day');
+                    }
+
+                    // Skip dates that have no allocatable time
+                    while (schedule[date.weekday()][focus] <= 0) {
+                        date = date.add(1, 'day');
+                    }
+
+                    // Update the focus date
+                    dates[focus] = date;
+                };
+
+                while (remaining > 0) {
+                    var _ret = _loop();
+
+                    if (_ret === 'continue') continue;
+                }
+
+                // Assign the estimated completion date
+                issue['new_estimated_completion_date'] = date.format('YYYY-MM-DD');
+
+                // Return the issue
+                return issue;
+            });
+        },
+
+        /**
+         * Returns the first assignment date for the schedule.
+         *
+         * @param  {string}  focus
+         *
+         * @return {Date}
+         */
+        getFirstAssignmentDate: function getFirstAssignmentDate(focus) {
+
+            // Determine the schedule
+            var schedule = this.schedule;
+
+            // Until we have a better scheduling concept, we're going to
+            // base everything off of the default schedule, and probit
+            // issues from being scheduled same-day after 11:00 AM.
+
+            // Determine the soonest we can start scheduling
+            var start = moment().isBefore(moment().startOf('day').add(11, 'hours')) // If it's prior to 11 AM
+            ? moment().startOf('day') // Start no sooner than today
+            : moment().add(1, 'day').startOf('day'); // Otherwise, start no sooner than tomorrow
+
+            // Determine the latest we can start scheduling
+            var end = moment().add(8, 'days').startOf('day'); // Start no later than a week after tomorrow
+
+            // Determine the first date where we can start assigning due dates
+            var date = Object.keys(schedule).reduce(function (date, key) {
+
+                // If the schedule has no focus allocation, don't change the date
+                if (schedule[key][focus] <= 0) {
+                    return date;
+                }
+
+                // Determine the date for this week
+                var thisWeek = moment().weekday(key).startOf('day');
+
+                // Make sure this week comes after the start date
+                if (thisWeek.isBefore(start)) {
+                    thisWeek = thisWeek.add(1, 'week');
+                }
+
+                // Use the smaller of the two dates
+                return moment.min(date, thisWeek);
+            }, end);
+
+            // Return the date
+            return date;
+        },
+
+        getSwimlane: function getSwimlane() {
+            return this;
+        }
+    },
+
+    computed: {
+
+        /**
+         * Get the name of the page query string variable.
+         */
+        pageParameter: function pageParameter() {
+            return this.resourceName + '_page';
+        },
+
+
+        /**
+         * Build the resource request query string.
+         */
+        resourceRequestQueryString: function resourceRequestQueryString() {
+            return {
+                // search: this.currentSearch,
+                filters: this.encodedFilters
+                // orderBy: this.currentOrderBy,
+                // orderByDirection: this.currentOrderByDirection,
+                // perPage: this.currentPerPage,
+                // trashed: this.currentTrashed,
+                // page: this.currentPage,
+                // viaResource: this.viaResource,
+                // viaResourceId: this.viaResourceId,
+                // viaRelationship: this.viaRelationship,
+                // viaResourceRelationship: this.viaResourceRelationship,
+                // relationshipType: this.relationshipType,
+            };
+        },
+
+
+        /**
+         * Get the query string for an action request.
+         */
+        actionRequestQueryString: function actionRequestQueryString() {
+            return {
+                action: this.selectedActionKey,
+                // pivotAction: this.selectedActionIsPivotAction,
+                // search: this.queryString.currentSearch,
+                filters: this.encodedFilters
+                // trashed: this.queryString.currentTrashed,
+                // viaResource: this.queryString.viaResource,
+                // viaResourceId: this.queryString.viaResourceId,
+                // viaRelationship: this.queryString.viaRelationship,
+            };
+        },
+
+
+        /**
+         * Return the currently encoded filter string from the store
+         */
+        encodedFilters: function encodedFilters() {
+            return this.$store.getters[this.resourceName + '/currentEncodedFilters'];
+        },
+
+
+        /**
+         * Return the initial encoded filters from the query string
+         */
+        initialEncodedFilters: function initialEncodedFilters() {
+            return this.$route.query[this.filterParameter] || '';
+        }
+    },
+
+    provide: function provide() {
+
+        return {
+            getIssue: this.getIssue,
+            getSwimlane: this.getSwimlane
+        };
+    },
+
+    mounted: function mounted() {
+        //
+    }
+});
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "loading-view",
+        { attrs: { loading: _vm.initialLoading } },
+        [
+          _c(
+            "card",
+            {
+              staticClass:
+                "py-3 flex items-center bg-white border border-50 rounded mb-2"
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "flex items-center justify-between w-full px-3"
+                },
+                [
+                  _c("div", { staticClass: "flex-1" }, [
+                    _vm.resources.length
+                      ? _c("div", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(
+                                _vm.resources.length == 1
+                                  ? "1 Issue"
+                                  : _vm.resources.length + " Issues"
+                              ) +
+                              "\n                    "
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _vm.resources.length
+                    ? _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btm-sm btn-default btn-primary text-white rounded mr-3 h-dropdown-trigger",
+                          class: { "btn-disabled": _vm.working },
+                          attrs: { disabled: _vm.working },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.saveChanges($event)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    Save Changes\n                "
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("filter-menu", {
+                    attrs: {
+                      "resource-name": _vm.resourceName,
+                      "soft-deletes": false,
+                      "via-resource": _vm.viaResource,
+                      "via-has-one": false,
+                      trashed: "",
+                      "per-page": 100,
+                      "per-page-options": {}
+                    },
+                    on: {
+                      "clear-selected-filters": _vm.clearSelectedFilters,
+                      "filter-changed": _vm.filterChanged
+                    }
+                  })
+                ],
+                1
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "card",
+            { staticClass: "bg-white border border-50 shadow p-1" },
+            [
+              _c("loading-view", { attrs: { loading: _vm.loading } }, [
+                _vm.resources.length
+                  ? _c(
+                      "div",
+                      { staticClass: "bg-30 border border-50 rounded p-1" },
+                      [
+                        _c(
+                          "draggable",
+                          {
+                            staticClass: "-my-2",
+                            class: { dragging: _vm.dragging },
+                            attrs: {
+                              list: _vm.resources,
+                              "ghost-class": "ghost",
+                              "component-data": _vm.getComponentData(),
+                              options: { forceFallback: true }
+                            },
+                            on: { start: _vm.onDragStart, end: _vm.onDragEnd }
+                          },
+                          _vm._l(_vm.resources, function(issue, index) {
+                            return _c("jira-swimlane-issue", {
+                              key: issue.key,
+                              ref: "issue",
+                              refInFor: true,
+                              attrs: { "issue-key": issue.key, index: index }
+                            })
+                          }),
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  : _c("div", [
+                      _c(
+                        "h3",
+                        {
+                          staticClass:
+                            "text-base text-80 font-normal py-3 text-center"
+                        },
+                        [
+                          _vm._v(
+                            "\n                        No issues matched the given criteria.\n                    "
+                          )
+                        ]
+                      )
+                    ])
+              ])
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8f944842", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

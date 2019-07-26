@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a05784ed6bbc58bc66e308296ef652e8",
+    "content-hash": "047317f2d0a07da39f040257a4c25e2b",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1239,6 +1239,60 @@
                 "rest"
             ],
             "time": "2019-05-22T07:34:53+00:00"
+        },
+        {
+            "name": "mad-web/nova-telescope-link",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mad-web/nova-telescope-link.git",
+                "reference": "b0c6bc7e3f1fd7b23a2df715288144d009f790e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mad-web/nova-telescope-link/zipball/b0c6bc7e3f1fd7b23a2df715288144d009f790e1",
+                "reference": "b0c6bc7e3f1fd7b23a2df715288144d009f790e1",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "*",
+                "laravel/telescope": "^1.0|^2.0",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MadWeb\\NovaTelescopeLink\\LinkServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MadWeb\\NovaTelescopeLink\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mad Web",
+                    "email": "madweb.dev@gmail.com",
+                    "homepage": "https://github.com/mad-web",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Smart Link for Laravel Nova to Telescope Debug Assistant.",
+            "homepage": "https://github.com/mad-web/nova-telescope-link",
+            "keywords": [
+                "laravel",
+                "link",
+                "nova",
+                "telescope"
+            ],
+            "time": "2019-04-30T10:37:41+00:00"
         },
         {
             "name": "mnobrega/php-jira-agile-rest-client",
