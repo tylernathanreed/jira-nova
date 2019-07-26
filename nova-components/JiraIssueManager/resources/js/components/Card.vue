@@ -48,6 +48,7 @@
                             @start="onDragStart"
                             @end="onDragEnd"
                             :component-data="getComponentData()"
+                            :options="{ 'forceFallback': true }"
                         >
                             <jira-swimlane-issue v-for="(issue, index) in resources" :issue-key="issue.key" :key="issue.key" :index="index" ref="issue"/>
                         </draggable>

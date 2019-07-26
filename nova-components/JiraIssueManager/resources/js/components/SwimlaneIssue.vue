@@ -1,7 +1,7 @@
 <template>
-    <div :class="'swimlane-issue-focus mr-3 rounded focus-' + issue.focus.toLowerCase()">
+    <div :class="'swimlane-issue-focus mr-3 my-2 rounded focus-' + issue.focus.toLowerCase()">
         <div
-            class="my-2 p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
+            class="p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
             :class="{
                 'bg-white border-50': !dragging && (!est || offset > -7),
                 'bg-delinquent border-delinquent': !dragging && (offset <= -7),

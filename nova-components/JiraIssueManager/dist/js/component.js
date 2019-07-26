@@ -23455,6 +23455,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -36256,7 +36257,8 @@ var render = function() {
                             attrs: {
                               list: _vm.resources,
                               "ghost-class": "ghost",
-                              "component-data": _vm.getComponentData()
+                              "component-data": _vm.getComponentData(),
+                              options: { forceFallback: true }
                             },
                             on: { start: _vm.onDragStart, end: _vm.onDragEnd }
                           },
@@ -37246,7 +37248,7 @@ var render = function() {
     "div",
     {
       class:
-        "swimlane-issue-focus mr-3 rounded focus-" +
+        "swimlane-issue-focus mr-3 my-2 rounded focus-" +
         _vm.issue.focus.toLowerCase()
     },
     [
@@ -37254,7 +37256,7 @@ var render = function() {
         "div",
         {
           staticClass:
-            "my-2 p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none",
+            "p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none",
           class: {
             "bg-white border-50":
               !_vm.dragging && (!_vm.est || _vm.offset > -7),
