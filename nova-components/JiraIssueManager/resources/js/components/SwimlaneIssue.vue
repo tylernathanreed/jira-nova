@@ -4,7 +4,7 @@
             class="p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
             :class="{
                 'bg-white border-50': !dragging && (!est || offset > -7),
-                'bg-delinquent border-delinquent': !dragging && (offset <= -7),
+                'bg-delinquent border-delinquent hover:bg-delinquent-light': !dragging && (offset <= -7),
                 'hover:bg-20': !dragging && (!est || offset > -7) && !getSwimlane().dragging,
                 'bg-50 border-60': dragging
             }"
@@ -21,7 +21,7 @@
 
                 <div class="swimlane-issue-field-group text-center" style="min-width: 80px; max-width: 80px">
                     <div class="swimlane-issue-field text-center" data-field="key">
-                        <a :href="issue.url" target="_blank" v-text="issue.key"/>
+                        <a :href="issue.parent_url || issue.url" target="_blank" v-text="issue.parent_key || issue.key"/>
                     </div>
 
                     <div v-if="issue.epic_key" :class="'swimlane-issue-field text-center epic-label ' + (issue.epic_color || 'ghx-label-0')" data-field="epic">
@@ -30,11 +30,15 @@
                 </div>
 
                 <div class="swimlane-issue-field" data-field="summary" style="flex: 1; color: #777">
+                    <span v-if="issue.is_subtask">
+                        / <a :href="issue.url" target="_blank" v-text="issue.key"/> /
+                    </span>
+
                     {{ issue.summary }}
                 </div>
 
                 <div :class="'swimlane-issue-field issue-status-' + issue.status_color" data-field="status" style="min-width: 90px; text-align: center">
-                    {{ issue.status }}
+                    {{ issue.status_name }}
                 </div>
 
                 <div class="swimlane-issue-field" data-field="issue-category" style="min-width: 60px; text-align: center">
@@ -100,7 +104,7 @@
                 </div>
 
                 <div class="swimlane-issue-field" data-field="time-estimate" style="min-width: 40px; text-align: right">
-                    {{ (issue.time_estimate / 3600).toFixed(2) }}
+                    {{ (issue.estimate_remaining / 3600).toFixed(2) }}
                 </div>
 
                 <div class="swimlane-issue-field" data-field="links" style="min-width: 50px; max-width: 50px; text-align: center">
@@ -204,9 +208,10 @@
                     'order': this.index,
                     'est': this.est,
                     'is_subtask': this.issue.is_subtask ? 1 : 0,
+                    'parent_key': this.issue.parent_key,
                     'original': {
                         'order': this.order,
-                        'est': this.issue.old_estimated_completion_date
+                        'est': this.issue.estimate_date
                     }
                 };
 
@@ -232,6 +237,10 @@
 
     .bg-delinquent {
         background: #fee;
+    }
+
+    .hover\:bg-delinquent-light:hover {
+        background: #fff4f4;
     }
 
     .border-delinquent {

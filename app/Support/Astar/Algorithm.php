@@ -166,8 +166,6 @@ class Algorithm
 			// Determine the next node
 			$next = $this->queue->extract();
 
-			dump($next->key);
-
 			// Check if the node is the goal state
 			if($next->estimatedCost == 0) {
 

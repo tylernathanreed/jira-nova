@@ -164,9 +164,6 @@ class RankingOperation
 
         }
 
-        // Merge any adjacent groups
-        $result = static::mergeAdjacentGroups($groups);
-
         // Return the result
         return $result;
     }
@@ -200,27 +197,30 @@ class RankingOperation
         // Create the issue rank
         $rank = new IssueRank;
 
+        // Determine the issues to be ranked
+        $issues = $this->groups[$this->moveIndex]['issues'];
+
+        // Replace subtasks with their parents
+        $issues = array_unique(array_map(function($issue) {
+            return $this->groups[$this->moveIndex]['subtasks'][$issue] ?? $issue;
+        }, $issues));
+
         // Set the issues
-        $rank->issues = $this->groups[$this->moveIndex]['issues'];
+        $rank->issues = array_values($issues);
 
         // Set the custom rank field id
         $rank->rankCustomFieldId = static::FIELD_RANK;
 
-        // Check if the issues come before the adjacent issue
-        if($this->relation == static::RELATION_BEFORE) {
+        // Determine the adjacent issue
+        $adjacentIssue = $this->relation == static::RELATION_BEFORE
+            ? $this->groups[$this->adjacentIndex]['head']['key']
+            : $this->groups[$this->adjacentIndex]['tail']['key'];
 
-            // Set the rank before issue
-            $rank->rankBeforeIssue = $this->groups[$this->adjacentIndex]['head']['key'];
+        // If the adjacent issue is a subtask, use its parent instead
+        $adjacentIssue = $this->groups[$this->adjacentIndex]['subtasks'][$adjacentIssue] ?? $adjacentIssue;
 
-        }
-
-        // The issues come after the adjacent issue
-        else {
-
-            // Set the rank after issue
-            $rank->rankAfterIssue = $this->groups[$this->adjacentIndex]['tail']['key'];
-
-        }
+        // Set the rank direction
+        $rank->{$this->relation == static::RELATION_BEFORE ? 'rankBeforeIssue' : 'rankAfterIssue'} = $adjacentIssue;
 
         // Return the issue rank
         return $rank;
@@ -268,26 +268,25 @@ class RankingOperation
         $groups = static::getRankingGroups($oldOrder, $newOrder, $subtasks);
 
         // Calculate the ranking operations for the groups
-        return static::calculateForGroups($groups, $subtasks);
+        return static::calculateForGroups($groups);
     }
 
     /**
      * Creates and returns the ranking operations to sort the specified groups.
      *
      * @param  array  $groups
-     * @param  array  $subtasks
      *
      * @return array
      *
      * @throws \RuntimeException
      */
-    public static function calculateForGroups($groups, $subtasks = [])
+    public static function calculateForGroups($groups)
     {
         // Create a new search algorithm
         $algorithm = static::newSearchAlgorithm([
             'move' => null,
             'groups' => $groups
-        ], $subtasks);
+        ]);
 
         // Solve the algorithm
         $solution = $algorithm->solve();
@@ -308,11 +307,10 @@ class RankingOperation
      * Creates and returns the state search algorithm.
      *
      * @param  array  $initial
-     * @param  array  $subtasks
      *
      * @return \App\Support\Astar\Algorithm
      */
-    public static function newSearchAlgorithm($initial, $subtasks = [])
+    public static function newSearchAlgorithm($initial)
     {
         // Create a new search algorithm
         $algorithm = new Algorithm;
@@ -333,11 +331,11 @@ class RankingOperation
         }, 0);
 
         // Set the move resolver
-        $algorithm->setMoveResolver(function($state, $depth) use ($subtasks, $total) {
+        $algorithm->setMoveResolver(function($state, $depth) use ($total) {
 
             // Determine the available operations
             $moves = $depth <= $total
-                ? static::getGroupArrangementAvailableOperations($state['groups'], $subtasks)
+                ? static::getGroupArrangementAvailableOperations($state['groups'])
                 : [];
 
             // Cast each operation into a move
@@ -388,14 +386,13 @@ class RankingOperation
      * Returns the available ranking operations that could be used on the specified groups.
      *
      * @param  array  $groups
-     * @param  array  $subtasks
      *
      * @return array
      */
-    public static function getGroupArrangementAvailableOperations($groups, $subtasks = [])
+    public static function getGroupArrangementAvailableOperations($groups)
     {
         // Determine the movable groups
-        $movable = static::getGroupArrangementMoveableIndexes($groups, $subtasks);
+        $movable = static::getGroupArrangementMoveableIndexes($groups);
 
         // If there are no movable groups, then there are no available operations
         if(empty($movable)) {
@@ -449,14 +446,6 @@ class RankingOperation
 
             }
 
-            // Due to how subtasks are unusually ranked, they cannot be used
-            // as adjacent issues. If the previous or next issue ends up
-            // being a subtask, we'll have to find another way around.
-
-            // Clear the previous and/or next issues if they're subtasks
-            $previous = !is_null($previous) ? (!in_array($groups[$previous]['tail']['key'], $subtasks) ? $previous : null) : null;
-            $next = !is_null($next) ? (!in_array($groups[$next]['head']['key'], $subtasks) ? $next : null) : null;
-
             // Create the "before" and "after" ranking operations
             $before = !is_null($next) ? new static($groups, $index, static::RELATION_BEFORE, $next) : null;
             $after = !is_null($previous) ? new static($groups, $index, static::RELATION_AFTER, $previous) : null;
@@ -477,6 +466,34 @@ class RankingOperation
 
         }
 
+        // Each movable index could essentially result in a new move. To
+        // limit the search space of the algorithm, we'll only use the
+        // first group with the fewest number of issues within it.
+
+        // // Determine the move for the group
+        // $moves = array_reduce($moves, function($optimal, $move) {
+
+        //     // If an optimal move hasn't been chosen, use the first move
+        //     if(is_null($optimal)) {
+        //         return [$move];
+        //     }
+
+        //     // Determine the number to best
+        //     $min = count($optimal[0]->groups[$optimal[0]->moveIndex]['issues']);
+
+        //     // Determine the number we're at
+        //     $actual = count($move->groups[$move->moveIndex]['issues']);
+
+        //     // If the new move is better, use it instead
+        //     if($actual < $min) {
+        //         return [$move];
+        //     }
+
+        //     // Otherwise, keep the same move
+        //     return $optimal;
+
+        // });
+
         // Return the list of moves
         return $moves;
     }
@@ -485,11 +502,10 @@ class RankingOperation
      * Returns the groups that can be moved by an operation.
      *
      * @param  array  $groups
-     * @param  array  $subtasks
      *
      * @return array
      */
-    public static function getGroupArrangementMoveableIndexes($groups, $subtasks = [])
+    public static function getGroupArrangementMoveableIndexes($groups)
     {
         // The available operations will include moving groups that are
         // not in the correct order, but won't include groups whose
@@ -547,15 +563,6 @@ class RankingOperation
             $movable[] = $index;
 
         }
-
-        // Unfortunately, subtasks behave too strangely to be able to
-        // move them around. Any group that contains a subtask is
-        // one that we'll have to keep still and dance around.
-
-        // Remove indexes that contain subtasks (unless they're all subtasks)
-        $movable = array_filter($movable, function($index) use ($groups, $subtasks) {
-            return ($count = count(array_intersect($groups[$index]['issues'], $subtasks))) == 0 || $count == count($groups[$index]['issues']);
-        });
 
         // Return the movable group indexes
         return $movable;
@@ -627,7 +634,11 @@ class RankingOperation
                 $group['head'] = $newIssue;
                 $group['issues'] = [$key];
                 $group['tail'] = $newIssue;
-                $group['is_subtasks'] = in_array($key, $subtasks);
+
+                // Mark the issue as a subtask if it is one
+                if(isset($subtasks[$key])) {
+                    $group['subtasks'][$key] = $subtasks[$key];
+                }
 
                 // Skip to the next issue
                 continue;
@@ -637,22 +648,17 @@ class RankingOperation
             // Determine the tail issue
             $tail = $group['tail'];
 
-            // If the next issue links to the tail, we can expand the group.
-            // However, we want to also group subtasks together, so if we
-            // started with a subtask, the next issue must also be one.
-
-            // Determine whether or not the next issue links to the tail
-            $linkable = $newOrder[$tail['key']]['after'] == $key;
-
-            // Determine whether or not the next issue is a subtask
-            $isSubtask = in_array($key, $subtasks);
-
             // If the next issue can be linked, expand the group
-            if($linkable && $group['is_subtasks'] == $isSubtask) {
+            if($newOrder[$tail['key']]['after'] == $key && count($group['issues']) < 50) {
 
                 // Add the issue to the group and move the tail
                 $group['issues'][] = $key;
                 $group['tail'] = $newIssue;
+
+                // Add the subtask mapping if needed
+                if(isset($subtasks[$key])) {
+                    $group['subtasks'][$key] = $subtasks[$key];
+                }
 
             }
 
@@ -667,8 +673,12 @@ class RankingOperation
                     'head' => $newIssue,
                     'issues' => [$key],
                     'tail' => $newIssue,
-                    'is_subtasks' => in_array($key, $subtasks)
                 ];
+
+                // Add the subtask mapping if needed
+                if(isset($subtasks[$key])) {
+                    $group['subtasks'][$key] = $subtasks[$key];
+                }
 
             }
 
@@ -730,14 +740,14 @@ class RankingOperation
             $last = array_pop($groups);
 
             // Check if the next group should be linked
-            if($last['tail']['after'] == $group['head']['key'] && $group['is_subtasks'] == $last['is_subtasks']) {
+            if($last['tail']['after'] == $group['head']['key'] && count($group['issues']) + count($last['issues']) < 50) {
 
                 // Merge the two groups
                 $group = [
                     'head' => $last['head'],
                     'issues' => array_merge($last['issues'], $group['issues']),
                     'tail' => $group['tail'],
-                    'is_subtasks' => $group['is_subtasks']
+                    'subtasks' => array_merge($last['subtasks'], $group['subtasks'])
                 ];
 
                 // Add the merged group in

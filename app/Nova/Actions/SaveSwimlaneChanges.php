@@ -26,7 +26,7 @@ class SaveSwimlaneChanges extends Action
         $newOrder = $issues->sortBy('order')->pluck('key')->toArray();
 
         // Determine the subtasks
-        $subtasks = $issues->where('is_subtask', '=', 1)->pluck('key')->toArray();
+        $subtasks = $issues->where('is_subtask', '=', 1)->pluck('parent_key', 'key')->toArray();
 
         // Determine the issues with new estimates
         $estimates = $issues->filter(function($issue) {
@@ -37,7 +37,7 @@ class SaveSwimlaneChanges extends Action
         Issue::updateOrderByRank($oldOrder, $newOrder, $subtasks);
 
         // Update the estimated completion dates
-        Issue::updateEstimates($estimates);
+        // Issue::updateEstimates($estimates);
     }
 
     /**

@@ -17,21 +17,22 @@ class Issue extends Model
      *
      * @var string
      */
-    const FIELD_ISSUE_TYPE = 'issuetype';
-    const FIELD_STATUS = 'status';
-    const FIELD_SUMMARY = 'summary';
-    const FIELD_DUE_DATE = 'duedate';
-    const FIELD_REMAINING_ESTIMATE = 'timeestimate';
-    const FIELD_PRIORITY = 'priority';
-    const FIELD_REPORTER = 'reporter';
     const FIELD_ASSIGNEE = 'assignee';
-    const FIELD_ISSUE_CATEGORY = 'customfield_12005';
-    const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
+    const FIELD_DUE_DATE = 'duedate';
+    const FIELD_EPIC_COLOR = 'customfield_10004';
     const FIELD_EPIC_KEY = 'customfield_12000';
     const FIELD_EPIC_NAME = 'customfield_10002';
-    const FIELD_EPIC_COLOR = 'customfield_10004';
+    const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
+    const FIELD_ISSUE_CATEGORY = 'customfield_12005';
+    const FIELD_ISSUE_TYPE = 'issuetype';
     const FIELD_LINKS = 'issuelinks';
+    const FIELD_PARENT = 'parent';
+    const FIELD_PRIORITY = 'priority';
     const FIELD_RANK = 'customfield_10119';
+    const FIELD_REMAINING_ESTIMATE = 'timeestimate';
+    const FIELD_REPORTER = 'reporter';
+    const FIELD_STATUS = 'status';
+    const FIELD_SUMMARY = 'summary';
 
     /**
      * The priority constants.
@@ -110,21 +111,22 @@ class Issue extends Model
 
             // Determine the search results
             $results = Jira::issues()->search($jql, $page * $count, $count, [
-                static::FIELD_ISSUE_TYPE,
-                static::FIELD_STATUS,
-                static::FIELD_SUMMARY,
-                static::FIELD_DUE_DATE,
-                static::FIELD_REMAINING_ESTIMATE,
-                static::FIELD_PRIORITY,
-                static::FIELD_REPORTER,
                 static::FIELD_ASSIGNEE,
-                static::FIELD_ISSUE_CATEGORY,
-                static::FIELD_ESTIMATED_COMPLETION_DATE,
+                static::FIELD_DUE_DATE,
+                static::FIELD_EPIC_COLOR,
                 static::FIELD_EPIC_KEY,
                 static::FIELD_EPIC_NAME,
-                static::FIELD_EPIC_COLOR,
+                static::FIELD_ESTIMATED_COMPLETION_DATE,
+                static::FIELD_ISSUE_CATEGORY,
+                static::FIELD_ISSUE_TYPE,
                 static::FIELD_LINKS,
-                static::FIELD_RANK
+                static::FIELD_PARENT,
+                static::FIELD_PRIORITY,
+                static::FIELD_RANK,
+                static::FIELD_REMAINING_ESTIMATE,
+                static::FIELD_REPORTER,
+                static::FIELD_STATUS,
+                static::FIELD_SUMMARY
             ], [], false);
 
             // Remap the issues to reference what we need
@@ -132,27 +134,41 @@ class Issue extends Model
                 return [
                     'key' => $issue->key,
                     'url' => rtrim(config('services.jira.host'), '/') . '/browse/' . $issue->key,
-                    'type' => $issue->fields->{static::FIELD_ISSUE_TYPE}->name,
-                    'type_icon_url' => $issue->fields->{static::FIELD_ISSUE_TYPE}->iconUrl,
-                    'is_subtask' => $issue->fields->{static::FIELD_ISSUE_TYPE}->subtask,
-                    'status' => $issue->fields->{static::FIELD_STATUS}->name,
-                    'status_color' => $issue->fields->{static::FIELD_STATUS}->statuscategory->colorName,
+
                     'summary' => $issue->fields->{static::FIELD_SUMMARY},
-                    'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
-                    'time_estimate' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
-                    'old_estimated_completion_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
-                    'priority' => $priority = (optional($issue->fields->{static::FIELD_PRIORITY})->name),
+
+                    'priority_name' => $priority = (optional($issue->fields->{static::FIELD_PRIORITY})->name),
                     'priority_icon_url' => optional($issue->fields->{static::FIELD_PRIORITY})->iconUrl,
-                    'reporter_name' => optional($issue->fields->{static::FIELD_REPORTER})->displayName,
-                    'reporter_icon_url' => optional($issue->fields->{static::FIELD_REPORTER})->avatarUrls['16x16'] ?? null,
-                    'assignee_name' => optional($issue->fields->{static::FIELD_ASSIGNEE})->displayName,
-                    'assignee_icon_url' => optional($issue->fields->{static::FIELD_ASSIGNEE})->avatarUrls['16x16'] ?? null,
+
                     'issue_category' => $category = (optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? static::ISSUE_CATEGORY_DEV),
                     'focus' => $priority == static::PRIORITY_HIGHEST ? static::FOCUS_OTHER : ($category == static::ISSUE_CATEGORY_DEV ? static::FOCUS_DEV : static::FOCUS_TICKET),
+
+                    'due_date' => $issue->fields->{static::FIELD_DUE_DATE},
+
+                    'estimate_remaining' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
+                    'estimate_date' => $issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null,
+
+                    'type_name' => $issue->fields->{static::FIELD_ISSUE_TYPE}->name,
+                    'type_icon_url' => $issue->fields->{static::FIELD_ISSUE_TYPE}->iconUrl,
+
+                    'is_subtask' => $isSubtask = $issue->fields->{static::FIELD_ISSUE_TYPE}->subtask,
+                    'parent_key' => $isSubtask ? ($parentKey = $issue->fields->{static::FIELD_PARENT}->key) : null,
+                    'parent_url' => $isSubtask ? rtrim(config('services.jira.host'), '/') . '/browse/' . $parentKey : null,
+
+                    'status_name' => $issue->fields->{static::FIELD_STATUS}->name,
+                    'status_color' => $issue->fields->{static::FIELD_STATUS}->statuscategory->colorName,
+
+                    'reporter_name' => optional($issue->fields->{static::FIELD_REPORTER})->displayName,
+                    'reporter_icon_url' => optional($issue->fields->{static::FIELD_REPORTER})->avatarUrls['16x16'] ?? null,
+
+                    'assignee_name' => optional($issue->fields->{static::FIELD_ASSIGNEE})->displayName,
+                    'assignee_icon_url' => optional($issue->fields->{static::FIELD_ASSIGNEE})->avatarUrls['16x16'] ?? null,
+
                     'epic_key' => $epicKey = ($issue->fields->{static::FIELD_EPIC_KEY} ?? null),
                     'epic_url' => !is_null($epicKey) ? rtrim(config('services.jira.host'), '/') . '/browse/' . $epicKey : null,
                     'epic_name' => $issue->fields->{static::FIELD_EPIC_NAME} ?? null,
                     'epic_color' => $issue->fields->{static::FIELD_EPIC_COLOR} ?? null,
+
                     'links' => $issue->fields->{static::FIELD_LINKS} ?? [],
                     'blocks' => [],
                     'rank' => $issue->fields->{static::FIELD_RANK}
