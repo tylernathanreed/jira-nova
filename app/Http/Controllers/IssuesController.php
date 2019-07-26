@@ -175,7 +175,7 @@ class IssuesController extends Controller
         Issue::updateOrderByRank($oldOrder, $newOrder, $subtasks);
 
         // Update the estimated completion dates
-        Issue::updateEstimates($estimates);
+        // Issue::updateEstimates($estimates);
 
         // Redirect back to the index page
         return redirect()->route('issues.index');

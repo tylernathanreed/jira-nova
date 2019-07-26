@@ -164,6 +164,9 @@ class RankingOperation
 
         }
 
+        // Merge any adjacent groups
+        $result = static::mergeAdjacentGroups($groups);
+
         // Return the result
         return $result;
     }
@@ -262,7 +265,7 @@ class RankingOperation
         // use relative order, as this will act as a linked list.
 
         // Determine the issue groups
-        $groups = static::getRankingGroups($oldOrder, $newOrder);
+        $groups = static::getRankingGroups($oldOrder, $newOrder, $subtasks);
 
         // Calculate the ranking operations for the groups
         return static::calculateForGroups($groups, $subtasks);
@@ -324,11 +327,18 @@ class RankingOperation
             return static::getGroupArrangementHeuristic($state['groups']);
         });
 
+        // Determine the total number of issues
+        $total = array_reduce($initial['groups'], function($total, $group) {
+            return $total + count($group['issues']);
+        }, 0);
+
         // Set the move resolver
-        $algorithm->setMoveResolver(function($state) use ($subtasks) {
+        $algorithm->setMoveResolver(function($state, $depth) use ($subtasks, $total) {
 
             // Determine the available operations
-            $moves = static::getGroupArrangementAvailableOperations($state['groups'], $subtasks);
+            $moves = $depth <= $total
+                ? static::getGroupArrangementAvailableOperations($state['groups'], $subtasks)
+                : [];
 
             // Cast each operation into a move
             return array_map(function($move) {
@@ -444,8 +454,8 @@ class RankingOperation
             // being a subtask, we'll have to find another way around.
 
             // Clear the previous and/or next issues if they're subtasks
-            $previous = !is_null($previous) ? (count(array_intersect($groups[$previous]['issues'], $subtasks)) == 0 ? $previous : null) : null;
-            $next = !is_null($next) ? (count(array_intersect($groups[$next]['issues'], $subtasks)) == 0 ? $next : null) : null;
+            $previous = !is_null($previous) ? (!in_array($groups[$previous]['tail']['key'], $subtasks) ? $previous : null) : null;
+            $next = !is_null($next) ? (!in_array($groups[$next]['head']['key'], $subtasks) ? $next : null) : null;
 
             // Create the "before" and "after" ranking operations
             $before = !is_null($next) ? new static($groups, $index, static::RELATION_BEFORE, $next) : null;
@@ -456,8 +466,12 @@ class RankingOperation
                 $moves[$before->getKey()] = $before;
             }
 
+            // Since both operations will have the same cost, if we're able to
+            // do one, we do not need to include the other. This means that
+            // we if included the "before" operation, we'll skip "after".
+
             // Add the "after" operation to the move list
-            if(!is_null($after)) {
+            if(!is_null($after) && is_null($before)) {
                 $moves[$after->getKey()] = $after;
             }
 
@@ -538,9 +552,9 @@ class RankingOperation
         // move them around. Any group that contains a subtask is
         // one that we'll have to keep still and dance around.
 
-        // Remove indexes that contain subtasks
+        // Remove indexes that contain subtasks (unless they're all subtasks)
         $movable = array_filter($movable, function($index) use ($groups, $subtasks) {
-            return count(array_intersect($groups[$index]['issues'], $subtasks)) == 0;
+            return ($count = count(array_intersect($groups[$index]['issues'], $subtasks))) == 0 || $count == count($groups[$index]['issues']);
         });
 
         // Return the movable group indexes
@@ -576,11 +590,16 @@ class RankingOperation
      *
      * @param  array  $oldOrder
      * @param  array  $newOrder
+     * @param  array  $subtasks
      *
      * @return array
      */
-    public static function getRankingGroups($oldOrder, $newOrder)
+    public static function getRankingGroups($oldOrder, $newOrder, $subtasks = [])
     {
+        // We're going to be forming a linked list of linked lists. The
+        // first thing that we need is to know the previous and next
+        // issue for each individual issue, so that we can chain.
+
         // Determine the before and after for each order
         $oldOrder = static::getBeforeAndAfter($oldOrder);
         $newOrder = static::getBeforeAndAfter($newOrder);
@@ -594,6 +613,10 @@ class RankingOperation
         // Iterate through the old order
         foreach($oldOrder as $key => $issue) {
 
+            // The current issue and new issue will have the same key, but
+            // may have different links. We're going to walk through the
+            // old list, and create chained groups from the new order.
+
             // Determine the new issue
             $newIssue = $newOrder[$issue['key']];
 
@@ -604,6 +627,7 @@ class RankingOperation
                 $group['head'] = $newIssue;
                 $group['issues'] = [$key];
                 $group['tail'] = $newIssue;
+                $group['is_subtasks'] = in_array($key, $subtasks);
 
                 // Skip to the next issue
                 continue;
@@ -613,8 +637,18 @@ class RankingOperation
             // Determine the tail issue
             $tail = $group['tail'];
 
-            // If the next issue links to the tail, then expand the group
-            if($newOrder[$tail['key']]['after'] == $key) {
+            // If the next issue links to the tail, we can expand the group.
+            // However, we want to also group subtasks together, so if we
+            // started with a subtask, the next issue must also be one.
+
+            // Determine whether or not the next issue links to the tail
+            $linkable = $newOrder[$tail['key']]['after'] == $key;
+
+            // Determine whether or not the next issue is a subtask
+            $isSubtask = in_array($key, $subtasks);
+
+            // If the next issue can be linked, expand the group
+            if($linkable && $group['is_subtasks'] == $isSubtask) {
 
                 // Add the issue to the group and move the tail
                 $group['issues'][] = $key;
@@ -632,7 +666,8 @@ class RankingOperation
                 $group = [
                     'head' => $newIssue,
                     'issues' => [$key],
-                    'tail' => $newIssue
+                    'tail' => $newIssue,
+                    'is_subtasks' => in_array($key, $subtasks)
                 ];
 
             }
@@ -647,44 +682,7 @@ class RankingOperation
         // in two. We should find connecting groups and link them.
 
         // Link connecting groups
-        $groups = array_reduce($groups, function($groups, $group) {
-
-            // If we don't have any groups yet, add one
-            if(empty($groups)) {
-                return [$group];
-            }
-
-            // Determine the last group
-            $last = array_pop($groups);
-
-            // Check if the next group should be linked
-            if($last['tail']['after'] == $group['head']['key']) {
-
-                // Merge the two groups
-                $group = [
-                    'head' => $last['head'],
-                    'issues' => array_merge($last['issues'], $group['issues']),
-                    'tail' => $group['tail']
-                ];
-
-                // Add the merged group in
-                $groups[] = $group;
-
-            }
-
-            // Otherwise, the next group should be separate
-            else {
-
-                // Add both groups separately
-                $groups[] = $last;
-                $groups[] = $group;
-
-            }
-
-            // Return the list of groups
-            return $groups;
-
-        }, []);
+        $groups = static::mergeAdjacentGroups($groups);
 
         // Determine the group order based on the head index
         $ordered = collect($groups)->sortBy('head.index')->values()->all();
@@ -709,6 +707,57 @@ class RankingOperation
 
         // Return the groups
         return $groups;
+    }
+
+    /**
+     * Merges groups that are adjacent to each other.
+     *
+     * @param  array  $groups
+     *
+     * @return array
+     */
+    public static function mergeAdjacentGroups($groups)
+    {
+        // Link connecting groups
+        return array_reduce($groups, function($groups, $group) {
+
+            // If we don't have any groups yet, add one
+            if(empty($groups)) {
+                return [$group];
+            }
+
+            // Determine the last group
+            $last = array_pop($groups);
+
+            // Check if the next group should be linked
+            if($last['tail']['after'] == $group['head']['key'] && $group['is_subtasks'] == $last['is_subtasks']) {
+
+                // Merge the two groups
+                $group = [
+                    'head' => $last['head'],
+                    'issues' => array_merge($last['issues'], $group['issues']),
+                    'tail' => $group['tail'],
+                    'is_subtasks' => $group['is_subtasks']
+                ];
+
+                // Add the merged group in
+                $groups[] = $group;
+
+            }
+
+            // Otherwise, the next group should be separate
+            else {
+
+                // Add both groups separately
+                $groups[] = $last;
+                $groups[] = $group;
+
+            }
+
+            // Return the list of groups
+            return $groups;
+
+        }, []);
     }
 
     /**

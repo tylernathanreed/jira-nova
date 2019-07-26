@@ -1,11 +1,11 @@
 <template>
-    <div :class="'swimlane-issue-focus mr-2 rounded focus-' + issue.focus.toLowerCase()">
+    <div :class="'swimlane-issue-focus mr-3 rounded focus-' + issue.focus.toLowerCase()">
         <div
-            class="my-2 p-2 ml-2 flex items-center border rounded min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
+            class="my-2 p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
             :class="{
                 'bg-white border-50': !dragging && (!est || offset > -7),
                 'bg-delinquent border-delinquent': !dragging && (offset <= -7),
-                'hover:bg-white-50%': !dragging && (!est || offset > -7) && !getSwimlane().dragging,
+                'hover:bg-20': !dragging && (!est || offset > -7) && !getSwimlane().dragging,
                 'bg-50 border-60': dragging
             }"
         >
@@ -363,15 +363,24 @@
     }
 
     .focus-other {
-        background: #c0504d;
+        background: #94c4fe;
+        background: linear-gradient(135deg, #cc0000 33.33%, #990000 33.33%, #990000 50%, #cc0000 50%, #cc0000 83.33%, #990000 83.33%, #990000 100%);
+        background-size: 4.24px 4.24px;
+        box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);
     }
 
     .focus-dev {
         background: #94c4fe;
+        background: linear-gradient(135deg, #5b9bd5 33.33%, #2f76b5 33.33%, #2f76b5 50%, #5b9bd5 50%, #5b9bd5 83.33%, #2f76b5 83.33%, #2f76b5 100%);
+        background-size: 4.24px 4.24px;
+        box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);
     }
 
     .focus-ticket {
-        background: #d0cf9a;
+        background: #94c4fe;
+        background: linear-gradient(135deg, #ffc000 33.33%, #bf8f00 33.33%, #bf8f00 50%, #ffc000 50%, #ffc000 83.33%, #bf8f00 83.33%, #bf8f00 100%);
+        background-size: 4.24px 4.24px;
+        box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);
     }
 
     img.icon {

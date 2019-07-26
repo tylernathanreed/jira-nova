@@ -161,10 +161,12 @@ class Algorithm
 		$this->queue->insert($initial, $initial->cost);
 
 		// Process the top of the queue until the goal state is reached (or we're out of moves)
-		while(!$this->queue->isEmpty()) {
+		for($i = 0; !$this->queue->isEmpty(); $i++) {
 
 			// Determine the next node
 			$next = $this->queue->extract();
+
+			dump($next->key);
 
 			// Check if the node is the goal state
 			if($next->estimatedCost == 0) {
@@ -340,7 +342,7 @@ class Algorithm
 		}
 
 		// Determine the available moves
-		$moves = $resolver($node->state);
+		$moves = $resolver($node->state, $node->depth);
 
 		// Convert each move into a state node
 		return array_map(function($move) use ($node) {

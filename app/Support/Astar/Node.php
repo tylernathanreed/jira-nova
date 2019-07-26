@@ -100,6 +100,25 @@ class Node
 		return $this->pathCost + $this->estimatedCost;
 	}
 
+	/**
+	 * Returns the depth of this node.
+	 *
+	 * @return integer
+	 */
+	public function depth()
+	{
+		// Initialize the depth
+		$depth = 1;
+
+		// Walk up the parent chain
+		for($parent = $this->parent; !is_null($parent); $parent = $parent->parent) {
+			$depth++;
+		}
+
+		// Return the depth
+		return $depth;
+	}
+
 	/////////////////
 	//* Accessors *//
 	/////////////////
@@ -120,7 +139,7 @@ class Node
 		}
 
 		// Check for calculated attributes
-		if(in_array($attribute, ['pathCost', 'cost'])) {
+		if(in_array($attribute, ['pathCost', 'cost', 'depth'])) {
 			return $this->{$attribute}();
 		}
 
