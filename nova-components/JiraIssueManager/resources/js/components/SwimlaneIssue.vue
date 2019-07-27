@@ -207,6 +207,7 @@
                     'key': this.issue.key,
                     'order': this.index,
                     'est': this.est,
+                    'due': this.due,
                     'is_subtask': this.issue.is_subtask ? 1 : 0,
                     'parent_key': this.issue.parent_key,
                     'original': {

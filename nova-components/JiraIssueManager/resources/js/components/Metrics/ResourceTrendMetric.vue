@@ -59,13 +59,29 @@ export default {
     },
 
     created() {
+
         if (this.hasRanges) {
             this.selectedRangeKey = this.card.ranges[0].value
         }
+
     },
 
     mounted() {
-        this.fetch()
+
+        this.fetch();
+
+        Nova.$on('resources-loading', () => {
+            this.loading = true;
+        });
+
+        Nova.$on('resources-loaded', () => {
+
+            this.$nextTick(() => {
+                this.fetch();
+            });
+
+        });
+
     },
 
     methods: {
@@ -75,9 +91,14 @@ export default {
         },
 
         fetch() {
-            this.loading = true
 
-            Minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
+            this.loading = true;
+
+            if(!this.getResourceProvider().isLoaded()) {
+                return;
+            }
+
+            Minimum(Nova.request().get(this.metricEndpoint, this.getMetricPayload())).then(
                 ({
                     data: {
                         value: { labels, trend, value, prefix, suffix, format },
@@ -103,6 +124,16 @@ export default {
                 }
             )
         },
+
+        getMetricPayload() {
+
+            return {
+                'params': Object.assign(this.metricPayload.params, {
+                    'resourceData': JSON.stringify(this.getResourceProvider().getResourceData())
+                })
+            };
+
+        }
     },
 
     computed: {
@@ -114,8 +145,7 @@ export default {
             const payload = {
                 params: {
                     timezone: this.userTimezone,
-                    twelveHourTime: this.usesTwelveHourTime,
-                    filters: this.$store.getters['jira-issues/currentEncodedFilters']
+                    twelveHourTime: this.usesTwelveHourTime
                 },
             }
 
@@ -137,5 +167,9 @@ export default {
             }
         },
     },
+
+    inject: [
+        'getResourceProvider'
+    ]
 }
 </script>

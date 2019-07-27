@@ -63,7 +63,7 @@
                             @start="onDragStart"
                             @end="onDragEnd"
                             :component-data="getComponentData()"
-                            :options="{ 'forceFallback': true }"
+                            :forceFallback="true"
                         >
                             <jira-swimlane-issue v-for="(issue, index) in resources" :issue-key="issue.key" :key="issue.key" :index="index" ref="issue"/>
                         </draggable>
@@ -208,6 +208,7 @@
             getResources() {
 
                 this.loading = true;
+                Nova.$emit('resources-loading');
 
                 this.$nextTick(() => {
 
@@ -229,6 +230,7 @@
 
                         this.assignEstimatedCompletionDates();
 
+                        this.$forceUpdate();
                         Nova.$emit('resources-loaded');
 
                     });
@@ -288,10 +290,14 @@
                 return _.tap(new FormData(), formData => {
 
                     formData.append('resources', _.map(this.resources, 'key'));
-                    formData.append('resourceData', JSON.stringify(_.map(this.$refs.issue, 'resourceData')));
+                    formData.append('resourceData', JSON.stringify(this.getResourceData()));
 
                 });
 
+            },
+
+            getResourceData() {
+                return _.map(this.$refs.issue, 'resourceData');
             },
 
             /**
@@ -512,18 +518,19 @@
 
             getSwimlane() {
                 return this;
+            },
+
+            getResourceProvider() {
+                return this;
+            },
+
+            isLoaded() {
+                return !this.loading && !this.initialLoading;
             }
 
         },
 
         computed: {
-
-            /**
-             * Determine if the resource should show any cards
-             */
-            shouldShowCards() {
-                return this.cards.length > 0;
-            },
 
             /**
              * Get the endpoint for this resource's metrics.
@@ -536,9 +543,7 @@
              * Get the extra card params to pass to the endpoint.
              */
             extraCardParams() {
-
                 return null;
-
             },
 
             /**
@@ -604,7 +609,8 @@
 
             return {
                 getIssue: this.getIssue,
-                getSwimlane: this.getSwimlane
+                getSwimlane: this.getSwimlane,
+                getResourceProvider: this.getResourceProvider,
             };
 
         },

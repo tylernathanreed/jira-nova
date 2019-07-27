@@ -2,6 +2,7 @@
 
 namespace App\Nova\Metrics;
 
+use Carbon\Carbon;
 use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
@@ -26,8 +27,17 @@ class DelinquentIssuesByDiff extends Trend
      */
     public function calculate(Request $request)
     {
-        // Determine the issues
-        $issues = Issue::getIssuesFromRequest(app()->make(NovaRequest::class));
+        // Determine the isssues
+        $issues = collect(json_decode($request->resourceData, true));
+
+        // Estimate the difference for each issue
+        $issues->transform(function($issue) {
+
+            $issue['offset'] = (is_null($issue['est']) || is_null($issue['due'])) ? null : Carbon::parse($issue['est'])->diffInDays($issue['due'], false);
+
+            return $issue;
+
+        });
 
         // Initialize the result
         $result = array_combine(array_map(function($v) {
@@ -35,8 +45,8 @@ class DelinquentIssuesByDiff extends Trend
         }, array_merge(range(1, 99), ['100+'])), array_fill(0, 100, 0));
 
         // Convert the issues into delinquency groups
-        $data = collect($issues)->where('estimate_diff', '<', 0)->groupBy(function($issue) {
-            return $issue['estimate_diff'] <= -100 ? '100+' : -$issue['estimate_diff'];
+        $data = $issues->where('offset', '<', 0)->groupBy(function($issue) {
+            return $issue['offset'] <= -100 ? '100+' : -$issue['offset'];
         })->map->count()->all();
 
         // Fill in the data
@@ -45,16 +55,15 @@ class DelinquentIssuesByDiff extends Trend
         }
 
         // Determine the max days
-        $max = min(-min(array_filter(array_column($issues, 'estimate_diff'))), 100);
+        $max = min(-$issues->where('offset', '<', 0)->min('offset'), 100);
 
         // Remove trailing entries
         $result = array_filter($result, function($key) use ($max) {
-            dump(compact('key', 'max'));
             return (int) $key <= $max;
         }, ARRAY_FILTER_USE_KEY);
 
         // Return the trend result
-        return (new TrendResult)->trend($result)->suffix('issues')->result(array_sum($data));
+        return (new TrendResult)->trend($result)->suffix('issues')->result(array_sum($result));
     }
 
     /**
