@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/endpoint', function (Request $request) {
-//     //
-// });
+Route::group([
+    'namespace' => 'Laravel\Nova\Http\Controllers',
+    'domain' => config('nova.domain', null),
+    'as' => 'nova.api.',
+    'prefix' => 'nova-api',
+    'middleware' => 'nova'
+], function() {
+    Route::post('/metrics', 'DashboardMetricController@index');
+    Route::post('/metrics/{metric}', 'DashboardMetricController@show');
+    Route::post('/{resource}/metrics', 'MetricController@index');
+    Route::post('/{resource}/metrics/{metric}', 'MetricController@show');
+    Route::post('/{resource}/{resourceId}/metrics/{metric}', 'DetailMetricController@show');
+});

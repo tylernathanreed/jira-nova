@@ -3,11 +3,9 @@
 namespace App\Nova\Metrics;
 
 use Carbon\Carbon;
-use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class DelinquentIssuesByDiff extends Trend
 {

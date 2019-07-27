@@ -21,9 +21,7 @@
                 <div class="flex items-center justify-between w-full px-3">
 
                     <div class="flex-1">
-                        <div v-if="resources.length">
-                            {{ resources.length == 1 ? '1 Issue' : (resources.length + ' Issues') }}
-                        </div>
+                        <div v-if="resources.length" v-text="heading"/>
                     </div>
 
                     <button
@@ -45,6 +43,7 @@
                         trashed=""
                         :per-page="100"
                         :per-page-options="{}"
+                        ref="filterMenu"
                         @clear-selected-filters="clearSelectedFilters"
                         @filter-changed="filterChanged"
                     />
@@ -531,6 +530,59 @@
         },
 
         computed: {
+
+            heading() {
+
+                // Determine the filters
+                let filters = this.$refs.filterMenu.filters;
+
+                // Initialize the heading
+                let heading = '';
+
+                // Start with the resource count
+                heading += this.resources.length;
+
+                // Determine the focus filter
+                let filter =  _.find(filters, {'name': 'Issue Focus'});
+
+                // Check if the filter was found
+                if(filter) {
+
+                    // Determine the selected option
+                    let option = _.find(filter.options, {'value': filter.currentValue});
+
+                    // Determine the focus
+                    let focus = option ? option.name : 'Dev';
+
+                    // Add the focus verbiage
+                    heading += focus == 'All' ? '' : ' ' + focus + ' ';
+
+                }
+
+                // Add in the "issue" verbiage
+                heading += ' ' + (this.resources.length == 1 ? 'Issue' : 'Issues');
+
+                // Determine the assignee filter
+                filter = _.find(filters, {'name': 'Assignee'});
+
+                // Check if the filter was found
+                if(filter) {
+
+                    // Determine the selected option
+                    let option = _.find(filter.options, {'value': filter.currentValue});
+
+                    // Determine the assignee
+                    let assignee = option ? option.name : Nova.config.user.display_name;
+
+                    // Add the assignee verbiage
+                    heading += ' for ' + assignee;
+
+                }
+
+                // Return the heading
+                return heading;
+
+            },
 
             /**
              * Get the endpoint for this resource's metrics.

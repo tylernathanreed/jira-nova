@@ -208,6 +208,9 @@
                     'order': this.index,
                     'est': this.est,
                     'due': this.due,
+                    'focus': this.issue.focus,
+                    'remaining': this.issue.estimate_remaining,
+                    'priority': this.issue.priority_name,
                     'is_subtask': this.issue.is_subtask ? 1 : 0,
                     'parent_key': this.issue.parent_key,
                     'original': {

@@ -98,7 +98,7 @@ export default {
                 return;
             }
 
-            Minimum(Nova.request().get(this.metricEndpoint, this.getMetricPayload())).then(
+            Minimum(Nova.request().post(this.metricEndpoint, this.getMetricPayload())).then(
                 ({
                     data: {
                         value: { labels, trend, value, prefix, suffix, format },
@@ -127,12 +127,14 @@ export default {
 
         getMetricPayload() {
 
-            return {
-                'params': Object.assign(this.metricPayload.params, {
-                    'resourceData': JSON.stringify(this.getResourceProvider().getResourceData())
-                })
-            };
+            return Object.assign(this.metricPayload.params, {
+                'resourceData': JSON.stringify(this.getResourceData())
+            });
 
+        },
+
+        getResourceData() {
+            return this.getResourceProvider().getResourceData();
         }
     },
 

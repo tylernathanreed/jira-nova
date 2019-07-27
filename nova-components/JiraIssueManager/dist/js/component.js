@@ -27655,6 +27655,7 @@ Nova.booting(function (Vue, router, store) {
     Vue.component('jira-swimlane', __webpack_require__(152));
     Vue.component('jira-swimlane-issue', __webpack_require__(192));
 
+    Vue.component('resource-partition-metric', __webpack_require__(212));
     Vue.component('resource-trend-metric', __webpack_require__(201));
 
     Vue.component('draggable', __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a);
@@ -33726,7 +33727,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -34159,6 +34159,56 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
 
     computed: {
+        heading: function heading() {
+
+            // Determine the filters
+            var filters = this.$refs.filterMenu.filters;
+
+            // Initialize the heading
+            var heading = '';
+
+            // Start with the resource count
+            heading += this.resources.length;
+
+            // Determine the focus filter
+            var filter = _.find(filters, { 'name': 'Issue Focus' });
+
+            // Check if the filter was found
+            if (filter) {
+
+                // Determine the selected option
+                var option = _.find(filter.options, { 'value': filter.currentValue });
+
+                // Determine the focus
+                var _focus = option ? option.name : 'Dev';
+
+                // Add the focus verbiage
+                heading += _focus == 'All' ? '' : ' ' + _focus + ' ';
+            }
+
+            // Add in the "issue" verbiage
+            heading += ' ' + (this.resources.length == 1 ? 'Issue' : 'Issues');
+
+            // Determine the assignee filter
+            filter = _.find(filters, { 'name': 'Assignee' });
+
+            // Check if the filter was found
+            if (filter) {
+
+                // Determine the selected option
+                var _option = _.find(filter.options, { 'value': filter.currentValue });
+
+                // Determine the assignee
+                var assignee = _option ? _option.name : Nova.config.user.display_name;
+
+                // Add the assignee verbiage
+                heading += ' for ' + assignee;
+            }
+
+            // Return the heading
+            return heading;
+        },
+
 
         /**
          * Get the endpoint for this resource's metrics.
@@ -36253,17 +36303,9 @@ var render = function() {
                 [
                   _c("div", { staticClass: "flex-1" }, [
                     _vm.resources.length
-                      ? _c("div", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(
-                                _vm.resources.length == 1
-                                  ? "1 Issue"
-                                  : _vm.resources.length + " Issues"
-                              ) +
-                              "\n                    "
-                          )
-                        ])
+                      ? _c("div", {
+                          domProps: { textContent: _vm._s(_vm.heading) }
+                        })
                       : _vm._e()
                   ]),
                   _vm._v(" "),
@@ -36291,6 +36333,7 @@ var render = function() {
                     : _vm._e(),
                   _vm._v(" "),
                   _c("filter-menu", {
+                    ref: "filterMenu",
                     attrs: {
                       "resource-name": _vm.resourceName,
                       "soft-deletes": false,
@@ -37025,6 +37068,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'order': this.index,
                 'est': this.est,
                 'due': this.due,
+                'focus': this.issue.focus,
+                'remaining': this.issue.estimate_remaining,
+                'priority': this.issue.priority_name,
                 'is_subtask': this.issue.is_subtask ? 1 : 0,
                 'parent_key': this.issue.parent_key,
                 'original': {
@@ -37952,7 +37998,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
 
-            Object(__WEBPACK_IMPORTED_MODULE_1_laravel_nova__["Minimum"])(Nova.request().get(this.metricEndpoint, this.getMetricPayload())).then(function (_ref) {
+            Object(__WEBPACK_IMPORTED_MODULE_1_laravel_nova__["Minimum"])(Nova.request().post(this.metricEndpoint, this.getMetricPayload())).then(function (_ref) {
                 var _ref$data$value = _ref.data.value,
                     labels = _ref$data$value.labels,
                     trend = _ref$data$value.trend,
@@ -37980,11 +38026,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getMetricPayload: function getMetricPayload() {
 
-            return {
-                'params': Object.assign(this.metricPayload.params, {
-                    'resourceData': JSON.stringify(this.getResourceProvider().getResourceData())
-                })
-            };
+            return Object.assign(this.metricPayload.params, {
+                'resourceData': JSON.stringify(this.getResourceData())
+            });
+        },
+        getResourceData: function getResourceData() {
+            return this.getResourceProvider().getResourceData();
         }
     },
 
@@ -55275,6 +55322,196 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(213)
+/* template */
+var __vue_template__ = __webpack_require__(214)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Metrics/ResourcePartitionMetric.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-35c19045", Component.options)
+  } else {
+    hotAPI.reload("data-v-35c19045", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 213 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__);
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        card: {
+            type: Object,
+            required: true
+        },
+
+        resourceName: {
+            type: String,
+            default: ''
+        },
+
+        resourceId: {
+            type: [Number, String],
+            default: ''
+        },
+
+        lens: {
+            type: String,
+            default: ''
+        }
+    },
+
+    data: function data() {
+        return {
+            loading: true,
+            chartData: []
+        };
+    },
+
+    watch: {
+        resourceId: function resourceId() {
+            this.fetch();
+        }
+    },
+
+    created: function created() {
+        this.fetch();
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        Nova.$on('resources-loading', function () {
+            _this.loading = true;
+        });
+
+        Nova.$on('resources-loaded', function () {
+
+            _this.$nextTick(function () {
+                _this.fetch();
+            });
+        });
+    },
+
+
+    methods: {
+        fetch: function fetch() {
+            var _this2 = this;
+
+            this.loading = true;
+
+            if (!this.getResourceProvider().isLoaded()) {
+                return;
+            }
+
+            Object(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__["Minimum"])(Nova.request().post(this.metricEndpoint, this.getMetricPayload())).then(function (_ref) {
+                var value = _ref.data.value.value;
+
+                _this2.chartData = value;
+                _this2.loading = false;
+            });
+        },
+        getMetricPayload: function getMetricPayload() {
+
+            return {
+                'resourceData': JSON.stringify(this.getResourceData())
+            };
+        },
+        getResourceData: function getResourceData() {
+            return this.getResourceProvider().getResourceData();
+        }
+    },
+
+    computed: {
+        metricEndpoint: function metricEndpoint() {
+            var lens = this.lens !== '' ? '/lens/' + this.lens : '';
+            if (this.resourceName && this.resourceId) {
+                return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
+            } else if (this.resourceName) {
+                return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
+            } else {
+                return '/nova-api/metrics/' + this.card.uriKey;
+            }
+        }
+    },
+
+    inject: ['getResourceProvider']
+});
+
+/***/ }),
+/* 214 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("base-partition-metric", {
+    attrs: {
+      title: _vm.card.name,
+      "chart-data": _vm.chartData,
+      loading: _vm.loading
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-35c19045", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

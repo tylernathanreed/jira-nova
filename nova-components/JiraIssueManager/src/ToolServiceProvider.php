@@ -23,8 +23,12 @@ class ToolServiceProvider extends ServiceProvider
             $this->routes();
         });
 
-        Nova::serving(function (ServingNova $event) {
-            //
+        Nova::serving(function(ServingNova $event) {
+
+            Nova::provideToScript([
+                'user' => $event->request->user()->toArray()
+            ]);
+
         });
     }
 
@@ -35,13 +39,36 @@ class ToolServiceProvider extends ServiceProvider
      */
     protected function routes()
     {
-        if ($this->app->routesAreCached()) {
+        // If routes are cached, skip this step
+        if($this->app->routesAreCached()) {
             return;
         }
 
+        // Register the tool routes
         Route::middleware(['nova', Authorize::class])
                 ->prefix('nova-vendor/jira-issue-manager')
                 ->group(__DIR__ . '/../routes/api.php');
+
+        // Register the nova api routes
+        Route::group($this->novaRouteConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/nova-api.php');
+        });
+    }
+
+    /**
+     * Returns the Nova route group configuration array.
+     *
+     * @return array
+     */
+    protected function novaRouteConfiguration()
+    {
+        return [
+            'namespace' => 'Laravel\Nova\Http\Controllers',
+            'domain' => config('nova.domain', null),
+            'as' => 'nova.api.',
+            'prefix' => 'nova-api',
+            'middleware' => 'nova',
+        ];
     }
 
     /**
