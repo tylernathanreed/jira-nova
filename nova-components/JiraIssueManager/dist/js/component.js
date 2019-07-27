@@ -33837,7 +33837,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.draggingComponent.dragging = false;
             this.draggingComponent = null;
 
-            this.assignEstimatedCompletionDates();
+            this.resources = this.assignEstimatedCompletionDates(this.resources);
         },
 
         onDragChange: function onDragChange(e) {
@@ -33867,14 +33867,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     var data = _ref2.data;
 
 
+                    // Reset the resources
                     _this2.resources = [];
 
+                    // Remember the response
                     _this2.resourceResponse = data;
-                    _this2.resources = data.resources;
+
+                    // Determine the raw resources
+                    var resources = data.resources;
+
+                    // Assign the estimated completion dates
+                    resources = _this2.assignEstimatedCompletionDates(resources);
+
+                    // Order the issues
+                    resources = _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
+
+                    // Update the resources
+                    _this2.resources = resources;
 
                     _this2.loading = false;
-
-                    _this2.assignEstimatedCompletionDates();
 
                     _this2.$forceUpdate();
                     Nova.$emit('resources-loaded');
@@ -33983,13 +33994,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         /**
          * Assigns estimated complete dates to the issues.
          *
+         * @param  {Array}  issues
+         *
          * @return {Array}
          */
-        assignEstimatedCompletionDates: function assignEstimatedCompletionDates() {
+        assignEstimatedCompletionDates: function assignEstimatedCompletionDates(issues) {
             var _dates;
-
-            // Determine the issues
-            var issues = this.resources;
 
             // Make sure issues have been provided
             if (typeof issues === 'undefined') {
@@ -34007,7 +34017,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             var schedule = this.schedule;
 
             // Remap the issues
-            this.resources = issues.map(function (issue) {
+            return issues.map(function (issue) {
 
                 // Determine the issue focus
                 var focuses = issue['priority'] == __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0 ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV];
@@ -37066,6 +37076,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return {
                 'key': this.issue.key,
                 'order': this.index,
+                'assignee': this.issue.assignee_name,
                 'est': this.est,
                 'due': this.due,
                 'focus': this.issue.focus,
@@ -37073,6 +37084,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'priority': this.issue.priority_name,
                 'is_subtask': this.issue.is_subtask ? 1 : 0,
                 'parent_key': this.issue.parent_key,
+                'rank': this.issue.rank,
                 'original': {
                     'order': this.order,
                     'est': this.issue.estimate_date

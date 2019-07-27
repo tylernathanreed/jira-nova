@@ -189,7 +189,7 @@
                 this.draggingComponent.dragging = false;
                 this.draggingComponent = null;
 
-                this.assignEstimatedCompletionDates();
+                this.resources = this.assignEstimatedCompletionDates(this.resources);
 
             },
 
@@ -220,14 +220,25 @@
                         500
                     ).then(({ data }) => {
 
+                        // Reset the resources
                         this.resources = [];
 
+                        // Remember the response
                         this.resourceResponse = data;
-                        this.resources = data.resources;
+
+                        // Determine the raw resources
+                        let resources = data.resources;
+
+                        // Assign the estimated completion dates
+                        resources = this.assignEstimatedCompletionDates(resources);
+
+                        // Order the issues
+                        resources = _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
+
+                        // Update the resources
+                        this.resources = resources;
 
                         this.loading = false;
-
-                        this.assignEstimatedCompletionDates();
 
                         this.$forceUpdate();
                         Nova.$emit('resources-loaded');
@@ -343,12 +354,11 @@
             /**
              * Assigns estimated complete dates to the issues.
              *
+             * @param  {Array}  issues
+             *
              * @return {Array}
              */
-            assignEstimatedCompletionDates: function() {
-
-                // Determine the issues
-                let issues = this.resources;
+            assignEstimatedCompletionDates: function(issues) {
 
                 // Make sure issues have been provided
                 if(typeof issues === 'undefined') {
@@ -370,7 +380,7 @@
                 let schedule = this.schedule;
 
                 // Remap the issues
-                this.resources = issues.map(function(issue) {
+                return issues.map(function(issue) {
 
                     // Determine the issue focus
                     let focuses = issue['priority'] == Constants.PRIORITY_HIGHEST
@@ -462,7 +472,6 @@
                     return issue;
 
                 });
-
             },
 
             /**

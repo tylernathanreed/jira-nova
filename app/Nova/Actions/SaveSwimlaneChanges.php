@@ -21,20 +21,42 @@ class SaveSwimlaneChanges extends Action
      */
     public function handle(ActionFields $fields, Collection $issues)
     {
-        // Determine the old and new orders
-        $oldOrder = $issues->sortBy('original.order')->pluck('key')->toArray();
-        $newOrder = $issues->sortBy('order')->pluck('key')->toArray();
+        // Whenever it comes to ranking, we zipper several lists together.
+        // We want to undo this zippering on the backend so that we do
+        // not actually update ranks to map the result of zippering.
 
-        // Determine the subtasks
-        $subtasks = $issues->where('is_subtask', '=', 1)->pluck('parent_key', 'key')->toArray();
+        // Split the issues apart from their zipper groups
+        $groups = $issues->groupBy(function($issue) {
+            return json_encode(['assignee' => $issue['assignee'], 'focus' => $issue['focus']]);
+        });
+
+        // Iterate through each group
+        foreach($groups as $group) {
+
+            // With each group now separated, we'll want to rank them. This
+            // involves figuring out their old and new order, plus a way
+            // to move the issues into their new order within jira.
+
+            // Determine the old and new orders
+            $oldOrder = $group->sortBy('original.order')->pluck('key')->toArray();
+            $newOrder = $group->sortBy('order')->pluck('key')->toArray();
+
+            // Determine the subtasks
+            $subtasks = $groups->where('is_subtask', '=', 1)->pluck('parent_key', 'key')->toArray();
+
+            // Perform the ranking operations to sort the old list into the new list
+            Issue::updateOrderByRank($oldOrder, $newOrder, $subtasks);
+
+        }
+
+        // Unlike ranking, the attributes of each issue can be updated in
+        // bulk. We don't have to worry about zipper groups, so we will
+        // just perform a massive update to all issues within jira.
 
         // Determine the issues with new estimates
         $estimates = $issues->filter(function($issue) {
             return $issue['est'] != $issue['original']['est'];
         })->pluck('est', 'key');
-
-        // Perform the ranking operations to sort the old list into the new list
-        Issue::updateOrderByRank($oldOrder, $newOrder, $subtasks);
 
         // Update the estimated completion dates
         Issue::updateEstimates($estimates);

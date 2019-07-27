@@ -20,18 +20,11 @@ class IssuesController extends Controller
         // Determine the issues from the request
         $issues = Issue::getIssuesFromRequest($request);
 
-        // Check for ajax requests
-        if($request->ajax() || $request->wantsJson()) {
+        // Return the json response
+        return response()->json([
+            'label' => 'Issue',
+            'resources' => collect($issues)->values()->mapInto(new JiraIssue(new Issue))->map->serializeForIndex($request),
+        ]);
 
-            // Return the json response
-            return response()->json([
-                'label' => 'Issue',
-                'resources' => collect($issues)->values()->mapInto(new JiraIssue(new Issue))->map->serializeForIndex($request),
-            ]);
-
-        }
-
-    	// Return the response
-        return view('models.issues.index', compact('issues'));
     }
 }

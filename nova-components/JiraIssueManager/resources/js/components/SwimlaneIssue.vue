@@ -206,6 +206,7 @@
                 return {
                     'key': this.issue.key,
                     'order': this.index,
+                    'assignee': this.issue.assignee_name,
                     'est': this.est,
                     'due': this.due,
                     'focus': this.issue.focus,
@@ -213,6 +214,7 @@
                     'priority': this.issue.priority_name,
                     'is_subtask': this.issue.is_subtask ? 1 : 0,
                     'parent_key': this.issue.parent_key,
+                    'rank': this.issue.rank,
                     'original': {
                         'order': this.order,
                         'est': this.issue.estimate_date
