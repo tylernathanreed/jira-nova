@@ -27649,8 +27649,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Nova.booting(function (Vue, router, store) {
 
+    Vue.component('icon-calendar', __webpack_require__(217));
     Vue.component('icon-jira', __webpack_require__(148));
+    Vue.component('icon-layer-group', __webpack_require__(219));
     Vue.component('icon-logout', __webpack_require__(150));
+    Vue.component('icon-sort', __webpack_require__(215));
 
     Vue.component('jira-swimlane', __webpack_require__(152));
     Vue.component('jira-swimlane-issue', __webpack_require__(192));
@@ -33727,6 +33730,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -33753,6 +33771,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             working: false,
 
             resources: [],
+
+            orderBy: 'rank',
 
             resourceName: 'jira-issues',
             viaResource: 'jira-issues',
@@ -33880,7 +33900,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     resources = _this2.assignEstimatedCompletionDates(resources);
 
                     // Order the issues
-                    resources = _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
+                    resources = _this2.applyOrder(resources);
 
                     // Update the resources
                     _this2.resources = resources;
@@ -33932,6 +33952,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     _this3.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
                 }
             });
+        },
+        toggleOrder: function toggleOrder() {
+
+            this.orderBy = this.orderBy == 'rank' ? 'estimate' : 'rank';
+
+            this.resources = this.applyOrder(this.resources);
+        },
+        applyOrder: function applyOrder(resources) {
+
+            return this.orderBy == 'rank' ? _.orderBy(resources, ['rank'], ['asc']) : _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
         },
 
 
@@ -33999,7 +34029,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
          * @return {Array}
          */
         assignEstimatedCompletionDates: function assignEstimatedCompletionDates(issues) {
-            var _dates;
+            var _dates, _console$log;
 
             // Make sure issues have been provided
             if (typeof issues === 'undefined') {
@@ -34013,14 +34043,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             // Initialize the dates for each focus
             var dates = (_dates = {}, _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER)), _dates);
 
+            console.log((_console$log = {}, _defineProperty(_console$log, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, dates[__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV].format('YYYY-MM-DD')), _defineProperty(_console$log, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, dates[__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET].format('YYYY-MM-DD')), _defineProperty(_console$log, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, dates[__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER].format('YYYY-MM-DD')), _console$log));
+
             // Determine the schedule
             var schedule = this.schedule;
 
             // Remap the issues
             return issues.map(function (issue) {
 
+                console.log(issue['key']);
+
                 // Determine the issue focus
-                var focuses = issue['priority'] == __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0 ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV];
+                var focuses = issue['priority_name'] == __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0 ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV];
+
+                console.log({
+                    'priority': issue['priority_name'],
+                    'highest': __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST
+                });
 
                 // Determine the remaining estimate
                 var remaining = Math.max(issue['estimate_remaining'] || 0, 1 * 60 * 60);
@@ -34048,6 +34087,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     var focus = _.last(focuses.filter(function (focus) {
                         return focusDates[focus].isSame(date);
                     }));
+
+                    console.log({
+                        'focus': focus,
+                        'date': date.format('YYYY-MM-DD')
+                    });
 
                     // Determine how much time as already been allocated for the day
                     var allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
@@ -36324,7 +36368,7 @@ var render = function() {
                         "button",
                         {
                           staticClass:
-                            "btn btm-sm btn-default btn-primary text-white rounded mr-3 h-dropdown-trigger",
+                            "btn btn-default btn-primary text-white rounded mr-3 h-dropdown-trigger",
                           class: { "btn-disabled": _vm.working },
                           attrs: { disabled: _vm.working },
                           on: {
@@ -36342,8 +36386,50 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
+                  _vm.resources.length
+                    ? _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-link bg-30 px-3 border border-60 rounded mr-3 h-dropdown-trigger cursor-pointer select-none",
+                          class: {
+                            "btn-disabled": _vm.working,
+                            "bg-primary border-primary": _vm.orderBy != "rank"
+                          },
+                          attrs: { disabled: _vm.working },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.toggleOrder($event)
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-11",
+                              class: {
+                                "text-80": _vm.orderBy == "rank",
+                                "text-white": _vm.orderBy != "rank"
+                              }
+                            },
+                            [
+                              _c("icon-sort"),
+                              _vm._v(" "),
+                              _vm.orderBy == "rank"
+                                ? _c("icon-layer-group")
+                                : _c("icon-calendar")
+                            ],
+                            1
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c("filter-menu", {
                     ref: "filterMenu",
+                    staticClass: "border border-60 rounded no-underline",
                     attrs: {
                       "resource-name": _vm.resourceName,
                       "soft-deletes": false,
@@ -36521,7 +36607,7 @@ exports = module.exports = __webpack_require__(195)(false);
 
 
 // module
-exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.hover\\:bg-delinquent-light:hover {\n    background: #fff4f4;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.epic-label a,\n.epic-label a:active,\n.epic-label a:hover,\n.epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\n.focus-other {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #cc0000 33.33%, #990000 33.33%, #990000 50%, #cc0000 50%, #cc0000 83.33%, #990000 83.33%, #990000 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-dev {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #5b9bd5 33.33%, #2f76b5 33.33%, #2f76b5 50%, #5b9bd5 50%, #5b9bd5 83.33%, #2f76b5 83.33%, #2f76b5 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-ticket {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #ffc000 33.33%, #bf8f00 33.33%, #bf8f00 50%, #ffc000 50%, #ffc000 83.33%, #bf8f00 83.33%, #bf8f00 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\nimg.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.flex {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.items-center {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.space-between {\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n}\n.justify-center {\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n.flex-1 {\n    -webkit-box-flex: 1;\n        -ms-flex: 1;\n            flex: 1;\n}\n.text-center {\n    text-align: center;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\nlabel {\n    margin: 0;\n}\n.px-1 {\n    padding-left: 0.25rem;\n    padding-right: 0.25rem;\n}\n.rounded-full {\n    border-radius: 9999px;\n}\na {\n    color: #0052cc;\n    text-decoration: none;\n}\na:active, a:hover, a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.hover\\:bg-delinquent-light:hover {\n    background: #fff4f4;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.swimlane-issue .epic-label a,\n.swimlane-issue .epic-label a:active,\n.swimlane-issue .epic-label a:hover,\n.swimlane-issue .epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\n.focus-other {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #cc0000 33.33%, #990000 33.33%, #990000 50%, #cc0000 50%, #cc0000 83.33%, #990000 83.33%, #990000 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-dev {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #5b9bd5 33.33%, #2f76b5 33.33%, #2f76b5 50%, #5b9bd5 50%, #5b9bd5 83.33%, #2f76b5 83.33%, #2f76b5 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-ticket {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #ffc000 33.33%, #bf8f00 33.33%, #bf8f00 50%, #ffc000 50%, #ffc000 83.33%, #bf8f00 83.33%, #bf8f00 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.swimlane-issue img.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\n.swimlane-issue label {\n    margin: 0;\n}\n.swimlane-issue a {\n    color: #0052cc;\n    text-decoration: none;\n}\n.swimlane-issue a:active,\n.swimlane-issue a:hover,\n.swimlane-issue a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
 
 // exports
 
@@ -55522,6 +55608,270 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-35c19045", module.exports)
+  }
+}
+
+/***/ }),
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(216)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/Sort.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1906f2be", Component.options)
+  } else {
+    hotAPI.reload("data-v-1906f2be", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "svg",
+    {
+      staticClass: "svg-inline",
+      attrs: {
+        "aria-hidden": "true",
+        focusable: "false",
+        role: "img",
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 496 512"
+      }
+    },
+    [
+      _c("path", {
+        attrs: {
+          fill: "currentColor",
+          d:
+            "M16 160 h48 v104 a16 16 0 0 0 16 16 h32 a16 16 0 0 0 16-16 v-104 h48 c14.21 0 21.39-17.24 11.31-27.31 l-80-96 a16 16 0 0 0-22.62 0 l-80 96 c-10.04 10.05-2.91 27.31 11.31 27.31z M176 352 h-48 v-104 a16 16 0 0 0-16-16 h-32 a16 16 0 0 0-16 16 v104 h-48 c-14.21 0-21.39 17.24-11.31 27.31 l80 96 a16 16 0 0 0 22.62 0 l80-96 c10.04-10.05 2.91-27.31-11.31-27.31z M240 96h64a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16zm0 128h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16zm256 192H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-256-64h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16z"
+        }
+      })
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1906f2be", module.exports)
+  }
+}
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(218)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/Calendar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-cfb7b744", Component.options)
+  } else {
+    hotAPI.reload("data-v-cfb7b744", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "svg",
+    {
+      staticClass: "svg-inline",
+      attrs: {
+        "aria-hidden": "true",
+        focusable: "false",
+        role: "img",
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 448 512"
+      }
+    },
+    [
+      _c("path", {
+        attrs: {
+          fill: "currentColor",
+          d:
+            "M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"
+        }
+      })
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-cfb7b744", module.exports)
+  }
+}
+
+/***/ }),
+/* 219 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(220)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/LayerGroup.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-39d80ace", Component.options)
+  } else {
+    hotAPI.reload("data-v-39d80ace", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "svg",
+    {
+      staticClass: "svg-inline",
+      attrs: {
+        "aria-hidden": "true",
+        focusable: "false",
+        role: "img",
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 512 512"
+      }
+    },
+    [
+      _c("path", {
+        attrs: {
+          fill: "currentColor",
+          d:
+            "M12.41 148.02l232.94 105.67c6.8 3.09 14.49 3.09 21.29 0l232.94-105.67c16.55-7.51 16.55-32.52 0-40.03L266.65 2.31a25.607 25.607 0 0 0-21.29 0L12.41 107.98c-16.55 7.51-16.55 32.53 0 40.04zm487.18 88.28l-58.09-26.33-161.64 73.27c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.51 209.97l-58.1 26.33c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 276.3c16.55-7.5 16.55-32.5 0-40zm0 127.8l-57.87-26.23-161.86 73.37c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.29 337.87 12.41 364.1c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 404.1c16.55-7.5 16.55-32.5 0-40z"
+        }
+      })
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-39d80ace", module.exports)
   }
 }
 

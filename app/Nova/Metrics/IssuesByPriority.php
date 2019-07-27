@@ -42,7 +42,7 @@ class IssuesByPriority extends Partition
         // Return the partition result
         return $this->result($results)->colors([
             'Highest' => 'firebrick',
-            'High' => 'red',
+            'High' => '#f44',
             'Medium' => 'silver',
             'Low' => 'mediumseagreen',
             'Lowest' => 'green'

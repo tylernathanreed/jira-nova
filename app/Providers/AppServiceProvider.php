@@ -14,7 +14,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerLaravelTelescope();
+    }
+
+    /**
+     * Registers laravel telescope.
+     *
+     * @return void
+     */
+    protected function registerLaravelTelescope()
+    {
+        // Make sure telescope is enabled
+        if(!$this->app->config->get('telescope.enabled')) {
+            return;
+        }
+
+        // Register the laravel service provider
+        $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+
+        // Register the application service provider
+        $this->app->register(\App\Providers\TelescopeServiceProvider::class);
     }
 
     /**
@@ -39,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $config = Jira::getConfiguration();
 
-        $config->setJiraUser(env('_JIRA_USER'));
-        $config->setJiraPassword(env('_JIRA_PASS'));
+        $config->setJiraUser(config('services.jira.cli.username'));
+        $config->setJiraPassword(config('services.jira.cli.password'));
     }
 }

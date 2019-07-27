@@ -50,6 +50,11 @@ return [
         'username' => env('JIRA_USER'),
         'password' => env('JIRA_PASS'),
 
+        'cli' => [
+            'username' => env('JIRA_CLI_USER'),
+            'password' => env('JIRA_CLI_PASS'),
+        ],
+
         'version' => env('JIRA_VERSION', '7.9.2'),
         'use_v3_rest_api' => env('JIRA_REST_API_V3'),
 

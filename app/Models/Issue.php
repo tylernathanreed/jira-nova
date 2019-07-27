@@ -29,6 +29,7 @@ class Issue extends Model
     const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
     const FIELD_ISSUE_CATEGORY = 'customfield_12005';
     const FIELD_ISSUE_TYPE = 'issuetype';
+    const FIELD_LABELS = 'labels';
     const FIELD_LINKS = 'issuelinks';
     const FIELD_PARENT = 'parent';
     const FIELD_PRIORITY = 'priority';
@@ -123,6 +124,7 @@ class Issue extends Model
                 static::FIELD_ESTIMATED_COMPLETION_DATE,
                 static::FIELD_ISSUE_CATEGORY,
                 static::FIELD_ISSUE_TYPE,
+                static::FIELD_LABELS,
                 static::FIELD_LINKS,
                 static::FIELD_PARENT,
                 static::FIELD_PRIORITY,
@@ -174,6 +176,7 @@ class Issue extends Model
                     'epic_name' => $issue->fields->{static::FIELD_EPIC_NAME} ?? null,
                     'epic_color' => $issue->fields->{static::FIELD_EPIC_COLOR} ?? null,
 
+                    'labels' => json_encode($issue->fields->{static::FIELD_LABELS} ?? []),
                     'links' => $issue->fields->{static::FIELD_LINKS} ?? [],
                     'blocks' => [],
                     'rank' => $issue->fields->{static::FIELD_RANK}

@@ -31,7 +31,28 @@ class SaveSwimlaneChanges extends Action
         });
 
         // Iterate through each group
-        foreach($groups as $group) {
+        foreach($groups as $key => $group) {
+
+            // Since the "other" group is able to allocate time from either
+            // other group, we'll want to rank them in as well. This will
+            // mean that we skip it in the loop, and merge it instead.
+
+            // Determine the key criteria
+            $criteria = json_decode($key, true);
+
+            // If this group is the "other" group, skip it
+            if($criteria['focus'] == Issue::FOCUS_OTHER) {
+                continue;
+            }
+
+            // Determine the "other" group for the same assignee
+            $other = $groups[json_encode(['assignee' => $criteria['assignee'], 'focus' => Issue::FOCUS_OTHER])] ?? collect();
+
+            // Merge the other group into this one
+            $group = $group->merge($other);
+
+            // Order the issues by rank
+            $group = $group->sortBy('rank');
 
             // With each group now separated, we'll want to rank them. This
             // involves figuring out their old and new order, plus a way
@@ -60,6 +81,7 @@ class SaveSwimlaneChanges extends Action
 
         // Update the estimated completion dates
         Issue::updateEstimates($estimates);
+
     }
 
     /**

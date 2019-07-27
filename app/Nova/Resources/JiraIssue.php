@@ -80,6 +80,7 @@ class JiraIssue extends Resource
             Field::text('epic_url', 'epic_url'),
             Field::text('epic_name', 'epic_name'),
             Field::text('epic_color', 'epic_color'),
+            Field::text('labels', 'labels'),
             Field::text('links', 'links'),
             Field::text('blocks', 'blocks'),
             Field::text('rank', 'rank')

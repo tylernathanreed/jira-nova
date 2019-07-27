@@ -315,10 +315,10 @@
         margin-right: 3px;
     }
 
-    .epic-label a,
-    .epic-label a:active,
-    .epic-label a:hover,
-    .epic-label a:focus {
+    .swimlane-issue .epic-label a,
+    .swimlane-issue .epic-label a:active,
+    .swimlane-issue .epic-label a:hover,
+    .swimlane-issue .epic-label a:focus {
         color: inherit;
     }
 
@@ -398,37 +398,13 @@
         box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);
     }
 
-    img.icon {
+    .swimlane-issue img.icon {
         width: 16px;
         height: 16px;
     }
 
     .text-gray {
         color: #aaa;
-    }
-
-    .flex {
-        display: flex;
-    }
-
-    .items-center {
-        align-items: center;
-    }
-
-    .space-between {
-        justify-content: space-between;
-    }
-
-    .justify-center {
-        justify-content: center;
-    }
-
-    .flex-1 {
-        flex: 1;
-    }
-
-    .text-center {
-        text-align: center;
     }
 
     .link-block {
@@ -487,25 +463,18 @@
     .bg-range-30 { background-color: silver; }
     .bg-range-31 { background-color: white; }
 
-    label {
+    .swimlane-issue label {
         margin: 0;
     }
 
-    .px-1 {
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
-
-    .rounded-full {
-        border-radius: 9999px;
-    }
-
-    a {
+    .swimlane-issue a {
         color: #0052cc;
         text-decoration: none;
     }
 
-    a:active, a:hover, a:focus {
+    .swimlane-issue a:active,
+    .swimlane-issue a:hover,
+    .swimlane-issue a:focus {
         color: rgb(0, 73, 176);
         text-decoration: underline;
     }

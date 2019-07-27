@@ -26,7 +26,7 @@
 
                     <button
                         v-if="resources.length"
-                        class="btn btm-sm btn-default btn-primary text-white rounded mr-3 h-dropdown-trigger"
+                        class="btn btn-default btn-primary text-white rounded mr-3 h-dropdown-trigger"
                         :class="{ 'btn-disabled': working }"
                         :disabled="working"
                         @click.prevent="saveChanges"
@@ -34,8 +34,23 @@
                         Save Changes
                     </button>
 
+                    <button
+                        v-if="resources.length"
+                        class="btn btn-link bg-30 px-3 border border-60 rounded mr-3 h-dropdown-trigger cursor-pointer select-none"
+                        :class="{ 'btn-disabled': working, 'bg-primary border-primary': orderBy != 'rank' }"
+                        :disabled="working"
+                        @click.prevent="toggleOrder"
+                    >
+                        <div class="w-11" :class="{'text-80': orderBy == 'rank', 'text-white': orderBy != 'rank'}">
+                            <icon-sort/>
+                            <icon-layer-group v-if="orderBy == 'rank'"/>
+                            <icon-calendar v-else/>
+                        </div>
+                    </button>
+
                     <!-- Filters -->
                     <filter-menu
+                        class="border border-60 rounded no-underline"
                         :resource-name="resourceName"
                         :soft-deletes="false"
                         :via-resource="viaResource"
@@ -122,6 +137,8 @@
                 working: false,
 
                 resources: [],
+
+                orderBy: 'rank',
 
                 resourceName: 'jira-issues',
                 viaResource: 'jira-issues',
@@ -233,7 +250,7 @@
                         resources = this.assignEstimatedCompletionDates(resources);
 
                         // Order the issues
-                        resources = _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
+                        resources = this.applyOrder(resources);
 
                         // Update the resources
                         this.resources = resources;
@@ -290,6 +307,22 @@
                         }
 
                     })
+            },
+
+            toggleOrder() {
+
+                this.orderBy = (this.orderBy == 'rank' ? 'estimate' : 'rank');
+
+                this.resources = this.applyOrder(this.resources);
+
+            },
+
+            applyOrder(resources) {
+
+                return this.orderBy == 'rank'
+                    ? _.orderBy(resources, ['rank'], ['asc'])
+                    : _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
+
             },
 
             /**
@@ -376,20 +409,33 @@
                     [Constants.FOCUS_OTHER]: this.getFirstAssignmentDate(Constants.FOCUS_OTHER)
                 };
 
+                console.log({
+                    [Constants.FOCUS_DEV]: dates[Constants.FOCUS_DEV].format('YYYY-MM-DD'),
+                    [Constants.FOCUS_TICKET]: dates[Constants.FOCUS_TICKET].format('YYYY-MM-DD'),
+                    [Constants.FOCUS_OTHER]: dates[Constants.FOCUS_OTHER].format('YYYY-MM-DD')
+                });
+
                 // Determine the schedule
                 let schedule = this.schedule;
 
                 // Remap the issues
                 return issues.map(function(issue) {
 
+                    console.log(issue['key']);
+
                     // Determine the issue focus
-                    let focuses = issue['priority'] == Constants.PRIORITY_HIGHEST
+                    let focuses = issue['priority_name'] == Constants.PRIORITY_HIGHEST
                         ? [Constants.FOCUS_DEV, Constants.FOCUS_TICKET, Constants.FOCUS_OTHER]
                         : (
                             [Constants.ISSUE_CATEGORY_TICKET, Constants.ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0
                                 ? [Constants.FOCUS_TICKET]
                                 : [Constants.FOCUS_DEV]
                         );
+
+                    console.log({
+                        'priority': issue['priority_name'],
+                        'highest': Constants.PRIORITY_HIGHEST
+                    });
 
                     // Determine the remaining estimate
                     let remaining = Math.max(issue['estimate_remaining'] || 0, 1 * 60 * 60);
@@ -416,6 +462,11 @@
                         let focus = _.last(focuses.filter(function(focus) {
                             return focusDates[focus].isSame(date);
                         }));
+
+                        console.log({
+                            'focus': focus,
+                            'date': date.format('YYYY-MM-DD')
+                        });
 
                         // Determine how much time as already been allocated for the day
                         let allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
