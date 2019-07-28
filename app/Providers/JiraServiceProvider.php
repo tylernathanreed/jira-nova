@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use App\Models\Issue;
+use App\Support\Jira\JiraService;
 use App\Support\Jira\Query\Processor;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,7 +18,9 @@ class JiraServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootFieldMapping();
+        $this->bootPostProcessor();
     }
+
 
     /**
      * Boots the field mapping.
@@ -100,11 +103,61 @@ class JiraServiceProvider extends ServiceProvider
 
                 }, $fields['issuelinks'] ?? []),
 
-                'blocks' => [],
-
                 'rank' => data_get($fields, $mapping['rank'])
             ];
 
         });
     }
+
+    /**
+     * Boots the post processor.
+     *
+     * @return void
+     */
+    protected function bootPostProcessor()
+    {
+        Processor::post(function($issues) {
+
+            // Determine the epic keys
+            $epics = array_values(array_unique(array_filter(array_pluck($issues, 'epic_key'))));
+
+            // Check if any epics were found
+            if(!empty($epics)) {
+
+                // Map the epics into issues
+                $epics = $this->app->make(JiraService::class)->newQuery()->whereIn('issuekey', $epics)->get()->issues->keyBy('key');
+
+                // Fill in the epic details for the non-epic issues
+                $issues = array_map(function($issue) use ($epics) {
+
+                    // If the issue does not have an epic key, return it as-is
+                    if(is_null($issue->epic_key)) {
+                        return $issue;
+                    }
+
+                    // Determine the associated epic
+                    $epic = $epics[$issue->epic_key] ?? null;
+
+                    // If the epic couldn't be found, return it as-is
+                    if(is_null($epic)) {
+                        return $issue;
+                    }
+
+                    // Fill in the epic information
+                    $issue->epic_name = $epic->epic_name;
+                    $issue->epic_color = $epic->epic_color;
+
+                    // Return the issue
+                    return $issue;
+
+                }, $issues);
+
+            }
+
+            // Return the issues
+            return $issues;
+
+        });
+    }
+
 }

@@ -9,6 +9,13 @@ use JiraRestApi\Issue\IssueSearchResult;
 class Processor
 {
     /**
+     * The post processor.
+     *
+     * @var \Closure|null
+     */
+    protected static $postProcessor;
+
+    /**
      * The field processor.
      *
      * @var \Closure|null
@@ -43,9 +50,18 @@ class Processor
      */
     public function processIssues(Builder $query, $issues)
     {
-        return array_map(function($issue) use ($query) {
+        // Process each issue
+        $issues = array_map(function($issue) use ($query) {
             return $this->processIssue($query, $issue);
         }, $issues);
+
+        // If a post processor exists, use it
+        if(!is_null($processor = static::$postProcessor)) {
+            $issues = $processor($issues);
+        }
+
+        // Return the issues
+        return $issues;
     }
 
     /**
@@ -100,5 +116,17 @@ class Processor
     public static function map(Closure $callback)
     {
         static::$fieldProcessor = $callback;
+    }
+
+    /**
+     * Sets the post processor.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return void
+     */
+    public static function post(Closure $callback)
+    {
+        static::$postProcessor = $callback;
     }
 }

@@ -123,45 +123,6 @@ class Issue extends Model
         // Key the issues by their jira key
         $issues = $issues->keyBy('key');
 
-        // Determine the epic keys
-        $epics = $issues->pluck('epic_key')->filter()->unique()->values()->all();
-
-        // Check if any epics were found
-        if(!empty($epics)) {
-
-            // Map the epics into issues
-            $epics = static::getIssuesFromJira([
-                'keys' => $epics,
-                'epics' => true
-            ]);
-
-            // Fill in the epic details for the non-epic issues
-            $issues = $issues->map(function($issue) use ($epics) {
-
-                // If the issue does not have an epic key, return it as-is
-                if(is_null($issue->epic_key)) {
-                    return $issue;
-                }
-
-                // Determine the associated epic
-                $epic = $epics[$issue->epic_key] ?? null;
-
-                // If the epic couldn't be found, return it as-is
-                if(is_null($epic)) {
-                    return $issue;
-                }
-
-                // Fill in the epic information
-                $issue->epic_name = $epic->epic_name;
-                $issue->epic_color = $epic->epic_color;
-
-                // Return the issue
-                return $issue;
-
-            });
-
-        }
-
         // Check if we're not handling epics
         if(!($options['epics'] ?? false)) {
 
@@ -223,11 +184,6 @@ class Issue extends Model
     {
         // Create a new query
         $query = $this->newJiraQueryWithDefaultSelection();
-
-        // Check for a list of issues
-        if(!empty($keys = ($options['keys'] ?? []))) {
-            return $query->whereIn('issuekey', $keys);
-        }
 
         // Determine the applicable focus groups
         $groups = $options['groups'] ?? [
