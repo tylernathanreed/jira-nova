@@ -134,9 +134,11 @@
             return {
                 initialLoading: true,
                 loading: true,
+                labelsLoading: true,
                 working: false,
 
                 resources: [],
+                labelData: [],
 
                 orderBy: 'rank',
 
@@ -224,6 +226,7 @@
             getResources() {
 
                 this.loading = true;
+                this.labelsLoading = true;
                 Nova.$emit('resources-loading');
 
                 this.$nextTick(() => {
@@ -239,6 +242,7 @@
 
                         // Reset the resources
                         this.resources = [];
+                        this.labelData = [];
 
                         // Remember the response
                         this.resourceResponse = data;
@@ -254,6 +258,9 @@
 
                         // Update the resources
                         this.resources = resources;
+
+                        // Calculate the label data
+                        this.calculateLabelData();
 
                         this.loading = false;
 
@@ -391,7 +398,7 @@
              *
              * @return {Array}
              */
-            assignEstimatedCompletionDates: function(issues) {
+            assignEstimatedCompletionDates(issues) {
 
                 // Make sure issues have been provided
                 if(typeof issues === 'undefined') {
@@ -409,19 +416,11 @@
                     [Constants.FOCUS_OTHER]: this.getFirstAssignmentDate(Constants.FOCUS_OTHER)
                 };
 
-                console.log({
-                    [Constants.FOCUS_DEV]: dates[Constants.FOCUS_DEV].format('YYYY-MM-DD'),
-                    [Constants.FOCUS_TICKET]: dates[Constants.FOCUS_TICKET].format('YYYY-MM-DD'),
-                    [Constants.FOCUS_OTHER]: dates[Constants.FOCUS_OTHER].format('YYYY-MM-DD')
-                });
-
                 // Determine the schedule
                 let schedule = this.schedule;
 
                 // Remap the issues
                 return issues.map(function(issue) {
-
-                    console.log(issue['key']);
 
                     // Determine the issue focus
                     let focuses = issue['priority_name'] == Constants.PRIORITY_HIGHEST
@@ -431,11 +430,6 @@
                                 ? [Constants.FOCUS_TICKET]
                                 : [Constants.FOCUS_DEV]
                         );
-
-                    console.log({
-                        'priority': issue['priority_name'],
-                        'highest': Constants.PRIORITY_HIGHEST
-                    });
 
                     // Determine the remaining estimate
                     let remaining = Math.max(issue['estimate_remaining'] || 0, 1 * 60 * 60);
@@ -462,11 +456,6 @@
                         let focus = _.last(focuses.filter(function(focus) {
                             return focusDates[focus].isSame(date);
                         }));
-
-                        console.log({
-                            'focus': focus,
-                            'date': date.format('YYYY-MM-DD')
-                        });
 
                         // Determine how much time as already been allocated for the day
                         let allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
@@ -532,7 +521,7 @@
              *
              * @return {Date}
              */
-            getFirstAssignmentDate: function(focus) {
+            getFirstAssignmentDate(focus) {
 
                 // Determine the schedule
                 let schedule = this.schedule;
@@ -572,6 +561,47 @@
 
                 // Return the date
                 return date;
+
+            },
+
+            /**
+             * Calculates the label data.
+             *
+             * @return {void{}}
+             */
+            async calculateLabelData() {
+
+                // Determine the counts for each label
+                let counts = _.flatten(_.map(this.resources, (r) => JSON.parse(r.labels))).reduce(function(counts, label) {
+                    return (counts[label] = (counts[label] || 0) + 1) && counts;
+                }, {});
+
+                // Since labels within a swimlane are meant to group like
+                // issues together, if a label only appears once, we're
+                // going to hide it. There's no sense in cluttering.
+
+                // Determine the labels that only appear once
+                let once = _.pickBy(counts, (c) => c == 1);
+
+                // Determine the distinct list of labels
+                let names = Object.keys(counts).sort();
+
+                // Create a color and shape mapping for each label
+                let labels = names.map(function(label, index) {
+                    return {
+                        'name': label,
+                        'color': index % 32,
+                        'shape': Math.floor(index / 32),
+                        'once': !! once[label]
+                    }
+                });
+
+                // Determine the label data
+                this.labelData = this.resources.reduce(function(data, r) {
+                    return (data[r.key] = _.filter(labels, (l) => r.labels.indexOf(l.name) >= 0)) && data;
+                }, {});
+
+                this.labelsLoading = false;
 
             },
 

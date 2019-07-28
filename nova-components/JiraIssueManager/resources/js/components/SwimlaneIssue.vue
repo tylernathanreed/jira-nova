@@ -37,6 +37,21 @@
                     {{ issue.summary }}
                 </div>
 
+                <div class="swimlane-issue-field" data-field="labels">
+                    <loader v-if="swimlane.labelsLoading" class="text-gray" />
+                    <div v-else class="labels-container mr-4 h-8">
+                        <abbr v-for="label in labels"
+                            :key="label.name"
+                            class="label-abbr"
+                            :class="{
+                                ['bg-range-' + label.color]: true,
+                                ['label-shape-' + label.shape]: true,
+                                ['label-once']: label.once
+                            }"
+                            :title="label.name"/>
+                    </div>
+                </div>
+
                 <div :class="'swimlane-issue-field issue-status-' + issue.status_color" data-field="status" style="min-width: 90px; text-align: center">
                     {{ issue.status_name }}
                 </div>
@@ -146,8 +161,7 @@
 
         props: [
             'issueKey',
-            'index',
-            'swimlane'
+            'index'
         ],
 
         data: function() {
@@ -197,8 +211,16 @@
 
             },
 
+            labels: function() {
+                return this.getSwimlane().labelData[this.issueKey] || [];
+            },
+
             blocks: function() {
                 return this.issue.blocks;
+            },
+
+            swimlane: function() {
+                return this.getSwimlane();
             },
 
             resourceData: function() {
@@ -462,6 +484,58 @@
     .bg-range-29 { background-color: #888; }
     .bg-range-30 { background-color: silver; }
     .bg-range-31 { background-color: white; }
+
+    .labels-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap-reverse;
+        justify-content: center;
+        padding-left: 38px;
+        cursor: default;
+    }
+
+    .label-abbr {
+        width: 8px;
+        height: 8px;
+        margin: 2px;
+    }
+
+    .label-abbr.label-shape-0 {
+        border-radius: 9999px;
+        border: 1px solid black;
+    }
+
+    .label-abbr.label-shape-1 {
+        border: 1px solid black;
+    }
+
+    .label-abbr.label-shape-2 {
+        border: 1px solid black;
+        border-top-right-radius: 9999px;
+        border-bottom-right-radius: 9999px;
+    }
+
+    .label-abbr.label-shape-3 {
+        border: 1px solid black;
+        border-top-left-radius: 9999px;
+        border-bottom-left-radius: 9999px;
+    }
+
+    .label-abbr.label-shape-4 {
+        border: 1px solid black;
+        border-top-left-radius: 9999px;
+        border-top-right-radius: 9999px;
+    }
+
+    .label-abbr.label-shape-5 {
+        border: 1px solid black;
+        border-bottom-left-radius: 9999px;
+        border-bottom-right-radius: 9999px;
+    }
+
+    .label-once {
+        opacity: 0.25;
+    }
 
     .swimlane-issue label {
         margin: 0;

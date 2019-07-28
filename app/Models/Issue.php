@@ -177,8 +177,10 @@ class Issue extends Model
                     'epic_color' => $issue->fields->{static::FIELD_EPIC_COLOR} ?? null,
 
                     'labels' => json_encode($issue->fields->{static::FIELD_LABELS} ?? []),
+
                     'links' => $issue->fields->{static::FIELD_LINKS} ?? [],
                     'blocks' => [],
+
                     'rank' => $issue->fields->{static::FIELD_RANK}
                 ];
             }, $results->issues);

@@ -33768,9 +33768,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return {
             initialLoading: true,
             loading: true,
+            labelsLoading: true,
             working: false,
 
             resources: [],
+            labelData: [],
 
             orderBy: 'rank',
 
@@ -33875,6 +33877,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             var _this2 = this;
 
             this.loading = true;
+            this.labelsLoading = true;
             Nova.$emit('resources-loading');
 
             this.$nextTick(function () {
@@ -33889,6 +33892,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                     // Reset the resources
                     _this2.resources = [];
+                    _this2.labelData = [];
 
                     // Remember the response
                     _this2.resourceResponse = data;
@@ -33904,6 +33908,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                     // Update the resources
                     _this2.resources = resources;
+
+                    // Calculate the label data
+                    _this2.calculateLabelData();
 
                     _this2.loading = false;
 
@@ -34029,7 +34036,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
          * @return {Array}
          */
         assignEstimatedCompletionDates: function assignEstimatedCompletionDates(issues) {
-            var _dates, _console$log;
+            var _dates;
 
             // Make sure issues have been provided
             if (typeof issues === 'undefined') {
@@ -34043,23 +34050,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             // Initialize the dates for each focus
             var dates = (_dates = {}, _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER)), _dates);
 
-            console.log((_console$log = {}, _defineProperty(_console$log, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, dates[__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV].format('YYYY-MM-DD')), _defineProperty(_console$log, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, dates[__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET].format('YYYY-MM-DD')), _defineProperty(_console$log, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, dates[__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER].format('YYYY-MM-DD')), _console$log));
-
             // Determine the schedule
             var schedule = this.schedule;
 
             // Remap the issues
             return issues.map(function (issue) {
 
-                console.log(issue['key']);
-
                 // Determine the issue focus
                 var focuses = issue['priority_name'] == __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0 ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV];
-
-                console.log({
-                    'priority': issue['priority_name'],
-                    'highest': __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST
-                });
 
                 // Determine the remaining estimate
                 var remaining = Math.max(issue['estimate_remaining'] || 0, 1 * 60 * 60);
@@ -34087,11 +34085,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     var focus = _.last(focuses.filter(function (focus) {
                         return focusDates[focus].isSame(date);
                     }));
-
-                    console.log({
-                        'focus': focus,
-                        'date': date.format('YYYY-MM-DD')
-                    });
 
                     // Determine how much time as already been allocated for the day
                     var allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
@@ -34153,6 +34146,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
         },
 
+
         /**
          * Returns the first assignment date for the schedule.
          *
@@ -34201,6 +34195,76 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             return date;
         },
 
+
+        /**
+         * Calculates the label data.
+         *
+         * @return {void{}}
+         */
+        calculateLabelData: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+                var counts, once, names, labels;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+
+                                // Determine the counts for each label
+                                counts = _.flatten(_.map(this.resources, function (r) {
+                                    return JSON.parse(r.labels);
+                                })).reduce(function (counts, label) {
+                                    return (counts[label] = (counts[label] || 0) + 1) && counts;
+                                }, {});
+
+                                // Since labels within a swimlane are meant to group like
+                                // issues together, if a label only appears once, we're
+                                // going to hide it. There's no sense in cluttering.
+
+                                // Determine the labels that only appear once
+
+                                once = _.pickBy(counts, function (c) {
+                                    return c == 1;
+                                });
+
+                                // Determine the distinct list of labels
+
+                                names = Object.keys(counts).sort();
+
+                                // Create a color and shape mapping for each label
+
+                                labels = names.map(function (label, index) {
+                                    return {
+                                        'name': label,
+                                        'color': index % 32,
+                                        'shape': Math.floor(index / 32),
+                                        'once': !!once[label]
+                                    };
+                                });
+
+                                // Determine the label data
+
+                                this.labelData = this.resources.reduce(function (data, r) {
+                                    return (data[r.key] = _.filter(labels, function (l) {
+                                        return r.labels.indexOf(l.name) >= 0;
+                                    })) && data;
+                                }, {});
+
+                                this.labelsLoading = false;
+
+                            case 6:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function calculateLabelData() {
+                return _ref3.apply(this, arguments);
+            }
+
+            return calculateLabelData;
+        }(),
         getSwimlane: function getSwimlane() {
             return this;
         },
@@ -36607,7 +36671,7 @@ exports = module.exports = __webpack_require__(195)(false);
 
 
 // module
-exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.hover\\:bg-delinquent-light:hover {\n    background: #fff4f4;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.swimlane-issue .epic-label a,\n.swimlane-issue .epic-label a:active,\n.swimlane-issue .epic-label a:hover,\n.swimlane-issue .epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\n.focus-other {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #cc0000 33.33%, #990000 33.33%, #990000 50%, #cc0000 50%, #cc0000 83.33%, #990000 83.33%, #990000 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-dev {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #5b9bd5 33.33%, #2f76b5 33.33%, #2f76b5 50%, #5b9bd5 50%, #5b9bd5 83.33%, #2f76b5 83.33%, #2f76b5 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-ticket {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #ffc000 33.33%, #bf8f00 33.33%, #bf8f00 50%, #ffc000 50%, #ffc000 83.33%, #bf8f00 83.33%, #bf8f00 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.swimlane-issue img.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\n.swimlane-issue label {\n    margin: 0;\n}\n.swimlane-issue a {\n    color: #0052cc;\n    text-decoration: none;\n}\n.swimlane-issue a:active,\n.swimlane-issue a:hover,\n.swimlane-issue a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.hover\\:bg-delinquent-light:hover {\n    background: #fff4f4;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.swimlane-issue .epic-label a,\n.swimlane-issue .epic-label a:active,\n.swimlane-issue .epic-label a:hover,\n.swimlane-issue .epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\n.focus-other {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #cc0000 33.33%, #990000 33.33%, #990000 50%, #cc0000 50%, #cc0000 83.33%, #990000 83.33%, #990000 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-dev {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #5b9bd5 33.33%, #2f76b5 33.33%, #2f76b5 50%, #5b9bd5 50%, #5b9bd5 83.33%, #2f76b5 83.33%, #2f76b5 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-ticket {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #ffc000 33.33%, #bf8f00 33.33%, #bf8f00 50%, #ffc000 50%, #ffc000 83.33%, #bf8f00 83.33%, #bf8f00 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.swimlane-issue img.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\n.labels-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -ms-flex-wrap: wrap-reverse;\n        flex-wrap: wrap-reverse;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    padding-left: 38px;\n    cursor: default;\n}\n.label-abbr {\n    width: 8px;\n    height: 8px;\n    margin: 2px;\n}\n.label-abbr.label-shape-0 {\n    border-radius: 9999px;\n    border: 1px solid black;\n}\n.label-abbr.label-shape-1 {\n    border: 1px solid black;\n}\n.label-abbr.label-shape-2 {\n    border: 1px solid black;\n    border-top-right-radius: 9999px;\n    border-bottom-right-radius: 9999px;\n}\n.label-abbr.label-shape-3 {\n    border: 1px solid black;\n    border-top-left-radius: 9999px;\n    border-bottom-left-radius: 9999px;\n}\n.label-abbr.label-shape-4 {\n    border: 1px solid black;\n    border-top-left-radius: 9999px;\n    border-top-right-radius: 9999px;\n}\n.label-abbr.label-shape-5 {\n    border: 1px solid black;\n    border-bottom-left-radius: 9999px;\n    border-bottom-right-radius: 9999px;\n}\n.label-once {\n    opacity: 0.25;\n}\n.swimlane-issue label {\n    margin: 0;\n}\n.swimlane-issue a {\n    color: #0052cc;\n    text-decoration: none;\n}\n.swimlane-issue a:active,\n.swimlane-issue a:hover,\n.swimlane-issue a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
 
 // exports
 
@@ -37104,12 +37168,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['issueKey', 'index', 'swimlane'],
+    props: ['issueKey', 'index'],
 
     data: function data() {
 
@@ -37153,8 +37232,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return a.diff(b, 'days', 0);
         },
 
+        labels: function labels() {
+            return this.getSwimlane().labelData[this.issueKey] || [];
+        },
+
         blocks: function blocks() {
             return this.issue.blocks;
+        },
+
+        swimlane: function swimlane() {
+            return this.getSwimlane();
         },
 
         resourceData: function resourceData() {
@@ -37604,6 +37691,38 @@ var render = function() {
                       "\n            "
                   )
                 ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "swimlane-issue-field",
+                  attrs: { "data-field": "labels" }
+                },
+                [
+                  _vm.swimlane.labelsLoading
+                    ? _c("loader", { staticClass: "text-gray" })
+                    : _c(
+                        "div",
+                        { staticClass: "labels-container mr-4 h-8" },
+                        _vm._l(_vm.labels, function(label) {
+                          var _obj
+                          return _c("abbr", {
+                            key: label.name,
+                            staticClass: "label-abbr",
+                            class:
+                              ((_obj = {}),
+                              (_obj["bg-range-" + label.color] = true),
+                              (_obj["label-shape-" + label.shape] = true),
+                              (_obj["label-once"] = label.once),
+                              _obj),
+                            attrs: { title: label.name }
+                          })
+                        }),
+                        0
+                      )
+                ],
+                1
               ),
               _vm._v(" "),
               _c(

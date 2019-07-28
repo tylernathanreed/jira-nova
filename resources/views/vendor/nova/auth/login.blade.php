@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="mx-auto py-8 max-w-sm text-center text-90 flex items-center justify-center">
-        <icon-jira></icon-jira> <span class="text-2xl"><b>Jira</b> Issue Manager</span>
+        @include('nova::partials.logo')
     </div>
 
 <form
