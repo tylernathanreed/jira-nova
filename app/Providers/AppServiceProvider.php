@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $config = Jira::getConfiguration();
 
-        $config->setJiraUser(config('services.jira.cli.username'));
-        $config->setJiraPassword(config('services.jira.cli.password'));
+        $config->setJiraUser(config('jira.cli.username'));
+        $config->setJiraPassword(config('jira.cli.password'));
     }
 }

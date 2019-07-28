@@ -3,7 +3,9 @@
 namespace App\Support\Jira;
 
 use JiraRestApi\User\UserService;
+use App\Support\Jira\Query\Builder;
 use JiraRestApi\Issue\IssueService;
+use App\Support\Jira\Query\Connection;
 use JiraRestApi\Project\ProjectService;
 use JiraRestApi\Priority\PriorityService;
 use Illuminate\Contracts\Foundation\Application;
@@ -95,6 +97,16 @@ class JiraService
 	public function users()
 	{
 		return $this->service(UserService::class);
+	}
+
+	/**
+	 * Creates and returns a new issue query.
+	 *
+	 * @return \App\Support\Query\Builder
+	 */
+	public function newQuery()
+	{
+		return new Builder(new Connection($this->issues()));
 	}
 
 	/**

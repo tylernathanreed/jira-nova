@@ -17,29 +17,6 @@ class Issue extends Model
     //* Constants *//
     /////////////////
     /**
-     * The field constants.
-     *
-     * @var string
-     */
-    const FIELD_ASSIGNEE = 'assignee';
-    const FIELD_DUE_DATE = 'duedate';
-    const FIELD_EPIC_COLOR = 'customfield_10004';
-    const FIELD_EPIC_KEY = 'customfield_12000';
-    const FIELD_EPIC_NAME = 'customfield_10002';
-    const FIELD_ESTIMATED_COMPLETION_DATE = 'customfield_12011';
-    const FIELD_ISSUE_CATEGORY = 'customfield_12005';
-    const FIELD_ISSUE_TYPE = 'issuetype';
-    const FIELD_LABELS = 'labels';
-    const FIELD_LINKS = 'issuelinks';
-    const FIELD_PARENT = 'parent';
-    const FIELD_PRIORITY = 'priority';
-    const FIELD_RANK = 'customfield_10119';
-    const FIELD_REMAINING_ESTIMATE = 'timeestimate';
-    const FIELD_REPORTER = 'reporter';
-    const FIELD_STATUS = 'status';
-    const FIELD_SUMMARY = 'summary';
-
-    /**
      * The priority constants.
      *
      * @var string
@@ -72,26 +49,62 @@ class Issue extends Model
     //* Attributes *//
     //////////////////
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'jira_id', 'jira_key', 'project_id'
-    ];
-
-    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = [
-        'due_date'
+        'due_date',
+        'estimate_date'
     ];
 
     ////////////
     //* Jira *//
     ////////////
+    /**
+     * Creates and returns a new jira query.
+     *
+     * @return \App\Support\Jira\Query\Builder
+     */
+    public function newJiraQuery()
+    {
+        return Jira::newQuery();
+    }
+
+    /**
+     * Creates and returns a new jira query with the default column selection.
+     *
+     * @return \App\Support\Jira\Query\Builder
+     */
+    public function newJiraQueryWithDefaultSelection()
+    {
+        return $this->newJiraQuery()->select(
+            $this->getDefaultColumns()
+        );
+    }
+
+    /**
+     * Returns the default columns to select.
+     *
+     * @return array
+     */
+    public function getDefaultColumns()
+    {
+        return array_merge(array_values(config('jira.fields')), [
+            'assignee',
+            'duedate',
+            'issuelinks',
+            'issuetype',
+            'labels',
+            'parent',
+            'priority',
+            'reporter',
+            'status',
+            'summary',
+            'timeestimate'
+        ]);
+    }
+
     /**
      * Returns an array of raw issues from Jira.
      *
@@ -101,114 +114,17 @@ class Issue extends Model
      */
     public static function getIssuesFromJira($options = [])
     {
-        // Determine the search query
-        $jql = static::newIssuesFromJiraExpression($options);
+        // Create a new query from the options
+        $query = (new static)->newJiraQueryFromOptions($options);
 
-        // Initialize the list of issues
-        $issues = [];
+        // Determine the issues
+        $issues = $query->get()->issues;
 
-        // Initialize the pagination variables
-        $page = 0;
-        $count = 50;
-
-        // Loop until we're out of results
-        do {
-
-            // Determine the search results
-            $results = Jira::issues()->search($jql, $page * $count, $count, [
-                static::FIELD_ASSIGNEE,
-                static::FIELD_DUE_DATE,
-                static::FIELD_EPIC_COLOR,
-                static::FIELD_EPIC_KEY,
-                static::FIELD_EPIC_NAME,
-                static::FIELD_ESTIMATED_COMPLETION_DATE,
-                static::FIELD_ISSUE_CATEGORY,
-                static::FIELD_ISSUE_TYPE,
-                static::FIELD_LABELS,
-                static::FIELD_LINKS,
-                static::FIELD_PARENT,
-                static::FIELD_PRIORITY,
-                static::FIELD_RANK,
-                static::FIELD_REMAINING_ESTIMATE,
-                static::FIELD_REPORTER,
-                static::FIELD_STATUS,
-                static::FIELD_SUMMARY
-            ], [], false);
-
-            // Remap the issues to reference what we need
-            $results = array_map(function($issue) {
-                return [
-                    'key' => $issue->key,
-                    'url' => rtrim(config('services.jira.host'), '/') . '/browse/' . $issue->key,
-
-                    'summary' => $issue->fields->{static::FIELD_SUMMARY},
-
-                    'priority_name' => $priority = (optional($issue->fields->{static::FIELD_PRIORITY})->name),
-                    'priority_icon_url' => optional($issue->fields->{static::FIELD_PRIORITY})->iconUrl,
-
-                    'issue_category' => $category = (optional($issue->fields->{static::FIELD_ISSUE_CATEGORY} ?? null)->value ?? static::ISSUE_CATEGORY_DEV),
-                    'focus' => $priority == static::PRIORITY_HIGHEST ? static::FOCUS_OTHER : ($category == static::ISSUE_CATEGORY_DEV ? static::FOCUS_DEV : static::FOCUS_TICKET),
-
-                    'due_date' => $due = $issue->fields->{static::FIELD_DUE_DATE},
-
-                    'estimate_remaining' => $issue->fields->{static::FIELD_REMAINING_ESTIMATE},
-                    'estimate_date' => $est = ($issue->fields->{static::FIELD_ESTIMATED_COMPLETION_DATE} ?? null),
-                    'estimate_diff' => (is_null($due) || is_null($est)) ? null : Carbon::parse($est)->diffInDays(Carbon::parse($due), false),
-
-                    'type_name' => $issue->fields->{static::FIELD_ISSUE_TYPE}->name,
-                    'type_icon_url' => $issue->fields->{static::FIELD_ISSUE_TYPE}->iconUrl,
-
-                    'is_subtask' => $isSubtask = $issue->fields->{static::FIELD_ISSUE_TYPE}->subtask,
-                    'parent_key' => $isSubtask ? ($parentKey = $issue->fields->{static::FIELD_PARENT}->key) : null,
-                    'parent_url' => $isSubtask ? rtrim(config('services.jira.host'), '/') . '/browse/' . $parentKey : null,
-
-                    'status_name' => $issue->fields->{static::FIELD_STATUS}->name,
-                    'status_color' => $issue->fields->{static::FIELD_STATUS}->statuscategory->colorName,
-
-                    'reporter_name' => optional($issue->fields->{static::FIELD_REPORTER})->displayName,
-                    'reporter_icon_url' => optional($issue->fields->{static::FIELD_REPORTER})->avatarUrls['16x16'] ?? null,
-
-                    'assignee_name' => optional($issue->fields->{static::FIELD_ASSIGNEE})->displayName,
-                    'assignee_icon_url' => optional($issue->fields->{static::FIELD_ASSIGNEE})->avatarUrls['16x16'] ?? null,
-
-                    'epic_key' => $epicKey = ($issue->fields->{static::FIELD_EPIC_KEY} ?? null),
-                    'epic_url' => !is_null($epicKey) ? rtrim(config('services.jira.host'), '/') . '/browse/' . $epicKey : null,
-                    'epic_name' => $issue->fields->{static::FIELD_EPIC_NAME} ?? null,
-                    'epic_color' => $issue->fields->{static::FIELD_EPIC_COLOR} ?? null,
-
-                    'labels' => json_encode($issue->fields->{static::FIELD_LABELS} ?? []),
-
-                    'links' => $issue->fields->{static::FIELD_LINKS} ?? [],
-                    'blocks' => [],
-
-                    'rank' => $issue->fields->{static::FIELD_RANK}
-                ];
-            }, $results->issues);
-
-            // Determine the number of results
-            $countResults = count($results);
-
-            // If there aren't any results, stop here
-            if($countResults == 0) {
-                break;
-            }
-
-            // Append the results to the list of issues
-            $issues = array_merge($issues, $results);
-
-            // Forget the results
-            unset($results);
-
-            // Increase the page count
-            $page++;
-
-        } while ($countResults == $count);
-
-        // Kep the issues by their jira key
-        $issues = array_combine(array_column($issues, 'key'), $issues);
+        // Key the issues by their jira key
+        $issues = $issues->keyBy('key');
 
         // Determine the epic keys
-        $epics = array_values(array_unique(array_filter(array_column($issues, 'epic_key'))));
+        $epics = $issues->pluck('epic_key')->filter()->unique()->values()->all();
 
         // Check if any epics were found
         if(!empty($epics)) {
@@ -220,15 +136,15 @@ class Issue extends Model
             ]);
 
             // Fill in the epic details for the non-epic issues
-            $issues = array_map(function($issue) use ($epics) {
+            $issues = $issues->map(function($issue) use ($epics) {
 
                 // If the issue does not have an epic key, return it as-is
-                if(is_null($issue['epic_key'])) {
+                if(is_null($issue->epic_key)) {
                     return $issue;
                 }
 
                 // Determine the associated epic
-                $epic = $epics[$issue['epic_key']] ?? null;
+                $epic = $epics[$issue->epic_key] ?? null;
 
                 // If the epic couldn't be found, return it as-is
                 if(is_null($epic)) {
@@ -236,13 +152,13 @@ class Issue extends Model
                 }
 
                 // Fill in the epic information
-                $issue['epic_name'] = $epic['epic_name'];
-                $issue['epic_color'] = $epic['epic_color'];
+                $issue->epic_name = $epic->epic_name;
+                $issue->epic_color = $epic->epic_color;
 
                 // Return the issue
                 return $issue;
 
-            }, $issues);
+            });
 
         }
 
@@ -254,7 +170,7 @@ class Issue extends Model
 
             // Assign the blocks to each issue
             foreach($issues as $key => &$issue) {
-                $issue['blocks'] = $blocks[$key] ?? [];
+                $issue->blocks = $blocks[$key] ?? [];
             }
 
         }
@@ -294,6 +210,82 @@ class Issue extends Model
 
         // Return the jira issues
         return static::getIssuesFromJira($options);
+    }
+
+    /**
+     * Creates and returns a new jira query from the specified options.
+     *
+     * @param  array  $options
+     *
+     * @return \App\Support\Jira\Query\Builder
+     */
+    public function newJiraQueryFromOptions($options)
+    {
+        // Create a new query
+        $query = $this->newJiraQueryWithDefaultSelection();
+
+        // Check for a list of issues
+        if(!empty($keys = ($options['keys'] ?? []))) {
+            return $query->whereIn('issuekey', $keys);
+        }
+
+        // Determine the applicable focus groups
+        $groups = $options['groups'] ?? [
+            'dev' => true,
+            'ticket' => true,
+            'other' => true
+        ];
+
+        // Filter by assignee
+        $query->whereIn('assignee', $options['assignee'] ?? ['tyler.reed']);
+
+        // Ignore "Hold" priorities
+        $query->whereNotIn('priority', ['Hold']);
+
+        // Filter by status
+        $query->whereIn('status', ['Assigned', 'Testing Failed', 'Dev Hold', 'In Development', 'In Design']);
+
+        // If the "dev" focus group is disabled, exclude them
+        if(!$groups['dev']) {
+
+            $query->whereNot(function($query) {
+
+                $query->where(function($query) {
+                    $query->where('Issue Category', 'Dev');
+                    $query->orWhereNull('Issue Category');
+                });
+
+                $query->where('priority', '!=', 'Highest');
+
+            });
+
+        }
+
+        // If the "ticket" focus group is disabled, exclude them
+        if(!$groups['ticket']) {
+
+            $query->where(function($query) {
+
+                $query->where(function($query) {
+                    $query->whereNull('Issue Category');
+                    $query->orWhereNotIn('Issue Category', ['Ticket', 'Data']);
+                    $query->orWhere('priority', 'Highest');
+                });
+
+            });
+
+        }
+
+        // If the "other" focus group is disabled, exclude them
+        if(!$groups['other']) {
+            $query->where('priority', '!=', 'Highest');
+        }
+
+        // Order by rank
+        $query->orderBy('rank');
+
+        // Return the query
+        return $query;
     }
 
     /**
@@ -392,7 +384,7 @@ class Issue extends Model
     protected static function getAllBlockRelationsFromJiraIssues($issues)
     {
         // Initialize the list of known issues
-        $keys = array_column($issues, 'key');
+        $keys = $issues->pluck('key')->all();
 
         // Determine the block links between each issue
         $relations = static::getBlockRelationsFromJiraIssues($issues);
@@ -404,20 +396,18 @@ class Issue extends Model
         for($i = 0; count($missing) > 0 && $i < 10; $i++) {
 
             // Find the links for the missing issues
-            $results = Jira::issues()->search('issuekey in (' . implode(', ', $missing) . ')', 0, count($missing), [
-                static::FIELD_LINKS
-            ], [], false);
+            $results = (new static)->newJiraQuery()->whereIn('issuekey', $missing)->limit(count($missing))->select(['links'])->get();
 
             // Map the results into issues
-            $issues = array_map(function($issue) {
-                return [
+            $issues = $results->issues->map(function($issue) {
+                return (object) [
                     'key' => $issue->key,
-                    'links' => $issue->fields->{static::FIELD_LINKS}
+                    'links' => $issue->links
                 ];
-            }, $results->issues);
+            });
 
             // Determine the new keys
-            $newKeys = array_column($issues, 'key');
+            $newKeys = $issues->pluck('key')->all();
 
             // Add the keys to the list of known issues
             $keys = array_merge($keys, $newKeys);
@@ -447,14 +437,14 @@ class Issue extends Model
      */
     protected static function getBlockRelationsFromJiraIssues($issues)
     {
-        return array_reduce($issues, function($relations, $issue) {
+        return $issues->reduce(function($relations, $issue) {
 
             // Initialize the blocks and blocked-by lists
             $blocks = [];
             $blockedBy = [];
 
             // Determine the links
-            $links = $issue['links'];
+            $links = $issue->links;
 
             // Skip issues without links
             if(empty($links)) {
@@ -465,15 +455,12 @@ class Issue extends Model
             $links = array_filter($links, function($link) {
 
                 // Ignore non-block type links
-                if($link->type->name != 'Blocks') {
+                if($link['type'] != 'Blocks') {
                     return false;
                 }
 
-                // Determine the related issue
-                $related = $link->inwardIssue ?? $link->outwardIssue;
-
                 // If the related issue is done or cancelled, then we don't care
-                if(in_array($related->fields->{static::FIELD_STATUS}->name, ['Done', 'Canceled'])) {
+                if(in_array($link['related']['status'], ['Done', 'Canceled'])) {
                     return false;
                 }
 
@@ -489,184 +476,23 @@ class Issue extends Model
 
             // Loop through the links again, this time categorizing them
             foreach($links as $link) {
-                ${isset($link->inwardIssue) ? 'blockedBy' : 'blocks'}[] = ($link->inwardIssue ?? $link->outwardIssue)->key;
+                ${$link['direction'] == 'inward' ? 'blockedBy' : 'blocks'}[] = $link['related']['key'];
             }
 
             // Append the blocks to the relations
             if(!empty($blocks)) {
-                $relations['blocks'][$issue['key']] = $blocks;
+                $relations['blocks'][$issue->key] = $blocks;
             }
 
             // Append the blocked by to the relations
             if(!empty($blockedBy)) {
-                $relations['blockedBy'][$issue['key']] = $blockedBy;
+                $relations['blockedBy'][$issue->key] = $blockedBy;
             }
 
             // Return the relations
             return $relations;
 
         }, ['blocks' => [], 'blockedBy' => []]);
-    }
-
-    /**
-     * Returns the jira expression that identifies issues.
-     *
-     * @param  array  $options
-     *
-     * @return string
-     */
-    public static function newIssuesFromJiraExpression($options = [])
-    {
-        // Check for a list of issues
-        if(!empty($keys = ($options['keys'] ?? []))) {
-            return 'issuekey in (' . implode(', ', $keys) . ')';
-        }
-
-        // Determine the applicable focus groups
-        $groups = $options['groups'] ?? [
-            'dev' => true,
-            'ticket' => true,
-            'other' => true
-        ];
-
-        // Determine the assignees
-        $assignees = implode(', ', $options['assignee'] ?? ['tyler.reed']);
-
-        // Determine the base expression
-        $expression = 'assignee in (' . $assignees . ') AND priority not in (Hold) AND status in (Assigned, "Testing Failed", "Dev Hold", "In Development", "In Design")';
-
-        // If the "dev" focus group is disabled, exclude them
-        if(!$groups['dev']) {
-            $expression .= ' AND NOT (("Issue Category" = "Dev" or "Issue Category" is empty) AND priority != Highest)';
-        }
-
-        // If the "ticket" focus group is disabled, exclude them
-        if(!$groups['ticket']) {
-            $expression .= ' AND ("Issue Category" is empty or "Issue Category" not in ("Ticket", "Data") or priority = Highest)';
-        }
-
-        // If the "other" focus group is disabled, exclude them
-        if(!$groups['other']) {
-            $expression .= ' AND priority != Highest';
-        }
-
-        // Add the order by clause
-        $expression .= ' ORDER BY Rank ASC';
-
-        // Return the expression
-        return $expression;
-    }
-
-    /**
-     * Creates or updates the specified issue type from jira.
-     *
-     * @param  \JiraRestApi\Issue\Issue  $jira
-     * @param  array                     $options
-     *
-     * @return static
-     */
-    public static function createOrUpdateFromJira(JiraIssue $jira, $options = [])
-    {
-        // Try to find the existing issue type in our system
-        if(!is_null($issue = static::where('jira_id', '=', $jira->id)->first())) {
-
-            // Update the issue type
-            return $issue->updateFromJira($jira, $options);
-
-        }
-
-        // Create the issue type
-        return static::createFromJira($jira, $options);
-    }
-
-    /**
-     * Creates a new issue type from the specified jira issue type.
-     *
-     * @param  \JiraRestApi\Issue\Issue  $jira
-     * @param  array                     $options
-     *
-     * @return static
-     */
-    public static function createFromJira(JiraIssue $jira, $options = [])
-    {
-        // Create a new issue type
-        $issue = new static;
-
-        // Update the issue type from jira
-        return $issue->updateFromJira($jira, $options);
-    }
-
-    /**
-     * Syncs this model from jira.
-     *
-     * @param  \JiraRestApi\Issue\Issue  $jira
-     * @param  array                     $options
-     *
-     * @return $this
-     */
-    public function updateFromJira(JiraIssue $jira, $options = [])
-    {
-        // Perform all actions within a transaction
-        return $this->getConnection()->transaction(function() use ($jira, $options) {
-
-            // If a project was provided, associate it
-            if(!is_null($project = ($options['project'] ?? null))) {
-                $this->project()->associate($project);
-            }
-
-            // If a parent was provided, associate it
-            if(!is_null($parent = ($options['parent'] ?? null))) {
-                $this->parent()->associate($parent);
-            }
-
-            // If an issue type was provided, associate it
-            if(!is_null($type = ($options['type'] ?? null))) {
-                $this->type()->associate($type);
-            }
-
-            // If an issue status was provided, associate it
-            if(!is_null($status = ($options['status'] ?? null))) {
-                $this->status()->associate($status);
-            }
-
-            // If an issue priority was provided, associate it
-            if(!is_null($priority = ($options['priority'] ?? null))) {
-                $this->priority()->associate($priority);
-            }
-
-            // If a reporter was provided, associate it
-            if(!is_null($reporter = ($options['reporter'] ?? null))) {
-                $this->reporter()->associate($reporter);
-            }
-
-            // If an assignee was provided, associate it
-            if(!is_null($assignee = ($options['assignee'] ?? null))) {
-                $this->assignee()->associate($assignee);
-            }
-
-            // If a creator was provided, associate it
-            if(!is_null($creator = ($options['creator'] ?? null))) {
-                $this->createdBy()->associate($creator);
-            }
-
-            // Assign the attributes
-            $this->jira_id        = $jira->id;
-            $this->jira_key       = $jira->key;
-            $this->summary        = $jira->fields->summary;
-            $this->description    = $jira->fields->description;
-            $this->due_date       = $jira->fields->duedate;
-            $this->time_estimated = optional($jira->fields->timeoriginalestimate)->scalar;
-            $this->time_spent     = $jira->fields->timespent ?? null;
-            $this->time_remaining = $jira->fields->timeestimate ?? null;
-            $this->last_viewed_at = optional($jira->fields->lastViewed)->scalar;
-
-            // Save
-            $this->save();
-
-            // Allow chaining
-            return $this;
-
-        });
     }
 
     /**
@@ -699,104 +525,11 @@ class Issue extends Model
             $fields = new IssueField(true);
 
             // Add the new estimated completion date
-            $fields->addCustomField(static::FIELD_ESTIMATED_COMPLETION_DATE, $estimate);
+            $fields->addCustomField(config('jira.fields.estimated_completion_date'), $estimate);
 
             // Update the issue
             Jira::issues()->update($key, $fields);
 
         }
-    }
-
-    /**
-     * Returns the jira project for this project.
-     *
-     * @return \JiraRestApi\Issue\Issue
-     */
-    public function jira()
-    {
-        return Jira::issues()->get($this->jira_key);
-    }
-
-    /////////////////
-    //* Relations *//
-    /////////////////
-    /** 
-     * Returns the project that this issue belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'project_id');
-    }
-
-    /**
-     * Returns the parent to this issue.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function parent()
-    {
-        return $this->belongsTo(static::class, 'parent_id');
-    }
-
-    /**
-     * Returns the issue type that this issue belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function type()
-    {
-        return $this->belongsTo(IssueType::class, 'issue_type_id');
-    }
-
-    /**
-     * Returns the status type of this issue.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function status()
-    {
-        return $this->belongsTo(IssueStatusType::class, 'status_id');
-    }
-
-    /**
-     * Returns the priority of this issue.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function priority()
-    {
-        return $this->belongsTo(Priority::class, 'priority_id');
-    }
-
-    /**
-     * Returns the user that reported this issue.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function reporter()
-    {
-        return $this->belongsTo(User::class, 'reporter_id');
-    }
-
-    /**
-     * Returns the user currently assigned to this issue.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function assignee()
-    {
-        return $this->belongsTo(User::class, 'assignee_id');
-    }
-
-    /**
-     * Returns the user that created this issue.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
     }
 }
