@@ -8,9 +8,12 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use App\Support\Jira\JiraService;
+use Illuminate\Support\Traits\Macroable;
 
 class Builder
 {
+    use Macroable;
+
 	/**
 	 * The jira service instance.
 	 *
@@ -31,6 +34,13 @@ class Builder
      * @var array
      */
     public $wheres = [];
+
+    /**
+     * The orderings for the query.
+     *
+     * @var array
+     */
+    public $orders;
 
     /**
      * The maximum number of records to return.
@@ -389,31 +399,6 @@ class Builder
         call_user_func($callback, $query = $this->forNestedWhere());
 
         return $this->addNestedWhereQuery($query, $boolean);
-    }
-
-    /**
-     * Add a nested where not statement to the query.
-     *
-     * @param  \Closure $callback
-     * @param  string   $boolean
-     *
-     * @return $this
-     */
-    public function whereNot(Closure $callback, $boolean = 'and')
-    {
-        return $this->whereNested($callback, $boolean . ' not');
-    }
-
-    /**
-     * Add a nested or where not statement to the query.
-     *
-     * @param  \Closure $callback
-     *
-     * @return $this
-     */
-    public function orWhereNot(Closure $callback)
-    {
-        return $this->whereNot($callback, 'or');
     }
 
     /**

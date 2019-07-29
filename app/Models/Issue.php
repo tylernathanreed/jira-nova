@@ -49,13 +49,24 @@ class Issue extends Model
     //* Attributes *//
     //////////////////
     /**
+     * The attributes that should be casted.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'labels' => 'array',
+        'links' => 'json'
+    ];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = [
         'due_date',
-        'estimate_date'
+        'estimate_date',
+        'entry_date'
     ];
 
     ////////////
@@ -101,7 +112,8 @@ class Issue extends Model
             'reporter',
             'status',
             'summary',
-            'timeestimate'
+            'timeestimate',
+            'created'
         ]);
     }
 
@@ -118,22 +130,17 @@ class Issue extends Model
         $query = (new static)->newJiraQueryFromOptions($options);
 
         // Determine the issues
-        $issues = $query->get()->issues;
+        $issues = $query->getUsingCache()->issues;
 
         // Key the issues by their jira key
         $issues = $issues->keyBy('key');
 
-        // Check if we're not handling epics
-        if(!($options['epics'] ?? false)) {
+        // Determine the block map from the jira issues
+        $blocks = static::getBlockMapFromJiraIssues($issues);
 
-            // Determine the block map from the jira issues
-            $blocks = static::getBlockMapFromJiraIssues($issues);
-
-            // Assign the blocks to each issue
-            foreach($issues as $key => &$issue) {
-                $issue->blocks = $blocks[$key] ?? [];
-            }
-
+        // Assign the blocks to each issue
+        foreach($issues as $key => &$issue) {
+            $issue->blocks = $blocks[$key] ?? [];
         }
 
         // Return the list of issues
@@ -204,14 +211,14 @@ class Issue extends Model
         // If the "dev" focus group is disabled, exclude them
         if(!$groups['dev']) {
 
-            $query->whereNot(function($query) {
+            $query->where(function($query) {
 
                 $query->where(function($query) {
-                    $query->where('Issue Category', 'Dev');
-                    $query->orWhereNull('Issue Category');
+                    $query->where('Issue Category', '!=', 'Dev');
+                    $query->whereNotNull('Issue Category');
                 });
 
-                $query->where('priority', '!=', 'Highest');
+                $query->orWhere('priority', '=', 'Highest');
 
             });
 
@@ -408,7 +415,7 @@ class Issue extends Model
             }
 
             // Find the block-type links
-            $links = array_filter($links, function($link) {
+            $links = array_filter(json_decode($links, true), function($link) {
 
                 // Ignore non-block type links
                 if($link['type'] != 'Blocks') {

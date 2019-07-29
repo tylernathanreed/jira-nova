@@ -5,8 +5,10 @@ namespace App\Providers;
 use Carbon\Carbon;
 use App\Models\Issue;
 use App\Support\Jira\JiraService;
+use App\Support\Jira\Query\Builder;
 use App\Support\Jira\Query\Processor;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Query\Expression;
 
 class JiraServiceProvider extends ServiceProvider
 {
@@ -17,10 +19,137 @@ class JiraServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->bootJiraQueryMacros();
         $this->bootFieldMapping();
         $this->bootPostProcessor();
     }
 
+    /**
+     * Boots the jira query macros.
+     *
+     * @return void
+     */
+    protected function bootJiraQueryMacros()
+    {
+        /**
+         * Returns the query results using the cache as a preference.
+         *
+         * @return \stdClass
+         */
+        Builder::macro('getUsingCache', function() {
+
+            // Determine the issues resolveable from the cache
+            $issues = $this->toEloquent()->get();
+
+            // Determine the oldest issue
+            $oldest = $this->toEloquent()->min('updated_at');
+
+            // Only grab issues from jira that have been updated since the oldest date
+            if(!is_null($oldest)) {
+                $this->where('updated', '>=', Carbon::parse($oldest)->toDateTimeString());
+            }
+
+            // Return the jira results
+            $results = $this->get();
+
+            // Merge the results, favoring jira over cache
+            $results->issues = $issues->keyBy('key')->toBase()->merge($results->issues->keyBy('key'))->values();
+
+            // Update the count
+            $results->count = count($results->issues);
+
+            // Return the results
+            return $results;
+
+        });
+
+        /**
+         * Returns the eloquent query equivalent of this query.
+         *
+         * @return \Illuminate\Database\Eloquent\Builder
+         */
+        Builder::macro('toEloquent', function() {
+
+            // Create a new query
+            $query = (new Issue)->newQuery();
+
+            // Apply the limit
+            if(!is_null($this->limit)) {
+                $query->limit($this->limit);
+            }
+
+            // Apply the offset
+            if(!is_null($this->offset)) {
+                $query->offset($this->offset);
+            }
+
+            // Determine the column mapping
+            $map = function($column) {
+
+                switch(strtolower($column)) {
+
+                    case 'assignee': return 'assignee_key';
+                    case 'issue category': return 'issue_category';
+                    case 'priority': return 'priority_name';
+                    case 'rank': return 'rank';
+                    case 'reporter': return 'reporter_key';
+                    case 'status': return 'status_name';
+
+                    default: return $column;
+
+                }
+
+            };
+
+            // Apply each where clause
+            if(!empty($this->wheres)) {
+
+                $query->getQuery()->wheres = array_map(function($where) use ($query, $map) {
+
+                    if(isset($where['column'])) {
+                        $where['column'] = $map($where['column']);
+                    }
+
+                    if(isset($where['value'])) {
+                        $query->addBinding($where['value']);
+                    }
+
+                    if(isset($where['values'])) {
+                        $query->addBinding($where['values'], 'where');
+                    }
+
+                    if(isset($where['query'])) {
+
+                        $where['query'] = $where['query']->toEloquent()->getQuery();
+
+                        $query->addBinding($where['query']->getRawBindings()['where'], 'where');
+
+                    }
+
+                    return $where;
+
+                }, $this->wheres);
+
+            }
+
+            // Apply the order by clauses
+            if(!empty($this->orders)) {
+
+                $query->getQuery()->orders = array_map(function($order) use ($map) {
+
+                    $order['column'] = $map($order['column']);
+
+                    return $order;
+
+                }, $this->orders);
+
+            }
+
+            // Return the query
+            return $query;
+
+        });
+    }
 
     /**
      * Boots the field mapping.
@@ -75,9 +204,11 @@ class JiraServiceProvider extends ServiceProvider
                 'status_name' => data_get($fields, 'status.name'),
                 'status_color' => data_get($fields, 'status.statuscategory.colorName'),
 
+                'reporter_key' => data_get($fields, 'reporter.key'),
                 'reporter_name' => data_get($fields, 'reporter.displayName'),
                 'reporter_icon_url' => data_get($fields, 'reporter.avatarUrls.16x16'),
 
+                'assignee_key' => data_get($fields, 'assignee.key'),
                 'assignee_name' => data_get($fields, 'assignee.displayName'),
                 'assignee_icon_url' => data_get($fields, 'assignee.avatarUrls.16x16'),
 
@@ -88,7 +219,7 @@ class JiraServiceProvider extends ServiceProvider
 
                 'labels' => json_encode($fields['labels'] ?? []),
 
-                'links' => array_map(function($link) {
+                'links' => json_encode(array_map(function($link) {
 
                     $related = $link->inwardIssue ?? $link->outwardIssue;
 
@@ -101,9 +232,12 @@ class JiraServiceProvider extends ServiceProvider
                         ]
                     ];
 
-                }, $fields['issuelinks'] ?? []),
+                }, $fields['issuelinks'] ?? [])),
 
-                'rank' => data_get($fields, $mapping['rank'])
+                'rank' => data_get($fields, $mapping['rank']),
+
+                'entry_date' => data_get($fields, 'created')
+
             ];
 
         });
@@ -116,48 +250,101 @@ class JiraServiceProvider extends ServiceProvider
      */
     protected function bootPostProcessor()
     {
-        Processor::post(function($issues) {
+        Processor::post(function($issues, $query) {
 
-            // Determine the epic keys
-            $epics = array_values(array_unique(array_filter(array_pluck($issues, 'epic_key'))));
+            // Assign the epic meta data
+            $issues = $this->assignEpicMetaDataFromIssues($issues);
 
-            // Check if any epics were found
-            if(!empty($epics)) {
+            // Cache the issue data
+            $this->cacheIssueData($issues, $query);
 
-                // Map the epics into issues
-                $epics = $this->app->make(JiraService::class)->newQuery()->whereIn('issuekey', $epics)->get()->issues->keyBy('key');
-
-                // Fill in the epic details for the non-epic issues
-                $issues = array_map(function($issue) use ($epics) {
-
-                    // If the issue does not have an epic key, return it as-is
-                    if(is_null($issue->epic_key)) {
-                        return $issue;
-                    }
-
-                    // Determine the associated epic
-                    $epic = $epics[$issue->epic_key] ?? null;
-
-                    // If the epic couldn't be found, return it as-is
-                    if(is_null($epic)) {
-                        return $issue;
-                    }
-
-                    // Fill in the epic information
-                    $issue->epic_name = $epic->epic_name;
-                    $issue->epic_color = $epic->epic_color;
-
-                    // Return the issue
-                    return $issue;
-
-                }, $issues);
-
-            }
-
-            // Return the issues
             return $issues;
 
         });
     }
 
+    /**
+     * Assigns the epic meta data from the specified issues.
+     *
+     * @param  array  $issues
+     *
+     * @return array
+     */
+    protected function assignEpicMetaDataFromIssues($issues)
+    {
+        // Determine the epic keys
+        $epics = array_values(array_unique(array_filter(array_pluck($issues, 'epic_key'))));
+
+        // Check if any epics were found
+        if(!empty($epics)) {
+
+            // Map the epics into issues
+            $epics = $this->app->make(JiraService::class)->newQuery()->whereIn('issuekey', $epics)->get()->issues->keyBy('key');
+
+            // Fill in the epic details for the non-epic issues
+            $issues = array_map(function($issue) use ($epics) {
+
+                // If the issue does not have an epic key, return it as-is
+                if(is_null($issue->epic_key)) {
+                    return $issue;
+                }
+
+                // Determine the associated epic
+                $epic = $epics[$issue->epic_key] ?? null;
+
+                // If the epic couldn't be found, return it as-is
+                if(is_null($epic)) {
+                    return $issue;
+                }
+
+                // Fill in the epic information
+                $issue->epic_name = $epic->epic_name;
+                $issue->epic_color = $epic->epic_color;
+
+                // Return the issue
+                return $issue;
+
+            }, $issues);
+
+        }
+
+        // Return the issues
+        return $issues;
+    }
+
+    /**
+     * Caches the issue data for the specified issues.
+     *
+     * @param  array                            $issues
+     * @param  \App\Support\Jira\Query\Builder  $query
+     *
+     * @return void
+     */
+    protected function cacheIssueData($issues, $query)
+    {
+        // Determine the default columns
+        $columns = (new Issue)->getDefaultColumns();
+
+        // If any non-standard columns were selected, don't cache
+        if($query->columns != $columns) {
+            return;
+        }
+
+        Issue::unguarded(function() use ($issues) {
+
+            collect($issues)->keyBy('key')->map(function($issue) {
+
+                $issue = array_except((array) $issue, [
+                    'url',
+                    'parent_url'
+                ]);
+
+                return $issue;
+
+            })->each(function($issue, $key) {
+                Issue::updateOrCreate(compact('key'), $issue);
+            });
+
+        });
+    }
 }

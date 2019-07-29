@@ -53,13 +53,12 @@ class Issue extends Resource
     public function fields(Request $request)
     {
         return [
-            Field::id()->sortable()->onlyOnDetail(),
 
-            Field::belongsTo('Type', 'type', IssueType::class),
+            Field::id()->onlyOnDetail(),
 
-            Field::belongsTo('Priority', 'priority', Priority::class),
+            Field::text('Key', 'key'),
 
-            Field::text('Key', 'jira_key')->sortable(),
+            Field::text('URL', 'url')->onlyOnDetail(),
 
             Field::text('Summary', 'summary', function() {
                 return strlen($this->summary) > 80 ? substr($this->summary, 0, 80) . '...' : $this->summary;
@@ -67,27 +66,49 @@ class Issue extends Resource
 
             Field::text('Summary', 'summary')->onlyOnDetail(),
 
-            Field::belongsTo('Assignee', 'assignee', User::class),
+            Field::text('Priority', 'priority_name')->onlyOnDetail(),
+            // Field::text('priority_icon_url', 'priority_icon_url'),
 
-            Field::belongsTo('Status', 'status', IssueStatusType::class),
+            Field::text('Issue Category', 'issue_category')->onlyOnDetail(),
+            Field::text('Focus', 'focus'),
 
-            // Field::text('Category', 'issue_category')->sortable(),
+            Field::date('Due', 'due_date'),
 
-            Field::belongsTo('Reporter', 'reporter', User::class),
+            Field::number('Remaining', 'estimate_remaining')->onlyOnDetail(),
+            Field::date('Estimate', 'estimate_date'),
+            // Field::text('estimate_diff', 'estimate_diff'),
 
-            Field::date('Due', 'due_date')->sortable(),
+            Field::text('Type', 'type_name')->onlyOnDetail(),
+            // Field::text('type_icon_url', 'type_icon_url'),
 
-            Field::text('Original Estimate', 'time_estimated'),
+            // Field::text('is_subtask', 'is_subtask'),
+            Field::text('Parent', 'parent_key')->onlyOnDetail(),
+            // Field::text('parent_url', 'parent_url'),
 
-            Field::text('Remaining Estimate', 'time_remaining'),
+            Field::text('Status', 'status_name')->onlyOnDetail(),
+            // Field::text('status_color', 'status_color'),
 
-            Field::text('Jira ID', 'jira_id')->onlyOnDetail(),
+            // Field::text('reporter_key', 'reporter_key'),
+            Field::text('Reporter', 'reporter_name')->onlyOnDetail(),
+            // Field::text('reporter_icon_url', 'reporter_icon_url'),
 
-            Field::belongsTo('Project', 'project', Project::class)->onlyOnDetail(),
+            // Field::text('assignee_key', 'assignee_key'),
+            Field::text('Assignee', 'assignee_name'),
+            // Field::text('assignee_icon_url', 'assignee_icon_url'),
 
-            Field::belongsTo('Parent', 'parent', static::class)->onlyOnDetail(),
+            // Field::text('epic_key', 'epic_key'),
+            // Field::text('epic_url', 'epic_url'),
+            Field::text('Epic', 'epic_name')->onlyOnDetail(),
+            // Field::text('epic_color', 'epic_color'),
 
-            Field::textarea('Description', 'description')->onlyOnDetail()
+            Field::code('labels', 'labels')->json()->onlyOnDetail(),
+
+            Field::code('links', 'links')->json()->onlyOnDetail(),
+            // Field::text('blocks', 'blocks'),
+
+            Field::text('Rank', 'rank')->onlyOnDetail(),
+
+            Field::date('Created', 'entry_date')->onlyOnDetail()
 
         ];
     }
@@ -100,7 +121,9 @@ class Issue extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Metrics\IssueWorkloadByFocus
+        ];
     }
 
     /**
@@ -134,7 +157,7 @@ class Issue extends Resource
     public function actions(Request $request)
     {
         return [
-            new \App\Nova\Actions\SyncIssueFromJira
+            // new \App\Nova\Actions\SyncIssueFromJira
         ];
     }
 }

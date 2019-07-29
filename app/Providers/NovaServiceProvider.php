@@ -73,7 +73,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new Help,
+            (new \App\Nova\Metrics\IssueCreatedByDate)->width('2/3'),
+            new \App\Nova\Metrics\IssueWorkloadByFocus
         ];
     }
 

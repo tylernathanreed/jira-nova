@@ -57,7 +57,7 @@ class Processor
 
         // If a post processor exists, use it
         if(!is_null($processor = static::$postProcessor)) {
-            $issues = $processor($issues);
+            $issues = $processor($issues, $query);
         }
 
         // Return the issues

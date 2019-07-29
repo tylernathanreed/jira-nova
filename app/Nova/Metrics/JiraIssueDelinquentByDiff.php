@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
 
-class DelinquentIssuesByDiff extends Trend
+class JiraIssueDelinquentByDiff extends Trend
 {
     /**
      * The element's component.
@@ -91,7 +91,7 @@ class DelinquentIssuesByDiff extends Trend
      */
     public function uriKey()
     {
-        return 'delinquent-issues-by-diff';
+        return 'jira-issue-delinquent-by-diff';
     }
 
     /**

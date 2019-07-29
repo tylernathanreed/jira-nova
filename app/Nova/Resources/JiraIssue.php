@@ -55,34 +55,53 @@ class JiraIssue extends Resource
         return [
 
             Field::text('key', 'key'),
+
             Field::text('url', 'url'),
-            Field::text('type_name', 'type_name'),
-            Field::text('type_icon_url', 'type_icon_url'),
-            Field::text('is_subtask', 'is_subtask'),
-            Field::text('parent_key', 'parent_key'),
-            Field::text('parent_url', 'parent_url'),
-            Field::text('status_name', 'status_name'),
-            Field::text('status_color', 'status_color'),
+
             Field::text('summary', 'summary'),
+
+            Field::text('priority_name', 'priority_name'),
+            Field::text('priority_icon_url', 'priority_icon_url'),
+
+            Field::text('issue_category', 'issue_category'),
+            Field::text('focus', 'focus'),
+
             Field::text('due_date', 'due_date'),
+
             Field::text('estimate_remaining', 'estimate_remaining'),
             Field::text('estimate_date', 'estimate_date'),
             Field::text('estimate_diff', 'estimate_diff'),
-            Field::text('priority_name', 'priority_name'),
-            Field::text('priority_icon_url', 'priority_icon_url'),
+
+            Field::text('type_name', 'type_name'),
+            Field::text('type_icon_url', 'type_icon_url'),
+
+            Field::text('is_subtask', 'is_subtask'),
+            Field::text('parent_key', 'parent_key'),
+            Field::text('parent_url', 'parent_url'),
+
+            Field::text('status_name', 'status_name'),
+            Field::text('status_color', 'status_color'),
+
+            Field::text('reporter_key', 'reporter_key'),
             Field::text('reporter_name', 'reporter_name'),
             Field::text('reporter_icon_url', 'reporter_icon_url'),
+
+            Field::text('assignee_key', 'assignee_key'),
             Field::text('assignee_name', 'assignee_name'),
             Field::text('assignee_icon_url', 'assignee_icon_url'),
-            Field::text('issue_category', 'issue_category'),
-            Field::text('focus', 'focus'),
+
             Field::text('epic_key', 'epic_key'),
             Field::text('epic_url', 'epic_url'),
             Field::text('epic_name', 'epic_name'),
             Field::text('epic_color', 'epic_color'),
+
             Field::text('labels', 'labels'),
+
             Field::text('links', 'links'),
             Field::text('blocks', 'blocks'),
+
+            Field::text('entry_date', 'entry_date'),
+
             Field::text('rank', 'rank')
 
         ];
@@ -98,9 +117,9 @@ class JiraIssue extends Resource
     public function cards(Request $request)
     {
         return [
-            new \App\Nova\Metrics\DelinquentIssuesByDiff,
-            new \App\Nova\Metrics\IssuesByPriority,
-            new \App\Nova\Metrics\WorkloadByFocus,
+            new \App\Nova\Metrics\JiraIssueDelinquentByDiff,
+            new \App\Nova\Metrics\JiraIssueByPriority,
+            new \App\Nova\Metrics\JiraIssueWorkloadByFocus,
         ];
     }
 
