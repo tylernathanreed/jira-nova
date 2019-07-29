@@ -593,7 +593,7 @@ class Builder
             // we will call the callback with the current chunk of these results here.
             $results = $this->forPage($page, $count)->get();
 
-            $countResults = $results->limit;
+            $countResults = $results->issues->count();
 
             if ($countResults == 0) {
                 break;

@@ -130,7 +130,7 @@ class Issue extends Model
         $query = (new static)->newJiraQueryFromOptions($options);
 
         // Determine the issues
-        $issues = $query->getUsingCache()->issues;
+        $issues = $query->get()->issues;
 
         // Key the issues by their jira key
         $issues = $issues->keyBy('key');

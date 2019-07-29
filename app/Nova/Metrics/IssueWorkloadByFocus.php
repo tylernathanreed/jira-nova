@@ -53,7 +53,7 @@ class IssueWorkloadByFocus extends Partition
     {
         $key = $result->{last(explode('.', $groupBy))};
 
-        return [$key => round($result->aggregate / 3600, 2)];
+        return [$key => round($result->aggregate / 3600, 0)];
     }
 
     /**

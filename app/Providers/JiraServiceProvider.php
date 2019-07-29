@@ -256,7 +256,7 @@ class JiraServiceProvider extends ServiceProvider
             $issues = $this->assignEpicMetaDataFromIssues($issues);
 
             // Cache the issue data
-            $this->cacheIssueData($issues, $query);
+            // $this->cacheIssueData($issues, $query);
 
             return $issues;
 

@@ -2,19 +2,19 @@
 
 namespace App\Nova\Metrics;
 
-use Carbon\Carbon;
+use DB;
+use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
-use Laravel\Nova\Metrics\TrendResult;
 
-class JiraIssueDelinquentByDiff extends Trend
+class IssueDelinquentByDiff extends Trend
 {
     /**
      * The element's component.
      *
      * @var string
      */
-    public $component = 'resource-trend-metric';
+    public $component = 'trend-metric';
 
     /**
      * Calculate the value of the metric.
@@ -25,6 +25,61 @@ class JiraIssueDelinquentByDiff extends Trend
      */
     public function calculate(Request $request)
     {
+        // Create a new query
+        $query = (new Issue)->newQuery();
+
+        // Filter to delinquent issues
+        $query->where('estimate_diff', '<=', -1);
+
+        // Group by the the estimate diff
+        $query->groupBy('estimate_diff');
+
+        // Select the estimate diff and count
+        $query->select([
+            DB::raw('-estimate_diff as estimate_diff'),
+            DB::raw('count(*) as count')
+        ]);
+
+        // Order by the estimate diff
+        $query->orderBy('estimate_diff', 'desc');
+
+        // Determine the query results
+        $values = $query->getQuery()->get()->keyBy('estimate_diff');
+
+        // Determine the maximum entry
+        $max = min($values->max('estimate_diff'), 100);
+
+        // Merge counts greater than 99 to one entry
+        $values[100] = (object) [
+            'estimate_diff' => 100,
+            'count' => $values->where('estimate_diff', '>=', 100)->sum('count')
+        ];
+
+        // Remove entries greater than 99
+        $values = $values->filter(function($value) {
+            return $value->estimate_diff <= 100;
+        });
+
+        // Add in missing days
+        for($i = 1; $i < $max; $i++) {
+            $values[$i] = ['estimated_diff' => $i, 'count' => $values[$i]->count ?? 0];
+        }
+
+        dump(compact('values'));
+
+        // Convert the results into a key / value array
+        $values = $values->pluck('count', 'estimate_diff')->toArray();
+
+
+        // Determine the result
+        // $result = $this->countByDays($request, $query, 'estimate_date');
+
+        // Return the result
+        return $this->result($values);
+        /*
+        // Condense 100+ delinquencies into the same bucket
+        $result->value
+
         // Determine the isssues
         $issues = collect(json_decode($request->resourceData, true));
 
@@ -62,6 +117,7 @@ class JiraIssueDelinquentByDiff extends Trend
 
         // Return the trend result
         return (new TrendResult)->trend($result)->suffix('issues')->result(array_sum($result));
+        */
     }
 
     /**
@@ -71,27 +127,11 @@ class JiraIssueDelinquentByDiff extends Trend
      */
     public function ranges()
     {
-        return [];
-    }
-
-    /**
-     * Determine for how many minutes the metric should be cached.
-     *
-     * @return  \DateTimeInterface|\DateInterval|float|int
-     */
-    public function cacheFor()
-    {
-        // return now()->addMinutes(5);
-    }
-
-    /**
-     * Get the URI key for the metric.
-     *
-     * @return string
-     */
-    public function uriKey()
-    {
-        return 'jira-issue-delinquent-by-diff';
+        return [
+            30 => '30 Days',
+            90 => '90 Days',
+            365 => '1 Year'
+        ];
     }
 
     /**
