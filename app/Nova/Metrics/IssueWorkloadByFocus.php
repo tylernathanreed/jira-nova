@@ -25,7 +25,9 @@ class IssueWorkloadByFocus extends Partition
      */
     public function calculate(Request $request)
     {
-        $result = $this->sum($request, Issue::class, 'estimate_remaining', 'focus')->colors([
+        $query = (new Issue)->newRemainingWorkloadQuery();
+
+        $result = $this->sum($request, $query, 'estimate_remaining', 'focus')->colors([
             'Dev' => '#5b9bd5',
             'Ticket' => '#ffc000',
             'Other' => '#cc0000'

@@ -363,6 +363,12 @@
         border-color: #2684ff;
     }
 
+    .ghx-label-5 {
+        color: #172B4D;
+        background-color: #00C7E6;
+        border-color: #00C7E6;
+    }
+
     .ghx-label-6 {
         color: #42526e;
         background-color: #abf5d1;
@@ -373,6 +379,12 @@
         color: #fff;
         background-color: #8777d9;
         border-color: #8777d9;
+    }
+
+    .ghx-label-8 {
+        color: #172B4D;
+        background-color: #998dd9;
+        border-color: #998dd9;
     }
 
     .ghx-label-9 {
@@ -391,6 +403,12 @@
         color: #fff;
         background-color: #7a869a;
         border-color: #7a869a;
+    }
+
+    .ghx-label-13 {
+        color: #172B4D;
+        background-color: #57d9a3;
+        border-color: #57d9a3;
     }
 
     .ghx-label-14 {

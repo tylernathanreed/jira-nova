@@ -73,12 +73,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
+            (new \App\Nova\Metrics\IssueTicketCreatedByDateValue),
             (new \App\Nova\Metrics\IssueCreatedByDate)->width('2/3'),
-            new \App\Nova\Metrics\IssueWorkloadByFocus,
             (new \App\Nova\Metrics\IssueWeekStatus)->label('Last Week')->reference('-1 week'),
             (new \App\Nova\Metrics\IssueWeekStatus)->label('This Week'),
             (new \App\Nova\Metrics\IssueWeekStatus)->label('Next Week')->reference('+1 week'),
-            (new \App\Nova\Metrics\IssueDelinquentByDiff)->width('2/3')
+            (new \App\Nova\Metrics\IssueDelinquentByDiff)->width('2/3'),
+            new \App\Nova\Metrics\IssueWorkloadByFocus,
+            new \App\Nova\Metrics\IssueWorkloadByEpic,
         ];
     }
 

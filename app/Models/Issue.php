@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Jira;
 use Carbon\Carbon;
 use App\Nova\Filters\Filter;
@@ -494,5 +495,62 @@ class Issue extends Model
             Jira::issues()->update($key, $fields);
 
         }
+    }
+
+    /**
+     * Returns the epic color hex map.
+     *
+     * @return array
+     */
+    public static function getEpicColorHexMap()
+    {
+        return [
+            'ghx-label-0' => '#ccc',
+            'ghx-label-2' => '#ffc400',
+            'ghx-label-4' => '#2684ff',
+            'ghx-label-5' => '#00c7ef',
+            'ghx-label-6' => '#abf5d1',
+            'ghx-label-7' => '#8777d9',
+            'ghx-label-8' => '#998dd9',
+            'ghx-label-9' => '#ff7452',
+            'ghx-label-11' => '#79e2f2',
+            'ghx-label-12' => '#7a869a',
+            'ghx-label-13' => '#57d9a3',
+            'ghx-label-14' => '#ff8f73',
+        ];
+    }
+
+    ///////////////
+    //* Queries *//
+    ///////////////
+    /**
+     * Creates and returns a new remaining workload query.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function newRemainingWorkloadQuery()
+    {
+        // Create a new query
+        $query = $this->newQuery();
+
+        // Ignore completed issues
+        $query->whereNotIn('status_name', [
+            'Done',
+            'Canceled',
+            'Testing Passed [Test]'
+        ]);
+
+        // Make sure the remaining estimate is capped to be a one hour minimum
+        $query->select([
+            DB::raw('case when estimate_remaining is null then 3600 when estimate_remaining < 3600 then 3600 else estimate_remaining end as estimate_remaining'),
+            'focus',
+            'epic_name'
+        ]);
+
+        // Wrap the query into a subquery
+        $query->fromSub($query, 'issues');
+
+        // Return the query
+        return $query;
     }
 }

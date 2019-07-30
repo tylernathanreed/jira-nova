@@ -4,16 +4,16 @@ namespace App\Nova\Metrics;
 
 use App\Models\Issue;
 use Illuminate\Http\Request;
-use Laravel\Nova\Metrics\Trend;
+use Laravel\Nova\Metrics\Value;
 
-class IssueCreatedByDate extends Trend
+class IssueTicketCreatedByDateValue extends Value
 {
     /**
      * The element's component.
      *
      * @var string
      */
-    public $component = 'trend-metric';
+    public $component = 'value-metric';
 
     /**
      * Calculate the value of the metric.
@@ -24,13 +24,11 @@ class IssueCreatedByDate extends Trend
      */
     public function calculate(Request $request)
     {
-        $result = $this->countByDays($request, Issue::class, 'entry_date')->suffix('issues');
+        $query = (new Issue)->newQuery();
 
-        $result->result(
-            array_sum($result->trend)
-        );
+        $query->where('focus', 'Ticket');
 
-        return $result;
+        return $this->count($request, $query, null, 'entry_date');
     }
 
     /**
@@ -43,19 +41,11 @@ class IssueCreatedByDate extends Trend
         return [
             30 => '30 Days',
             60 => '60 Days',
-            90 => '90 Days',
-            365 => '1 Year'
+            365 => '365 Days',
+            'MTD' => 'Month To Date',
+            'QTD' => 'Quarter To Date',
+            'YTD' => 'Year To Date',
         ];
-    }
-
-    /**
-     * Get the URI key for the metric.
-     *
-     * @return string
-     */
-    public function uriKey()
-    {
-        return 'issue-created-by-date';
     }
 
     /**
@@ -65,7 +55,7 @@ class IssueCreatedByDate extends Trend
      */
     public function name()
     {
-        return 'Issues Created Per Day';
+        return 'Ticket Entry';
     }
 
 }

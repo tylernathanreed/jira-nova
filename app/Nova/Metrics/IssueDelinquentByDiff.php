@@ -3,9 +3,11 @@
 namespace App\Nova\Metrics;
 
 use DB;
+use Carbon\Carbon;
 use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
+use Laravel\Nova\Metrics\TrendResult;
 
 class IssueDelinquentByDiff extends Trend
 {
@@ -27,6 +29,9 @@ class IssueDelinquentByDiff extends Trend
     {
         // Create a new query
         $query = (new Issue)->newQuery();
+
+        // Apply the range filter
+        $query->where('due_date', '<=', Carbon::parse("+{$request->range} days"));
 
         // Filter to delinquent issues
         $query->where('estimate_diff', '<=', -1);
@@ -62,62 +67,24 @@ class IssueDelinquentByDiff extends Trend
 
         // Add in missing days
         for($i = 1; $i < $max; $i++) {
-            $values[$i] = ['estimated_diff' => $i, 'count' => $values[$i]->count ?? 0];
+            $values[$i] = (object) ['estimate_diff' => $i, 'count' => $values[$i]->count ?? 0];
         }
 
-        dump(compact('values'));
+        // Order by estimated diff
+        $values = $values->sortBy('estimate_diff');
 
         // Convert the results into a key / value array
-        $values = $values->pluck('count', 'estimate_diff')->toArray();
-
-
-        // Determine the result
-        // $result = $this->countByDays($request, $query, 'estimate_date');
+        $values = array_combine(
+            $values->keys()->map(function($key) {
+                return $key == 100 ? '100+ Days Delinquent' : ($key == 1 ? '1 Day Delinquent' : "{$key} Days Delinquent");
+            })->toArray(),
+            $values->values()->map(function($value) {
+                return (int) $value->count;
+            })->toArray()
+        );
 
         // Return the result
-        return $this->result($values);
-        /*
-        // Condense 100+ delinquencies into the same bucket
-        $result->value
-
-        // Determine the isssues
-        $issues = collect(json_decode($request->resourceData, true));
-
-        // Estimate the difference for each issue
-        $issues->transform(function($issue) {
-
-            $issue['offset'] = (is_null($issue['est']) || is_null($issue['due'])) ? null : Carbon::parse($issue['est'])->diffInDays($issue['due'], false);
-
-            return $issue;
-
-        });
-
-        // Initialize the result
-        $result = array_combine(array_map(function($v) {
-            return $v . ($v == 1 ? ' day' : ' days');
-        }, array_merge(range(1, 99), ['100+'])), array_fill(0, 100, 0));
-
-        // Convert the issues into delinquency groups
-        $data = $issues->where('offset', '<', 0)->groupBy(function($issue) {
-            return $issue['offset'] <= -100 ? '100+' : -$issue['offset'];
-        })->map->count()->all();
-
-        // Fill in the data
-        foreach($data as $key => $value) {
-            $result[$key == 1 ? '1 day' : "{$key} days"] = $value;
-        }
-
-        // Determine the max days
-        $max = min(-$issues->where('offset', '<', 0)->min('offset'), 100);
-
-        // Remove trailing entries
-        $result = array_filter($result, function($key) use ($max) {
-            return (int) $key <= $max;
-        }, ARRAY_FILTER_USE_KEY);
-
-        // Return the trend result
-        return (new TrendResult)->trend($result)->suffix('issues')->result(array_sum($result));
-        */
+        return (new TrendResult)->trend($values)->suffix('issue')->result(array_sum($values));
     }
 
     /**
@@ -128,9 +95,10 @@ class IssueDelinquentByDiff extends Trend
     public function ranges()
     {
         return [
-            30 => '30 Days',
-            90 => '90 Days',
-            365 => '1 Year'
+            30 => 'Due within 30 Days',
+            60 => 'Due within 60 Days',
+            90 => 'Due within 90 Days',
+            365 => 'Due within 1 Year'
         ];
     }
 
