@@ -9,6 +9,8 @@ use Laravel\Nova\Metrics\Partition;
 
 class IssueWeekStatus extends Partition
 {
+    use Concerns\WeeklyLabels;
+
     /**
      * The element's component.
      *
@@ -100,30 +102,10 @@ class IssueWeekStatus extends Partition
     protected function filterByWeek($query)
     {
         // Determine the week label
-        $label = $this->getWeekLabel();
+        $label = $this->getWeekLabel($this->reference ? Carbon::parse($this->reference) : Carbon::now());
 
         // Filter the query
         $query->where('labels', 'like', "%\"{$label}%");
-    }
-
-    /**
-     * Returns the week label name.
-     *
-     * @return string
-     */
-    public function getWeekLabel()
-    {
-        // Determine the first week reference
-        $start = Carbon::parse('2019-07-07');
-
-        // Determine the current reference
-        $when = $this->reference ? Carbon::parse($this->reference) : Carbon::now();
-
-        // Determine the week diff
-        $diff = $start->diffInWeeks($when);
-
-        // Convert the diff to a label
-        return "Week{$diff}";
     }
 
     /**
