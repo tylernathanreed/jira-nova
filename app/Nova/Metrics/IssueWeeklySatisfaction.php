@@ -9,6 +9,7 @@ use Laravel\Nova\Metrics\TrendResult;
 
 class IssueWeeklySatisfaction extends Trend
 {
+    use Concerns\DashboardCaching;
     use Concerns\WeeklyLabels;
 
     /**

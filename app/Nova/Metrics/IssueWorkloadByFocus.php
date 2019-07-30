@@ -9,6 +9,8 @@ use Laravel\Nova\Metrics\PartitionResult;
 
 class IssueWorkloadByFocus extends Partition
 {
+    use Concerns\DashboardCaching;
+
     /**
      * The element's component.
      *
@@ -56,16 +58,6 @@ class IssueWorkloadByFocus extends Partition
         $key = $result->{last(explode('.', $groupBy))};
 
         return [$key => round($result->aggregate / 3600, 0)];
-    }
-
-    /**
-     * Get the URI key for the metric.
-     *
-     * @return string
-     */
-    public function uriKey()
-    {
-        return 'issue-workload-by-focus';
     }
 
     /**

@@ -9,6 +9,7 @@ use Laravel\Nova\Metrics\Partition;
 
 class IssueWeekStatus extends Partition
 {
+    use Concerns\DashboardCaching;
     use Concerns\WeeklyLabels;
 
     /**

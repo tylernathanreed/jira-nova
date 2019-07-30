@@ -9,6 +9,8 @@ use Laravel\Nova\Metrics\PartitionResult;
 
 class IssueWorkloadByAssignee extends Partition
 {
+    use Concerns\DashboardCaching;
+
     /**
      * The element's component.
      *
