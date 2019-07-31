@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0a7fd53aeac36f039d8ac9964021ffd",
+    "content-hash": "579ec7e1122c2d100361fd0e593cc343",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -396,28 +396,30 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8"
+                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/1febd6c3ef84253d7c815bed85fc622ad207a9f8",
-                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/e17f069ede36f7534b95adec71910ed1b49c74ea",
+                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "^7.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5"
+                "doctrine/coding-standard": "^6.0",
+                "phpstan/phpstan": "^0.11.8",
+                "phpunit/phpunit": "^8.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -431,12 +433,12 @@
             ],
             "authors": [
                 {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Johannes Schmitt",
@@ -452,7 +454,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-06-08T11:03:04+00:00"
+            "time": "2019-07-30T19:33:28+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -756,16 +758,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.29",
+            "version": "v5.8.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "489ae2218c7eb138caac780de584d8df9fe8160b"
+                "reference": "7ccf0cf63931a8d8391aed90e6fc011381ea6838"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/489ae2218c7eb138caac780de584d8df9fe8160b",
-                "reference": "489ae2218c7eb138caac780de584d8df9fe8160b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/7ccf0cf63931a8d8391aed90e6fc011381ea6838",
+                "reference": "7ccf0cf63931a8d8391aed90e6fc011381ea6838",
                 "shasum": ""
             },
             "require": {
@@ -899,7 +901,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-07-16T14:05:28+00:00"
+            "time": "2019-07-30T14:08:47+00:00"
         },
         {
             "name": "laravel/nova",
@@ -1182,16 +1184,16 @@
         },
         {
             "name": "lesstif/php-jira-rest-client",
-            "version": "1.40.0",
+            "version": "1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lesstif/php-jira-rest-client.git",
-                "reference": "e2a9f15133d6d56b320e866e5ad0955705083d3b"
+                "reference": "12e0e7c4723eb2d5952e8360c35c955fa64d1cf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lesstif/php-jira-rest-client/zipball/e2a9f15133d6d56b320e866e5ad0955705083d3b",
-                "reference": "e2a9f15133d6d56b320e866e5ad0955705083d3b",
+                "url": "https://api.github.com/repos/lesstif/php-jira-rest-client/zipball/12e0e7c4723eb2d5952e8360c35c955fa64d1cf5",
+                "reference": "12e0e7c4723eb2d5952e8360c35c955fa64d1cf5",
                 "shasum": ""
             },
             "require": {
@@ -1238,7 +1240,7 @@
                 "jira-rest",
                 "rest"
             ],
-            "time": "2019-07-29T06:22:41+00:00"
+            "time": "2019-07-30T12:31:28+00:00"
         },
         {
             "name": "mad-web/nova-telescope-link",
@@ -2201,12 +2203,17 @@
         },
         {
             "name": "reedware/carbon-helper",
-            "version": "dev-master",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tylernathanreed/carbon-helper.git",
+                "reference": "a20721d4e5c3d7045aa0474d314dd162b3b9a211"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../packages/reedware/carbon-helper",
-                "reference": "d869d128af80ceb1abd837e75df99e04f759419a",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/tylernathanreed/carbon-helper/zipball/a20721d4e5c3d7045aa0474d314dd162b3b9a211",
+                "reference": "a20721d4e5c3d7045aa0474d314dd162b3b9a211",
+                "shasum": ""
             },
             "require": {
                 "nesbot/carbon": "^1.0 || ^2.0"
@@ -2217,6 +2224,7 @@
                     "src/helpers.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2231,7 +2239,8 @@
                 "carbon",
                 "date",
                 "time"
-            ]
+            ],
+            "time": "2019-07-31T00:45:11+00:00"
         },
         {
             "name": "reedware/laravel-blueprints",
@@ -5733,7 +5742,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "mnobrega/php-jira-agile-rest-client": 20,
-        "reedware/carbon-helper": 20,
         "reedware/laravel-blueprints": 20,
         "reedware/nova-field-manager": 20,
         "reedware/nova-value-toggle": 20
