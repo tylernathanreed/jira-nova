@@ -8,6 +8,8 @@ use Laravel\Nova\Metrics\Trend;
 
 class IssueCreatedByDate extends Trend
 {
+    use Concerns\DashboardCaching;
+
     /**
      * The element's component.
      *
@@ -46,16 +48,6 @@ class IssueCreatedByDate extends Trend
             90 => '90 Days',
             365 => '1 Year'
         ];
-    }
-
-    /**
-     * Get the URI key for the metric.
-     *
-     * @return string
-     */
-    public function uriKey()
-    {
-        return 'issue-created-by-date';
     }
 
     /**

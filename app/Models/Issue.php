@@ -544,7 +544,8 @@ class Issue extends Model
         $query->select([
             DB::raw('case when estimate_remaining is null then 3600 when estimate_remaining < 3600 then 3600 else estimate_remaining end as estimate_remaining'),
             'focus',
-            'epic_name'
+            'epic_name',
+            'assignee_name'
         ]);
 
         // Wrap the query into a subquery

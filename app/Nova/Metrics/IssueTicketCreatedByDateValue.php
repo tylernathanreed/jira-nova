@@ -8,6 +8,8 @@ use Laravel\Nova\Metrics\Value;
 
 class IssueTicketCreatedByDateValue extends Value
 {
+    use Concerns\DashboardCaching;
+
     /**
      * The element's component.
      *

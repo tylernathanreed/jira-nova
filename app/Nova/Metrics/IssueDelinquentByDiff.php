@@ -10,6 +10,8 @@ use Laravel\Nova\Metrics\TrendResult;
 
 class IssueDelinquentByDiff extends Trend
 {
+    use Concerns\DashboardCaching;
+
     /**
      * The element's component.
      *
