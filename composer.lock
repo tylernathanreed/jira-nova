@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "579ec7e1122c2d100361fd0e593cc343",
+    "content-hash": "f3dcca64523d23e5b5172ec632099d23",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -2304,11 +2304,16 @@
         {
             "name": "reedware/nova-field-manager",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tylernathanreed/nova-field-manager.git",
+                "reference": "1bdaa7a5ffce74659ee4914ddb12029a9b0eeb65"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../packages/reedware/nova-field-manager",
-                "reference": "626761d83fbd7f0ff5d35020c0e92ac2c59389df",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-field-manager/zipball/1bdaa7a5ffce74659ee4914ddb12029a9b0eeb65",
+                "reference": "1bdaa7a5ffce74659ee4914ddb12029a9b0eeb65",
+                "shasum": ""
             },
             "require": {
                 "illuminate/support": ">=5.1",
@@ -2317,7 +2322,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.1-dev"
+                    "dev-master": "0.2-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -2333,6 +2338,7 @@
                     "Reedware\\NovaFieldManager\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2347,7 +2353,8 @@
                 "fields",
                 "laravel",
                 "nova"
-            ]
+            ],
+            "time": "2019-05-22T13:33:24+00:00"
         },
         {
             "name": "reedware/nova-value-toggle",
