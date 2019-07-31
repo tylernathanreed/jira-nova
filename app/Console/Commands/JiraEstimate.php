@@ -172,7 +172,7 @@ class JiraEstimate extends Command
             }
 
             // Determine the diff in days
-            $delta = Carbon::parse($due)->diffInDays(Carbon::parse($est), false);
+            $delta = carbon($due)->diffInDays(carbon($est), false);
 
             // If the delta meets or exceeds the threshold, complain
             return $delta >= $threshold;
@@ -199,10 +199,10 @@ class JiraEstimate extends Command
                     'Category' => $issue['issue_category'],
                     'Summary' => $issue['summary'],
                     'Status' => $issue['status'],
-                    'Due Date' => Carbon::parse($issue['due_date'])->toDateString(),
-                    'Est Date' => Carbon::parse($issue['new_estimated_completion_date'])->toDateString(),
+                    'Due Date' => carbon($issue['due_date'])->toDateString(),
+                    'Est Date' => carbon($issue['new_estimated_completion_date'])->toDateString(),
                     'Rem Hours' => round($issue['time_estimate'] / 60 / 60, 2),
-                    'Delta' => Carbon::parse($issue['due_date'])->diffInDays(Carbon::parse($issue['new_estimated_completion_date']), false)
+                    'Delta' => carbon($issue['due_date'])->diffInDays(carbon($issue['new_estimated_completion_date']), false)
                 ];
 
             }, true, true);
@@ -414,16 +414,16 @@ class JiraEstimate extends Command
         // issues from being scheduled same-day after 11:00 AM.
 
         // Determine the soonest we can start scheduling
-        $start = Carbon::now()->lte(Carbon::parse('11 AM')) // If it's prior to 11 AM
-            ? Carbon::now()->startOfDay() // Start no sooner than today
-            : Carbon::now()->addDays(1)->startOfDay(); // Otherwise, start no sooner than tomorrow
+        $start = carbon()->lte(carbon('11 AM')) // If it's prior to 11 AM
+            ? carbon()->startOfDay() // Start no sooner than today
+            : carbon()->addDays(1)->startOfDay(); // Otherwise, start no sooner than tomorrow
 
         // Determine the latest we can start scheduling
-        $end = Carbon::now()->addDays(8)->startOfDay(); // Start no later than a week after tomorrow
+        $end = carbon()->addDays(8)->startOfDay(); // Start no later than a week after tomorrow
 
         // Determine the first date where we can start assigning due dates
         $date = array_reduce(array_keys(static::$weeklySchedule), function($date, $key) use ($start, $focus) {
-            return static::$weeklySchedule[$key][$focus] <= 0 ? $date : $date->min(($thisWeek = Carbon::now()->weekday($key)->startOfDay())->gte($start) ? $thisWeek : $thisWeek->addWeek());
+            return static::$weeklySchedule[$key][$focus] <= 0 ? $date : $date->min(($thisWeek = carbon()->weekday($key)->startOfDay())->gte($start) ? $thisWeek : $thisWeek->addWeek());
         }, $end);
 
         // Return the date

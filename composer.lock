@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfae46edb7976d2e37848c465d27e283",
+    "content-hash": "a0a7fd53aeac36f039d8ac9964021ffd",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -2198,6 +2198,40 @@
                 "nova"
             ],
             "time": "2019-03-20T09:21:36+00:00"
+        },
+        {
+            "name": "reedware/carbon-helper",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/reedware/carbon-helper",
+                "reference": "d869d128af80ceb1abd837e75df99e04f759419a",
+                "shasum": null
+            },
+            "require": {
+                "nesbot/carbon": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tyler Reed",
+                    "email": "tylernathanreed@gmail.com"
+                }
+            ],
+            "description": "Adds a global helper method to create carbon instances.",
+            "keywords": [
+                "carbon",
+                "date",
+                "time"
+            ]
         },
         {
             "name": "reedware/laravel-blueprints",
@@ -5699,6 +5733,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "mnobrega/php-jira-agile-rest-client": 20,
+        "reedware/carbon-helper": 20,
         "reedware/laravel-blueprints": 20,
         "reedware/nova-field-manager": 20,
         "reedware/nova-value-toggle": 20

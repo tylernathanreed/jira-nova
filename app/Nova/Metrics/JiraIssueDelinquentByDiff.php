@@ -2,7 +2,6 @@
 
 namespace App\Nova\Metrics;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
@@ -31,7 +30,7 @@ class JiraIssueDelinquentByDiff extends Trend
         // Estimate the difference for each issue
         $issues->transform(function($issue) {
 
-            $issue['offset'] = (is_null($issue['est']) || is_null($issue['due'])) ? null : Carbon::parse($issue['est'])->diffInDays($issue['due'], false);
+            $issue['offset'] = (is_null($issue['est']) || is_null($issue['due'])) ? null : carbon($issue['est'])->diffInDays($issue['due'], false);
 
             return $issue;
 

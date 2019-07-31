@@ -3,7 +3,6 @@
 namespace App\Nova\Metrics;
 
 use DB;
-use Carbon\Carbon;
 use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
@@ -31,7 +30,7 @@ class IssueDelinquentByDiff extends Trend
         $query = (new Issue)->newQuery();
 
         // Apply the range filter
-        $query->where('due_date', '<=', Carbon::parse("+{$request->range} days"));
+        $query->where('due_date', '<=', carbon("+{$request->range} days"));
 
         // Filter to delinquent issues
         $query->where('estimate_diff', '<=', -1);

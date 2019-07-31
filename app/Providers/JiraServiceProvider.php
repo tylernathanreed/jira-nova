@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
 use App\Models\Issue;
 use App\Support\Jira\JiraService;
 use App\Support\Jira\Query\Builder;
@@ -46,7 +45,7 @@ class JiraServiceProvider extends ServiceProvider
 
             // Only grab issues from jira that have been updated since the oldest date
             if(!is_null($oldest)) {
-                $this->where('updated', '>=', Carbon::parse($oldest)->toDateTimeString());
+                $this->where('updated', '>=', carbon($oldest)->toDateTimeString());
             }
 
             // Return the jira results
@@ -192,7 +191,7 @@ class JiraServiceProvider extends ServiceProvider
 
                 'estimate_remaining' => data_get($fields, 'timeestimate'),
                 'estimate_date' => $est = data_get($fields, $mapping['estimated_completion_date']),
-                'estimate_diff' => (is_null($due) || is_null($est)) ? null : Carbon::parse($est)->diffInDays(Carbon::parse($due), false),
+                'estimate_diff' => (is_null($due) || is_null($est)) ? null : carbon($est)->diffInDays(carbon($due), false),
 
                 'type_name' => data_get($fields, 'issuetype.name'),
                 'type_icon_url' => data_get($fields, 'issuetype.iconUrl'),

@@ -2,7 +2,6 @@
 
 namespace App\Nova\Metrics;
 
-use Carbon\Carbon;
 use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
@@ -114,10 +113,10 @@ class IssueWeekStatus extends Partition
     public function getWeekLabel()
     {
         // Determine the first week reference
-        $start = Carbon::parse('2019-07-07');
+        $start = carbon('2019-07-07');
 
         // Determine the current reference
-        $when = $this->reference ? Carbon::parse($this->reference) : Carbon::now();
+        $when = $this->reference ? carbon($this->reference) : carbon();
 
         // Determine the week diff
         $diff = $start->diffInWeeks($when);

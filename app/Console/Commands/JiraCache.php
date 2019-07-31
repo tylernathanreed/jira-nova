@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Jira;
-use Carbon\Carbon;
 use App\Models\Issue;
 use Illuminate\Console\Command;
 
@@ -114,7 +113,7 @@ class JiraCache extends Command
         }
 
         // Parse the date
-        return Carbon::parse($date);
+        return carbon($date);
     }
 
     /**
