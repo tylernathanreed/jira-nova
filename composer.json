@@ -18,12 +18,13 @@
         "lesstif/php-jira-rest-client": "^1.37",
         "mad-web/nova-telescope-link": "^2.0",
         "mnobrega/php-jira-agile-rest-client": "dev-master",
-        "nova-components/jinora-theme": "*",
         "nova-components/jira-issue-manager": "*",
         "rcknr/nova-multiselect-filter": "^1.2",
         "reedware/carbon-helper": "^1.0",
         "reedware/laravel-blueprints": "^1.0@dev",
         "reedware/nova-field-manager": "^0.2.0@dev",
+        "reedware/nova-icons": "^1.0",
+        "reedware/nova-partition-metric-style-fix": "dev-master",
         "reedware/nova-value-toggle": "dev-master"
     },
     "require-dev": {
@@ -58,6 +59,10 @@
         {
             "type": "path",
             "url": "./nova-components/JinoraTheme"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Icons"
         }
     ],
     "config": {

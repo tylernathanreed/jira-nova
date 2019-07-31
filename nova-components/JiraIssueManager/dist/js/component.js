@@ -1919,7 +1919,7 @@
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(199)("./" + name);
+                __webpack_require__(195)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -4850,9 +4850,9 @@ module.exports = function(module) {
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Symbol = __webpack_require__(9),
-    getRawTag = __webpack_require__(168),
-    objectToString = __webpack_require__(169);
+var Symbol = __webpack_require__(10),
+    getRawTag = __webpack_require__(164),
+    objectToString = __webpack_require__(165);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -4884,7 +4884,7 @@ module.exports = baseGetTag;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var freeGlobal = __webpack_require__(10);
+var freeGlobal = __webpack_require__(11);
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -4932,280 +4932,6 @@ module.exports = isObjectLike;
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
-
-/**
- * This method returns the first argument it receives.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Util
- * @param {*} value Any value.
- * @returns {*} Returns `value`.
- * @example
- *
- * var object = { 'a': 1 };
- *
- * console.log(_.identity(object) === object);
- * // => true
- */
-function identity(value) {
-  return value;
-}
-
-module.exports = identity;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var baseGetTag = __webpack_require__(4),
-    isObject = __webpack_require__(2);
-
-/** `Object#toString` result references. */
-var asyncTag = '[object AsyncFunction]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]',
-    proxyTag = '[object Proxy]';
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  if (!isObject(value)) {
-    return false;
-  }
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 9 which returns 'object' for typed arrays and other constructors.
-  var tag = baseGetTag(value);
-  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
-}
-
-module.exports = isFunction;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var root = __webpack_require__(5);
-
-/** Built-in value references. */
-var Symbol = root.Symbol;
-
-module.exports = Symbol;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-module.exports = freeGlobal;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-/**
- * Performs a
- * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
- * @example
- *
- * var object = { 'a': 1 };
- * var other = { 'a': 1 };
- *
- * _.eq(object, object);
- * // => true
- *
- * _.eq(object, other);
- * // => false
- *
- * _.eq('a', 'a');
- * // => true
- *
- * _.eq('a', Object('a'));
- * // => false
- *
- * _.eq(NaN, NaN);
- * // => true
- */
-function eq(value, other) {
-  return value === other || (value !== value && other !== other);
-}
-
-module.exports = eq;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isFunction = __webpack_require__(8),
-    isLength = __webpack_require__(14);
-
-/**
- * Checks if `value` is array-like. A value is considered array-like if it's
- * not a function and has a `value.length` that's an integer greater than or
- * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- * @example
- *
- * _.isArrayLike([1, 2, 3]);
- * // => true
- *
- * _.isArrayLike(document.body.children);
- * // => true
- *
- * _.isArrayLike('abc');
- * // => true
- *
- * _.isArrayLike(_.noop);
- * // => false
- */
-function isArrayLike(value) {
-  return value != null && isLength(value.length) && !isFunction(value);
-}
-
-module.exports = isArrayLike;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This method is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- * @example
- *
- * _.isLength(3);
- * // => true
- *
- * _.isLength(Number.MIN_VALUE);
- * // => false
- *
- * _.isLength(Infinity);
- * // => false
- *
- * _.isLength('3');
- * // => false
- */
-function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-module.exports = isLength;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/** Used to detect unsigned integer values. */
-var reIsUint = /^(?:0|[1-9]\d*)$/;
-
-/**
- * Checks if `value` is a valid array-like index.
- *
- * @private
- * @param {*} value The value to check.
- * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
- * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
- */
-function isIndex(value, length) {
-  var type = typeof value;
-  length = length == null ? MAX_SAFE_INTEGER : length;
-
-  return !!length &&
-    (type == 'number' ||
-      (type != 'symbol' && reIsUint.test(value))) &&
-        (value > -1 && value % 1 == 0 && value < length);
-}
-
-module.exports = isIndex;
-
-
-/***/ }),
-/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -15430,6 +15156,280 @@ module.exports = g;
 /***/ })
 /******/ ]);
 });
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+/**
+ * This method returns the first argument it receives.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Util
+ * @param {*} value Any value.
+ * @returns {*} Returns `value`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ *
+ * console.log(_.identity(object) === object);
+ * // => true
+ */
+function identity(value) {
+  return value;
+}
+
+module.exports = identity;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(4),
+    isObject = __webpack_require__(2);
+
+/** `Object#toString` result references. */
+var asyncTag = '[object AsyncFunction]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    proxyTag = '[object Proxy]';
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  if (!isObject(value)) {
+    return false;
+  }
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 9 which returns 'object' for typed arrays and other constructors.
+  var tag = baseGetTag(value);
+  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+}
+
+module.exports = isFunction;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var root = __webpack_require__(5);
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+module.exports = Symbol;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+module.exports = freeGlobal;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+module.exports = eq;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isFunction = __webpack_require__(9),
+    isLength = __webpack_require__(15);
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+module.exports = isArrayLike;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+module.exports = isLength;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  var type = typeof value;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+
+  return !!length &&
+    (type == 'number' ||
+      (type != 'symbol' && reIsUint.test(value))) &&
+        (value > -1 && value % 1 == 0 && value < length);
+}
+
+module.exports = isIndex;
+
 
 /***/ }),
 /* 17 */
@@ -27634,7 +27634,7 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(145);
-module.exports = __webpack_require__(208);
+module.exports = __webpack_require__(207);
 
 
 /***/ }),
@@ -27649,17 +27649,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Nova.booting(function (Vue, router, store) {
 
-    Vue.component('icon-calendar', __webpack_require__(217));
-    Vue.component('icon-jira', __webpack_require__(148));
-    Vue.component('icon-layer-group', __webpack_require__(219));
-    Vue.component('icon-logout', __webpack_require__(150));
-    Vue.component('icon-sort', __webpack_require__(215));
+    Vue.component('jira-swimlane', __webpack_require__(148));
+    Vue.component('jira-swimlane-issue', __webpack_require__(188));
 
-    Vue.component('jira-swimlane', __webpack_require__(152));
-    Vue.component('jira-swimlane-issue', __webpack_require__(192));
-
-    Vue.component('resource-partition-metric', __webpack_require__(212));
-    Vue.component('resource-trend-metric', __webpack_require__(201));
+    Vue.component('resource-partition-metric', __webpack_require__(197));
+    Vue.component('resource-trend-metric', __webpack_require__(200));
 
     Vue.component('draggable', __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a);
 });
@@ -27668,7 +27662,7 @@ Nova.booting(function (Vue, router, store) {
     router.addRoutes([{
         name: 'jira-issue-manager',
         path: '/jira-issue-manager',
-        component: __webpack_require__(205)
+        component: __webpack_require__(204)
     }]);
 });
 
@@ -33415,185 +33409,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(149)
 /* template */
-var __vue_template__ = __webpack_require__(149)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Icons/Jira.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-33ab3cce", Component.options)
-  } else {
-    hotAPI.reload("data-v-33ab3cce", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 149 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "svg",
-    {
-      staticClass: "svg-inline",
-      attrs: {
-        "aria-hidden": "true",
-        focusable: "false",
-        role: "img",
-        xmlns: "http://www.w3.org/2000/svg",
-        viewBox: "0 0 496 512"
-      }
-    },
-    [
-      _c("path", {
-        attrs: {
-          fill: "currentColor",
-          d:
-            "M490 241.7C417.1 169 320.6 71.8 248.5 0 83 164.9 6 241.7 6 241.7c-7.9 7.9-7.9 20.7 0 28.7C138.8 402.7 67.8 331.9 248.5 512c379.4-378 15.7-16.7 241.5-241.7 8-7.9 8-20.7 0-28.6zm-241.5 90l-76-75.7 76-75.7 76 75.7-76 75.7z"
-        }
-      })
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-33ab3cce", module.exports)
-  }
-}
-
-/***/ }),
-/* 150 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = null
-/* template */
-var __vue_template__ = __webpack_require__(151)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Icons/Logout.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3ed2faaa", Component.options)
-  } else {
-    hotAPI.reload("data-v-3ed2faaa", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 151 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "svg",
-    {
-      staticClass: "svg-inline",
-      attrs: {
-        "aria-hidden": "true",
-        focusable: "false",
-        role: "img",
-        xmlns: "http://www.w3.org/2000/svg",
-        viewBox: "0 0 512 512"
-      }
-    },
-    [
-      _c("path", {
-        attrs: {
-          fill: "currentColor",
-          d:
-            "M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"
-        }
-      })
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3ed2faaa", module.exports)
-  }
-}
-
-/***/ }),
-/* 152 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(153)
-/* template */
-var __vue_template__ = __webpack_require__(191)
+var __vue_template__ = __webpack_require__(187)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -33632,17 +33450,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 153 */
+/* 149 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_constants_js__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_defaults__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_constants_js__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_defaults__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_defaults___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_defaults__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__);
 
 
@@ -34421,14 +34239,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 });
 
 /***/ }),
-/* 154 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(155);
+module.exports = __webpack_require__(151);
 
 
 /***/ }),
-/* 155 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -34453,7 +34271,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(156);
+module.exports = __webpack_require__(152);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -34469,7 +34287,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 156 */
+/* 152 */
 /***/ (function(module, exports) {
 
 /**
@@ -35202,25 +35020,11 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 157 */
+/* 153 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (Object.freeze({
-
-	/**
-  * The field constants.
-  *
-  * @var string
-  */
-	FIELD_SUMMARY: 'summary',
-	FIELD_DUE_DATE: 'duedate',
-	FIELD_STATUS: 'status',
-	FIELD_REMAINING_ESTIMATE: 'timeestimate',
-	FIELD_PRIORITY: 'priority',
-	FIELD_ISSUE_CATEGORY: 'customfield_12005',
-	FIELD_ESTIMATED_COMPLETION_DATE: 'customfield_12011',
-	FIELD_RANK: 'customfield_10119',
 
 	/**
   * The focus constants.
@@ -35250,13 +35054,13 @@ if (hadRuntime) {
 }));
 
 /***/ }),
-/* 158 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseRest = __webpack_require__(159),
-    eq = __webpack_require__(12),
-    isIterateeCall = __webpack_require__(175),
-    keysIn = __webpack_require__(176);
+var baseRest = __webpack_require__(155),
+    eq = __webpack_require__(13),
+    isIterateeCall = __webpack_require__(171),
+    keysIn = __webpack_require__(172);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -35320,12 +35124,12 @@ module.exports = defaults;
 
 
 /***/ }),
-/* 159 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var identity = __webpack_require__(7),
-    overRest = __webpack_require__(160),
-    setToString = __webpack_require__(162);
+var identity = __webpack_require__(8),
+    overRest = __webpack_require__(156),
+    setToString = __webpack_require__(158);
 
 /**
  * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -35343,10 +35147,10 @@ module.exports = baseRest;
 
 
 /***/ }),
-/* 160 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var apply = __webpack_require__(161);
+var apply = __webpack_require__(157);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
@@ -35385,7 +35189,7 @@ module.exports = overRest;
 
 
 /***/ }),
-/* 161 */
+/* 157 */
 /***/ (function(module, exports) {
 
 /**
@@ -35412,11 +35216,11 @@ module.exports = apply;
 
 
 /***/ }),
-/* 162 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetToString = __webpack_require__(163),
-    shortOut = __webpack_require__(174);
+var baseSetToString = __webpack_require__(159),
+    shortOut = __webpack_require__(170);
 
 /**
  * Sets the `toString` method of `func` to return `string`.
@@ -35432,12 +35236,12 @@ module.exports = setToString;
 
 
 /***/ }),
-/* 163 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constant = __webpack_require__(164),
-    defineProperty = __webpack_require__(165),
-    identity = __webpack_require__(7);
+var constant = __webpack_require__(160),
+    defineProperty = __webpack_require__(161),
+    identity = __webpack_require__(8);
 
 /**
  * The base implementation of `setToString` without support for hot loop shorting.
@@ -35460,7 +35264,7 @@ module.exports = baseSetToString;
 
 
 /***/ }),
-/* 164 */
+/* 160 */
 /***/ (function(module, exports) {
 
 /**
@@ -35492,10 +35296,10 @@ module.exports = constant;
 
 
 /***/ }),
-/* 165 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(166);
+var getNative = __webpack_require__(162);
 
 var defineProperty = (function() {
   try {
@@ -35509,11 +35313,11 @@ module.exports = defineProperty;
 
 
 /***/ }),
-/* 166 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsNative = __webpack_require__(167),
-    getValue = __webpack_require__(173);
+var baseIsNative = __webpack_require__(163),
+    getValue = __webpack_require__(169);
 
 /**
  * Gets the native function at `key` of `object`.
@@ -35532,13 +35336,13 @@ module.exports = getNative;
 
 
 /***/ }),
-/* 167 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(8),
-    isMasked = __webpack_require__(170),
+var isFunction = __webpack_require__(9),
+    isMasked = __webpack_require__(166),
     isObject = __webpack_require__(2),
-    toSource = __webpack_require__(172);
+    toSource = __webpack_require__(168);
 
 /**
  * Used to match `RegExp`
@@ -35585,10 +35389,10 @@ module.exports = baseIsNative;
 
 
 /***/ }),
-/* 168 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Symbol = __webpack_require__(9);
+var Symbol = __webpack_require__(10);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -35637,7 +35441,7 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 169 */
+/* 165 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -35665,10 +35469,10 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 170 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var coreJsData = __webpack_require__(171);
+var coreJsData = __webpack_require__(167);
 
 /** Used to detect methods masquerading as native. */
 var maskSrcKey = (function() {
@@ -35691,7 +35495,7 @@ module.exports = isMasked;
 
 
 /***/ }),
-/* 171 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(5);
@@ -35703,7 +35507,7 @@ module.exports = coreJsData;
 
 
 /***/ }),
-/* 172 */
+/* 168 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -35735,7 +35539,7 @@ module.exports = toSource;
 
 
 /***/ }),
-/* 173 */
+/* 169 */
 /***/ (function(module, exports) {
 
 /**
@@ -35754,7 +35558,7 @@ module.exports = getValue;
 
 
 /***/ }),
-/* 174 */
+/* 170 */
 /***/ (function(module, exports) {
 
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
@@ -35797,12 +35601,12 @@ module.exports = shortOut;
 
 
 /***/ }),
-/* 175 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var eq = __webpack_require__(12),
-    isArrayLike = __webpack_require__(13),
-    isIndex = __webpack_require__(15),
+var eq = __webpack_require__(13),
+    isArrayLike = __webpack_require__(14),
+    isIndex = __webpack_require__(16),
     isObject = __webpack_require__(2);
 
 /**
@@ -35833,12 +35637,12 @@ module.exports = isIterateeCall;
 
 
 /***/ }),
-/* 176 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(177),
-    baseKeysIn = __webpack_require__(188),
-    isArrayLike = __webpack_require__(13);
+var arrayLikeKeys = __webpack_require__(173),
+    baseKeysIn = __webpack_require__(184),
+    isArrayLike = __webpack_require__(14);
 
 /**
  * Creates an array of the own and inherited enumerable property names of `object`.
@@ -35871,15 +35675,15 @@ module.exports = keysIn;
 
 
 /***/ }),
-/* 177 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseTimes = __webpack_require__(178),
-    isArguments = __webpack_require__(179),
-    isArray = __webpack_require__(181),
-    isBuffer = __webpack_require__(182),
-    isIndex = __webpack_require__(15),
-    isTypedArray = __webpack_require__(184);
+var baseTimes = __webpack_require__(174),
+    isArguments = __webpack_require__(175),
+    isArray = __webpack_require__(177),
+    isBuffer = __webpack_require__(178),
+    isIndex = __webpack_require__(16),
+    isTypedArray = __webpack_require__(180);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -35926,7 +35730,7 @@ module.exports = arrayLikeKeys;
 
 
 /***/ }),
-/* 178 */
+/* 174 */
 /***/ (function(module, exports) {
 
 /**
@@ -35952,10 +35756,10 @@ module.exports = baseTimes;
 
 
 /***/ }),
-/* 179 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(180),
+var baseIsArguments = __webpack_require__(176),
     isObjectLike = __webpack_require__(6);
 
 /** Used for built-in method references. */
@@ -35994,7 +35798,7 @@ module.exports = isArguments;
 
 
 /***/ }),
-/* 180 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(4),
@@ -36018,7 +35822,7 @@ module.exports = baseIsArguments;
 
 
 /***/ }),
-/* 181 */
+/* 177 */
 /***/ (function(module, exports) {
 
 /**
@@ -36050,11 +35854,11 @@ module.exports = isArray;
 
 
 /***/ }),
-/* 182 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(5),
-    stubFalse = __webpack_require__(183);
+    stubFalse = __webpack_require__(179);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -36095,7 +35899,7 @@ module.exports = isBuffer;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 183 */
+/* 179 */
 /***/ (function(module, exports) {
 
 /**
@@ -36119,12 +35923,12 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 184 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsTypedArray = __webpack_require__(185),
-    baseUnary = __webpack_require__(186),
-    nodeUtil = __webpack_require__(187);
+var baseIsTypedArray = __webpack_require__(181),
+    baseUnary = __webpack_require__(182),
+    nodeUtil = __webpack_require__(183);
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -36152,11 +35956,11 @@ module.exports = isTypedArray;
 
 
 /***/ }),
-/* 185 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(4),
-    isLength = __webpack_require__(14),
+    isLength = __webpack_require__(15),
     isObjectLike = __webpack_require__(6);
 
 /** `Object#toString` result references. */
@@ -36218,7 +36022,7 @@ module.exports = baseIsTypedArray;
 
 
 /***/ }),
-/* 186 */
+/* 182 */
 /***/ (function(module, exports) {
 
 /**
@@ -36238,10 +36042,10 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 187 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(10);
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(11);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -36275,12 +36079,12 @@ module.exports = nodeUtil;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 188 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(2),
-    isPrototype = __webpack_require__(189),
-    nativeKeysIn = __webpack_require__(190);
+    isPrototype = __webpack_require__(185),
+    nativeKeysIn = __webpack_require__(186);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -36314,7 +36118,7 @@ module.exports = baseKeysIn;
 
 
 /***/ }),
-/* 189 */
+/* 185 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -36338,7 +36142,7 @@ module.exports = isPrototype;
 
 
 /***/ }),
-/* 190 */
+/* 186 */
 /***/ (function(module, exports) {
 
 /**
@@ -36364,7 +36168,7 @@ module.exports = nativeKeysIn;
 
 
 /***/ }),
-/* 191 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36586,19 +36390,19 @@ if (false) {
 }
 
 /***/ }),
-/* 192 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(193)
+  __webpack_require__(189)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(198)
+var __vue_script__ = __webpack_require__(194)
 /* template */
-var __vue_template__ = __webpack_require__(200)
+var __vue_template__ = __webpack_require__(196)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36637,17 +36441,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 193 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(194);
+var content = __webpack_require__(190);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(196)("e96ccd44", content, false, {});
+var update = __webpack_require__(192)("e96ccd44", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -36663,21 +36467,21 @@ if(false) {
 }
 
 /***/ }),
-/* 194 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(195)(false);
+exports = module.exports = __webpack_require__(191)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.hover\\:bg-delinquent-light:hover {\n    background: #fff4f4;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.swimlane-issue .epic-label a,\n.swimlane-issue .epic-label a:active,\n.swimlane-issue .epic-label a:hover,\n.swimlane-issue .epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\n.focus-other {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #cc0000 33.33%, #990000 33.33%, #990000 50%, #cc0000 50%, #cc0000 83.33%, #990000 83.33%, #990000 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-dev {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #5b9bd5 33.33%, #2f76b5 33.33%, #2f76b5 50%, #5b9bd5 50%, #5b9bd5 83.33%, #2f76b5 83.33%, #2f76b5 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-ticket {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #ffc000 33.33%, #bf8f00 33.33%, #bf8f00 50%, #ffc000 50%, #ffc000 83.33%, #bf8f00 83.33%, #bf8f00 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.swimlane-issue img.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\n.labels-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -ms-flex-wrap: wrap-reverse;\n        flex-wrap: wrap-reverse;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    padding-left: 38px;\n    cursor: default;\n}\n.label-abbr {\n    width: 8px;\n    height: 8px;\n    margin: 2px;\n}\n.label-abbr.label-shape-0 {\n    border-radius: 9999px;\n    border: 1px solid black;\n}\n.label-abbr.label-shape-1 {\n    border: 1px solid black;\n}\n.label-abbr.label-shape-2 {\n    border: 1px solid black;\n    border-top-right-radius: 9999px;\n    border-bottom-right-radius: 9999px;\n}\n.label-abbr.label-shape-3 {\n    border: 1px solid black;\n    border-top-left-radius: 9999px;\n    border-bottom-left-radius: 9999px;\n}\n.label-abbr.label-shape-4 {\n    border: 1px solid black;\n    border-top-left-radius: 9999px;\n    border-top-right-radius: 9999px;\n}\n.label-abbr.label-shape-5 {\n    border: 1px solid black;\n    border-bottom-left-radius: 9999px;\n    border-bottom-right-radius: 9999px;\n}\n.label-once {\n    opacity: 0.25;\n}\n.swimlane-issue label {\n    margin: 0;\n}\n.swimlane-issue a {\n    color: #0052cc;\n    text-decoration: none;\n}\n.swimlane-issue a:active,\n.swimlane-issue a:hover,\n.swimlane-issue a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\n.shadow-sm {\n    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n}\n.font-segoe-ui {\n    font-family: 'Segoe UI';\n}\n.leading-rem {\n    line-height: 1rem;\n}\n.bg-delinquent {\n    background: #fee;\n}\n.hover\\:bg-delinquent-light:hover {\n    background: #fff4f4;\n}\n.border-delinquent {\n    border-color: #daa;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper:hover {\n    background-color: #f8f8ff;\n}\n.swimlane-content:not(.dragging) .swimlane-issue-wrapper.delinquent:hover {\n    background-color: #fff4f4;\n}\n.swimlane-issue {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin: 0 -3px;\n    width: 100%;\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.swimlane-issue-field {\n    padding: 0 3px;\n}\n.issue-status-blue-gray {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #43526e;\n    border-color: #c1c7d0;\n}\n.issue-status-yellow {\n    display: inline-block;\n    padding: 1px 4px;\n    font-size: 10px;\n    font-weight: bold;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n\n    background: #fff;\n    color: #0052cc;\n    border-color: #b3d4ff;\n}\n.epic-label {\n    display: inline-block;\n    border-radius: 3px;\n    font-size: 12px;\n    font-weight: normal;\n    line-height: 1;\n    padding-top: 1px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-bottom: 2px;\n    margin-left: 3px;\n    margin-right: 3px;\n}\n.swimlane-issue .epic-label a,\n.swimlane-issue .epic-label a:active,\n.swimlane-issue .epic-label a:hover,\n.swimlane-issue .epic-label a:focus {\n    color: inherit;\n}\n.ghx-label-0 {\n    color: #0065ff;\n    background-color: #f5f5f5;\n    border-color: #ccc;\n    border-width: 1px;\n}\n.ghx-label-2 {\n    color: #172B4D;\n    background-color: #ffc400;\n    border-color: #ffc400;\n}\n.ghx-label-4 {\n    color: #fff;\n    background-color: #2684ff;\n    border-color: #2684ff;\n}\n.ghx-label-5 {\n    color: #172B4D;\n    background-color: #00C7E6;\n    border-color: #00C7E6;\n}\n.ghx-label-6 {\n    color: #42526e;\n    background-color: #abf5d1;\n    border-color: #abf5d1;\n}\n.ghx-label-7 {\n    color: #fff;\n    background-color: #8777d9;\n    border-color: #8777d9;\n}\n.ghx-label-8 {\n    color: #172B4D;\n    background-color: #998dd9;\n    border-color: #998dd9;\n}\n.ghx-label-9 {\n    color: #fff;\n    background-color: #ff7452;\n    border-color: #ff7452;\n}\n.ghx-label-11 {\n    color: #42526e;\n    background-color: #79e2f2;\n    border-color: #79e2f2;\n}\n.ghx-label-12 {\n    color: #fff;\n    background-color: #7a869a;\n    border-color: #7a869a;\n}\n.ghx-label-13 {\n    color: #172B4D;\n    background-color: #57d9a3;\n    border-color: #57d9a3;\n}\n.ghx-label-14 {\n    color: #fff;\n    background-color: #ff8f73;\n    border-color: #ff8f73;\n}\n.focus-other {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #cc0000 33.33%, #990000 33.33%, #990000 50%, #cc0000 50%, #cc0000 83.33%, #990000 83.33%, #990000 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-dev {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #5b9bd5 33.33%, #2f76b5 33.33%, #2f76b5 50%, #5b9bd5 50%, #5b9bd5 83.33%, #2f76b5 83.33%, #2f76b5 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.focus-ticket {\n    background: #94c4fe;\n    background: linear-gradient(135deg, #ffc000 33.33%, #bf8f00 33.33%, #bf8f00 50%, #ffc000 50%, #ffc000 83.33%, #bf8f00 83.33%, #bf8f00 100%);\n    background-size: 4.24px 4.24px;\n    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n            box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.5);\n}\n.swimlane-issue img.icon {\n    width: 16px;\n    height: 16px;\n}\n.text-gray {\n    color: #aaa;\n}\n.link-block {\n    width: 16px;\n    height: 16px;\n    margin: 1px;\n    font-size: 10px;\n    line-height: 12px;\n    font-weight: bold;\n    border: 1px solid black;\n    color: white;\n    text-shadow:\n         0px  0px 1px black,\n         0px  1px 1px black,\n         0px -1px 1px black,\n         1px  0px 1px black,\n         1px  1px 1px black,\n         1px -1px 1px black,\n        -1px  0px 1px black,\n        -1px  1px 1px black,\n        -1px -1px 1px black;\n\n    background-color: white;\n}\n.bg-range-0 { background-color: red;\n}\n.bg-range-1 { background-color: yellow;\n}\n.bg-range-2 { background-color: blue;\n}\n.bg-range-3 { background-color: orange;\n}\n.bg-range-4 { background-color: green;\n}\n.bg-range-5 { background-color: darkmagenta;\n}\n.bg-range-6 { background-color: lime;\n}\n.bg-range-7 { background-color: cyan;\n}\n.bg-range-8 { background-color: magenta;\n}\n.bg-range-9 { background-color: #faa;\n}\n.bg-range-10 { background-color: khaki;\n}\n.bg-range-11 { background-color: #cbf;\n}\n.bg-range-12 { background-color: tan;\n}\n.bg-range-13 { background-color: greenyellow;\n}\n.bg-range-14 { background-color: mediumorchid;\n}\n.bg-range-15 { background-color: #cfc;\n}\n.bg-range-16 { background-color: #8cf;\n}\n.bg-range-17 { background-color: #fdf;\n}\n.bg-range-18 { background-color: firebrick;\n}\n.bg-range-19 { background-color: darkgoldenrod;\n}\n.bg-range-20 { background-color: cornflowerblue;\n}\n.bg-range-21 { background-color: #c60;\n}\n.bg-range-22 { background-color: olive;\n}\n.bg-range-23 { background-color: darkslateblue;\n}\n.bg-range-24 { background-color: mediumseagreen;\n}\n.bg-range-25 { background-color: #08a;\n}\n.bg-range-26 { background-color: #f4a;\n}\n.bg-range-27 { background-color: black;\n}\n.bg-range-28 { background-color: darkslategray;\n}\n.bg-range-29 { background-color: #888;\n}\n.bg-range-30 { background-color: silver;\n}\n.bg-range-31 { background-color: white;\n}\n.labels-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -ms-flex-wrap: wrap-reverse;\n        flex-wrap: wrap-reverse;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    padding-left: 38px;\n    cursor: default;\n}\n.label-abbr {\n    width: 8px;\n    height: 8px;\n    margin: 2px;\n}\n.label-abbr.label-shape-0 {\n    border-radius: 9999px;\n    border: 1px solid black;\n}\n.label-abbr.label-shape-1 {\n    border: 1px solid black;\n}\n.label-abbr.label-shape-2 {\n    border: 1px solid black;\n    border-top-right-radius: 9999px;\n    border-bottom-right-radius: 9999px;\n}\n.label-abbr.label-shape-3 {\n    border: 1px solid black;\n    border-top-left-radius: 9999px;\n    border-bottom-left-radius: 9999px;\n}\n.label-abbr.label-shape-4 {\n    border: 1px solid black;\n    border-top-left-radius: 9999px;\n    border-top-right-radius: 9999px;\n}\n.label-abbr.label-shape-5 {\n    border: 1px solid black;\n    border-bottom-left-radius: 9999px;\n    border-bottom-right-radius: 9999px;\n}\n.label-once {\n    opacity: 0.25;\n}\n.swimlane-issue label {\n    margin: 0;\n}\n.swimlane-issue a {\n    color: #0052cc;\n    text-decoration: none;\n}\n.swimlane-issue a:active,\n.swimlane-issue a:hover,\n.swimlane-issue a:focus {\n    color: rgb(0, 73, 176);\n    text-decoration: underline;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 195 */
+/* 191 */
 /***/ (function(module, exports) {
 
 /*
@@ -36759,7 +36563,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 196 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -36778,7 +36582,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(197)
+var listToStyles = __webpack_require__(193)
 
 /*
 type StyleObject = {
@@ -36987,7 +36791,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 197 */
+/* 193 */
 /***/ (function(module, exports) {
 
 /**
@@ -37020,7 +36824,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 198 */
+/* 194 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37270,7 +37074,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 199 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -37543,10 +37347,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 199;
+webpackContext.id = 195;
 
 /***/ }),
-/* 200 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -38059,15 +37863,202 @@ if (false) {
 }
 
 /***/ }),
-/* 201 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(202)
+var __vue_script__ = __webpack_require__(198)
 /* template */
-var __vue_template__ = __webpack_require__(204)
+var __vue_template__ = __webpack_require__(199)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Metrics/ResourcePartitionMetric.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-35c19045", Component.options)
+  } else {
+    hotAPI.reload("data-v-35c19045", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 198 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__);
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        card: {
+            type: Object,
+            required: true
+        },
+
+        resourceName: {
+            type: String,
+            default: ''
+        },
+
+        resourceId: {
+            type: [Number, String],
+            default: ''
+        },
+
+        lens: {
+            type: String,
+            default: ''
+        }
+    },
+
+    data: function data() {
+        return {
+            loading: true,
+            chartData: []
+        };
+    },
+
+    watch: {
+        resourceId: function resourceId() {
+            this.fetch();
+        }
+    },
+
+    created: function created() {
+        this.fetch();
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        Nova.$on('resources-loading', function () {
+            _this.loading = true;
+        });
+
+        Nova.$on('resources-loaded', function () {
+
+            _this.$nextTick(function () {
+                _this.fetch();
+            });
+        });
+    },
+
+
+    methods: {
+        fetch: function fetch() {
+            var _this2 = this;
+
+            this.loading = true;
+
+            if (!this.getResourceProvider().isLoaded()) {
+                return;
+            }
+
+            Object(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__["Minimum"])(Nova.request().post(this.metricEndpoint, this.getMetricPayload())).then(function (_ref) {
+                var value = _ref.data.value.value;
+
+                _this2.chartData = value;
+                _this2.loading = false;
+            });
+        },
+        getMetricPayload: function getMetricPayload() {
+
+            return {
+                'resourceData': JSON.stringify(this.getResourceData())
+            };
+        },
+        getResourceData: function getResourceData() {
+            return this.getResourceProvider().getResourceData();
+        }
+    },
+
+    computed: {
+        metricEndpoint: function metricEndpoint() {
+            var lens = this.lens !== '' ? '/lens/' + this.lens : '';
+            if (this.resourceName && this.resourceId) {
+                return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
+            } else if (this.resourceName) {
+                return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
+            } else {
+                return '/nova-api/metrics/' + this.card.uriKey;
+            }
+        }
+    },
+
+    inject: ['getResourceProvider']
+});
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("base-partition-metric", {
+    attrs: {
+      title: _vm.card.name,
+      "chart-data": _vm.chartData,
+      loading: _vm.loading
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-35c19045", module.exports)
+  }
+}
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(201)
+/* template */
+var __vue_template__ = __webpack_require__(203)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -38106,14 +38097,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 202 */
+/* 201 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_laravel_nova__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_laravel_nova__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_laravel_nova__);
 //
 //
@@ -38286,7 +38277,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 203 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -55403,10 +55394,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(3)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(3)(module)))
 
 /***/ }),
-/* 204 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55439,15 +55430,15 @@ if (false) {
 }
 
 /***/ }),
-/* 205 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(206)
+var __vue_script__ = __webpack_require__(205)
 /* template */
-var __vue_template__ = __webpack_require__(207)
+var __vue_template__ = __webpack_require__(206)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55486,7 +55477,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 206 */
+/* 205 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55507,7 +55498,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 207 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55535,464 +55526,10 @@ if (false) {
 }
 
 /***/ }),
-/* 208 */
+/* 207 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(213)
-/* template */
-var __vue_template__ = __webpack_require__(214)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Metrics/ResourcePartitionMetric.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-35c19045", Component.options)
-  } else {
-    hotAPI.reload("data-v-35c19045", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 213 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__);
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        card: {
-            type: Object,
-            required: true
-        },
-
-        resourceName: {
-            type: String,
-            default: ''
-        },
-
-        resourceId: {
-            type: [Number, String],
-            default: ''
-        },
-
-        lens: {
-            type: String,
-            default: ''
-        }
-    },
-
-    data: function data() {
-        return {
-            loading: true,
-            chartData: []
-        };
-    },
-
-    watch: {
-        resourceId: function resourceId() {
-            this.fetch();
-        }
-    },
-
-    created: function created() {
-        this.fetch();
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        Nova.$on('resources-loading', function () {
-            _this.loading = true;
-        });
-
-        Nova.$on('resources-loaded', function () {
-
-            _this.$nextTick(function () {
-                _this.fetch();
-            });
-        });
-    },
-
-
-    methods: {
-        fetch: function fetch() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            if (!this.getResourceProvider().isLoaded()) {
-                return;
-            }
-
-            Object(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__["Minimum"])(Nova.request().post(this.metricEndpoint, this.getMetricPayload())).then(function (_ref) {
-                var value = _ref.data.value.value;
-
-                _this2.chartData = value;
-                _this2.loading = false;
-            });
-        },
-        getMetricPayload: function getMetricPayload() {
-
-            return {
-                'resourceData': JSON.stringify(this.getResourceData())
-            };
-        },
-        getResourceData: function getResourceData() {
-            return this.getResourceProvider().getResourceData();
-        }
-    },
-
-    computed: {
-        metricEndpoint: function metricEndpoint() {
-            var lens = this.lens !== '' ? '/lens/' + this.lens : '';
-            if (this.resourceName && this.resourceId) {
-                return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
-            } else if (this.resourceName) {
-                return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
-            } else {
-                return '/nova-api/metrics/' + this.card.uriKey;
-            }
-        }
-    },
-
-    inject: ['getResourceProvider']
-});
-
-/***/ }),
-/* 214 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("base-partition-metric", {
-    attrs: {
-      title: _vm.card.name,
-      "chart-data": _vm.chartData,
-      loading: _vm.loading
-    }
-  })
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-35c19045", module.exports)
-  }
-}
-
-/***/ }),
-/* 215 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = null
-/* template */
-var __vue_template__ = __webpack_require__(216)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Icons/Sort.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1906f2be", Component.options)
-  } else {
-    hotAPI.reload("data-v-1906f2be", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 216 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "svg",
-    {
-      staticClass: "svg-inline",
-      attrs: {
-        "aria-hidden": "true",
-        focusable: "false",
-        role: "img",
-        xmlns: "http://www.w3.org/2000/svg",
-        viewBox: "0 0 496 512"
-      }
-    },
-    [
-      _c("path", {
-        attrs: {
-          fill: "currentColor",
-          d:
-            "M16 160 h48 v104 a16 16 0 0 0 16 16 h32 a16 16 0 0 0 16-16 v-104 h48 c14.21 0 21.39-17.24 11.31-27.31 l-80-96 a16 16 0 0 0-22.62 0 l-80 96 c-10.04 10.05-2.91 27.31 11.31 27.31z M176 352 h-48 v-104 a16 16 0 0 0-16-16 h-32 a16 16 0 0 0-16 16 v104 h-48 c-14.21 0-21.39 17.24-11.31 27.31 l80 96 a16 16 0 0 0 22.62 0 l80-96 c10.04-10.05 2.91-27.31-11.31-27.31z M240 96h64a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16zm0 128h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16zm256 192H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-256-64h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16z"
-        }
-      })
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1906f2be", module.exports)
-  }
-}
-
-/***/ }),
-/* 217 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = null
-/* template */
-var __vue_template__ = __webpack_require__(218)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Icons/Calendar.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cfb7b744", Component.options)
-  } else {
-    hotAPI.reload("data-v-cfb7b744", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 218 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "svg",
-    {
-      staticClass: "svg-inline",
-      attrs: {
-        "aria-hidden": "true",
-        focusable: "false",
-        role: "img",
-        xmlns: "http://www.w3.org/2000/svg",
-        viewBox: "0 0 448 512"
-      }
-    },
-    [
-      _c("path", {
-        attrs: {
-          fill: "currentColor",
-          d:
-            "M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"
-        }
-      })
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cfb7b744", module.exports)
-  }
-}
-
-/***/ }),
-/* 219 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = null
-/* template */
-var __vue_template__ = __webpack_require__(220)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Icons/LayerGroup.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-39d80ace", Component.options)
-  } else {
-    hotAPI.reload("data-v-39d80ace", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "svg",
-    {
-      staticClass: "svg-inline",
-      attrs: {
-        "aria-hidden": "true",
-        focusable: "false",
-        role: "img",
-        xmlns: "http://www.w3.org/2000/svg",
-        viewBox: "0 0 512 512"
-      }
-    },
-    [
-      _c("path", {
-        attrs: {
-          fill: "currentColor",
-          d:
-            "M12.41 148.02l232.94 105.67c6.8 3.09 14.49 3.09 21.29 0l232.94-105.67c16.55-7.51 16.55-32.52 0-40.03L266.65 2.31a25.607 25.607 0 0 0-21.29 0L12.41 107.98c-16.55 7.51-16.55 32.53 0 40.04zm487.18 88.28l-58.09-26.33-161.64 73.27c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.51 209.97l-58.1 26.33c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 276.3c16.55-7.5 16.55-32.5 0-40zm0 127.8l-57.87-26.23-161.86 73.37c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.29 337.87 12.41 364.1c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 404.1c16.55-7.5 16.55-32.5 0-40z"
-        }
-      })
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-39d80ace", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

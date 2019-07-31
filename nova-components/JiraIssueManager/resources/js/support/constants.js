@@ -1,20 +1,6 @@
 export default Object.freeze({
 
 	/**
-	 * The field constants.
-	 *
-	 * @var string
-	 */
-	FIELD_SUMMARY: 'summary',
-	FIELD_DUE_DATE: 'duedate',
-	FIELD_STATUS: 'status',
-	FIELD_REMAINING_ESTIMATE: 'timeestimate',
-	FIELD_PRIORITY: 'priority',
-	FIELD_ISSUE_CATEGORY: 'customfield_12005',
-	FIELD_ESTIMATED_COMPLETION_DATE: 'customfield_12011',
-	FIELD_RANK: 'customfield_10119',
-
-	/**
 	 * The focus constants.
 	 *
 	 * @var string
