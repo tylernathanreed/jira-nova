@@ -15,8 +15,8 @@ Nova.booting((Vue, router, store) => {
 Nova.booting((Vue, router, store) => {
     router.addRoutes([
         {
-            name: 'jira-issue-manager',
-            path: '/jira-issue-manager',
+            name: 'jira-priorities',
+            path: '/jira-priorities',
             component: require('./components/Tool'),
         },
     ])

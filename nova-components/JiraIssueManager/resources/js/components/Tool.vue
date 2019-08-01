@@ -1,6 +1,6 @@
 <template>
     <div>
-        <heading class="mb-6">Jira Issue Manager</heading>
+        <heading class="mb-6">Priorities</heading>
 
         <jira-swimlane></jira-swimlane>
     </div>

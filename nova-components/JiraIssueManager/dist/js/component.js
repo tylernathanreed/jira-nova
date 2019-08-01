@@ -27660,8 +27660,8 @@ Nova.booting(function (Vue, router, store) {
 
 Nova.booting(function (Vue, router, store) {
     router.addRoutes([{
-        name: 'jira-issue-manager',
-        path: '/jira-issue-manager',
+        name: 'jira-priorities',
+        path: '/jira-priorities',
         component: __webpack_require__(204)
     }]);
 });
@@ -55513,7 +55513,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("heading", { staticClass: "mb-6" }, [_vm._v("Jira Issue Manager")]),
+      _c("heading", { staticClass: "mb-6" }, [_vm._v("Priorities")]),
       _vm._v(" "),
       _c("jira-swimlane")
     ],

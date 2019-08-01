@@ -17,7 +17,7 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'jira-issue-manager');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'jira-priorities');
 
         $this->app->booted(function () {
             $this->routes();
@@ -46,7 +46,7 @@ class ToolServiceProvider extends ServiceProvider
 
         // Register the tool routes
         Route::middleware(['nova', Authorize::class])
-                ->prefix('nova-vendor/jira-issue-manager')
+                ->prefix('nova-vendor/jira-priorities')
                 ->group(__DIR__ . '/../routes/api.php');
 
         // Register the nova api routes

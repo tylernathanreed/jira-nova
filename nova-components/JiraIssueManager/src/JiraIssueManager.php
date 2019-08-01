@@ -14,8 +14,8 @@ class JiraIssueManager extends Tool
      */
     public function boot()
     {
-        Nova::script('jira-issue-manager', __DIR__.'/../dist/js/component.js');
-        Nova::style('jira-issue-manager', __DIR__.'/../dist/css/component.css');
+        Nova::script('jira-priorities', __DIR__.'/../dist/js/component.js');
+        Nova::style('jira-priorities', __DIR__.'/../dist/css/component.css');
     }
 
     /**
@@ -25,6 +25,6 @@ class JiraIssueManager extends Tool
      */
     public function renderNavigation()
     {
-        return view('jira-issue-manager::navigation');
+        return view('jira-priorities::navigation');
     }
 }
