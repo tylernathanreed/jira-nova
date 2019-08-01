@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 use Laravel\Nova\Metrics\PartitionResult;
 
-class JiraIssueByPriority extends Partition
+class JiraIssueWorkloadByFocusPartition extends Partition
 {
     /**
      * The element's component.
@@ -27,25 +27,25 @@ class JiraIssueByPriority extends Partition
         // Determine the isssues
         $issues = collect(json_decode($request->resourceData, true));
 
-        // Determine the counts by priority
-        $counts = $issues->countBy('priority')->all();
+        // Determine the workload by focus
+        $counts = $issues->groupBy('focus')->map->sum(function($i) {
+            return max($i['remaining'], 3600);
+        })->map(function($v) {
+            return (float) number_format($v / 3600, 2);
+        })->all();
 
         // Determine the results
         $results = [
-            'Highest' => $counts['Highest'] ?? 0,
-            'High' => $counts['High'] ?? 0,
-            'Medium' => $counts['Medium'] ?? 0,
-            'Low' => $counts['Low'] ?? 0,
-            'Lowest' => $counts['Lowest'] ?? 0
+            'Dev' => $counts['Dev'] ?? 0,
+            'Ticket' => $counts['Ticket'] ?? 0,
+            'Other' => $counts['Other'] ?? 0
         ];
 
         // Return the partition result
         return $this->result($results)->colors([
-            'Highest' => 'firebrick',
-            'High' => '#f44',
-            'Medium' => 'silver',
-            'Low' => 'mediumseagreen',
-            'Lowest' => 'green'
+            'Dev' => '#5b9bd5',
+            'Ticket' => '#ffc000',
+            'Other' => '#cc0000'
         ]);
     }
 
@@ -56,7 +56,7 @@ class JiraIssueByPriority extends Partition
      */
     public function uriKey()
     {
-        return 'jira-issue-by-priorities';
+        return 'jira-issue-workload-by-focus';
     }
 
     /**
@@ -66,7 +66,7 @@ class JiraIssueByPriority extends Partition
      */
     public function name()
     {
-        return 'Priorities';
+        return 'Workload (By Focus)';
     }
 
 }

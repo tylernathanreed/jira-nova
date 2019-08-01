@@ -74,16 +74,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             (new \App\Nova\Metrics\IssueTicketCreatedByDateValue),
-            (new \App\Nova\Metrics\IssueCreatedByDate)->width('2/3'),
-            (new \App\Nova\Metrics\IssueWeekStatus)->label('Last Week')->reference('-1 week'),
-            (new \App\Nova\Metrics\IssueWeekStatus)->label('This Week'),
-            (new \App\Nova\Metrics\IssueWeekStatus)->label('Next Week')->reference('+1 week'),
+            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->width('2/3'),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->label('Last Week')->reference('-1 week'),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->label('This Week'),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->label('Next Week')->reference('+1 week'),
             (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend),
             (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend),
-            new \App\Nova\Metrics\IssueWeeklySatisfaction,
-            new \App\Nova\Metrics\IssueWorkloadByEpic,
-            new \App\Nova\Metrics\IssueWorkloadByFocus,
-            new \App\Nova\Metrics\IssueWorkloadByAssignee
+            new \App\Nova\Metrics\IssueWeeklySatisfactionTrend,
+            new \App\Nova\Metrics\IssueWorkloadByEpicPartition,
+            new \App\Nova\Metrics\IssueWorkloadByFocusPartition,
+            new \App\Nova\Metrics\IssueWorkloadByAssigneePartition
         ];
     }
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 use Laravel\Nova\Metrics\PartitionResult;
 
-class IssueWorkloadByEpic extends Partition
+class IssueWorkloadByEpicPartition extends Partition
 {
     use Concerns\DashboardCaching;
 

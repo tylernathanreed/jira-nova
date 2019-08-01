@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
 
-class IssueWeeklySatisfaction extends Trend
+class IssueWeeklySatisfactionTrend extends Trend
 {
     use Concerns\DashboardCaching;
     use Concerns\WeeklyLabels;

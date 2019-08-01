@@ -6,7 +6,7 @@ use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
-class IssueWeekStatus extends Partition
+class IssueWeekStatusPartition extends Partition
 {
     use Concerns\DashboardCaching;
     use Concerns\WeeklyLabels;

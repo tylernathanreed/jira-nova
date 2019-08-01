@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 use Laravel\Nova\Metrics\PartitionResult;
 
-class IssueWorkloadByAssignee extends Partition
+class IssueWorkloadByFocusPartition extends Partition
 {
     use Concerns\DashboardCaching;
 
@@ -27,23 +27,19 @@ class IssueWorkloadByAssignee extends Partition
      */
     public function calculate(Request $request)
     {
-        // Create a new remaining workload query
         $query = (new Issue)->newRemainingWorkloadQuery();
 
-        // Make sure the assignee exists
-        $query->whereNotNull('assignee_name');
+        $result = $this->sum($request, $query, 'estimate_remaining', 'focus')->colors([
+            'Dev' => '#5b9bd5',
+            'Ticket' => '#ffc000',
+            'Other' => '#cc0000'
+        ]);
 
-        // Determine the result
-        $result = $this->sum($request, $query, 'estimate_remaining', 'assignee_name');
-
-        // Determine the result value
-        $value = $result->value;
-
-        // Sort the result by workload
-        arsort($value);
-
-        // Update the result
-        $result->value = $value;
+        $result->value = [
+            'Dev' => $result->value['Dev'] ?? 0,
+            'Ticket' => $result->value['Ticket'] ?? 0,
+            'Other' => $result->value['Other'] ?? 0
+        ];
 
         // Return the partition result
         return $result;
@@ -71,7 +67,7 @@ class IssueWorkloadByAssignee extends Partition
      */
     public function name()
     {
-        return 'Workload (By Assignee)';
+        return 'Workload (By Focus)';
     }
 
 }

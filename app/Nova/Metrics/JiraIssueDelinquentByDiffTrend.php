@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
 
-class JiraIssueDelinquentByDiff extends Trend
+class JiraIssueDelinquentByDiffTrend extends Trend
 {
     /**
      * The element's component.

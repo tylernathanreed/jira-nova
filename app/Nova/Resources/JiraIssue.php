@@ -117,9 +117,9 @@ class JiraIssue extends Resource
     public function cards(Request $request)
     {
         return [
-            new \App\Nova\Metrics\JiraIssueDelinquentByDiff,
-            new \App\Nova\Metrics\JiraIssueByPriority,
-            new \App\Nova\Metrics\JiraIssueWorkloadByFocus,
+            new \App\Nova\Metrics\JiraIssueDelinquentByDiffTrend,
+            new \App\Nova\Metrics\JiraIssueByPriorityPartition,
+            new \App\Nova\Metrics\JiraIssueWorkloadByFocusPartition,
         ];
     }
 

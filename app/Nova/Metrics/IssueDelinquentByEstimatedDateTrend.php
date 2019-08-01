@@ -8,7 +8,7 @@ use Laravel\Nova\Metrics\Trend;
 
 class IssueDelinquentByEstimatedDateTrend extends Trend
 {
-    // use Concerns\DashboardCaching;
+    use Concerns\DashboardCaching;
     use Concerns\FutureRange;
 
     /**

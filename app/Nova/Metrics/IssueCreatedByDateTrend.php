@@ -6,7 +6,7 @@ use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 
-class IssueCreatedByDate extends Trend
+class IssueCreatedByDateTrend extends Trend
 {
     use Concerns\DashboardCaching;
 
