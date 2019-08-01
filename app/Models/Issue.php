@@ -534,11 +534,7 @@ class Issue extends Model
         $query = $this->newQuery();
 
         // Ignore completed issues
-        $query->whereNotIn('status_name', [
-            'Done',
-            'Canceled',
-            'Testing Passed [Test]'
-        ]);
+        $query->incomplete();
 
         // Make sure the remaining estimate is capped to be a one hour minimum
         $query->select([
@@ -553,5 +549,25 @@ class Issue extends Model
 
         // Return the query
         return $query;
+    }
+
+    ////////////////////
+    //* Query Scopes *//
+    ////////////////////
+    /**
+     * Filters out completed issues.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return void
+     */
+    public function scopeIncomplete($query)
+    {
+        $query->whereNotIn('status_name', [
+            'Done',
+            'Canceled',
+            'Testing Passed [Test]',
+            'Testing passed [UAT]'
+        ]);
     }
 }
