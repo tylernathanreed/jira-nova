@@ -31,8 +31,8 @@ class IssueFocus extends SelectFilter
     public function applyToJiraOptions(&$options, $value)
     {
         $options['groups'] = [
-            'dev' => $value == 'dev' || $value == 'all',
-            'ticket' => $value == 'ticket' || $value == 'all',
+            'dev' => $value == 'dev' || is_null($value),
+            'ticket' => $value == 'ticket' || is_null($value),
             'other' => true
         ];
     }
@@ -48,8 +48,7 @@ class IssueFocus extends SelectFilter
     {
         return array_flip([
             'dev' => 'Dev',
-            'ticket' => 'Ticket',
-            'all' => 'All'
+            'ticket' => 'Ticket'
         ]);
     }
 

@@ -34091,14 +34091,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         isLoaded: function isLoaded() {
             return !this.loading && !this.initialLoading;
+        },
+
+
+        /**
+         * Returns the value of the specified filter name.
+         *
+         * @param  {string}  name
+         *
+         * @return {string|null}
+         */
+        getFilterValue: function getFilterValue(name) {
+
+            // Determine the filters
+            var filters = this.$refs.filterMenu.filters;
+
+            // Determine the specific filter
+            var filter = _.find(filters, { 'name': name });
+
+            // Determine the current option
+            var option = _.find(filter.options, { 'value': filter.currentValue });
+
+            // If the option couldn't be found, return null
+            if (!option) {
+                return null;
+            }
+
+            // Return the option name
+            return option.name;
         }
     },
 
     computed: {
         heading: function heading() {
-
-            // Determine the filters
-            var filters = this.$refs.filterMenu.filters;
 
             // Initialize the heading
             var heading = '';
@@ -34106,40 +34131,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             // Start with the resource count
             heading += this.resources.length;
 
-            // Determine the focus filter
-            var filter = _.find(filters, { 'name': 'Issue Focus' });
+            // Determine the focus
+            var focus = this.getFilterValue('Issue Focus');
 
-            // Check if the filter was found
-            if (filter) {
-
-                // Determine the selected option
-                var option = _.find(filter.options, { 'value': filter.currentValue });
-
-                // Determine the focus
-                var _focus = option ? option.name : 'Dev';
-
-                // Add the focus verbiage
-                heading += _focus == 'All' ? '' : ' ' + _focus + ' ';
-            }
+            // Add the focus verbiage
+            heading += focus ? ' ' + focus + ' ' : '';
 
             // Add in the "issue" verbiage
             heading += ' ' + (this.resources.length == 1 ? 'Issue' : 'Issues');
 
-            // Determine the assignee filter
-            filter = _.find(filters, { 'name': 'Assignee' });
+            // Determine the assignee
+            var assignee = this.getFilterValue('Assignee');
 
-            // Check if the filter was found
-            if (filter) {
-
-                // Determine the selected option
-                var _option = _.find(filter.options, { 'value': filter.currentValue });
-
-                // Determine the assignee
-                var assignee = _option ? _option.name : Nova.config.user.display_name;
-
-                // Add the assignee verbiage
-                heading += ' for ' + assignee;
-            }
+            // Add the assignee verbiage
+            heading += ' for ' + (assignee || 'All Users');
 
             // Return the heading
             return heading;

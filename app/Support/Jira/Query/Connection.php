@@ -157,6 +157,9 @@ class Connection
                 // Update the max results
                 $result->maxResults = count($result->issues);
 
+                // Increase the page index
+                $page++;
+
             }
 
             // Return the result

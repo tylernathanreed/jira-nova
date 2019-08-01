@@ -123,7 +123,7 @@ class Issue extends Model
      *
      * @param  array  $option
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public static function getIssuesFromJira($options = [])
     {
@@ -153,7 +153,7 @@ class Issue extends Model
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public static function getIssuesFromRequest(NovaRequest $request)
     {
@@ -162,12 +162,10 @@ class Issue extends Model
 
         // Initialize the options
         $options = [
-            'assignee' => [
-                $request->user()->jira_key
-            ],
+            'assignee' => collect(Jira::users()->findAssignableUsers(['project' => 'UAS']))->pluck('displayName', 'key')->all(),
             'groups' => [
                 'dev' => true,
-                'ticket' => false,
+                'ticket' => true,
                 'other' => true
             ]
         ];
@@ -201,7 +199,9 @@ class Issue extends Model
         ];
 
         // Filter by assignee
-        $query->whereIn('assignee', $options['assignee'] ?? ['tyler.reed']);
+        if(isset($options['assignee'])) {
+            $query->whereIn('assignee', $options['assignee'] ?? ['tyler.reed']);
+        }
 
         // Ignore "Hold" priorities
         $query->whereNotIn('priority', ['Hold']);
