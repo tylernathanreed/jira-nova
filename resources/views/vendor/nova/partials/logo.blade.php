@@ -5,5 +5,5 @@
 			M 70 55 l  5  5 l -25  25 l -25 -25 l  45 -45 l  45  45 l -55  55 l -5 -5 l  50 -50 l -35 -35 l -35  35 l  15  15 l  20 -20z
 		"></path>
 	</svg>
-	<div style="padding-left: 0.5rem">Jinora</div>
+	<div style="padding-left: 0.5rem">{{ config('app.name') }}</div>
 </div>
