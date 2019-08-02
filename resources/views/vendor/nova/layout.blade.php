@@ -29,7 +29,7 @@
                     </div>
                 </a>
 
-                @foreach (Nova::availableTools(request()) as $tool)
+                @foreach(Nova::availableTools(request()) as $tool)
                     {!! $tool->renderNavigation() !!}
                 @endforeach
             </div>
@@ -37,7 +37,7 @@
             <!-- Content -->
             <div class="content">
                 <div class="flex items-center relative shadow h-header bg-white z-20 px-6">
-                    @if (count(Nova::globallySearchableResources(request())) > 0)
+                    @if(count(Nova::globallySearchableResources(request())) > 0)
                         <global-search></global-search>
                     @endif
 
