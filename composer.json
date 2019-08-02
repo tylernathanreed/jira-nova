@@ -18,7 +18,7 @@
         "lesstif/php-jira-rest-client": "^1.37",
         "mad-web/nova-telescope-link": "^2.0",
         "mnobrega/php-jira-agile-rest-client": "dev-master",
-        "nova-components/jira-issue-manager": "*",
+        "nova-components/jira-issue-prioritizer": "dev-master",
         "rcknr/nova-multiselect-filter": "^1.2",
         "reedware/carbon-helper": "^1.0",
         "reedware/laravel-blueprints": "^1.0@dev",
@@ -50,19 +50,7 @@
         },
         {
             "type": "path",
-            "url": "./nova-components/JiraIssueManager"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/JiraIssueSwimlane"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/JinoraTheme"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/Icons"
+            "url": "./nova-components/jira-issue-prioritizer"
         }
     ],
     "config": {

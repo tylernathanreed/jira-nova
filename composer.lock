@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92ca81551939c11a9370afe913915753",
+    "content-hash": "06c0bb0ee6f6b1a0ed6720d36570c659",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1630,12 +1630,12 @@
             "time": "2019-05-25T20:07:01+00:00"
         },
         {
-            "name": "nova-components/jira-issue-manager",
+            "name": "nova-components/jira-issue-prioritizer",
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "./nova-components/JiraIssueManager",
-                "reference": "fd636a3564b1ab9bce7f28054c7758f1d6d5864d",
+                "url": "./nova-components/jira-issue-prioritizer",
+                "reference": "bae2bef9c091cb98d4fd2855c6f98df501267f3d",
                 "shasum": null
             },
             "require": {
@@ -1645,13 +1645,13 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "NovaComponents\\JiraIssueManager\\ToolServiceProvider"
+                        "NovaComponents\\JiraIssuePrioritizer\\ToolServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "NovaComponents\\JiraIssueManager\\": "src/"
+                    "NovaComponents\\JiraIssuePrioritizer\\": "src/"
                 }
             },
             "license": [
@@ -5813,6 +5813,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "mnobrega/php-jira-agile-rest-client": 20,
+        "nova-components/jira-issue-prioritizer": 20,
         "reedware/laravel-blueprints": 20,
         "reedware/nova-field-manager": 20,
         "reedware/nova-partition-metric-style-fix": 20,

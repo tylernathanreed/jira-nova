@@ -1,11 +1,11 @@
 <?php
 
-namespace NovaComponents\JiraIssueManager;
+namespace NovaComponents\JiraIssuePrioritizer;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
-class JiraIssueManager extends Tool
+class JiraIssuePrioritizer extends Tool
 {
     /**
      * Perform any tasks that need to happen when the tool is booted.

@@ -1,0 +1,103 @@
+Phase 1:
+
+issues
+ - id
+ - jira_id
+ - jira_key
+ - project_id
+ - project_key
+ - focus_group_id
+ - (field data...)
+
+projects
+ - id
+ - jira_id
+ - jira_key
+ - display_name
+ - icon_url
+
+focus_groups
+ - id
+ - display_name
+ - system_name
+ - description
+ - primary_color
+ - secondary_color
+ - criteria
+
+users
+ - id
+ - jira_id
+ - schedule_id
+
+schedules
+ - id
+ - display_name
+ - description
+
+schedule_focus_allocations
+ - id
+ - schedule_id
+ - focus_group_id
+ - sunday_allocation
+ - monday_allocation
+ - tuesday_allocation
+ - wednesday_allocation
+ - thursday_allocation
+ - friday_allocation
+ - saturday_allocation
+
+
+Phase 2:
+
+holidays
+ - id
+ - display_name
+ - date
+
+vacation_days
+ - id
+ - user_id
+ - date
+ - percentage
+
+
+Phase 3:
+
+issue_field_data
+ - id
+ - issue_id
+ - field_id
+
+fields
+ - id
+ - display_name
+ - jira_name
+ - system_name
+
+
+Phase 4:
+
+epics
+ - id
+ - display_name
+ - style_name
+ - background_color
+ - text_color
+
+labels
+ - id
+ - display_name
+
+versions
+ - id
+ - project_id
+ - jira_id
+ - jira_project_id
+ - display_name
+ - description
+ - archived
+ - released
+ - start_date
+ - release_date
+

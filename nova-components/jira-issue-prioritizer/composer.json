@@ -1,5 +1,5 @@
 {
-    "name": "nova-components/jira-issue-manager",
+    "name": "nova-components/jira-issue-prioritizer",
     "description": "A Laravel Nova tool.",
     "keywords": [
         "laravel",
@@ -11,13 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "NovaComponents\\JiraIssueManager\\": "src/"
+            "NovaComponents\\JiraIssuePrioritizer\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "NovaComponents\\JiraIssueManager\\ToolServiceProvider"
+                "NovaComponents\\JiraIssuePrioritizer\\ToolServiceProvider"
             ]
         }
     },

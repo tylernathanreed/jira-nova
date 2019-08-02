@@ -95,7 +95,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function tools()
     {
         return [
-            new \NovaComponents\JiraIssueManager\JiraIssueManager,
+            new \NovaComponents\JiraIssuePrioritizer\JiraIssuePrioritizer,
             new \MadWeb\NovaTelescopeLink\TelescopeLink('Telescope', 'blank')
         ];
     }

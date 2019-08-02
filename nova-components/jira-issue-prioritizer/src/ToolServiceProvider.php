@@ -1,12 +1,12 @@
 <?php
 
-namespace NovaComponents\JiraIssueManager;
+namespace NovaComponents\JiraIssuePrioritizer;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use NovaComponents\JiraIssueManager\Http\Middleware\Authorize;
+use NovaComponents\JiraIssuePrioritizer\Http\Middleware\Authorize;
 
 class ToolServiceProvider extends ServiceProvider
 {
