@@ -23,6 +23,7 @@ class CreateFocusGroupsTable extends Migration
             $table->string('system_name', 20)->nullable()->index();
             $table->string('description', 255)->nullable();
             $table->text('color');
+            $table->integer('priority')->unsigned();
             $table->text('criteria');
 
             // Revision tracking

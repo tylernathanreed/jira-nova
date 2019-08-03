@@ -657,8 +657,16 @@ table {
   --60: #bacad6;
   --70: #b3b9bf;
   --80: #7c858e;
-  --90: #252d37;
+  --90: #3c4b5f;
   --90-half: rgba(40, 54, 61, .5);
+  --warning-light: #fefcbf;
+  --warning-dark: #b7791f;
+  --success-light: #c6f6d5;
+  --success-dark: #38a169;
+  --danger-light: #fed7d7;
+  --danger-dark: #e53e3e;
+  --info-light: #bee3f8;
+  --info-dark: #3182ce;
 }
 
 /* Vue
@@ -1255,13 +1263,6 @@ textarea.form-input:read-only,
   background-size: 10px 6px;
   background-repeat: no-repeat;
   background-position: center right .75rem;
-}
-
-/* White Fade for excerpts
----------------------------------------------------------------------------- */
-
-.white-fade {
-  background: url('/img/white-fade.png');
 }
 
 /* Rotate
@@ -1915,6 +1916,38 @@ trix-editor.disabled {
   background-color: var(--90-half);
 }
 
+.bg-warning-light {
+  background-color: var(--warning-light);
+}
+
+.bg-warning-dark {
+  background-color: var(--warning-dark);
+}
+
+.bg-success-light {
+  background-color: var(--success-light);
+}
+
+.bg-success-dark {
+  background-color: var(--success-dark);
+}
+
+.bg-danger-light {
+  background-color: var(--danger-light);
+}
+
+.bg-danger-dark {
+  background-color: var(--danger-dark);
+}
+
+.bg-info-light {
+  background-color: var(--info-light);
+}
+
+.bg-info-dark {
+  background-color: var(--info-dark);
+}
+
 .hover\:bg-20:hover {
   background-color: var(--20);
 }
@@ -2013,6 +2046,38 @@ trix-editor.disabled {
 
 .hover\:bg-90-half:hover {
   background-color: var(--90-half);
+}
+
+.hover\:bg-warning-light:hover {
+  background-color: var(--warning-light);
+}
+
+.hover\:bg-warning-dark:hover {
+  background-color: var(--warning-dark);
+}
+
+.hover\:bg-success-light:hover {
+  background-color: var(--success-light);
+}
+
+.hover\:bg-success-dark:hover {
+  background-color: var(--success-dark);
+}
+
+.hover\:bg-danger-light:hover {
+  background-color: var(--danger-light);
+}
+
+.hover\:bg-danger-dark:hover {
+  background-color: var(--danger-dark);
+}
+
+.hover\:bg-info-light:hover {
+  background-color: var(--info-light);
+}
+
+.hover\:bg-info-dark:hover {
+  background-color: var(--info-dark);
 }
 
 .focus\:bg-20:focus {
@@ -2115,6 +2180,38 @@ trix-editor.disabled {
   background-color: var(--90-half);
 }
 
+.focus\:bg-warning-light:focus {
+  background-color: var(--warning-light);
+}
+
+.focus\:bg-warning-dark:focus {
+  background-color: var(--warning-dark);
+}
+
+.focus\:bg-success-light:focus {
+  background-color: var(--success-light);
+}
+
+.focus\:bg-success-dark:focus {
+  background-color: var(--success-dark);
+}
+
+.focus\:bg-danger-light:focus {
+  background-color: var(--danger-light);
+}
+
+.focus\:bg-danger-dark:focus {
+  background-color: var(--danger-dark);
+}
+
+.focus\:bg-info-light:focus {
+  background-color: var(--info-light);
+}
+
+.focus\:bg-info-dark:focus {
+  background-color: var(--info-dark);
+}
+
 .active\:bg-20:active {
   background-color: var(--20);
 }
@@ -2213,6 +2310,38 @@ trix-editor.disabled {
 
 .active\:bg-90-half:active {
   background-color: var(--90-half);
+}
+
+.active\:bg-warning-light:active {
+  background-color: var(--warning-light);
+}
+
+.active\:bg-warning-dark:active {
+  background-color: var(--warning-dark);
+}
+
+.active\:bg-success-light:active {
+  background-color: var(--success-light);
+}
+
+.active\:bg-success-dark:active {
+  background-color: var(--success-dark);
+}
+
+.active\:bg-danger-light:active {
+  background-color: var(--danger-light);
+}
+
+.active\:bg-danger-dark:active {
+  background-color: var(--danger-dark);
+}
+
+.active\:bg-info-light:active {
+  background-color: var(--info-light);
+}
+
+.active\:bg-info-dark:active {
+  background-color: var(--info-dark);
 }
 
 .bg-bottom {
@@ -2387,6 +2516,38 @@ trix-editor.disabled {
   border-color: var(--90-half);
 }
 
+.border-warning-light {
+  border-color: var(--warning-light);
+}
+
+.border-warning-dark {
+  border-color: var(--warning-dark);
+}
+
+.border-success-light {
+  border-color: var(--success-light);
+}
+
+.border-success-dark {
+  border-color: var(--success-dark);
+}
+
+.border-danger-light {
+  border-color: var(--danger-light);
+}
+
+.border-danger-dark {
+  border-color: var(--danger-dark);
+}
+
+.border-info-light {
+  border-color: var(--info-light);
+}
+
+.border-info-dark {
+  border-color: var(--info-dark);
+}
+
 .hover\:border-20:hover {
   border-color: var(--20);
 }
@@ -2485,6 +2646,38 @@ trix-editor.disabled {
 
 .hover\:border-90-half:hover {
   border-color: var(--90-half);
+}
+
+.hover\:border-warning-light:hover {
+  border-color: var(--warning-light);
+}
+
+.hover\:border-warning-dark:hover {
+  border-color: var(--warning-dark);
+}
+
+.hover\:border-success-light:hover {
+  border-color: var(--success-light);
+}
+
+.hover\:border-success-dark:hover {
+  border-color: var(--success-dark);
+}
+
+.hover\:border-danger-light:hover {
+  border-color: var(--danger-light);
+}
+
+.hover\:border-danger-dark:hover {
+  border-color: var(--danger-dark);
+}
+
+.hover\:border-info-light:hover {
+  border-color: var(--info-light);
+}
+
+.hover\:border-info-dark:hover {
+  border-color: var(--info-dark);
 }
 
 .rounded-none {
@@ -4509,6 +4702,38 @@ trix-editor.disabled {
   fill: var(--90-half);
 }
 
+.fill-warning-light {
+  fill: var(--warning-light);
+}
+
+.fill-warning-dark {
+  fill: var(--warning-dark);
+}
+
+.fill-success-light {
+  fill: var(--success-light);
+}
+
+.fill-success-dark {
+  fill: var(--success-dark);
+}
+
+.fill-danger-light {
+  fill: var(--danger-light);
+}
+
+.fill-danger-dark {
+  fill: var(--danger-dark);
+}
+
+.fill-info-light {
+  fill: var(--info-light);
+}
+
+.fill-info-dark {
+  fill: var(--info-dark);
+}
+
 .stroke-current {
   stroke: currentColor;
 }
@@ -4637,6 +4862,38 @@ trix-editor.disabled {
   color: var(--90-half);
 }
 
+.text-warning-light {
+  color: var(--warning-light);
+}
+
+.text-warning-dark {
+  color: var(--warning-dark);
+}
+
+.text-success-light {
+  color: var(--success-light);
+}
+
+.text-success-dark {
+  color: var(--success-dark);
+}
+
+.text-danger-light {
+  color: var(--danger-light);
+}
+
+.text-danger-dark {
+  color: var(--danger-dark);
+}
+
+.text-info-light {
+  color: var(--info-light);
+}
+
+.text-info-dark {
+  color: var(--info-dark);
+}
+
 .hover\:text-20:hover {
   color: var(--20);
 }
@@ -4735,6 +4992,38 @@ trix-editor.disabled {
 
 .hover\:text-90-half:hover {
   color: var(--90-half);
+}
+
+.hover\:text-warning-light:hover {
+  color: var(--warning-light);
+}
+
+.hover\:text-warning-dark:hover {
+  color: var(--warning-dark);
+}
+
+.hover\:text-success-light:hover {
+  color: var(--success-light);
+}
+
+.hover\:text-success-dark:hover {
+  color: var(--success-dark);
+}
+
+.hover\:text-danger-light:hover {
+  color: var(--danger-light);
+}
+
+.hover\:text-danger-dark:hover {
+  color: var(--danger-dark);
+}
+
+.hover\:text-info-light:hover {
+  color: var(--info-light);
+}
+
+.hover\:text-info-dark:hover {
+  color: var(--info-dark);
 }
 
 .text-xs {

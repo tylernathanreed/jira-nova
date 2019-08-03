@@ -44,6 +44,15 @@ class FocusGroup extends Resource
     public static $displayInNavigation = true;
 
     /**
+     * The default ordering to use when listing this resource.
+     *
+     * @var array
+     */
+    public static $defaultOrderings = [
+        'priority' => 'asc'
+    ];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -54,12 +63,13 @@ class FocusGroup extends Resource
     {
         return [
 
-            // Field::id('ID', 'id')->onlyOnForms(),
-            // Field::text('Display Name', 'display_name'),
-            // Field::text('System Name', 'system_name')->onlyOnForms(),
-            // Field::text('Description', 'description')->onlyOnForms(),
-            // Field::code('Color', 'color')->json(),
-            // Field::code('Criteria', 'criteria')->json()->onlyOnForms()
+            Field::id('ID', 'id')->hideFromIndex(),
+            Field::text('Display Name', 'display_name')->rules('required', 'string', 'max:20'),
+            Field::text('System Name', 'system_name')->hideFromIndex()->rules('string', 'max:20'),
+            Field::text('Description', 'description')->rules('string', 'max:255'),
+            Field::swatch('Color', 'color')->rules('required', 'json'),
+            Field::number('Priority', 'priority')->rules('required', 'min:1','max:999')->min(1)->max(999)->step(1)->sortable(),
+            Field::code('Criteria', 'criteria')->json()->rules('required', 'json')
 
         ];
     }

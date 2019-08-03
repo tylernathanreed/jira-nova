@@ -46,6 +46,7 @@ return [
 	/**
 	 * Package Fields
 	 */
-	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class
+	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class,
+	'swatch' => \NovaComponents\ColorSwatch\ColorSwatch::class
 
 ];

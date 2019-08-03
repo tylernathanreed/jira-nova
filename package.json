@@ -15,7 +15,9 @@
         "build-JiraIssueSwimlane": "cd nova-components/JiraIssueSwimlane && npm run dev",
         "build-JiraIssueSwimlane-prod": "cd nova-components/JiraIssueSwimlane && npm run prod",
         "build-icons": "cd nova-components/Icons && npm run dev",
-        "build-icons-prod": "cd nova-components/Icons && npm run prod"
+        "build-icons-prod": "cd nova-components/Icons && npm run prod",
+        "build-color-swatch": "cd nova-components/ColorSwatch && npm run dev",
+        "build-color-swatch-prod": "cd nova-components/ColorSwatch && npm run prod"
     },
     "devDependencies": {
         "axios": "^0.18",

@@ -25,7 +25,8 @@
         "reedware/nova-field-manager": "^0.2.0@dev",
         "reedware/nova-icons": "^1.0",
         "reedware/nova-partition-metric-style-fix": "dev-master",
-        "reedware/nova-value-toggle": "dev-master"
+        "reedware/nova-value-toggle": "dev-master",
+        "nova-components/color-swatch": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -51,6 +52,10 @@
         {
             "type": "path",
             "url": "./nova-components/jira-issue-prioritizer"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/ColorSwatch"
         }
     ],
     "config": {

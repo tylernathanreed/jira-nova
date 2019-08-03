@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06c0bb0ee6f6b1a0ed6720d36570c659",
+    "content-hash": "bb096c308517e8402c60a821471c0cae",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1628,6 +1628,40 @@
                 "php"
             ],
             "time": "2019-05-25T20:07:01+00:00"
+        },
+        {
+            "name": "nova-components/color-swatch",
+            "version": "dev-tasks/1/focus-groups",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/ColorSwatch",
+                "reference": "9ad02d126094a882f2081766f4ac5c9e8fb46a66",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NovaComponents\\ColorSwatch\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NovaComponents\\ColorSwatch\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ]
         },
         {
             "name": "nova-components/jira-issue-prioritizer",

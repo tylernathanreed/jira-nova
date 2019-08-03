@@ -22,6 +22,13 @@ abstract class Resource extends NovaResource
     public static $displayInNavigation = false;
 
     /**
+     * The default ordering to use when listing this resource.
+     *
+     * @var array
+     */
+    public static $defaultOrderings = [];
+
+    /**
      * Build an "index" query for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -131,5 +138,22 @@ abstract class Resource extends NovaResource
                             : $rule;
             })->all();
         })->all();
+    }
+
+    /**
+     * Apply any applicable orderings to the query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array                                  $orderings
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected static function applyOrderings($query, array $orderings)
+    {
+        if(empty($orderings)) {
+            $orderings = static::$defaultOrderings;
+        }
+
+        return parent::applyOrderings($query, $orderings);
     }
 }

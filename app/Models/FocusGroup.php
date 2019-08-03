@@ -24,6 +24,7 @@ class FocusGroup extends Model
      * @var array
      */
     protected $casts = [
+        'id' => 'integer',
         'color' => 'json',
         'criteria' => 'json'
     ];

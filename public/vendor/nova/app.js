@@ -367,6 +367,41 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Badge.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    props: {
+        label: {
+            type: String,
+            required: false
+        },
+
+        extraClasses: {
+            type: [Array, String],
+            required: false
+        }
+    }
+};
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/BooleanOption.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -791,58 +826,9 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 function link(path) {
-    return 'https://nova.laravel.com/docs/1.0/' + path;
+    return 'https://nova.laravel.com/docs/2.0/' + path;
 }
 
 exports.default = {
@@ -1493,6 +1479,39 @@ exports.default = {
         }
     }
 };
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Detail/BadgeField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _Badge = __webpack_require__("./resources/js/components/Badge.vue");
+
+var _Badge2 = _interopRequireDefault(_Badge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    components: {
+        Badge: _Badge2.default
+    },
+
+    props: ['resource', 'resourceName', 'resourceId', 'field']
+}; //
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
@@ -2602,17 +2621,6 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     props: {
@@ -2835,7 +2843,7 @@ exports.default = {
         validator: function validator(value) {
             return ['', 'with', 'only'].indexOf(value) != -1;
         }
-    }), (0, _defineProperty3.default)(_props, 'perPage', [String, Number]), (0, _defineProperty3.default)(_props, 'showTrashedOption', {
+    }), (0, _defineProperty3.default)(_props, 'perPage', [String, Number]), (0, _defineProperty3.default)(_props, 'perPageOptions', Array), (0, _defineProperty3.default)(_props, 'showTrashedOption', {
         type: Boolean,
         default: true
     }), _props),
@@ -3107,6 +3115,7 @@ exports.default = {
     mixins: [_laravelNova.TogglesTrashed, _laravelNova.PerformsSearches, _laravelNova.HandlesValidationErrors],
     props: {
         resourceName: String,
+        resourceId: {},
         field: Object,
         viaResource: {},
         viaResourceId: {},
@@ -3313,7 +3322,8 @@ exports.default = {
                     current: this.selectedResourceId,
                     first: this.initializingWithExistingResource,
                     search: this.search,
-                    withTrashed: this.withTrashed
+                    withTrashed: this.withTrashed,
+                    resourceId: this.resourceId
                 }
             };
         },
@@ -3451,6 +3461,28 @@ exports.default = {
 //
 //
 //
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Form/CancelButton.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    //
+};
 
 /***/ }),
 
@@ -3845,7 +3877,7 @@ exports.default = {
 
     methods: {
         /**
-         * Responsd to the file change
+         * Respond to the file change
          */
         fileChange: function fileChange(event) {
             var path = event.target.value;
@@ -5198,6 +5230,92 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Form/Panel.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'FormPanel',
+
+    props: {
+        panel: {
+            type: Object,
+            required: true
+        },
+
+        name: {
+            default: 'Panel'
+        },
+
+        mode: {
+            type: String,
+            default: 'form'
+        },
+
+        fields: {
+            type: Array,
+            default: []
+        },
+
+        validationErrors: {
+            type: Object,
+            required: true
+        },
+
+        resourceName: {
+            type: String,
+            required: true
+        },
+
+        resourceId: {
+            type: String
+        },
+
+        viaResource: {
+            type: String
+        },
+
+        viaResourceId: {
+            type: String
+        },
+
+        viaRelationship: {
+            type: String
+        }
+    }
+};
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Form/PasswordField.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6357,7 +6475,7 @@ Object.defineProperty(exports, "__esModule", {
 var classes = {
     '1': 'text-90 font-normal text-2xl',
     '2': 'text-90 font-normal text-xl',
-    '3': 'text-90 font-bold text-lg'
+    '3': 'text-90 uppercase tracking-wide font-bold text-sm'
 };
 
 exports.default = {
@@ -6647,6 +6765,37 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Index/BadgeField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _Badge = __webpack_require__("./resources/js/components/Badge.vue");
+
+var _Badge2 = _interopRequireDefault(_Badge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    components: {
+        Badge: _Badge2.default
+    },
+
+    props: ['resourceName', 'viaResource', 'viaResourceId', 'field']
+}; //
+//
+//
+//
+//
+//
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Index/BelongsToField.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6718,19 +6867,6 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -6882,27 +7018,6 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -7309,9 +7424,6 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
-//
-//
 //
 //
 //
@@ -8209,10 +8321,12 @@ exports.default = {
             type: Object,
             required: true
         },
+
         resourceName: {
             type: String,
             default: ''
         },
+
         resourceId: {
             type: [Number, String],
             default: ''
@@ -8229,6 +8343,12 @@ exports.default = {
             loading: true,
             chartData: []
         };
+    },
+
+    watch: {
+        resourceId: function resourceId() {
+            this.fetch();
+        }
     },
 
     created: function created() {
@@ -8306,10 +8426,12 @@ exports.default = {
             type: Object,
             required: true
         },
+
         resourceName: {
             type: String,
             default: ''
         },
+
         resourceId: {
             type: [Number, String],
             default: ''
@@ -8331,6 +8453,12 @@ exports.default = {
             suffix: '',
             selectedRangeKey: null
         };
+    },
+
+    watch: {
+        resourceId: function resourceId() {
+            this.fetch();
+        }
     },
 
     created: function created() {
@@ -8474,10 +8602,12 @@ exports.default = {
             type: Object,
             required: true
         },
+
         resourceName: {
             type: String,
             default: ''
         },
+
         resourceId: {
             type: [Number, String],
             default: ''
@@ -8499,6 +8629,12 @@ exports.default = {
             suffix: '',
             selectedRangeKey: null
         };
+    },
+
+    watch: {
+        resourceId: function resourceId() {
+            this.fetch();
+        }
     },
 
     created: function created() {
@@ -10556,11 +10692,6 @@ exports.default = {
 //
 //
 //
-//
-//
-//
-//
-//
 
 /***/ }),
 
@@ -10612,6 +10743,7 @@ exports.default = {
             submittedViaCreateAndAddAnother: false,
             submittedViaCreateResource: false,
             fields: [],
+            panels: [],
             validationErrors: new _laravelNova.Errors()
         };
     },
@@ -10672,15 +10804,16 @@ exports.default = {
          */
         getFields: function () {
             var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-                var _ref4, fields;
+                var _ref4, _ref4$data, panels, fields;
 
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
+                                this.panels = [];
                                 this.fields = [];
 
-                                _context2.next = 3;
+                                _context2.next = 4;
                                 return Nova.request().get('/nova-api/' + this.resourceName + '/creation-fields', {
                                     params: {
                                         editing: true,
@@ -10691,15 +10824,18 @@ exports.default = {
                                     }
                                 });
 
-                            case 3:
+                            case 4:
                                 _ref4 = _context2.sent;
-                                fields = _ref4.data;
+                                _ref4$data = _ref4.data;
+                                panels = _ref4$data.panels;
+                                fields = _ref4$data.fields;
 
 
+                                this.panels = panels;
                                 this.fields = fields;
                                 this.loading = false;
 
-                            case 7:
+                            case 11:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -10847,9 +10983,11 @@ exports.default = {
             var _this = this;
 
             return _.tap(new FormData(), function (formData) {
+                // _.each(this.panels, panel => {
                 _.each(_this.fields, function (field) {
                     field.fill(formData);
                 });
+                // })
 
                 formData.append('viaResource', _this.viaResource);
                 formData.append('viaResourceId', _this.viaResourceId);
@@ -10876,19 +11014,21 @@ exports.default = {
          */
         isWorking: function isWorking() {
             return this.submittedViaCreateResource || this.submittedViaCreateAndAddAnother;
+        },
+        panelsWithFields: function panelsWithFields() {
+            var _this2 = this;
+
+            return _.map(this.panels, function (panel) {
+                return {
+                    name: panel.name,
+                    fields: _.filter(_this2.fields, function (field) {
+                        return field.panel == panel.name;
+                    })
+                };
+            });
         }
     }
 }; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -11926,14 +12066,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     mixins: [_laravelNova.Deletable, _laravelNova.Filterable, _laravelNova.HasCards, _laravelNova.Paginatable, _laravelNova.PerPageable, _laravelNova.InteractsWithResourceInformation, _laravelNova.InteractsWithQueryString],
@@ -12157,7 +12289,7 @@ exports.default = {
 
                 return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + _this2.resourceName, {
                     params: _this2.resourceRequestQueryString
-                }), 500).then(function (_ref2) {
+                }), 300).then(function (_ref2) {
                     var data = _ref2.data;
 
                     _this2.resources = [];
@@ -12203,7 +12335,6 @@ exports.default = {
         getLenses: function getLenses() {
             var _this4 = this;
 
-            this.loading = true;
             this.lenses = [];
 
             if (this.viaResource) {
@@ -12353,7 +12484,7 @@ exports.default = {
          * Sync the per page values from the query string.
          */
         initializePerPageFromQueryString: function initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || 25;
+            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions);
         }
     },
 
@@ -12745,6 +12876,16 @@ exports.default = {
          */
         currentPerPage: function currentPerPage() {
             return this.perPage;
+        },
+
+
+        /**
+         * The per-page options configured for this resource.
+         */
+        perPageOptions: function perPageOptions() {
+            if (this.resourceResponse) {
+                return this.resourceResponse.per_page_options;
+            }
         }
     }
 };
@@ -12777,14 +12918,6 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -13183,7 +13316,7 @@ exports.default = {
 
                 return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + _this2.resourceName + '/lens/' + _this2.lens, {
                     params: _this2.resourceRequestQueryString
-                }), 500).then(function (_ref2) {
+                }), 300).then(function (_ref2) {
                     var data = _ref2.data;
 
                     _this2.resources = [];
@@ -13325,7 +13458,7 @@ exports.default = {
          * Sync the per page values from the query string.
          */
         initializePerPageFromQueryString: function initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || 25;
+            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions);
         }
     },
 
@@ -13687,6 +13820,16 @@ exports.default = {
          */
         currentPerPage: function currentPerPage() {
             return this.perPage;
+        },
+
+
+        /**
+         * The per-page options configured for this resource.
+         */
+        perPageOptions: function perPageOptions() {
+            if (this.resourceResponse) {
+                return this.resourceResponse.per_page_options;
+            }
         }
     }
 };
@@ -13744,6 +13887,7 @@ exports.default = {
             submittedViaUpdateAndContinueEditing: false,
             submittedViaUpdateResource: false,
             fields: [],
+            panels: [],
             validationErrors: new _laravelNova.Errors(),
             lastRetrievedAt: null
         };
@@ -13782,7 +13926,6 @@ exports.default = {
                         case 8:
 
                             this.getFields();
-
                             this.updateLastRetrievedAtTimestamp();
 
                         case 10:
@@ -13809,7 +13952,7 @@ exports.default = {
             var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
                 var _this = this;
 
-                var _ref4, fields;
+                var _ref4, _ref4$data, panels, fields;
 
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
@@ -13817,9 +13960,10 @@ exports.default = {
                             case 0:
                                 this.loading = true;
 
+                                this.panels = [];
                                 this.fields = [];
 
-                                _context2.next = 4;
+                                _context2.next = 5;
                                 return Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/update-fields', {
                                     params: {
                                         editing: true,
@@ -13835,16 +13979,18 @@ exports.default = {
                                     }
                                 });
 
-                            case 4:
+                            case 5:
                                 _ref4 = _context2.sent;
-                                fields = _ref4.data;
+                                _ref4$data = _ref4.data;
+                                panels = _ref4$data.panels;
+                                fields = _ref4$data.fields;
 
 
+                                this.panels = panels;
                                 this.fields = fields;
-
                                 this.loading = false;
 
-                            case 8:
+                            case 12:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -14042,16 +14188,21 @@ exports.default = {
          */
         isWorking: function isWorking() {
             return this.submittedViaUpdateResource || this.submittedViaUpdateAndContinueEditing;
+        },
+        panelsWithFields: function panelsWithFields() {
+            var _this3 = this;
+
+            return _.map(this.panels, function (panel) {
+                return {
+                    name: panel.name,
+                    fields: _.filter(_this3.fields, function (field) {
+                        return field.panel == panel.name;
+                    })
+                };
+            });
         }
     }
 }; //
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -14127,12 +14278,6 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -36213,133 +36358,98 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "loading-view",
-    { attrs: { loading: _vm.loading } },
-    [
-      _c("heading", { staticClass: "mb-3" }, [
-        _vm._v(_vm._s(_vm.__("New :resource", { resource: _vm.singularName })))
-      ]),
-      _vm._v(" "),
-      _c("card", { staticClass: "overflow-hidden" }, [
-        _vm.fields
-          ? _c(
-              "form",
-              {
-                attrs: { autocomplete: "off" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.createResource($event)
-                  }
+  return _c("loading-view", { attrs: { loading: _vm.loading } }, [
+    _vm.panels
+      ? _c(
+          "form",
+          {
+            attrs: { autocomplete: "off" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.createResource($event)
+              }
+            }
+          },
+          [
+            _vm._l(_vm.panelsWithFields, function(panel) {
+              return _c("form-panel", {
+                key: panel.name,
+                staticClass: "mb-8",
+                attrs: {
+                  panel: panel,
+                  name: panel.name,
+                  "resource-name": _vm.resourceName,
+                  fields: panel.fields,
+                  mode: "form",
+                  "validation-errors": _vm.validationErrors,
+                  "via-resource": _vm.viaResource,
+                  "via-resource-id": _vm.viaResourceId,
+                  "via-relationship": _vm.viaRelationship
                 }
-              },
+              })
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex items-center" },
               [
-                _c("validation-errors", {
-                  attrs: { errors: _vm.validationErrors }
-                }),
-                _vm._v(" "),
-                _vm._l(_vm.fields, function(field) {
-                  return _c(
-                    "div",
-                    [
-                      _c("form-" + field.component, {
-                        tag: "component",
-                        attrs: {
-                          errors: _vm.validationErrors,
-                          "resource-name": _vm.resourceName,
-                          field: field,
-                          "via-resource": _vm.viaResource,
-                          "via-resource-id": _vm.viaResourceId,
-                          "via-relationship": _vm.viaRelationship
-                        }
-                      })
-                    ],
-                    1
-                  )
-                }),
+                _c("cancel-button"),
                 _vm._v(" "),
                 _c(
-                  "div",
-                  { staticClass: "bg-30 flex items-center px-8 py-4" },
+                  "progress-button",
+                  {
+                    staticClass: "mr-3",
+                    attrs: {
+                      dusk: "create-and-add-another-button",
+                      disabled: _vm.isWorking,
+                      processing: _vm.submittedViaCreateAndAddAnother
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.createAndAddAnother($event)
+                      }
+                    }
+                  },
                   [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "btn btn-link dim cursor-pointer text-80 ml-auto mr-6",
-                        on: {
-                          click: function($event) {
-                            return _vm.$router.back()
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(_vm.__("Cancel")) +
-                            "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "progress-button",
-                      {
-                        staticClass: "mr-3",
-                        attrs: {
-                          dusk: "create-and-add-another-button",
-                          disabled: _vm.isWorking,
-                          processing: _vm.submittedViaCreateAndAddAnother
-                        },
-                        nativeOn: {
-                          click: function($event) {
-                            return _vm.createAndAddAnother($event)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(_vm.__("Create & Add Another")) +
-                            "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "progress-button",
-                      {
-                        attrs: {
-                          dusk: "create-button",
-                          type: "submit",
-                          disabled: _vm.isWorking,
-                          processing: _vm.submittedViaCreateResource
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(
-                              _vm.__("Create :resource", {
-                                resource: _vm.singularName
-                              })
-                            ) +
-                            "\n                "
-                        )
-                      ]
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.__("Create & Add Another")) +
+                        "\n            "
                     )
-                  ],
-                  1
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "progress-button",
+                  {
+                    attrs: {
+                      dusk: "create-button",
+                      type: "submit",
+                      disabled: _vm.isWorking,
+                      processing: _vm.submittedViaCreateResource
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(
+                          _vm.__("Create :resource", {
+                            resource: _vm.singularName
+                          })
+                        ) +
+                        "\n            "
+                    )
+                  ]
                 )
               ],
-              2
+              1
             )
-          : _vm._e()
-      ])
-    ],
-    1
-  )
+          ],
+          2
+        )
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38341,6 +38451,35 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-216638ff\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Index/BadgeField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("badge", {
+        attrs: { label: _vm.field.label, "extra-classes": _vm.field.typeClass }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-216638ff", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-217786b0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/Download.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39919,6 +40058,38 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-33da5f7c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/CancelButton.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "a",
+    {
+      staticClass: "btn btn-link dim cursor-pointer text-80 ml-auto mr-6",
+      on: {
+        click: function($event) {
+          return _vm.$router.back()
+        }
+      }
+    },
+    [_vm._v("\n    " + _vm._s(_vm.__("Cancel")) + "\n")]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-33da5f7c", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-34359573\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Index/BelongsToField.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -40491,298 +40662,294 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("card", { staticClass: "overflow-hidden" }, [
-        _vm.field
-          ? _c(
-              "form",
-              {
-                attrs: { autocomplete: "off" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.attachResource($event)
-                  }
+      _vm.field
+        ? _c(
+            "form",
+            {
+              attrs: { autocomplete: "off" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.attachResource($event)
                 }
-              },
-              [
-                _c(
-                  "default-field",
-                  { attrs: { field: _vm.field, errors: _vm.validationErrors } },
-                  [
-                    _c(
-                      "template",
-                      { slot: "field" },
-                      [
-                        _vm.field.searchable
-                          ? _c(
-                              "search-input",
-                              {
-                                staticClass: "mb-3",
-                                attrs: {
-                                  "data-testid":
-                                    _vm.field.resourceName + "-search-input",
-                                  value: _vm.selectedResource,
-                                  data: _vm.availableResources,
-                                  trackBy: "value",
-                                  searchBy: "display"
-                                },
-                                on: {
-                                  input: _vm.performSearch,
-                                  clear: _vm.clearSelection,
-                                  selected: _vm.selectResource
-                                },
-                                scopedSlots: _vm._u(
-                                  [
-                                    {
-                                      key: "option",
-                                      fn: function(ref) {
-                                        var option = ref.option
-                                        var selected = ref.selected
-                                        return _c(
-                                          "div",
-                                          { staticClass: "flex items-center" },
-                                          [
-                                            option.avatar
-                                              ? _c(
-                                                  "div",
-                                                  { staticClass: "mr-3" },
-                                                  [
-                                                    _c("img", {
-                                                      staticClass:
-                                                        "w-8 h-8 rounded-full block",
-                                                      attrs: {
-                                                        src: option.avatar
-                                                      }
-                                                    })
-                                                  ]
-                                                )
-                                              : _vm._e(),
-                                            _vm._v(
-                                              "\n\n                            " +
-                                                _vm._s(option.display) +
-                                                "\n                        "
-                                            )
-                                          ]
-                                        )
-                                      }
-                                    }
-                                  ],
-                                  null,
-                                  false,
-                                  1999877282
-                                )
-                              },
-                              [
-                                _vm.selectedResource
-                                  ? _c(
-                                      "div",
+              }
+            },
+            [
+              _c(
+                "card",
+                { staticClass: "overflow-hidden mb-8" },
+                [
+                  _c(
+                    "default-field",
+                    {
+                      attrs: { field: _vm.field, errors: _vm.validationErrors }
+                    },
+                    [
+                      _c(
+                        "template",
+                        { slot: "field" },
+                        [
+                          _vm.field.searchable
+                            ? _c(
+                                "search-input",
+                                {
+                                  staticClass: "mb-3",
+                                  attrs: {
+                                    "data-testid":
+                                      _vm.field.resourceName + "-search-input",
+                                    value: _vm.selectedResource,
+                                    data: _vm.availableResources,
+                                    trackBy: "value",
+                                    searchBy: "display"
+                                  },
+                                  on: {
+                                    input: _vm.performSearch,
+                                    clear: _vm.clearSelection,
+                                    selected: _vm.selectResource
+                                  },
+                                  scopedSlots: _vm._u(
+                                    [
                                       {
-                                        staticClass: "flex items-center",
-                                        attrs: { slot: "default" },
-                                        slot: "default"
-                                      },
-                                      [
-                                        _vm.selectedResource.avatar
-                                          ? _c("div", { staticClass: "mr-3" }, [
-                                              _c("img", {
-                                                staticClass:
-                                                  "w-8 h-8 rounded-full block",
-                                                attrs: {
-                                                  src:
-                                                    _vm.selectedResource.avatar
-                                                }
-                                              })
-                                            ])
-                                          : _vm._e(),
-                                        _vm._v(
-                                          "\n\n                            " +
-                                            _vm._s(
-                                              _vm.selectedResource.display
-                                            ) +
-                                            "\n                        "
-                                        )
-                                      ]
-                                    )
-                                  : _vm._e()
-                              ]
-                            )
-                          : _c(
-                              "select-control",
-                              {
-                                staticClass:
-                                  "form-control form-select mb-3 w-full",
-                                class: {
-                                  "border-danger": _vm.validationErrors.has(
-                                    _vm.field.attribute
+                                        key: "option",
+                                        fn: function(ref) {
+                                          var option = ref.option
+                                          var selected = ref.selected
+                                          return _c(
+                                            "div",
+                                            {
+                                              staticClass: "flex items-center"
+                                            },
+                                            [
+                                              option.avatar
+                                                ? _c(
+                                                    "div",
+                                                    { staticClass: "mr-3" },
+                                                    [
+                                                      _c("img", {
+                                                        staticClass:
+                                                          "w-8 h-8 rounded-full block",
+                                                        attrs: {
+                                                          src: option.avatar
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                : _vm._e(),
+                                              _vm._v(
+                                                "\n\n                            " +
+                                                  _vm._s(option.display) +
+                                                  "\n                        "
+                                              )
+                                            ]
+                                          )
+                                        }
+                                      }
+                                    ],
+                                    null,
+                                    false,
+                                    1999877282
                                   )
                                 },
-                                attrs: {
-                                  dusk: "attachable-select",
-                                  "data-testid":
-                                    _vm.field.resourceName + "-select",
-                                  options: _vm.availableResources,
-                                  label: "display",
-                                  selected: _vm.selectedResourceId
-                                },
-                                on: {
-                                  change: _vm.selectResourceFromSelectControl
-                                }
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: {
-                                      value: "",
-                                      disabled: "",
-                                      selected: ""
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.__("Choose :resource", {
-                                          resource: _vm.relatedResourceLabel
-                                        })
+                                [
+                                  _vm.selectedResource
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass: "flex items-center",
+                                          attrs: { slot: "default" },
+                                          slot: "default"
+                                        },
+                                        [
+                                          _vm.selectedResource.avatar
+                                            ? _c(
+                                                "div",
+                                                { staticClass: "mr-3" },
+                                                [
+                                                  _c("img", {
+                                                    staticClass:
+                                                      "w-8 h-8 rounded-full block",
+                                                    attrs: {
+                                                      src:
+                                                        _vm.selectedResource
+                                                          .avatar
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            : _vm._e(),
+                                          _vm._v(
+                                            "\n\n                            " +
+                                              _vm._s(
+                                                _vm.selectedResource.display
+                                              ) +
+                                              "\n                        "
+                                          )
+                                        ]
                                       )
+                                    : _vm._e()
+                                ]
+                              )
+                            : _c(
+                                "select-control",
+                                {
+                                  staticClass:
+                                    "form-control form-select mb-3 w-full",
+                                  class: {
+                                    "border-danger": _vm.validationErrors.has(
+                                      _vm.field.attribute
                                     )
-                                  ]
-                                )
-                              ]
-                            ),
-                        _vm._v(" "),
-                        _vm.softDeletes
-                          ? _c(
-                              "div",
-                              [
-                                _c(
-                                  "checkbox-with-label",
-                                  {
-                                    attrs: {
-                                      dusk:
-                                        _vm.field.resourceName +
-                                        "-with-trashed-checkbox",
-                                      checked: _vm.withTrashed
-                                    },
-                                    on: { change: _vm.toggleWithTrashed }
                                   },
-                                  [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.__("With Trashed")) +
-                                        "\n                        "
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            )
-                          : _vm._e()
+                                  attrs: {
+                                    dusk: "attachable-select",
+                                    "data-testid":
+                                      _vm.field.resourceName + "-select",
+                                    options: _vm.availableResources,
+                                    label: "display",
+                                    selected: _vm.selectedResourceId
+                                  },
+                                  on: {
+                                    change: _vm.selectResourceFromSelectControl
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: {
+                                        value: "",
+                                        disabled: "",
+                                        selected: ""
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.__("Choose :resource", {
+                                            resource: _vm.relatedResourceLabel
+                                          })
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
+                          _vm._v(" "),
+                          _vm.softDeletes
+                            ? _c(
+                                "div",
+                                [
+                                  _c(
+                                    "checkbox-with-label",
+                                    {
+                                      attrs: {
+                                        dusk:
+                                          _vm.field.resourceName +
+                                          "-with-trashed-checkbox",
+                                        checked: _vm.withTrashed
+                                      },
+                                      on: { change: _vm.toggleWithTrashed }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(_vm.__("With Trashed")) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.fields, function(field) {
+                    return _c(
+                      "div",
+                      [
+                        _c("form-" + field.component, {
+                          tag: "component",
+                          attrs: {
+                            "resource-name": _vm.resourceName,
+                            field: field,
+                            errors: _vm.validationErrors,
+                            "via-resource": _vm.viaResource,
+                            "via-resource-id": _vm.viaResourceId,
+                            "via-relationship": _vm.viaRelationship
+                          }
+                        })
                       ],
                       1
                     )
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.fields, function(field) {
-                  return _c(
-                    "div",
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex" },
+                [
+                  _c("cancel-button"),
+                  _vm._v(" "),
+                  _c(
+                    "progress-button",
+                    {
+                      staticClass: "mr-3",
+                      attrs: {
+                        dusk: "attach-and-attach-another-button",
+                        disabled: _vm.isWorking,
+                        processing: _vm.submittedViaAttachAndAttachAnother
+                      },
+                      nativeOn: {
+                        click: function($event) {
+                          return _vm.attachAndAttachAnother($event)
+                        }
+                      }
+                    },
                     [
-                      _c("form-" + field.component, {
-                        tag: "component",
-                        attrs: {
-                          "resource-name": _vm.resourceName,
-                          field: field,
-                          errors: _vm.validationErrors,
-                          "via-resource": _vm.viaResource,
-                          "via-resource-id": _vm.viaResourceId,
-                          "via-relationship": _vm.viaRelationship
-                        }
-                      })
-                    ],
-                    1
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.__("Attach & Attach Another")) +
+                          "\n            "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "progress-button",
+                    {
+                      attrs: {
+                        dusk: "attach-button",
+                        type: "submit",
+                        disabled: _vm.isWorking,
+                        processing: _vm.submittedViaAttachResource
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(
+                            _vm.__("Attach :resource", {
+                              resource: _vm.relatedResourceLabel
+                            })
+                          ) +
+                          "\n            "
+                      )
+                    ]
                   )
-                }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "bg-30 flex px-8 py-4" },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "btn btn-default btn-link dim cursor-pointer text-80 ml-auto mr-6",
-                        on: {
-                          click: function($event) {
-                            return _vm.$router.back()
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(_vm.__("Cancel")) +
-                            "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "progress-button",
-                      {
-                        staticClass: "mr-3",
-                        attrs: {
-                          dusk: "attach-and-attach-another-button",
-                          disabled: _vm.isWorking,
-                          processing: _vm.submittedViaAttachAndAttachAnother
-                        },
-                        nativeOn: {
-                          click: function($event) {
-                            return _vm.attachAndAttachAnother($event)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(_vm.__("Attach & Attach Another")) +
-                            "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "progress-button",
-                      {
-                        attrs: {
-                          dusk: "attach-button",
-                          type: "submit",
-                          disabled: _vm.isWorking,
-                          processing: _vm.submittedViaAttachResource
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(
-                              _vm.__("Attach :resource", {
-                                resource: _vm.relatedResourceLabel
-                              })
-                            ) +
-                            "\n                "
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                )
-              ],
-              2
-            )
-          : _vm._e()
-      ])
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e()
     ],
     1
   )
@@ -40855,6 +41022,47 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-44ce64f5", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4528b65a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Detail/BadgeField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "panel-item",
+    { attrs: { field: _vm.field } },
+    [
+      _c(
+        "template",
+        { slot: "value" },
+        [
+          _c("badge", {
+            staticClass: "mt-1",
+            attrs: {
+              label: _vm.field.label,
+              "extra-classes": _vm.field.typeClass
+            }
+          })
+        ],
+        1
+      )
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4528b65a", module.exports)
   }
 }
 
@@ -41067,6 +41275,7 @@ var render = function() {
       _vm._v(" "),
       _c("heading", {
         staticClass: "mb-3",
+        attrs: { level: 1 },
         domProps: { innerHTML: _vm._s(_vm.headingTitle) }
       }),
       _vm._v(" "),
@@ -41392,7 +41601,8 @@ var render = function() {
                       "via-resource": _vm.viaResource,
                       "via-has-one": _vm.viaHasOne,
                       trashed: _vm.trashed,
-                      "per-page": _vm.perPage
+                      "per-page": _vm.perPage,
+                      "per-page-options": _vm.perPageOptions
                     },
                     on: {
                       "clear-selected-filters": _vm.clearSelectedFilters,
@@ -41473,38 +41683,13 @@ var render = function() {
                               }
                             },
                             [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    id: "Page-1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "g",
-                                    {
-                                      attrs: {
-                                        id: "05-blank-state",
-                                        fill: "#A8B9C5",
-                                        "fill-rule": "nonzero",
-                                        transform: "translate(-779 -695)"
-                                      }
-                                    },
-                                    [
-                                      _c("path", {
-                                        attrs: {
-                                          id: "Combined-Shape",
-                                          d:
-                                            "M835 735h2c.552285 0 1 .447715 1 1s-.447715 1-1 1h-2v2c0 .552285-.447715 1-1 1s-1-.447715-1-1v-2h-2c-.552285 0-1-.447715-1-1s.447715-1 1-1h2v-2c0-.552285.447715-1 1-1s1 .447715 1 1v2zm-5.364125-8H817v8h7.049375c.350333-3.528515 2.534789-6.517471 5.5865-8zm-5.5865 10H785c-3.313708 0-6-2.686292-6-6v-30c0-3.313708 2.686292-6 6-6h44c3.313708 0 6 2.686292 6 6v25.049375c5.053323.501725 9 4.765277 9 9.950625 0 5.522847-4.477153 10-10 10-5.185348 0-9.4489-3.946677-9.950625-9zM799 725h16v-8h-16v8zm0 2v8h16v-8h-16zm34-2v-8h-16v8h16zm-52 0h16v-8h-16v8zm0 2v4c0 2.209139 1.790861 4 4 4h12v-8h-16zm18-12h16v-8h-16v8zm34 0v-8h-16v8h16zm-52 0h16v-8h-16v8zm52-10v-4c0-2.209139-1.790861-4-4-4h-44c-2.209139 0-4 1.790861-4 4v4h52zm1 39c4.418278 0 8-3.581722 8-8s-3.581722-8-8-8-8 3.581722-8 8 3.581722 8 8 8z"
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ]
-                              )
+                              _c("path", {
+                                attrs: {
+                                  fill: "#A8B9C5",
+                                  d:
+                                    "M56 40h2c.552285 0 1 .447715 1 1s-.447715 1-1 1h-2v2c0 .552285-.447715 1-1 1s-1-.447715-1-1v-2h-2c-.552285 0-1-.447715-1-1s.447715-1 1-1h2v-2c0-.552285.447715-1 1-1s1 .447715 1 1v2zm-5.364125-8H38v8h7.049375c.350333-3.528515 2.534789-6.517471 5.5865-8zm-5.5865 10H6c-3.313708 0-6-2.686292-6-6V6c0-3.313708 2.686292-6 6-6h44c3.313708 0 6 2.686292 6 6v25.049375C61.053323 31.5511 65 35.814652 65 41c0 5.522847-4.477153 10-10 10-5.185348 0-9.4489-3.946677-9.950625-9zM20 30h16v-8H20v8zm0 2v8h16v-8H20zm34-2v-8H38v8h16zM2 30h16v-8H2v8zm0 2v4c0 2.209139 1.790861 4 4 4h12v-8H2zm18-12h16v-8H20v8zm34 0v-8H38v8h16zM2 20h16v-8H2v8zm52-10V6c0-2.209139-1.790861-4-4-4H6C3.790861 2 2 3.790861 2 6v4h52zm1 39c4.418278 0 8-3.581722 8-8s-3.581722-8-8-8-8 3.581722-8 8 3.581722 8 8 8z"
+                                }
+                              })
                             ]
                           ),
                           _vm._v(" "),
@@ -42051,6 +42236,35 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-50448ac8\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Badge.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "span",
+    {
+      staticClass:
+        "whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold",
+      class: _vm.extraClasses
+    },
+    [_vm._v("\n    " + _vm._s(_vm.label) + "\n")]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-50448ac8", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-50614433\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Metrics/PartitionMetric.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42180,51 +42394,22 @@ var render = function() {
                     }
                   },
                   [
-                    _c(
-                      "g",
-                      {
-                        attrs: {
-                          id: "Page-1",
-                          fill: "none",
-                          "fill-rule": "evenodd"
-                        }
-                      },
-                      [
-                        _c(
-                          "g",
-                          {
-                            attrs: { id: "checkbox-on", "fill-rule": "nonzero" }
-                          },
-                          [
-                            _c(
-                              "g",
-                              {
-                                attrs: { id: "b-link", fill: "var(--primary)" }
-                              },
-                              [
-                                _c("rect", {
-                                  attrs: {
-                                    id: "b",
-                                    width: "20",
-                                    height: "20",
-                                    rx: "4"
-                                  }
-                                })
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                id: "Shape",
-                                fill: "#FFF",
-                                d:
-                                  "M7.7 9.3c-.23477048-.3130273-.63054226-.46037132-1.01285927-.37708287-.38231702.08328846-.68093514.38190658-.7642236.7642236C5.83962868 10.0694577 5.9869727 10.4652295 6.3 10.7l2 2c.38884351.3811429 1.01115649.3811429 1.4 0l4-4c.3130273-.23477048.4603713-.63054226.3770829-1.01285927-.0832885-.38231702-.3819066-.68093514-.7642236-.7642236C12.9305423 6.83962868 12.5347705 6.9869727 12.3 7.3L9 10.58l-1.3-1.3v.02z"
-                              }
-                            })
-                          ]
-                        )
-                      ]
-                    )
+                    _c("rect", {
+                      attrs: {
+                        width: "20",
+                        height: "20",
+                        fill: "var(--primary)",
+                        rx: "4"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      attrs: {
+                        fill: "#FFF",
+                        d:
+                          "M7.7 9.3c-.23477048-.3130273-.63054226-.46037132-1.01285927-.37708287-.38231702.08328846-.68093514.38190658-.7642236.7642236C5.83962868 10.0694577 5.9869727 10.4652295 6.3 10.7l2 2c.38884351.3811429 1.01115649.3811429 1.4 0l4-4c.3130273-.23477048.4603713-.63054226.3770829-1.01285927-.0832885-.38231702-.3819066-.68093514-.7642236-.7642236C12.9305423 6.83962868 12.5347705 6.9869727 12.3 7.3L9 10.58l-1.3-1.3v.02z"
+                      }
+                    })
                   ]
                 )
               : _c(
@@ -42239,52 +42424,26 @@ var render = function() {
                     }
                   },
                   [
-                    _c(
-                      "g",
-                      {
-                        attrs: {
-                          id: "Page-1",
-                          fill: "none",
-                          "fill-rule": "evenodd"
-                        }
-                      },
-                      [
-                        _c("g", { attrs: { id: "checkbox-off" } }, [
-                          _c(
-                            "g",
-                            {
-                              attrs: {
-                                id: "b-link",
-                                fill: "#FFF",
-                                "fill-rule": "nonzero"
-                              }
-                            },
-                            [
-                              _c("rect", {
-                                attrs: {
-                                  id: "b",
-                                  width: "20",
-                                  height: "20",
-                                  rx: "4"
-                                }
-                              })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("rect", {
-                            attrs: {
-                              id: "Rectangle-path",
-                              width: "19",
-                              height: "19",
-                              x: ".5",
-                              y: ".5",
-                              stroke: "#CCD4DB",
-                              rx: "4"
-                            }
-                          })
-                        ])
-                      ]
-                    )
+                    _c("rect", {
+                      attrs: {
+                        width: "20",
+                        height: "20",
+                        fill: "#FFF",
+                        rx: "4"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("rect", {
+                      attrs: {
+                        width: "19",
+                        height: "19",
+                        fill: "none",
+                        x: ".5",
+                        y: ".5",
+                        stroke: "#CCD4DB",
+                        rx: "4"
+                      }
+                    })
                   ]
                 )
           ])
@@ -43210,19 +43369,16 @@ var render = function() {
                               on: { change: _vm.perPageChanged },
                               slot: "select"
                             },
-                            [
-                              _c("option", { attrs: { value: "25" } }, [
-                                _vm._v("25")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "50" } }, [
-                                _vm._v("50")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "100" } }, [
-                                _vm._v("100")
+                            _vm._l(_vm.perPageOptions, function(option) {
+                              return _c("option", { key: option }, [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(option) +
+                                    "\n                        "
+                                )
                               ])
-                            ]
+                            }),
+                            0
                           )
                         ])
                       ])
@@ -43617,6 +43773,7 @@ var render = function() {
                       "via-has-one": _vm.viaHasOne,
                       trashed: _vm.trashed,
                       "per-page": _vm.perPage,
+                      "per-page-options": _vm.perPageOptions,
                       lens: _vm.lens
                     },
                     on: {
@@ -43700,38 +43857,13 @@ var render = function() {
                               }
                             },
                             [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    id: "Page-1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "g",
-                                    {
-                                      attrs: {
-                                        id: "05-blank-state",
-                                        fill: "#A8B9C5",
-                                        "fill-rule": "nonzero",
-                                        transform: "translate(-779 -695)"
-                                      }
-                                    },
-                                    [
-                                      _c("path", {
-                                        attrs: {
-                                          id: "Combined-Shape",
-                                          d:
-                                            "M835 735h2c.552285 0 1 .447715 1 1s-.447715 1-1 1h-2v2c0 .552285-.447715 1-1 1s-1-.447715-1-1v-2h-2c-.552285 0-1-.447715-1-1s.447715-1 1-1h2v-2c0-.552285.447715-1 1-1s1 .447715 1 1v2zm-5.364125-8H817v8h7.049375c.350333-3.528515 2.534789-6.517471 5.5865-8zm-5.5865 10H785c-3.313708 0-6-2.686292-6-6v-30c0-3.313708 2.686292-6 6-6h44c3.313708 0 6 2.686292 6 6v25.049375c5.053323.501725 9 4.765277 9 9.950625 0 5.522847-4.477153 10-10 10-5.185348 0-9.4489-3.946677-9.950625-9zM799 725h16v-8h-16v8zm0 2v8h16v-8h-16zm34-2v-8h-16v8h16zm-52 0h16v-8h-16v8zm0 2v4c0 2.209139 1.790861 4 4 4h12v-8h-16zm18-12h16v-8h-16v8zm34 0v-8h-16v8h16zm-52 0h16v-8h-16v8zm52-10v-4c0-2.209139-1.790861-4-4-4h-44c-2.209139 0-4 1.790861-4 4v4h52zm1 39c4.418278 0 8-3.581722 8-8s-3.581722-8-8-8-8 3.581722-8 8 3.581722 8 8 8z"
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ]
-                              )
+                              _c("path", {
+                                attrs: {
+                                  fill: "#A8B9C5",
+                                  d:
+                                    "M56 40h2c.552285 0 1 .447715 1 1s-.447715 1-1 1h-2v2c0 .552285-.447715 1-1 1s-1-.447715-1-1v-2h-2c-.552285 0-1-.447715-1-1s.447715-1 1-1h2v-2c0-.552285.447715-1 1-1s1 .447715 1 1v2zm-5.364125-8H38v8h7.049375c.350333-3.528515 2.534789-6.517471 5.5865-8zm-5.5865 10H6c-3.313708 0-6-2.686292-6-6V6c0-3.313708 2.686292-6 6-6h44c3.313708 0 6 2.686292 6 6v25.049375C61.053323 31.5511 65 35.814652 65 41c0 5.522847-4.477153 10-10 10-5.185348 0-9.4489-3.946677-9.950625-9zM20 30h16v-8H20v8zm0 2v8h16v-8H20zm34-2v-8H38v8h16zM2 30h16v-8H2v8zm0 2v4c0 2.209139 1.790861 4 4 4h12v-8H2zm18-12h16v-8H20v8zm34 0v-8H38v8h16zM2 20h16v-8H2v8zm52-10V6c0-2.209139-1.790861-4-4-4H6C3.790861 2 2 3.790861 2 6v4h52zm1 39c4.418278 0 8-3.581722 8-8s-3.581722-8-8-8-8 3.581722-8 8 3.581722 8 8 8z"
+                                }
+                              })
                             ]
                           ),
                           _vm._v(" "),
@@ -43968,7 +44100,7 @@ var render = function() {
         _vm._v(" "),
         _c("p", { staticClass: "text-90 leading-tight mb-8" }, [
           _vm._v(
-            "\n            Welcome to Nova! Get familiar with Nova and explore it's features in the\n            documentation:\n        "
+            "\n            Welcome to Nova! Get familiar with Nova and explore its features in the\n            documentation:\n        "
           )
         ]),
         _vm._v(" "),
@@ -44012,38 +44144,13 @@ var render = function() {
                                 }
                               },
                               [
-                                _c(
-                                  "g",
-                                  {
-                                    attrs: {
-                                      id: "Page-1",
-                                      fill: "none",
-                                      "fill-rule": "evenodd"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          id: "icon-resources",
-                                          fill: "var(--primary)",
-                                          "fill-rule": "nonzero",
-                                          transform: "translate(0 -1)"
-                                        }
-                                      },
-                                      [
-                                        _c("path", {
-                                          attrs: {
-                                            id: "Shape",
-                                            d:
-                                              "M31.51 26.86l7.32 7.31c1.0110617 1.0110616 1.4059262 2.4847161 1.035852 3.865852-.3700742 1.3811359-1.4488641 2.4599258-2.83 2.83-1.3811359.3700742-2.8547904-.0247903-3.865852-1.035852l-7.31-7.32c-7.3497931 4.4833975-16.89094893 2.7645226-22.21403734-4.0019419-5.3230884-6.7664645-4.74742381-16.4441086 1.34028151-22.53181393C11.0739495-.11146115 20.7515936-.68712574 27.5180581 4.63596266 34.2845226 9.95905107 36.0033975 19.5002069 31.52 26.85l-.01.01zm-3.99 4.5l7.07 7.05c.7935206.6795536 1.9763883.6338645 2.7151264-.1048736.7387381-.7387381.7844272-1.9216058.1048736-2.7151264l-7.06-7.07c-.8293081 1.0508547-1.7791453 2.0006919-2.83 2.83v.01zM17 33c8.2842712 0 15-6.7157288 15-15 0-8.28427125-6.7157288-15-15-15C8.71572875 3 2 9.71572875 2 18c0 8.2842712 6.71572875 15 15 15zm0-2C9.82029825 31 4 25.1797017 4 18S9.82029825 5 17 5c7.1797017 0 13 5.8202983 13 13s-5.8202983 13-13 13zm0-2c6.0751322 0 11-4.9248678 11-11S23.0751322 7 17 7 6 11.9248678 6 18s4.9248678 11 11 11z"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
+                                _c("path", {
+                                  attrs: {
+                                    fill: "var(--primary)",
+                                    d:
+                                      "M31.51 25.86l7.32 7.31c1.0110617 1.0110616 1.4059262 2.4847161 1.035852 3.865852-.3700742 1.3811359-1.4488641 2.4599258-2.83 2.83-1.3811359.3700742-2.8547904-.0247903-3.865852-1.035852l-7.31-7.32c-7.3497931 4.4833975-16.89094893 2.7645226-22.21403734-4.0019419-5.3230884-6.7664645-4.74742381-16.4441086 1.34028151-22.53181393C11.0739495-1.11146115 20.7515936-1.68712574 27.5180581 3.63596266 34.2845226 8.95905107 36.0033975 18.5002069 31.52 25.85l-.01.01zm-3.99 4.5l7.07 7.05c.7935206.6795536 1.9763883.6338645 2.7151264-.1048736.7387381-.7387381.7844272-1.9216058.1048736-2.7151264l-7.06-7.07c-.8293081 1.0508547-1.7791453 2.0006919-2.83 2.83v.01zM17 32c8.2842712 0 15-6.7157288 15-15 0-8.28427125-6.7157288-15-15-15C8.71572875 2 2 8.71572875 2 17c0 8.2842712 6.71572875 15 15 15zm0-2C9.82029825 30 4 24.1797017 4 17S9.82029825 4 17 4c7.1797017 0 13 5.8202983 13 13s-5.8202983 13-13 13zm0-2c6.0751322 0 11-4.9248678 11-11S23.0751322 6 17 6 6 10.9248678 6 17s4.9248678 11 11 11z"
+                                  }
+                                })
                               ]
                             )
                           ]
@@ -44100,37 +44207,13 @@ var render = function() {
                                 }
                               },
                               [
-                                _c(
-                                  "g",
-                                  {
-                                    attrs: {
-                                      id: "Page-1",
-                                      fill: "none",
-                                      "fill-rule": "evenodd"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          id: "icon-actions",
-                                          fill: "var(--primary)",
-                                          "fill-rule": "nonzero"
-                                        }
-                                      },
-                                      [
-                                        _c("path", {
-                                          attrs: {
-                                            id: "Shape",
-                                            d:
-                                              "M22 44C9.8497355 44 0 34.1502645 0 22S9.8497355 0 22 0s22 9.8497355 22 22-9.8497355 22-22 22zm0-2c11.045695 0 20-8.954305 20-20S33.045695 2 22 2 2 10.954305 2 22s8.954305 20 20 20zm3-24h5c.3638839-.0007291.6994429.1962627.8761609.5143551.176718.3180924.1666987.707072-.0261609 1.0156449l-10 16C20.32 36.38 19 36 19 35v-9h-5c-.3638839.0007291-.6994429-.1962627-.8761609-.5143551-.176718-.3180924-.1666987-.707072.0261609-1.0156449l10-16C23.68 7.62 25 8 25 9v9zm3.2 2H24c-.5522847 0-1-.4477153-1-1v-6.51L15.8 24H20c.5522847 0 1 .4477153 1 1v6.51L28.2 20z"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
+                                _c("path", {
+                                  attrs: {
+                                    fill: "var(--primary)",
+                                    d:
+                                      "M22 44C9.8497355 44 0 34.1502645 0 22S9.8497355 0 22 0s22 9.8497355 22 22-9.8497355 22-22 22zm0-2c11.045695 0 20-8.954305 20-20S33.045695 2 22 2 2 10.954305 2 22s8.954305 20 20 20zm3-24h5c.3638839-.0007291.6994429.1962627.8761609.5143551.176718.3180924.1666987.707072-.0261609 1.0156449l-10 16C20.32 36.38 19 36 19 35v-9h-5c-.3638839.0007291-.6994429-.1962627-.8761609-.5143551-.176718-.3180924-.1666987-.707072.0261609-1.0156449l10-16C23.68 7.62 25 8 25 9v9zm3.2 2H24c-.5522847 0-1-.4477153-1-1v-6.51L15.8 24H20c.5522847 0 1 .4477153 1 1v6.51L28.2 20z"
+                                  }
+                                })
                               ]
                             )
                           ]
@@ -44191,37 +44274,13 @@ var render = function() {
                                 }
                               },
                               [
-                                _c(
-                                  "g",
-                                  {
-                                    attrs: {
-                                      id: "Page-1",
-                                      fill: "none",
-                                      "fill-rule": "evenodd"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          id: "icon-filters",
-                                          fill: "var(--primary)",
-                                          "fill-rule": "nonzero"
-                                        }
-                                      },
-                                      [
-                                        _c("path", {
-                                          attrs: {
-                                            id: "Shape",
-                                            d:
-                                              "M36 4V2H2v6.59l13.7 13.7c.1884143.1846305.296243.4362307.3.7v11.6l6-6v-5.6c.003757-.2637693.1115857-.5153695.3-.7L36 8.6V6H19c-.5522847 0-1-.44771525-1-1s.4477153-1 1-1h17zM.3 9.7C.11158574 9.51536954.00375705 9.26376927 0 9V1c0-.55228475.44771525-1 1-1h36c.5522847 0 1 .44771525 1 1v8c-.003757.26376927-.1115857.51536954-.3.7L24 23.42V29c-.003757.2637693-.1115857.5153695-.3.7l-8 8c-.2857003.2801197-.7108712.3629755-1.0808485.210632C14.2491743 37.7582884 14.0056201 37.4000752 14 37V23.4L.3 9.71V9.7z"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
+                                _c("path", {
+                                  attrs: {
+                                    fill: "var(--primary)",
+                                    d:
+                                      "M36 4V2H2v6.59l13.7 13.7c.1884143.1846305.296243.4362307.3.7v11.6l6-6v-5.6c.003757-.2637693.1115857-.5153695.3-.7L36 8.6V6H19c-.5522847 0-1-.44771525-1-1s.4477153-1 1-1h17zM.3 9.7C.11158574 9.51536954.00375705 9.26376927 0 9V1c0-.55228475.44771525-1 1-1h36c.5522847 0 1 .44771525 1 1v8c-.003757.26376927-.1115857.51536954-.3.7L24 23.42V29c-.003757.2637693-.1115857.5153695-.3.7l-8 8c-.2857003.2801197-.7108712.3629755-1.0808485.210632C14.2491743 37.7582884 14.0056201 37.4000752 14 37V23.4L.3 9.71V9.7z"
+                                  }
+                                })
                               ]
                             )
                           ]
@@ -44278,37 +44337,13 @@ var render = function() {
                                 }
                               },
                               [
-                                _c(
-                                  "g",
-                                  {
-                                    attrs: {
-                                      id: "Page-1",
-                                      fill: "none",
-                                      "fill-rule": "evenodd"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          id: "icon-lenses",
-                                          fill: "var(--primary)",
-                                          "fill-rule": "nonzero"
-                                        }
-                                      },
-                                      [
-                                        _c("path", {
-                                          attrs: {
-                                            id: "Shape",
-                                            d:
-                                              "M4 8C1.790861 8 0 6.209139 0 4s1.790861-4 4-4 4 1.790861 4 4-1.790861 4-4 4zm0-2c1.1045695 0 2-.8954305 2-2s-.8954305-2-2-2-2 .8954305-2 2 .8954305 2 2 2zm0 16c-2.209139 0-4-1.790861-4-4s1.790861-4 4-4 4 1.790861 4 4-1.790861 4-4 4zm0-2c1.1045695 0 2-.8954305 2-2s-.8954305-2-2-2-2 .8954305-2 2 .8954305 2 2 2zm0 16c-2.209139 0-4-1.790861-4-4s1.790861-4 4-4 4 1.790861 4 4-1.790861 4-4 4zm0-2c1.1045695 0 2-.8954305 2-2s-.8954305-2-2-2-2 .8954305-2 2 .8954305 2 2 2zm9-31h22c.5522847 0 1 .44771525 1 1s-.4477153 1-1 1H13c-.5522847 0-1-.44771525-1-1s.4477153-1 1-1zm0 14h22c.5522847 0 1 .4477153 1 1s-.4477153 1-1 1H13c-.5522847 0-1-.4477153-1-1s.4477153-1 1-1zm0 14h22c.5522847 0 1 .4477153 1 1s-.4477153 1-1 1H13c-.5522847 0-1-.4477153-1-1s.4477153-1 1-1z"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
+                                _c("path", {
+                                  attrs: {
+                                    fill: "var(--primary)",
+                                    d:
+                                      "M4 8C1.790861 8 0 6.209139 0 4s1.790861-4 4-4 4 1.790861 4 4-1.790861 4-4 4zm0-2c1.1045695 0 2-.8954305 2-2s-.8954305-2-2-2-2 .8954305-2 2 .8954305 2 2 2zm0 16c-2.209139 0-4-1.790861-4-4s1.790861-4 4-4 4 1.790861 4 4-1.790861 4-4 4zm0-2c1.1045695 0 2-.8954305 2-2s-.8954305-2-2-2-2 .8954305-2 2 .8954305 2 2 2zm0 16c-2.209139 0-4-1.790861-4-4s1.790861-4 4-4 4 1.790861 4 4-1.790861 4-4 4zm0-2c1.1045695 0 2-.8954305 2-2s-.8954305-2-2-2-2 .8954305-2 2 .8954305 2 2 2zm9-31h22c.5522847 0 1 .44771525 1 1s-.4477153 1-1 1H13c-.5522847 0-1-.44771525-1-1s.4477153-1 1-1zm0 14h22c.5522847 0 1 .4477153 1 1s-.4477153 1-1 1H13c-.5522847 0-1-.4477153-1-1s.4477153-1 1-1zm0 14h22c.5522847 0 1 .4477153 1 1s-.4477153 1-1 1H13c-.5522847 0-1-.4477153-1-1s.4477153-1 1-1z"
+                                  }
+                                })
                               ]
                             )
                           ]
@@ -44369,37 +44404,13 @@ var render = function() {
                                 }
                               },
                               [
-                                _c(
-                                  "g",
-                                  {
-                                    attrs: {
-                                      id: "Page-1",
-                                      fill: "none",
-                                      "fill-rule": "evenodd"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          id: "icon-metrics",
-                                          fill: "var(--primary)",
-                                          "fill-rule": "nonzero"
-                                        }
-                                      },
-                                      [
-                                        _c("path", {
-                                          attrs: {
-                                            id: "Shape",
-                                            d:
-                                              "M2 27h3c1.1045695 0 2 .8954305 2 2v5c0 1.1045695-.8954305 2-2 2H2c-1.1045695 0-2-.8954305-2-2v-5c0-1.1.9-2 2-2zm0 2v5h3v-5H2zm10-11h3c1.1045695 0 2 .8954305 2 2v14c0 1.1045695-.8954305 2-2 2h-3c-1.1045695 0-2-.8954305-2-2V20c0-1.1.9-2 2-2zm0 2v14h3V20h-3zM22 9h3c1.1045695 0 2 .8954305 2 2v23c0 1.1045695-.8954305 2-2 2h-3c-1.1045695 0-2-.8954305-2-2V11c0-1.1.9-2 2-2zm0 2v23h3V11h-3zM32 0h3c1.1045695 0 2 .8954305 2 2v32c0 1.1045695-.8954305 2-2 2h-3c-1.1045695 0-2-.8954305-2-2V2c0-1.1.9-2 2-2zm0 2v32h3V2h-3z"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
+                                _c("path", {
+                                  attrs: {
+                                    fill: "var(--primary)",
+                                    d:
+                                      "M2 27h3c1.1045695 0 2 .8954305 2 2v5c0 1.1045695-.8954305 2-2 2H2c-1.1045695 0-2-.8954305-2-2v-5c0-1.1.9-2 2-2zm0 2v5h3v-5H2zm10-11h3c1.1045695 0 2 .8954305 2 2v14c0 1.1045695-.8954305 2-2 2h-3c-1.1045695 0-2-.8954305-2-2V20c0-1.1.9-2 2-2zm0 2v14h3V20h-3zM22 9h3c1.1045695 0 2 .8954305 2 2v23c0 1.1045695-.8954305 2-2 2h-3c-1.1045695 0-2-.8954305-2-2V11c0-1.1.9-2 2-2zm0 2v23h3V11h-3zM32 0h3c1.1045695 0 2 .8954305 2 2v32c0 1.1045695-.8954305 2-2 2h-3c-1.1045695 0-2-.8954305-2-2V2c0-1.1.9-2 2-2zm0 2v32h3V2h-3z"
+                                  }
+                                })
                               ]
                             )
                           ]
@@ -44456,37 +44467,13 @@ var render = function() {
                                 }
                               },
                               [
-                                _c(
-                                  "g",
-                                  {
-                                    attrs: {
-                                      id: "Page-1",
-                                      fill: "none",
-                                      "fill-rule": "evenodd"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          id: "icon-cards",
-                                          fill: "var(--primary)",
-                                          "fill-rule": "nonzero"
-                                        }
-                                      },
-                                      [
-                                        _c("path", {
-                                          attrs: {
-                                            id: "Shape",
-                                            d:
-                                              "M29 7h5c.5522847 0 1 .44771525 1 1s-.4477153 1-1 1h-5v5c0 .5522847-.4477153 1-1 1s-1-.4477153-1-1V9h-5c-.5522847 0-1-.44771525-1-1s.4477153-1 1-1h5V2c0-.55228475.4477153-1 1-1s1 .44771525 1 1v5zM4 0h8c2.209139 0 4 1.790861 4 4v8c0 2.209139-1.790861 4-4 4H4c-2.209139 0-4-1.790861-4-4V4c0-2.209139 1.790861-4 4-4zm0 2c-1.1045695 0-2 .8954305-2 2v8c0 1.1.9 2 2 2h8c1.1045695 0 2-.8954305 2-2V4c0-1.1045695-.8954305-2-2-2H4zm20 18h8c2.209139 0 4 1.790861 4 4v8c0 2.209139-1.790861 4-4 4h-8c-2.209139 0-4-1.790861-4-4v-8c0-2.209139 1.790861-4 4-4zm0 2c-1.1045695 0-2 .8954305-2 2v8c0 1.1.9 2 2 2h8c1.1045695 0 2-.8954305 2-2v-8c0-1.1045695-.8954305-2-2-2h-8zM4 20h8c2.209139 0 4 1.790861 4 4v8c0 2.209139-1.790861 4-4 4H4c-2.209139 0-4-1.790861-4-4v-8c0-2.209139 1.790861-4 4-4zm0 2c-1.1045695 0-2 .8954305-2 2v8c0 1.1.9 2 2 2h8c1.1045695 0 2-.8954305 2-2v-8c0-1.1045695-.8954305-2-2-2H4z"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
+                                _c("path", {
+                                  attrs: {
+                                    fill: "var(--primary)",
+                                    d:
+                                      "M29 7h5c.5522847 0 1 .44771525 1 1s-.4477153 1-1 1h-5v5c0 .5522847-.4477153 1-1 1s-1-.4477153-1-1V9h-5c-.5522847 0-1-.44771525-1-1s.4477153-1 1-1h5V2c0-.55228475.4477153-1 1-1s1 .44771525 1 1v5zM4 0h8c2.209139 0 4 1.790861 4 4v8c0 2.209139-1.790861 4-4 4H4c-2.209139 0-4-1.790861-4-4V4c0-2.209139 1.790861-4 4-4zm0 2c-1.1045695 0-2 .8954305-2 2v8c0 1.1.9 2 2 2h8c1.1045695 0 2-.8954305 2-2V4c0-1.1045695-.8954305-2-2-2H4zm20 18h8c2.209139 0 4 1.790861 4 4v8c0 2.209139-1.790861 4-4 4h-8c-2.209139 0-4-1.790861-4-4v-8c0-2.209139 1.790861-4 4-4zm0 2c-1.1045695 0-2 .8954305-2 2v8c0 1.1.9 2 2 2h8c1.1045695 0 2-.8954305 2-2v-8c0-1.1045695-.8954305-2-2-2h-8zM4 20h8c2.209139 0 4 1.790861 4 4v8c0 2.209139-1.790861 4-4 4H4c-2.209139 0-4-1.790861-4-4v-8c0-2.209139 1.790861-4 4-4zm0 2c-1.1045695 0-2 .8954305-2 2v8c0 1.1.9 2 2 2h8c1.1045695 0 2-.8954305 2-2v-8c0-1.1045695-.8954305-2-2-2H4z"
+                                  }
+                                })
                               ]
                             )
                           ]
@@ -44731,7 +44718,7 @@ var render = function() {
       _c(
         "svg",
         {
-          staticClass: "ml-2",
+          staticClass: "ml-2 flex-no-shrink",
           attrs: {
             xmlns: "http://www.w3.org/2000/svg",
             width: "8",
@@ -44740,36 +44727,23 @@ var render = function() {
           }
         },
         [
-          _c(
-            "g",
-            {
-              attrs: {
-                id: "sortable-icon",
-                fill: "none",
-                "fill-rule": "evenodd"
-              }
-            },
-            [
-              _c("path", {
-                class: _vm.descClass,
-                attrs: {
-                  id: "Path-2-Copy-3",
-                  d:
-                    "M1.70710678 4.70710678c-.39052429.39052429-1.02368927.39052429-1.41421356 0-.3905243-.39052429-.3905243-1.02368927 0-1.41421356l3-3c.39052429-.3905243 1.02368927-.3905243 1.41421356 0l3 3c.39052429.39052429.39052429 1.02368927 0 1.41421356-.39052429.39052429-1.02368927.39052429-1.41421356 0L4 2.41421356 1.70710678 4.70710678z"
-                }
-              }),
-              _vm._v(" "),
-              _c("path", {
-                class: _vm.ascClass,
-                attrs: {
-                  id: "Combined-Shape-Copy-3",
-                  "fill-rule": "nonzero",
-                  d:
-                    "M6.29289322 9.29289322c.39052429-.39052429 1.02368927-.39052429 1.41421356 0 .39052429.39052429.39052429 1.02368928 0 1.41421358l-3 3c-.39052429.3905243-1.02368927.3905243-1.41421356 0l-3-3c-.3905243-.3905243-.3905243-1.02368929 0-1.41421358.3905243-.39052429 1.02368927-.39052429 1.41421356 0L4 11.5857864l2.29289322-2.29289318z"
-                }
-              })
-            ]
-          )
+          _c("path", {
+            class: _vm.descClass,
+            attrs: {
+              fill: "#00f",
+              d:
+                "M1.70710678 4.70710678c-.39052429.39052429-1.02368927.39052429-1.41421356 0-.3905243-.39052429-.3905243-1.02368927 0-1.41421356l3-3c.39052429-.3905243 1.02368927-.3905243 1.41421356 0l3 3c.39052429.39052429.39052429 1.02368927 0 1.41421356-.39052429.39052429-1.02368927.39052429-1.41421356 0L4 2.41421356 1.70710678 4.70710678z"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            class: _vm.ascClass,
+            attrs: {
+              fill: "red",
+              d:
+                "M6.29289322 9.29289322c.39052429-.39052429 1.02368927-.39052429 1.41421356 0 .39052429.39052429.39052429 1.02368928 0 1.41421358l-3 3c-.39052429.3905243-1.02368927.3905243-1.41421356 0l-3-3c-.3905243-.3905243-.3905243-1.02368929 0-1.41421358.3905243-.39052429 1.02368927-.39052429 1.41421356 0L4 11.5857864l2.29289322-2.29289318z"
+            }
+          })
         ]
       )
     ],
@@ -45320,224 +45294,229 @@ var render = function() {
               },
               [
                 panel.showToolbar
-                  ? _c("div", { staticClass: "flex items-center mb-3" }, [
-                      _c(
-                        "h4",
-                        {
-                          staticClass:
-                            "text-90 font-normal text-2xl flex-no-shrink"
-                        },
-                        [_vm._v(_vm._s(panel.name))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "ml-3 w-full flex items-center" },
-                        [
-                          _c("custom-detail-toolbar", {
-                            attrs: {
-                              resource: _vm.resource,
-                              "resource-name": _vm.resourceName,
-                              "resource-id": _vm.resourceId
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.resource
-                            ? _c("action-selector", {
-                                staticClass: "ml-3",
-                                attrs: {
-                                  "resource-name": _vm.resourceName,
-                                  actions: _vm.actions,
-                                  "pivot-actions": { actions: [] },
-                                  "selected-resources": _vm.selectedResources,
-                                  "query-string": {
-                                    currentSearch: _vm.currentSearch,
-                                    encodedFilters: _vm.encodedFilters,
-                                    currentTrashed: _vm.currentTrashed,
-                                    viaResource: _vm.viaResource,
-                                    viaResourceId: _vm.viaResourceId,
-                                    viaRelationship: _vm.viaRelationship
-                                  }
-                                },
-                                on: { actionExecuted: _vm.actionExecuted }
-                              })
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.resource.authorizedToDelete &&
-                          !_vm.resource.softDeleted
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "btn btn-default btn-icon btn-white mr-3",
+                  ? _c(
+                      "div",
+                      { staticClass: "flex items-center mb-3" },
+                      [
+                        _c(
+                          "heading",
+                          {
+                            staticClass: "flex-no-shrink",
+                            attrs: { level: 1 }
+                          },
+                          [_vm._v(_vm._s(panel.name))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "ml-3 w-full flex items-center" },
+                          [
+                            _c("custom-detail-toolbar", {
+                              attrs: {
+                                resource: _vm.resource,
+                                "resource-name": _vm.resourceName,
+                                "resource-id": _vm.resourceId
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.resource
+                              ? _c("action-selector", {
+                                  staticClass: "ml-3",
                                   attrs: {
-                                    "data-testid": "open-delete-modal",
-                                    dusk: "open-delete-modal-button",
-                                    title: _vm.__("Delete")
+                                    "resource-name": _vm.resourceName,
+                                    actions: _vm.actions,
+                                    "pivot-actions": { actions: [] },
+                                    "selected-resources": _vm.selectedResources,
+                                    "query-string": {
+                                      currentSearch: _vm.currentSearch,
+                                      encodedFilters: _vm.encodedFilters,
+                                      currentTrashed: _vm.currentTrashed,
+                                      viaResource: _vm.viaResource,
+                                      viaResourceId: _vm.viaResourceId,
+                                      viaRelationship: _vm.viaRelationship
+                                    }
                                   },
-                                  on: { click: _vm.openDeleteModal }
-                                },
-                                [
-                                  _c("icon", {
-                                    staticClass: "text-80",
-                                    attrs: { type: "delete" }
-                                  })
-                                ],
-                                1
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.resource.authorizedToRestore &&
-                          _vm.resource.softDeleted
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "btn btn-default btn-icon btn-white mr-3",
-                                  attrs: {
-                                    "data-testid": "open-restore-modal",
-                                    dusk: "open-restore-modal-button",
-                                    title: _vm.__("Restore")
-                                  },
-                                  on: { click: _vm.openRestoreModal }
-                                },
-                                [
-                                  _c("icon", {
-                                    staticClass: "text-80",
-                                    attrs: { type: "restore" }
-                                  })
-                                ],
-                                1
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.resource.authorizedToForceDelete
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "btn btn-default btn-icon btn-white mr-3",
-                                  attrs: {
-                                    "data-testid": "open-force-delete-modal",
-                                    dusk: "open-force-delete-modal-button",
-                                    title: _vm.__("Force Delete")
-                                  },
-                                  on: { click: _vm.openForceDeleteModal }
-                                },
-                                [
-                                  _c("icon", {
-                                    staticClass: "text-80",
-                                    attrs: { type: "force-delete" }
-                                  })
-                                ],
-                                1
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c(
-                            "portal",
-                            { attrs: { to: "modals" } },
-                            [
-                              _c(
-                                "transition",
-                                { attrs: { name: "fade" } },
-                                [
-                                  _vm.deleteModalOpen
-                                    ? _c("delete-resource-modal", {
-                                        attrs: { mode: "delete" },
-                                        on: {
-                                          confirm: _vm.confirmDelete,
-                                          close: _vm.closeDeleteModal
-                                        }
-                                      })
-                                    : _vm._e()
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "portal",
-                            { attrs: { to: "modals" } },
-                            [
-                              _c(
-                                "transition",
-                                { attrs: { name: "fade" } },
-                                [
-                                  _vm.restoreModalOpen
-                                    ? _c("restore-resource-modal", {
-                                        on: {
-                                          confirm: _vm.confirmRestore,
-                                          close: _vm.closeRestoreModal
-                                        }
-                                      })
-                                    : _vm._e()
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "portal",
-                            { attrs: { to: "modals" } },
-                            [
-                              _c(
-                                "transition",
-                                { attrs: { name: "fade" } },
-                                [
-                                  _vm.forceDeleteModalOpen
-                                    ? _c("delete-resource-modal", {
-                                        attrs: { mode: "force delete" },
-                                        on: {
-                                          confirm: _vm.confirmForceDelete,
-                                          close: _vm.closeForceDeleteModal
-                                        }
-                                      })
-                                    : _vm._e()
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm.resource.authorizedToUpdate
-                            ? _c(
-                                "router-link",
-                                {
-                                  staticClass:
-                                    "btn btn-default btn-icon bg-primary",
-                                  attrs: {
-                                    "data-testid": "edit-resource",
-                                    dusk: "edit-resource-button",
-                                    to: {
-                                      name: "edit",
-                                      params: { id: _vm.resource.id }
+                                  on: { actionExecuted: _vm.actionExecuted }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.resource.authorizedToDelete &&
+                            !_vm.resource.softDeleted
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-default btn-icon btn-white mr-3",
+                                    attrs: {
+                                      "data-testid": "open-delete-modal",
+                                      dusk: "open-delete-modal-button",
+                                      title: _vm.__("Delete")
                                     },
-                                    title: _vm.__("Edit")
-                                  }
-                                },
-                                [
-                                  _c("icon", {
-                                    staticClass: "text-white",
-                                    staticStyle: {
-                                      "margin-top": "-2px",
-                                      "margin-left": "3px"
+                                    on: { click: _vm.openDeleteModal }
+                                  },
+                                  [
+                                    _c("icon", {
+                                      staticClass: "text-80",
+                                      attrs: { type: "delete" }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.resource.authorizedToRestore &&
+                            _vm.resource.softDeleted
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-default btn-icon btn-white mr-3",
+                                    attrs: {
+                                      "data-testid": "open-restore-modal",
+                                      dusk: "open-restore-modal-button",
+                                      title: _vm.__("Restore")
                                     },
-                                    attrs: { type: "edit" }
-                                  })
-                                ],
-                                1
-                              )
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ])
+                                    on: { click: _vm.openRestoreModal }
+                                  },
+                                  [
+                                    _c("icon", {
+                                      staticClass: "text-80",
+                                      attrs: { type: "restore" }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.resource.authorizedToForceDelete
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-default btn-icon btn-white mr-3",
+                                    attrs: {
+                                      "data-testid": "open-force-delete-modal",
+                                      dusk: "open-force-delete-modal-button",
+                                      title: _vm.__("Force Delete")
+                                    },
+                                    on: { click: _vm.openForceDeleteModal }
+                                  },
+                                  [
+                                    _c("icon", {
+                                      staticClass: "text-80",
+                                      attrs: { type: "force-delete" }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c(
+                              "portal",
+                              { attrs: { to: "modals" } },
+                              [
+                                _c(
+                                  "transition",
+                                  { attrs: { name: "fade" } },
+                                  [
+                                    _vm.deleteModalOpen
+                                      ? _c("delete-resource-modal", {
+                                          attrs: { mode: "delete" },
+                                          on: {
+                                            confirm: _vm.confirmDelete,
+                                            close: _vm.closeDeleteModal
+                                          }
+                                        })
+                                      : _vm._e()
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "portal",
+                              { attrs: { to: "modals" } },
+                              [
+                                _c(
+                                  "transition",
+                                  { attrs: { name: "fade" } },
+                                  [
+                                    _vm.restoreModalOpen
+                                      ? _c("restore-resource-modal", {
+                                          on: {
+                                            confirm: _vm.confirmRestore,
+                                            close: _vm.closeRestoreModal
+                                          }
+                                        })
+                                      : _vm._e()
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "portal",
+                              { attrs: { to: "modals" } },
+                              [
+                                _c(
+                                  "transition",
+                                  { attrs: { name: "fade" } },
+                                  [
+                                    _vm.forceDeleteModalOpen
+                                      ? _c("delete-resource-modal", {
+                                          attrs: { mode: "force delete" },
+                                          on: {
+                                            confirm: _vm.confirmForceDelete,
+                                            close: _vm.closeForceDeleteModal
+                                          }
+                                        })
+                                      : _vm._e()
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _vm.resource.authorizedToUpdate
+                              ? _c(
+                                  "router-link",
+                                  {
+                                    staticClass:
+                                      "btn btn-default btn-icon bg-primary",
+                                    attrs: {
+                                      "data-testid": "edit-resource",
+                                      dusk: "edit-resource-button",
+                                      to: {
+                                        name: "edit",
+                                        params: { id: _vm.resource.id }
+                                      },
+                                      title: _vm.__("Edit")
+                                    }
+                                  },
+                                  [
+                                    _c("icon", {
+                                      staticClass: "text-white",
+                                      staticStyle: {
+                                        "margin-top": "-2px",
+                                        "margin-left": "3px"
+                                      },
+                                      attrs: { type: "edit" }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
                   : _vm._e()
               ]
             )
@@ -45605,6 +45584,65 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-791219b4", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-80463df8\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/Panel.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.panel.fields.length > 0
+    ? _c(
+        "div",
+        [
+          _c("heading", { staticClass: "mb-3", attrs: { level: 1 } }, [
+            _vm._v(_vm._s(_vm.panel.name))
+          ]),
+          _vm._v(" "),
+          _c(
+            "card",
+            _vm._l(_vm.panel.fields, function(field, index) {
+              return _c(_vm.mode + "-" + field.component, {
+                key: index,
+                tag: "component",
+                class: {
+                  "remove-bottom-border": index == _vm.panel.fields.length - 1
+                },
+                attrs: {
+                  errors: _vm.validationErrors,
+                  "resource-id": _vm.resourceId,
+                  "resource-name": _vm.resourceName,
+                  field: field,
+                  "via-resource": _vm.viaResource,
+                  "via-resource-id": _vm.viaResourceId,
+                  "via-relationship": _vm.viaRelationship
+                },
+                on: {
+                  "file-deleted": function($event) {
+                    return _vm.$emit("update-last-retrieved-at-timestamp")
+                  }
+                }
+              })
+            }),
+            1
+          )
+        ],
+        1
+      )
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-80463df8", module.exports)
   }
 }
 
@@ -45776,7 +45814,7 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("span", { staticClass: "class mt-1" }, [
-                        _vm._v(" Download ")
+                        _vm._v(_vm._s(_vm.__("Download")))
                       ])
                     ],
                     1
@@ -46584,48 +46622,20 @@ var render = function() {
             {
               staticClass: "ml-2",
               attrs: {
-                width: "10px",
-                height: "6px",
-                viewBox: "0 0 10 6",
-                version: "1.1",
                 xmlns: "http://www.w3.org/2000/svg",
-                "xmlns:xlink": "http://www.w3.org/1999/xlink"
+                width: "10",
+                height: "6",
+                viewBox: "0 0 10 6"
               }
             },
             [
-              _c(
-                "g",
-                {
-                  attrs: {
-                    stroke: "none",
-                    "stroke-width": "1",
-                    fill: "none",
-                    "fill-rule": "evenodd"
-                  }
-                },
-                [
-                  _c(
-                    "g",
-                    {
-                      attrs: {
-                        id: "04-user",
-                        transform: "translate(-385.000000, -573.000000)",
-                        fill: _vm.activeIconColor,
-                        "fill-rule": "nonzero"
-                      }
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          d:
-                            "M393.292893,573.292893 C393.683418,572.902369 394.316582,572.902369 394.707107,573.292893 C395.097631,573.683418 395.097631,574.316582 394.707107,574.707107 L390.707107,578.707107 C390.316582,579.097631 389.683418,579.097631 389.292893,578.707107 L385.292893,574.707107 C384.902369,574.316582 384.902369,573.683418 385.292893,573.292893 C385.683418,572.902369 386.316582,572.902369 386.707107,573.292893 L390,576.585786 L393.292893,573.292893 Z",
-                          id: "Path-2-Copy"
-                        }
-                      })
-                    ]
-                  )
-                ]
-              )
+              _c("path", {
+                attrs: {
+                  fill: _vm.activeIconColor,
+                  d:
+                    "M8.292893.292893c.390525-.390524 1.023689-.390524 1.414214 0 .390524.390525.390524 1.023689 0 1.414214l-4 4c-.390525.390524-1.023689.390524-1.414214 0l-4-4c-.390524-.390525-.390524-1.023689 0-1.414214.390525-.390524 1.023689-.390524 1.414214 0L5 3.585786 8.292893.292893z"
+                }
+              })
             ]
           )
         : _vm._e()
@@ -46664,173 +46674,170 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("card", { staticClass: "overflow-hidden" }, [
-        _vm.field
-          ? _c(
-              "form",
-              {
-                attrs: { autocomplete: "off" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.updateAttachedResource($event)
-                  }
+      _vm.field
+        ? _c(
+            "form",
+            {
+              attrs: { autocomplete: "off" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.updateAttachedResource($event)
                 }
-              },
-              [
-                _c(
-                  "default-field",
-                  { attrs: { field: _vm.field, errors: _vm.validationErrors } },
-                  [
-                    _c(
-                      "template",
-                      { slot: "field" },
-                      [
-                        _c(
-                          "select-control",
-                          {
-                            staticClass: "form-control form-select mb-3 w-full",
-                            class: {
-                              "border-danger": _vm.validationErrors.has(
-                                _vm.field.attribute
-                              )
-                            },
-                            attrs: {
-                              dusk: "attachable-select",
-                              "data-testid": _vm.field.resourceName + "-select",
-                              disabled: "",
-                              options: _vm.availableResources,
-                              label: "display",
-                              selected: _vm.selectedResourceId
-                            },
-                            on: { change: _vm.selectResourceFromSelectControl }
-                          },
-                          [
-                            _c(
-                              "option",
-                              {
-                                attrs: { value: "", disabled: "", selected: "" }
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.__("Choose :field", {
-                                      field: _vm.field.name
-                                    })
-                                  )
+              }
+            },
+            [
+              _c(
+                "card",
+                { staticClass: "overflow-hidden mb-8" },
+                [
+                  _c(
+                    "default-field",
+                    {
+                      attrs: { field: _vm.field, errors: _vm.validationErrors }
+                    },
+                    [
+                      _c(
+                        "template",
+                        { slot: "field" },
+                        [
+                          _c(
+                            "select-control",
+                            {
+                              staticClass:
+                                "form-control form-select mb-3 w-full",
+                              class: {
+                                "border-danger": _vm.validationErrors.has(
+                                  _vm.field.attribute
                                 )
-                              ]
-                            )
-                          ]
-                        )
+                              },
+                              attrs: {
+                                dusk: "attachable-select",
+                                "data-testid":
+                                  _vm.field.resourceName + "-select",
+                                disabled: "",
+                                options: _vm.availableResources,
+                                label: "display",
+                                selected: _vm.selectedResourceId
+                              },
+                              on: {
+                                change: _vm.selectResourceFromSelectControl
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    disabled: "",
+                                    selected: ""
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.__("Choose :field", {
+                                        field: _vm.field.name
+                                      })
+                                    )
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.fields, function(field) {
+                    return _c(
+                      "div",
+                      [
+                        _c("form-" + field.component, {
+                          tag: "component",
+                          attrs: {
+                            "resource-name": _vm.resourceName,
+                            "resource-id": _vm.resourceId,
+                            field: field,
+                            errors: _vm.validationErrors,
+                            "related-resource-name": _vm.relatedResourceName,
+                            "related-resource-id": _vm.relatedResourceId,
+                            "via-resource": _vm.viaResource,
+                            "via-resource-id": _vm.viaResourceId,
+                            "via-relationship": _vm.viaRelationship
+                          }
+                        })
                       ],
                       1
                     )
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.fields, function(field) {
-                  return _c(
-                    "div",
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex" },
+                [
+                  _c("cancel-button"),
+                  _vm._v(" "),
+                  _c(
+                    "progress-button",
+                    {
+                      staticClass: "mr-3",
+                      attrs: {
+                        dusk: "update-and-continue-editing-button",
+                        disabled: _vm.isWorking,
+                        processing: _vm.submittedViaUpdateAndContinueEditing
+                      },
+                      nativeOn: {
+                        click: function($event) {
+                          return _vm.updateAndContinueEditing($event)
+                        }
+                      }
+                    },
                     [
-                      _c("form-" + field.component, {
-                        tag: "component",
-                        attrs: {
-                          "resource-name": _vm.resourceName,
-                          "resource-id": _vm.resourceId,
-                          field: field,
-                          errors: _vm.validationErrors,
-                          "related-resource-name": _vm.relatedResourceName,
-                          "related-resource-id": _vm.relatedResourceId,
-                          "via-resource": _vm.viaResource,
-                          "via-resource-id": _vm.viaResourceId,
-                          "via-relationship": _vm.viaRelationship
-                        }
-                      })
-                    ],
-                    1
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.__("Update & Continue Editing")) +
+                          "\n            "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "progress-button",
+                    {
+                      attrs: {
+                        dusk: "update-button",
+                        type: "submit",
+                        disabled: _vm.isWorking,
+                        processing: _vm.submittedViaUpdateAttachedResource
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(
+                            _vm.__("Update :resource", {
+                              resource: _vm.relatedResourceLabel
+                            })
+                          ) +
+                          "\n            "
+                      )
+                    ]
                   )
-                }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "bg-30 flex px-8 py-4" },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "btn btn-default btn-link dim cursor-pointer text-80 ml-auto mr-6",
-                        on: {
-                          click: function($event) {
-                            return _vm.$router.back()
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(_vm.__("Cancel")) +
-                            "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "progress-button",
-                      {
-                        staticClass: "mr-3",
-                        attrs: {
-                          dusk: "update-and-continue-editing-button",
-                          disabled: _vm.isWorking,
-                          processing: _vm.submittedViaUpdateAndContinueEditing
-                        },
-                        nativeOn: {
-                          click: function($event) {
-                            return _vm.updateAndContinueEditing($event)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(_vm.__("Update & Continue Editing")) +
-                            "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "progress-button",
-                      {
-                        attrs: {
-                          dusk: "update-button",
-                          type: "submit",
-                          disabled: _vm.isWorking,
-                          processing: _vm.submittedViaUpdateAttachedResource
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(
-                              _vm.__("Update :resource", {
-                                resource: _vm.relatedResourceLabel
-                              })
-                            ) +
-                            "\n                "
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                )
-              ],
-              2
-            )
-          : _vm._e()
-      ])
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e()
     ],
     1
   )
@@ -46958,138 +46965,103 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return !_vm.loading
-    ? _c(
-        "div",
-        [
-          _c("heading", { staticClass: "mb-3" }, [
-            _vm._v(
-              _vm._s(_vm.__("Edit :resource", { resource: _vm.singularName }))
-            )
-          ]),
-          _vm._v(" "),
-          _c("card", { staticClass: "overflow-hidden" }, [
-            _vm.fields
-              ? _c(
-                  "form",
+  return _c("loading-view", { attrs: { loading: _vm.loading } }, [
+    _vm.panels
+      ? _c(
+          "form",
+          {
+            attrs: { autocomplete: "off" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.updateResource($event)
+              }
+            }
+          },
+          [
+            _vm._l(_vm.panelsWithFields, function(panel) {
+              return _c("form-panel", {
+                key: panel.name,
+                staticClass: "mb-6",
+                attrs: {
+                  panel: panel,
+                  name: panel.name,
+                  "resource-id": _vm.resourceId,
+                  "resource-name": _vm.resourceName,
+                  fields: panel.fields,
+                  mode: "form",
+                  "validation-errors": _vm.validationErrors,
+                  "via-resource": _vm.viaResource,
+                  "via-resource-id": _vm.viaResourceId,
+                  "via-relationship": _vm.viaRelationship
+                },
+                on: {
+                  "update-last-retrieved-at-timestamp":
+                    _vm.updateLastRetrievedAtTimestamp
+                }
+              })
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex items-center" },
+              [
+                _c("cancel-button"),
+                _vm._v(" "),
+                _c(
+                  "progress-button",
                   {
-                    attrs: { autocomplete: "off" },
-                    on: {
-                      submit: function($event) {
-                        $event.preventDefault()
-                        return _vm.updateResource($event)
+                    staticClass: "mr-3",
+                    attrs: {
+                      dusk: "update-and-continue-editing-button",
+                      disabled: _vm.isWorking,
+                      processing: _vm.submittedViaUpdateAndContinueEditing
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.updateAndContinueEditing($event)
                       }
                     }
                   },
                   [
-                    _c("validation-errors", {
-                      attrs: { errors: _vm.validationErrors }
-                    }),
-                    _vm._v(" "),
-                    _vm._l(_vm.fields, function(field) {
-                      return _c(
-                        "div",
-                        [
-                          _c("form-" + field.component, {
-                            tag: "component",
-                            attrs: {
-                              errors: _vm.validationErrors,
-                              "resource-id": _vm.resourceId,
-                              "resource-name": _vm.resourceName,
-                              field: field
-                            },
-                            on: {
-                              "file-deleted": _vm.updateLastRetrievedAtTimestamp
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "bg-30 flex items-center px-8 py-4" },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass:
-                              "btn btn-link dim cursor-pointer text-80 ml-auto mr-6",
-                            on: {
-                              click: function($event) {
-                                return _vm.$router.back()
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(_vm.__("Cancel")) +
-                                "\n                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "progress-button",
-                          {
-                            staticClass: "mr-3",
-                            attrs: {
-                              dusk: "update-and-continue-editing-button",
-                              disabled: _vm.isWorking,
-                              processing:
-                                _vm.submittedViaUpdateAndContinueEditing
-                            },
-                            nativeOn: {
-                              click: function($event) {
-                                return _vm.updateAndContinueEditing($event)
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(_vm.__("Update & Continue Editing")) +
-                                "\n                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "progress-button",
-                          {
-                            attrs: {
-                              dusk: "update-button",
-                              type: "submit",
-                              disabled: _vm.isWorking,
-                              processing: _vm.submittedViaUpdateResource
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(
-                                  _vm.__("Update :resource", {
-                                    resource: _vm.singularName
-                                  })
-                                ) +
-                                "\n                "
-                            )
-                          ]
-                        )
-                      ],
-                      1
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.__("Update & Continue Editing")) +
+                        "\n            "
                     )
-                  ],
-                  2
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "progress-button",
+                  {
+                    attrs: {
+                      dusk: "update-button",
+                      type: "submit",
+                      disabled: _vm.isWorking,
+                      processing: _vm.submittedViaUpdateResource
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(
+                          _vm.__("Update :resource", {
+                            resource: _vm.singularName
+                          })
+                        ) +
+                        "\n            "
+                    )
+                  ]
                 )
-              : _vm._e()
-          ])
-        ],
-        1
-      )
-    : _vm._e()
+              ],
+              1
+            )
+          ],
+          2
+        )
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47114,7 +47086,7 @@ var render = function() {
     "div",
     [
       _vm._t("default", [
-        _c("h4", { staticClass: "text-90 font-normal text-2xl mb-3" }, [
+        _c("heading", { staticClass: "mb-3", attrs: { level: 1 } }, [
           _vm._v(_vm._s(_vm.panel.name))
         ])
       ]),
@@ -47307,36 +47279,22 @@ var render = function() {
             }
           },
           [
-            _c(
-              "g",
-              { attrs: { id: "Page-1", fill: "none", "fill-rule": "evenodd" } },
-              [
-                _c(
-                  "g",
-                  { attrs: { id: "checkbox-on", "fill-rule": "nonzero" } },
-                  [
-                    _c(
-                      "g",
-                      { attrs: { id: "b-link", fill: "var(--primary)" } },
-                      [
-                        _c("rect", {
-                          attrs: { id: "b", width: "20", height: "20", rx: "4" }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        id: "Shape",
-                        fill: "#FFF",
-                        d:
-                          "M7.7 9.3c-.23477048-.3130273-.63054226-.46037132-1.01285927-.37708287-.38231702.08328846-.68093514.38190658-.7642236.7642236C5.83962868 10.0694577 5.9869727 10.4652295 6.3 10.7l2 2c.38884351.3811429 1.01115649.3811429 1.4 0l4-4c.3130273-.23477048.4603713-.63054226.3770829-1.01285927-.0832885-.38231702-.3819066-.68093514-.7642236-.7642236C12.9305423 6.83962868 12.5347705 6.9869727 12.3 7.3L9 10.58l-1.3-1.3v.02z"
-                      }
-                    })
-                  ]
-                )
-              ]
-            )
+            _c("rect", {
+              attrs: {
+                width: "20",
+                height: "20",
+                fill: "var(--primary)",
+                rx: "4"
+              }
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                fill: "#FFF",
+                d:
+                  "M7.7 9.3c-.23477048-.3130273-.63054226-.46037132-1.01285927-.37708287-.38231702.08328846-.68093514.38190658-.7642236.7642236C5.83962868 10.0694577 5.9869727 10.4652295 6.3 10.7l2 2c.38884351.3811429 1.01115649.3811429 1.4 0l4-4c.3130273-.23477048.4603713-.63054226.3770829-1.01285927-.0832885-.38231702-.3819066-.68093514-.7642236-.7642236C12.9305423 6.83962868 12.5347705 6.9869727 12.3 7.3L9 10.58l-1.3-1.3v.02z"
+              }
+            })
           ]
         )
       : _c(
@@ -47351,41 +47309,21 @@ var render = function() {
             }
           },
           [
-            _c(
-              "g",
-              { attrs: { id: "Page-1", fill: "none", "fill-rule": "evenodd" } },
-              [
-                _c("g", { attrs: { id: "checkbox-off" } }, [
-                  _c(
-                    "g",
-                    {
-                      attrs: {
-                        id: "b-link",
-                        fill: "#FFF",
-                        "fill-rule": "nonzero"
-                      }
-                    },
-                    [
-                      _c("rect", {
-                        attrs: { id: "b", width: "20", height: "20", rx: "4" }
-                      })
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("rect", {
-                    attrs: {
-                      id: "Rectangle-path",
-                      width: "19",
-                      height: "19",
-                      x: ".5",
-                      y: ".5",
-                      stroke: "#CCD4DB",
-                      rx: "4"
-                    }
-                  })
-                ])
-              ]
-            )
+            _c("rect", {
+              attrs: { width: "20", height: "20", fill: "#FFF", rx: "4" }
+            }),
+            _vm._v(" "),
+            _c("rect", {
+              attrs: {
+                width: "19",
+                height: "19",
+                fill: "none",
+                x: ".5",
+                y: ".5",
+                stroke: "#CCD4DB",
+                rx: "4"
+              }
+            })
           ]
         )
   ])
@@ -51832,7 +51770,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
@@ -51840,7 +51778,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
 /**
- * vuex v3.1.0
+ * vuex v3.1.1
  * (c) 2019 Evan You
  * @license MIT
  */
@@ -51880,9 +51818,12 @@ function applyMixin (Vue) {
   }
 }
 
-var devtoolHook =
-  typeof window !== 'undefined' &&
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
 
 function devtoolPlugin (store) {
   if (!devtoolHook) { return }
@@ -51926,6 +51867,12 @@ function isPromise (val) {
 
 function assert (condition, msg) {
   if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
 }
 
 // Base data struct for store's module, package with some attribute and method
@@ -52389,7 +52336,9 @@ function resetStoreVM (store, state, hot) {
   var computed = {};
   forEachValue(wrappedGetters, function (fn, key) {
     // use computed to leverage its lazy-caching mechanism
-    computed[key] = function () { return fn(store); };
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure enviroment.
+    computed[key] = partial(fn, store);
     Object.defineProperty(store.getters, key, {
       get: function () { return store._vm[key]; },
       enumerable: true // for local getters
@@ -52828,7 +52777,7 @@ function getModuleByNamespace (store, helper, namespace) {
 var index_esm = {
   Store: Store,
   install: install,
-  version: '3.1.0',
+  version: '3.1.1',
   mapState: mapState,
   mapMutations: mapMutations,
   mapGetters: mapGetters,
@@ -52839,6 +52788,7 @@ var index_esm = {
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
 
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -53189,6 +53139,10 @@ var _Bold = __webpack_require__("./resources/js/components/Icons/Editor/Bold.vue
 
 var _Bold2 = _interopRequireDefault(_Bold);
 
+var _CancelButton = __webpack_require__("./resources/js/components/Form/CancelButton.vue");
+
+var _CancelButton2 = _interopRequireDefault(_CancelButton);
+
 var _Card = __webpack_require__("./resources/js/components/Card.vue");
 
 var _Card2 = _interopRequireDefault(_Card);
@@ -53296,6 +53250,10 @@ var _Filter2 = _interopRequireDefault(_Filter);
 var _FilterMenu = __webpack_require__("./resources/js/components/FilterMenu.vue");
 
 var _FilterMenu2 = _interopRequireDefault(_FilterMenu);
+
+var _Panel = __webpack_require__("./resources/js/components/Form/Panel.vue");
+
+var _Panel2 = _interopRequireDefault(_Panel);
 
 var _ForceDelete = __webpack_require__("./resources/js/components/Icons/ForceDelete.vue");
 
@@ -53476,6 +53434,7 @@ _vue2.default.component('base-value-metric', _ValueMetric2.default);
 _vue2.default.component('card', _Card2.default);
 _vue2.default.component('card-wrapper', _CardWrapper2.default);
 _vue2.default.component('cards', _Cards2.default);
+_vue2.default.component('cancel-button', _CancelButton2.default);
 _vue2.default.component('checkbox', _Checkbox2.default);
 _vue2.default.component('checkbox-with-label', _CheckboxWithLabel2.default);
 _vue2.default.component('confirm-action-modal', _ConfirmActionModal2.default);
@@ -53527,6 +53486,7 @@ _vue2.default.component('modal', _Modal2.default);
 _vue2.default.component('pagination-links', _PaginationLinks2.default);
 _vue2.default.component('pagination-simple', _PaginationSimple2.default);
 _vue2.default.component('panel-item', _PanelItem2.default);
+_vue2.default.component('form-panel', _Panel2.default);
 _vue2.default.component('partition-metric', _PartitionMetric4.default);
 _vue2.default.component('progress-button', _ProgressButton2.default);
 _vue2.default.component('resource-index', _Index2.default);
@@ -53586,6 +53546,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-033488e0", Component.options)
   } else {
     hotAPI.reload("data-v-033488e0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Badge.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Badge.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-50448ac8\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Badge.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Badge.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-50448ac8", Component.options)
+  } else {
+    hotAPI.reload("data-v-50448ac8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -54314,6 +54322,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-2571ed56", Component.options)
   } else {
     hotAPI.reload("data-v-2571ed56", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Detail/BadgeField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Detail/BadgeField.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4528b65a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Detail/BadgeField.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Detail/BadgeField.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4528b65a", Component.options)
+  } else {
+    hotAPI.reload("data-v-4528b65a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -55921,6 +55977,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/components/Form/CancelButton.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Form/CancelButton.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-33da5f7c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/CancelButton.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Form/CancelButton.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-33da5f7c", Component.options)
+  } else {
+    hotAPI.reload("data-v-33da5f7c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Form/CodeField.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -56695,6 +56799,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-545bae72", Component.options)
   } else {
     hotAPI.reload("data-v-545bae72", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Form/Panel.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Form/Panel.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-80463df8\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/Panel.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Form/Panel.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-80463df8", Component.options)
+  } else {
+    hotAPI.reload("data-v-80463df8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -58091,6 +58243,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-a0368d9a", Component.options)
   } else {
     hotAPI.reload("data-v-a0368d9a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Index/BadgeField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Index/BadgeField.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-216638ff\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Index/BadgeField.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Index/BadgeField.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-216638ff", Component.options)
+  } else {
+    hotAPI.reload("data-v-216638ff", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -60060,6 +60260,10 @@ _vue2.default.component('form-status-field', __webpack_require__("./resources/js
 _vue2.default.component('index-markdown-field', __webpack_require__("./resources/js/components/Detail/TextField.vue"));
 _vue2.default.component('detail-markdown-field', __webpack_require__("./resources/js/components/Detail/MarkdownField.vue"));
 _vue2.default.component('form-markdown-field', __webpack_require__("./resources/js/components/Form/MarkdownField.vue"));
+
+// Badge Field...
+_vue2.default.component('index-badge-field', __webpack_require__("./resources/js/components/Index/BadgeField.vue"));
+_vue2.default.component('detail-badge-field', __webpack_require__("./resources/js/components/Detail/BadgeField.vue"));
 
 // Trix Field
 _vue2.default.component('detail-trix-field', __webpack_require__("./resources/js/components/Detail/TrixField.vue"));
