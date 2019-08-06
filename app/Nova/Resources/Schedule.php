@@ -77,8 +77,6 @@ class Schedule extends Resource
             Field::dateTime('Deleted At', 'deleted_at')
                 ->onlyOnDetail(),
 
-            Field::hasMany('Associations', 'associations', ScheduleAssociation::class)
-
         ];
     }
 
