@@ -21,25 +21,6 @@ users
  - jira_id
  - schedule_id
 
-schedules
- - id
- - display_name
- - system_name
- - description
-
-schedule_focus_allocations
- - id
- - schedule_id
- - focus_group_id
- - sunday_allocation
- - monday_allocation
- - tuesday_allocation
- - wednesday_allocation
- - thursday_allocation
- - friday_allocation
- - saturday_allocation
-
-
 Phase 2:
 
 holidays

@@ -17,4 +17,17 @@ class Schedule extends Model
      * @var string
      */
     protected $table = 'schedules';
+
+    /////////////////
+    //* Relations *//
+    /////////////////
+    /**
+     * Returns the allocations associated to this schedule.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function allocations()
+    {
+        return $this->hasMany(ScheduleFocusAllocation::class, 'schedule_id');
+    }
 }

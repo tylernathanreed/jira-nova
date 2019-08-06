@@ -28,4 +28,17 @@ class FocusGroup extends Model
         'color' => 'json',
         'criteria' => 'json'
     ];
+
+    /////////////////
+    //* Relations *//
+    /////////////////
+    /**
+     * Returns the allocations associated to this focus group.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function allocations()
+    {
+        return $this->hasMany(ScheduleFocusAllocation::class, 'focus_group_id');
+    }
 }

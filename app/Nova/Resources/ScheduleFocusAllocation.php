@@ -5,7 +5,7 @@ namespace App\Nova\Resources;
 use Field;
 use Illuminate\Http\Request;
 
-class Schedule extends Resource
+class ScheduleFocusAllocation extends Resource
 {
     /**
      * The logical group associated with the resource.
@@ -19,14 +19,7 @@ class Schedule extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\Schedule::class;
-
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'display_name';
+    public static $model = \App\Models\ScheduleFocusAllocation::class;
 
     /**
      * Indicates if the resoruce should be globally searchable.
@@ -43,6 +36,26 @@ class Schedule extends Resource
     public static $displayInNavigation = true;
 
     /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Allocations';
+    }
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return $this->schedule->display_name . '; ' . $this->focusGroup->display_name;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -52,21 +65,19 @@ class Schedule extends Resource
     public function fields(Request $request)
     {
         return [
-            Field::id()
-                ->sortable()
-                ->onlyOnDetail(),
+            Field::id()->onlyOnDetail(),
 
-            Field::displayName(),
+            Field::belongsTo('Schedule', 'schedule', Schedule::class)->rules('required'),
 
-            Field::text('System Name', 'system_name')
-                ->sortable()
-                ->rules('nullable', 'string', 'max:50')
-                ->creationRules('unique:schedules,system_name')
-                ->updateRules('unique:schedules,system_name,{{resourceId}}'),
+            Field::belongsTo('Focus Group', 'focusGroup', FocusGroup::class)->rules('required'),
 
-            Field::textarea('Description', 'description')
-                ->hideFromIndex()
-                ->rules('nullable', 'string', 'max:255'),
+            Field::number('Sunday', 'sunday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
+            Field::number('Monday', 'monday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
+            Field::number('Tuesday', 'tuesday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
+            Field::number('Wednesday', 'wednesday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
+            Field::number('Thursday', 'thursday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
+            Field::number('Friday', 'friday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
+            Field::number('Saturday', 'saturday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
 
             Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
@@ -76,20 +87,6 @@ class Schedule extends Resource
 
             Field::dateTime('Deleted At', 'deleted_at')
                 ->onlyOnDetail(),
-
-            Field::number('Weekly Allocation', function() {
-                return (
-                    $this->allocations->sum('sunday_allocation') +
-                    $this->allocations->sum('monday_allocation') +
-                    $this->allocations->sum('tuesday_allocation') +
-                    $this->allocations->sum('wednesday_allocation') +
-                    $this->allocations->sum('thursday_allocation') +
-                    $this->allocations->sum('friday_allocation') +
-                    $this->allocations->sum('saturday_allocation')
-                ) / 3600 . ' Hours';
-            }),
-
-            Field::hasMany('Allocations', 'allocations', ScheduleFocusAllocation::class)
 
         ];
     }

@@ -69,7 +69,9 @@ class FocusGroup extends Resource
             Field::text('Description', 'description')->rules('string', 'max:255'),
             Field::swatch('Color', 'color')->rules('required', 'json'),
             Field::number('Priority', 'priority')->rules('required', 'min:1','max:999')->min(1)->max(999)->step(1)->sortable(),
-            Field::code('Criteria', 'criteria')->json()->rules('required', 'json')
+            Field::code('Criteria', 'criteria')->json()->rules('required', 'json'),
+
+            Field::hasMany('Allocations', 'allocations', ScheduleFocusAllocation::class)
 
         ];
     }
