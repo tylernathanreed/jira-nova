@@ -12,7 +12,7 @@ class Schedule extends Resource
      *
      * @var string
      */
-    public static $group = 'Schedules';
+    public static $group = 'Scheduling';
 
     /**
      * The model the resource corresponds to.
@@ -40,7 +40,7 @@ class Schedule extends Resource
      *
      * @var bool
      */
-    public static $displayInNavigation = false;
+    public static $displayInNavigation = true;
 
     /**
      * Get the fields displayed by the resource.
