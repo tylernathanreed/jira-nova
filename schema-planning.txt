@@ -16,15 +16,6 @@ projects
  - display_name
  - icon_url
 
-focus_groups
- - id
- - display_name
- - system_name
- - description
- - primary_color
- - secondary_color
- - criteria
-
 users
  - id
  - jira_id
@@ -33,6 +24,7 @@ users
 schedules
  - id
  - display_name
+ - system_name
  - description
 
 schedule_focus_allocations
