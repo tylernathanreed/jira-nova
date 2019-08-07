@@ -7,8 +7,8 @@ use League\Csv\Writer;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Database\ConnectionResolverInterface as Resolver;
 
 class CsvSeeder extends Seeder
 {
@@ -35,6 +35,13 @@ class CsvSeeder extends Seeder
      * @var string|null
      */
     public $filename;
+
+    /**
+     * The connection resolver instance.
+     *
+     * @var \Illuminate\Database\ConnectionResolverInterface
+     */
+    public $resolver;
 
     /**
      * The filesystem instance.
@@ -71,18 +78,27 @@ class CsvSeeder extends Seeder
      */
     public $orderings = [];
 
+    /**
+     * The seedable model relations keyed by the local column name.
+     *
+     * @var array
+     */
+    public $relations = [];
+
     ///////////////////
     //* Constructor *//
     ///////////////////
     /**
      * Creates a new instance of this class.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $filesystem
+     * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
+     * @param  \Illuminate\Filesystem\Filesystem                 $filesystem
      *
      * @return $this
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Resolver $resolver, Filesystem $filesystem)
     {
+        $this->resolver = $resolver;
         $this->filesystem = $filesystem;
     }
 
@@ -230,6 +246,9 @@ class CsvSeeder extends Seeder
 
         }
 
+        // If relations have been provided, join into them
+        // @todo
+
         // Make sure the required columns are present
         foreach($this->required as $required) {
             $query->whereNotNull($required);
@@ -278,6 +297,11 @@ class CsvSeeder extends Seeder
         // If the model uses soft deletes, remove the timestamp
         if($softDeletes) {
             $listing = array_except($listing, [$model->getDeletedAtColumn()]);
+        }
+
+        // If relations are to be seeded, remove the local foreign keys
+        if(!empty($this->relations)) {
+            $listing = array_except($listing, array_keys($this->relations));
         }
 
         // Qualify each column
@@ -382,7 +406,7 @@ class CsvSeeder extends Seeder
      */
     public function getSchema()
     {
-        return Schema::connection($this->connection);
+        return $this->resolver->connection($this->connection)->getSchemaBuilder();
     }
 
     /**

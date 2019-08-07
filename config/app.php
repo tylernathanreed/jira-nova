@@ -170,6 +170,7 @@ return [
          * Support Service Providers...
          */
         App\Support\Jira\JiraServiceProvider::class,
+        App\Support\Database\Seeds\SeedServiceProvider::class,
 
         /**
          * Application Service Providers...
