@@ -66,6 +66,27 @@ class CsvSeeder extends Seeder
     public $withTrashed = true;
 
     /**
+     * The attributes to match when creating or updating records.
+     *
+     * @var array
+     */
+    public $match = [];
+
+    /**
+     * The select columns to replace with other selections.
+     *
+     * @var array
+     */
+    public $replacements = [];
+
+    /**
+     * The inverse select columns to replace with other selections.
+     *
+     * @var array
+     */
+    public $inverseReplacements = [];
+
+    /**
      * The columns required for seeding.
      *
      * @var array
@@ -84,7 +105,15 @@ class CsvSeeder extends Seeder
      *
      * @var array
      */
-    public $relations = [];
+    public $joinRelations = [];
+
+    /**
+     * The inverse seedable model relations.
+     *
+     * @var array
+     */
+    public $inverseJoinRelations = [];
+
 
     ///////////////////
     //* Constructor *//

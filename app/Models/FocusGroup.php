@@ -29,6 +29,23 @@ class FocusGroup extends Model
         'criteria' => 'json'
     ];
 
+    ////////////
+    //* Nova *//
+    ////////////
+    /**
+     * Returns the Nova data for this schedule.
+     *
+     * @return array
+     */
+    public function toNovaData()
+    {
+        return [
+            'blocks_other_focuses' => $this->blocks_other_focuses,
+            'color' => $this->color,
+            'priority' => $this->priority
+        ];
+    }
+
     /////////////////
     //* Relations *//
     /////////////////

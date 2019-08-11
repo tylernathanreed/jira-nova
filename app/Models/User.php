@@ -13,6 +13,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    //////////////////
+    //* Attributes *//
+    //////////////////
     /**
      * The attributes that are mass assignable.
      *
@@ -40,6 +43,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //////////////////
+    //* Scheduling *//
+    //////////////////
+    /**
+     * Returns the schedule data for Nova.
+     *
+     * @return array
+     */
+    public function getScheduleForNova()
+    {
+        // If this user doesn't have a schedule, use the default one
+        if(is_null($schedule = $this->schedule)) {
+            return Schedule::getDefaultScheduleDataForNova();
+        }
+
+        // Otherwise, return the nova data for the schedule
+        return $schedule->toNovaData();
+    }
+
+    ////////////
+    //* Jira *//
+    ////////////
     /**
      * Creates or updates the specified user from jira.
      *
@@ -158,6 +183,9 @@ class User extends Authenticatable
         return Cache::store('jira');
     }
 
+    //////////////////////
+    //* Authentication *//
+    //////////////////////
     /**
      * Returns the attribute name of the identifier used for jira authentication.
      *
@@ -166,5 +194,18 @@ class User extends Authenticatable
     public function getAuthJiraIdentifierName()
     {
         return 'email_address';
+    }
+
+    /////////////////
+    //* Relations *//
+    /////////////////
+    /**
+     * Returns the schedule associated to this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_id');
     }
 }

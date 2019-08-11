@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use DB;
 use App\Models\Issue;
 use App\Support\Jira\JiraService;
 use App\Support\Jira\Query\Builder;
@@ -175,8 +176,8 @@ class JiraServiceProvider extends ServiceProvider
 
         Processor::map(function($fields, $issue) use ($host, $mapping) {
 
-            // Return the field mapping
-            return [
+            // Determine the initial field mapping
+            $result = [
                 'url' => $host . '/browse/' . $issue->key,
 
                 'summary' => data_get($fields, 'summary'),
@@ -185,7 +186,6 @@ class JiraServiceProvider extends ServiceProvider
                 'priority_icon_url' => data_get($fields, 'priority.iconUrl'),
 
                 'issue_category' => $category = data_get($fields, "{$mapping['issue_category']}.value", Issue::ISSUE_CATEGORY_DEV),
-                'focus' => $priority == Issue::PRIORITY_HIGHEST ? Issue::FOCUS_OTHER : ($category == Issue::ISSUE_CATEGORY_DEV ? Issue::FOCUS_DEV : Issue::FOCUS_TICKET),
 
                 'due_date' => $due = data_get($fields, 'duedate'),
 
@@ -238,6 +238,12 @@ class JiraServiceProvider extends ServiceProvider
                 'entry_date' => data_get($fields, 'created')
 
             ];
+
+            // Calculate the focus
+            $result['focus'] = $priority == Issue::PRIORITY_HIGHEST ? Issue::FOCUS_OTHER : ($category == Issue::ISSUE_CATEGORY_DEV ? Issue::FOCUS_DEV : Issue::FOCUS_TICKET);
+
+            // Return the result
+            return $result;
 
         });
     }

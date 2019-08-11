@@ -24,6 +24,7 @@ class CreateFocusGroupsTable extends Migration
             $table->string('description', 255)->nullable();
             $table->text('color');
             $table->integer('priority')->unsigned();
+            $table->boolean('blocks_other_focuses');
             $table->text('criteria');
 
             // Revision tracking

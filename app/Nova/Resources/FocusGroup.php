@@ -65,11 +65,12 @@ class FocusGroup extends Resource
 
             Field::id('ID', 'id')->hideFromIndex(),
             Field::text('Display Name', 'display_name')->rules('required', 'string', 'max:20'),
-            Field::text('System Name', 'system_name')->hideFromIndex()->rules('string', 'max:20'),
+            Field::text('System Name', 'system_name')->exceptOnForms()->hideFromIndex()->rules('string', 'max:20'),
             Field::text('Description', 'description')->rules('string', 'max:255'),
-            Field::swatch('Color', 'color')->rules('required', 'json'),
-            Field::number('Priority', 'priority')->rules('required', 'min:1','max:999')->min(1)->max(999)->step(1)->sortable(),
-            Field::code('Criteria', 'criteria')->json()->rules('required', 'json'),
+            Field::swatch('Color', 'color')->exceptOnForms()->rules('required', 'json'),
+            Field::number('Priority', 'priority')->exceptOnForms()->rules('required', 'min:1','max:999')->min(1)->max(999)->step(1)->sortable(),
+            Field::boolean('Blocking', 'blocks_other_focuses')->exceptOnForms()->help('When checked, issues in this focus are allowed to allocate into all focus groups.'),
+            Field::code('Criteria', 'criteria')->json()->rules('required', 'json')->onlyOnDetail(),
 
             Field::hasMany('Allocations', 'allocations', ScheduleFocusAllocation::class)
 

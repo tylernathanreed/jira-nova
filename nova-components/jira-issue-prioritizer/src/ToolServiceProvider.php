@@ -22,14 +22,6 @@ class ToolServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $this->routes();
         });
-
-        Nova::serving(function(ServingNova $event) {
-
-            Nova::provideToScript([
-                'user' => $event->request->user()->toArray()
-            ]);
-
-        });
     }
 
     /**

@@ -30,4 +30,17 @@ class UserPolicy extends Policy
     {
         return true;
     }
+
+    /**
+     * Returns whether the user can update any users.
+     *
+     * @param  \App\Models\User  $auth
+     * @param  \App\Models\User  $user
+     *
+     * @return mixed
+     */
+    public function update(User $auth, User $user)
+    {
+        return true;
+    }
 }

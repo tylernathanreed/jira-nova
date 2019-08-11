@@ -33464,9 +33464,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__);
 
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //
 //
@@ -33581,7 +33581,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     props: ['card'],
 
     data: function data() {
-        var _2, _3, _4, _5, _6, _7, _8;
 
         return {
             initialLoading: true,
@@ -33599,16 +33598,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             selectedActionKey: 'save-swimlane-changes',
 
             dragging: false,
-            schedule: {
-                0: (_2 = {}, _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_2, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 0), _2),
-                1: (_3 = {}, _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 4.5 * 60 * 60), _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_3, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _3),
-                2: (_4 = {}, _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 5 * 60 * 60), _defineProperty(_4, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _4),
-                3: (_5 = {}, _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_5, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _5),
-                4: (_6 = {}, _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 4.5 * 60 * 60), _defineProperty(_6, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3.5 * 60 * 60 * 0.5), _6),
-                5: (_7 = {}, _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 5 * 60 * 60), _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_7, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 3 * 60 * 60 * 0.5), _7),
-                6: (_8 = {}, _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, 0), _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, 0), _defineProperty(_8, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, 0), _8)
-
-            }
+            schedule: Nova.config.schedule
         };
     },
 
@@ -36310,7 +36300,7 @@ var render = function() {
                       "via-has-one": false,
                       trashed: "",
                       "per-page": 100,
-                      "per-page-options": {}
+                      "per-page-options": []
                     },
                     on: {
                       "clear-selected-filters": _vm.clearSelectedFilters,

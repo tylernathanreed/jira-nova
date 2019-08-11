@@ -38,6 +38,13 @@ class User extends Resource
     ];
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = true;
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -48,33 +55,17 @@ class User extends Resource
         return [
             Field::id()->sortable(),
 
-            Field::text('Account ID', function() {
-                return $this->jira()->accountId;
-            })->onlyOnDetail(),
+            Field::text('Jira ID', 'jira_id')->onlyOnDetail(),
 
-            Field::text('Email Address', function() {
-                return $this->jira()->emailAddress;
-            }),
+            Field::text('Email Address', 'email_address')->readonly(),
 
             Field::avatar('Avatar')->thumbnail(function() {
                 return $this->jira()->avatarUrls->{"48x48"};
-            })->maxWidth(48),
+            })->maxWidth(48)->exceptOnForms(),
 
-            Field::text('Display Name', function() {
-                return $this->jira()->displayName;
-            }),
+            Field::text('Display Name', 'display_name')->readonly(),
 
-            Field::boolean('Active', function() {
-                return $this->jira()->active;
-            }),
-
-            Field::text('Time Zone', function() {
-                return $this->jira()->timeZone;
-            })->onlyOnDetail(),
-
-            Field::text('Locale', function() {
-                return $this->jira()->locale;
-            })->onlyOnDetail()
+            Field::belongsTo('Schedule', 'schedule', Schedule::class)
         ];
     }
 
@@ -120,7 +111,7 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [
-            new \App\Nova\Actions\UpdateFromJira
+            // new \App\Nova\Actions\UpdateFromJira
         ];
     }
 }

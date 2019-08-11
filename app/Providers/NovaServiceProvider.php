@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use Laravel\Nova\Nova;
+use App\Models\FocusGroup;
 use Laravel\Nova\Cards\Help;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -21,6 +23,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         // Alias the login controller
         $this->aliasLoginController();
+        $this->provideNovaConfiguration();
     }
 
     /**
@@ -34,6 +37,24 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             \App\Http\Controllers\Nova\LoginController::class,
             \Laravel\Nova\Http\Controllers\LoginController::class
         );
+    }
+
+    /**
+     * Adds configuration settings to the Nova front-end.
+     *
+     * @return void
+     */
+    protected function provideNovaConfiguration()
+    {
+        Nova::serving(function(ServingNova $event) {
+
+            Nova::provideToScript([
+                'user' => $event->request->user()->toArray(),
+                'schedule' => $event->request->user()->getScheduleForNova(),
+                'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData()
+            ]);
+
+        });
     }
 
     /**

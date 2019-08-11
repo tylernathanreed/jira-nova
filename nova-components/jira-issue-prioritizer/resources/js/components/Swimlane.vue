@@ -57,7 +57,7 @@
                         :via-has-one="false"
                         trashed=""
                         :per-page="100"
-                        :per-page-options="{}"
+                        :per-page-options="[]"
                         ref="filterMenu"
                         @clear-selected-filters="clearSelectedFilters"
                         @filter-changed="filterChanged"
@@ -147,16 +147,7 @@
                 selectedActionKey: 'save-swimlane-changes',
 
                 dragging: false,
-                schedule: {
-                    0: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 0},
-                    1: {[Constants.FOCUS_DEV]: 4.5 * 60 * 60, [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 3.5 * 60 * 60 * 0.5},
-                    2: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 5 * 60 * 60,   [Constants.FOCUS_OTHER]: 3 * 60 * 60 * 0.5},
-                    3: {[Constants.FOCUS_DEV]: 5 * 60 * 60,   [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 3 * 60 * 60 * 0.5},
-                    4: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 4.5 * 60 * 60, [Constants.FOCUS_OTHER]: 3.5 * 60 * 60 * 0.5},
-                    5: {[Constants.FOCUS_DEV]: 5 * 60 * 60,   [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 3 * 60 * 60 * 0.5},
-                    6: {[Constants.FOCUS_DEV]: 0,             [Constants.FOCUS_TICKET]: 0,             [Constants.FOCUS_OTHER]: 0}
-
-                }
+                schedule: Nova.config.schedule
             };
 
         },

@@ -18,6 +18,17 @@ class ScheduleFocusAllocation extends Model
      */
     protected $table = 'schedule_focus_allocations';
 
+    /**
+     * The attributes that should be casted.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'id' => 'integer',
+        'schedule_id' => 'integer',
+        'focus_group_id' => 'integer'
+    ];
+
     /////////////////
     //* Relations *//
     /////////////////
