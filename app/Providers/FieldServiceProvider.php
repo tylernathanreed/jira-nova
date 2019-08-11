@@ -51,7 +51,15 @@ class FieldServiceProvider extends ServiceProvider
 
             return $fields->number($label, $attribute)
                 ->min(0)
-                ->step(1);
+                ->max(86400)
+                ->step(1)
+                ->rules('required', 'min:0', 'max:86400')
+                ->displayUsing(function($value) {
+                    return number_format($value / 3600, 2);
+                })
+                ->help(
+                    'This value is displayed in hours on other screens, but updated here using seconds.'
+                );
 
         });
     }

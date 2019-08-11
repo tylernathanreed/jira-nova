@@ -71,13 +71,13 @@ class ScheduleFocusAllocation extends Resource
 
             Field::belongsTo('Focus Group', 'focusGroup', FocusGroup::class)->rules('required'),
 
-            Field::number('Sunday', 'sunday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
-            Field::number('Monday', 'monday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
-            Field::number('Tuesday', 'tuesday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
-            Field::number('Wednesday', 'wednesday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
-            Field::number('Thursday', 'thursday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
-            Field::number('Friday', 'friday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
-            Field::number('Saturday', 'saturday_allocation')->min(0)->max(86400)->step(1)->rules('required', 'min:0', 'max:86400'),
+            Field::allocation('Sunday', 'sunday_allocation'),
+            Field::allocation('Monday', 'monday_allocation'),
+            Field::allocation('Tuesday', 'tuesday_allocation'),
+            Field::allocation('Wednesday', 'wednesday_allocation'),
+            Field::allocation('Thursday', 'thursday_allocation'),
+            Field::allocation('Friday', 'friday_allocation'),
+            Field::allocation('Saturday', 'saturday_allocation'),
 
             Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
