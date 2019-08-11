@@ -24,6 +24,7 @@
         "rcknr/nova-multiselect-filter": "^1.2",
         "reedware/carbon-helper": "^1.0",
         "reedware/laravel-blueprints": "^1.0@dev",
+        "reedware/laravel-relation-joins": "^1.0",
         "reedware/nova-field-manager": "^0.2.0@dev",
         "reedware/nova-icons": "^1.0",
         "reedware/nova-partition-metric-style-fix": "dev-master",

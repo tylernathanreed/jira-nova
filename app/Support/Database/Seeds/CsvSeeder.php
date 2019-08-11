@@ -5,6 +5,7 @@ namespace App\Support\Database\Seeds;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Database\Query\Expression;
@@ -125,35 +126,127 @@ class CsvSeeder extends Seeder
         // Create a new reader
         $reader = $this->newCsvReader();
 
+        // Determine the headers
+        $headers = $reader->getHeader();
+
+        // Determine the records
+        $records = [];
+
+        foreach($reader as $record) {
+            $records[] = $record;
+        }
+
+        // Convert the records into update results
+        $results = $this->newUpdateQuery($headers, $records)->get();
+
         // Create a new model instance for reference
         $model = static::newModel();
 
         // Perform the inserts and updates without mass assignment protection
-        $model::unguarded(function() use ($reader, $model) {
+        $model::unguarded(function() use ($results, $model) {
 
-            // Iterate through each record
-            foreach($reader as $record) {
+            // Iterate through each result
+            foreach($results as $result) {
+
+                // Cast the result to an array
+                $result = $result->getAttributes();
 
                 // Extract the matching data
-                $match = Arr::only($record, $this->match);
+                $match = Arr::only($result, $this->match);
 
-                // If record has a trashed entry, convert it to a timestamp
-                if(isset($record['trashed'])) {
+                // If result has a trashed entry, convert it to a timestamp
+                if(isset($result['trashed'])) {
 
                     // Provide the timestamp
-                    $record[$model->getDeletedAtColumn()] = $record['trashed'] ? $model->freshTimestamp() : null;
+                    $result[$model->getDeletedAtColumn()] = $result['trashed'] ? $model->freshTimestamp() : null;
 
                     // Remove the trashed flag
-                    unset($record['trashed']);
+                    unset($result['trashed']);
 
                 }
 
                 // Create or update the model
-                $instance = $model->newQueryWithoutScopes()->updateOrCreate($match, $record);
+                $instance = $model->updateOrCreate($match, $result);
 
             }
 
         });
+    }
+
+    /**
+     * Creates and returns a new update query.
+     *
+     * @param  array  $headers
+     * @param  array  $records
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function newUpdateQuery($headers, $records)
+    {
+        // Create a new query
+        $query = $this->newQueryFromRecords($records);
+
+        // Join into the specified relations
+        foreach($this->inverseJoinRelations as $joinRelation) {
+            $query->leftJoinRelation($joinRelation);
+        }
+
+        // Select each header
+        foreach($headers as $header) {
+
+            // If the header has a replacement, swap it out
+            if(isset($this->inverseReplacements[$header])) {
+                $header = $this->inverseReplacements[$header];
+            }
+
+            $query->addSelect($header);
+
+        }
+
+        // Return the query
+        return $query;
+    }
+
+    /**
+     * Creates and returns a new query using the specified records.
+     *
+     * @param  array  $records
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newQueryFromRecords($records)
+    {
+        // Create a new query
+        $query = $this->newQueryWithoutScopes();
+
+        // Convert the records into a subquery
+        $subquery = array_reduce($records, function($subquery, $record) {
+
+            // Create a new query
+            $query = $this->resolver->query();
+
+            // Select each key/value pair
+            foreach($record as $key => $value) {
+                $query->addSelect("{$value} as {$key}");
+            }
+
+            // If a subquery doesn't exist, use the query
+            if(is_null($subquery)) {
+                return $query;
+            }
+
+            // Otherwise, union the query
+            $subquery->unionAll($query);
+
+        }, null);
+
+        // Select from the subquery
+        $query->fromSub($subquery, 'records');
+
+        $query->getModel()->setTable('records');
+
+        // Return the query
+        return $query;
     }
 
     /**
@@ -211,14 +304,14 @@ class CsvSeeder extends Seeder
      */
     public function newSelectQuery()
     {
+        // Create a new query
+        $query = $this->newBaseQuery();
+
         // Create a new model instance
         $model = static::newModel();
 
         // Determine whether or not the model soft deletes
         $softDeletes = method_exists($model, 'bootSoftDeletes');
-
-        // Create a new query
-        $query = $this->newQuery();
 
         // Select the query columns
         $query->select($this->getTableSelectColumns($model, $softDeletes));
@@ -246,14 +339,6 @@ class CsvSeeder extends Seeder
 
         }
 
-        // If relations have been provided, join into them
-        // @todo
-
-        // Make sure the required columns are present
-        foreach($this->required as $required) {
-            $query->whereNotNull($required);
-        }
-
         // Order by the specified columns
         foreach($this->orderings as $column => $direction) {
             $query->orderBy($column, $direction);
@@ -261,11 +346,38 @@ class CsvSeeder extends Seeder
 
         // To ensure a proper ordering, also order by id
         if(!isset($this->orderings[$model->getKeyName()])) {
-            $query->orderBy($model->getKeyName(), 'asc');
+            $query->orderBy($model->getQualifiedKeyName(), 'asc');
         }
 
         // Return the query
         return $query->toBase();
+    }
+
+    /**
+     * Creates and returns a new query for seeding and generating.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newBaseQuery()
+    {
+        // Create a new query
+        $query = $this->newQuery();
+
+        // Create a new model instance
+        $model = static::newModel();
+
+        // Join into the specified relations
+        foreach($this->joinRelations as $joinRelation) {
+            $query->leftJoinRelation($joinRelation);
+        }
+
+        // Make sure the required columns are present
+        foreach($this->required as $required) {
+            $query->whereNotNull($required);
+        }
+
+        // Return the query
+        return $query;
     }
 
     /**
@@ -299,15 +411,20 @@ class CsvSeeder extends Seeder
             $listing = array_except($listing, [$model->getDeletedAtColumn()]);
         }
 
-        // If relations are to be seeded, remove the local foreign keys
-        if(!empty($this->relations)) {
-            $listing = array_except($listing, array_keys($this->relations));
-        }
-
         // Qualify each column
-        $listing = array_map(function($column) use ($model) {
+        $listing = array_combine($listing, array_map(function($column) use ($model) {
             return $model->qualifyColumn($column);
-        }, $listing);
+        }, $listing));
+
+        // Apply the replacements
+        foreach($this->replacements as $before => $after) {
+
+            // Only apply the replacement if the column is listed
+            if(isset($listing[$before])) {
+                $listing[$before] = $after;
+            }
+
+        }
 
         // Return the columns
         return array_values($listing);

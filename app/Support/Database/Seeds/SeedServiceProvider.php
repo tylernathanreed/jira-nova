@@ -4,6 +4,7 @@ namespace App\Support\Database\Seeds;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\ConnectionResolverInterface;
 
 class SeedServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -34,6 +35,8 @@ class SeedServiceProvider extends ServiceProvider implements DeferrableProvider
         $this->app->singleton('command.seed.generate', function ($app) {
             return new DatabaseSeedGenerateCommand($app['db'], $app['files']);
         });
+
+        $this->app->alias('db', ConnectionResolverInterface::class);
 
         $this->commands([
             'command.seed.generate'

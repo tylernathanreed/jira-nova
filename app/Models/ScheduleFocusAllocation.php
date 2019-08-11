@@ -40,4 +40,27 @@ class ScheduleFocusAllocation extends Model
     {
         return $this->belongsTo(FocusGroup::class, 'focus_group_id');
     }
+
+    //////////////////////
+    //* Seed Relations *//
+    //////////////////////
+    /**
+     * Returns the schedule that this allocation belongs to using seed data.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function scheduleFromSeed()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_system_name', 'system_name');
+    }
+
+    /**
+     * Returns the focus group that this allocation belongs to using seed data.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function focusGroupFromSeed()
+    {
+        return $this->belongsTo(FocusGroup::class, 'focus_group_system_name', 'system_name');
+    }
 }

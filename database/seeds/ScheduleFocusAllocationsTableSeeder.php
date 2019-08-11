@@ -17,8 +17,28 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $match = [
-        'schedule.system_name',
-        'focusGroup.system_name'
+        'schedule_id',
+        'focus_group_id'
+    ];
+
+    /**
+     * The select columns to replace with other selections.
+     *
+     * @var array
+     */
+    public $replacements = [
+        'schedule_id' => 'schedules.system_name as schedule_system_name',
+        'focus_group_id' => 'focus_groups.system_name as focus_group_system_name'
+    ];
+
+    /**
+     * The inverse select columns to replace with other selections.
+     *
+     * @var array
+     */
+    public $inverseReplacements = [
+        'schedule_system_name' => 'focus_groups.id as focus_group_id',
+        'focus_group_system_name' => 'schedules.id as schedule_id'
     ];
 
     /**
@@ -27,8 +47,8 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $required = [
-        'schedule.system_name',
-        'focusGroup.system_name'
+        'schedules.system_name',
+        'focus_groups.system_name'
     ];
 
     /**
@@ -37,17 +57,27 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $orderings = [
-        'schedule.system_name' => 'asc',
-        'focusGroup.system_name' => 'asc'
+        'schedules.system_name' => 'asc',
+        'focus_groups.system_name' => 'asc'
     ];
 
     /**
-     * The seedable model relations keyed by the local column name.
+     * The seedable model relations.
      *
      * @var array
      */
-    public $relations = [
-        'schedule_id' => 'schedule',
-        'focus_group_id' => 'focusGroup'
+    public $joinRelations = [
+        'schedule',
+        'focusGroup'
+    ];
+
+    /**
+     * The inverse seedable model relations.
+     *
+     * @var array
+     */
+    public $inverseJoinRelations = [
+        'scheduleFromSeed',
+        'focusGroupFromSeed'
     ];
 }
