@@ -7,17 +7,7 @@
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "build-multiple": "cd nova-components/Multiple && npm run dev",
-        "build-multiple-prod": "cd nova-components/Multiple && npm run prod",
-        "build-jira-issue-manager": "cd nova-components/JiraIssueManager && npm run dev",
-        "build-jira-issue-manager-prod": "cd nova-components/JiraIssueManager && npm run prod",
-        "build-JiraIssueSwimlane": "cd nova-components/JiraIssueSwimlane && npm run dev",
-        "build-JiraIssueSwimlane-prod": "cd nova-components/JiraIssueSwimlane && npm run prod",
-        "build-icons": "cd nova-components/Icons && npm run dev",
-        "build-icons-prod": "cd nova-components/Icons && npm run prod",
-        "build-color-swatch": "cd nova-components/ColorSwatch && npm run dev",
-        "build-color-swatch-prod": "cd nova-components/ColorSwatch && npm run prod"
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
         "axios": "^0.18",
@@ -35,7 +25,6 @@
     },
     "dependencies": {
         "laravel-nova": "^1.0.9",
-        "moment": "^2.24.0",
-        "vuedraggable": "^2.23.0"
+        "tailwindcss": "^0.6.0"
     }
 }

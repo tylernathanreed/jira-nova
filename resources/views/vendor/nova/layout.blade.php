@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ mix('app.css', 'vendor/nova') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
     <!-- Tool Styles -->
     @foreach(Nova::availableStyles(request()) as $name => $path)
@@ -22,16 +22,22 @@
     <div id="nova">
         <div v-cloak class="flex min-h-screen">
             <!-- Sidebar -->
-            <div class="min-h-screen flex-none pt-header min-h-screen w-sidebar bg-grad-sidebar px-6">
-                <a href="{{ Nova::path() }}">
-                    <div class="absolute pin-t pin-l pin-r bg-logo flex items-center w-sidebar h-header px-6 text-white">
+            <div class="min-h-screen flex-none min-h-screen w-sidebar bg-grad-sidebar">
+                <a href="{{ Nova::path() }}" class="no-underline">
+                    <div class="bg-logo flex items-center w-sidebar h-header px-6 text-white">
                        @include('nova::partials.logo')
                     </div>
                 </a>
 
-                @foreach(Nova::availableTools(request()) as $tool)
-                    {!! $tool->renderNavigation() !!}
-                @endforeach
+                <div>
+                    <?php $tools = collect(Nova::availableTools(request()))->sortBy(function($tool) {
+                        return array_search(get_class($tool), config('nova.tool-priority'));
+                    }); ?>
+
+                    @foreach($tools as $tool)
+                        {!! $tool->renderNavigation() !!}
+                    @endforeach
+                </div>
             </div>
 
             <!-- Content -->

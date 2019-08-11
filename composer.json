@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
+        "david-griffiths/nova-dark-theme": "^1.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
@@ -28,6 +29,7 @@
         "reedware/nova-field-manager": "^0.2.0@dev",
         "reedware/nova-icons": "^1.0",
         "reedware/nova-partition-metric-style-fix": "dev-master",
+        "reedware/nova-treeview": "dev-master",
         "reedware/nova-value-toggle": "dev-master"
     },
     "require-dev": {

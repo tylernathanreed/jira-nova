@@ -91,4 +91,39 @@ return [
 
     'pagination' => 'simple',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Tool Priority
+    |--------------------------------------------------------------------------
+    |
+    | Out of the box, Nova offers two tools: dashboard and resources. If you
+    | wanted to rearrange these, such as placing a custom tool in between
+    | them, you wouldn't be able to. This configuration will fix that.
+    |
+    */
+
+    'tool-priority' => [
+        \Laravel\Nova\Tools\Dashboard::class,
+        \NovaComponents\JiraIssuePrioritizer\JiraIssuePrioritizer::class,
+        \Laravel\Nova\Tools\ResourceManager::class,
+        \MadWeb\NovaTelescopeLink\TelescopeLink::class
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Resource Group Icons
+    |--------------------------------------------------------------------------
+    |
+    | Groups by themselves don't typically have icons, but since they're so
+    | visually appealing, we've added icons to all groups. If a component
+    | icon isn't specified here, we'll use something generic instead.
+    |
+    */
+
+    'resource-group-icons' => [
+        'Scheduling' => 'icon-calendar',
+        'System' => 'icon-cogs'
+    ]
+
 ];
