@@ -92,4 +92,14 @@ class Schedule extends Model
     {
         return $this->hasMany(ScheduleFocusAllocation::class, 'schedule_id');
     }
+
+    /**
+     * Returns the users associated to this schedule.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class, 'schedule_id');
+    }
 }

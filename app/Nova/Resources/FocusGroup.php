@@ -65,6 +65,7 @@ class FocusGroup extends Resource
 
             Field::id('ID', 'id')->hideFromIndex(),
             Field::text('Display Name', 'display_name')->rules('required', 'string', 'max:20'),
+            Field::number('Display Order', 'display_order')->rules('required', 'min:1', 'max:999')->min(1)->max(999)->step(1)->sortable(),
             Field::text('System Name', 'system_name')->exceptOnForms()->hideFromIndex()->rules('string', 'max:20'),
             Field::text('Description', 'description')->rules('string', 'max:255'),
             Field::swatch('Color', 'color')->exceptOnForms()->rules('required', 'json'),
@@ -86,7 +87,9 @@ class FocusGroup extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Metrics\ScheduleFocusAllocationPartition
+        ];
     }
 
     /**

@@ -20,6 +20,7 @@ class CreateFocusGroupsTable extends Migration
 
             // Attributes
             $table->string('display_name', 20);
+            $table->integer('display_order')->unsigned();
             $table->string('system_name', 20)->nullable()->index();
             $table->string('description', 255)->nullable();
             $table->text('color');

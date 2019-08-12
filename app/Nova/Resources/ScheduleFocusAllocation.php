@@ -79,6 +79,18 @@ class ScheduleFocusAllocation extends Resource
             Field::allocation('Friday', 'friday_allocation'),
             Field::allocation('Saturday', 'saturday_allocation'),
 
+            Field::allocation('Total', function() {
+                return number_format((
+                    $this->sunday_allocation +
+                    $this->monday_allocation +
+                    $this->tuesday_allocation +
+                    $this->wednesday_allocation +
+                    $this->thursday_allocation +
+                    $this->friday_allocation +
+                    $this->saturday_allocation
+                ) / 3600, 2);
+            }),
+
             Field::dateTime('Created At', 'created_at')
                 ->onlyOnDetail(),
 
@@ -100,7 +112,11 @@ class ScheduleFocusAllocation extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            (new \App\Nova\Metrics\ScheduleFocusAllocationDailyByFocusPartition)->focus('Dev'),
+            (new \App\Nova\Metrics\ScheduleFocusAllocationDailyByFocusPartition)->focus('Ticket'),
+            (new \App\Nova\Metrics\ScheduleFocusAllocationDailyByFocusPartition)->focus('Other')
+        ];
     }
 
     /**
