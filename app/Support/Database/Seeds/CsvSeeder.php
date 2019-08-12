@@ -267,6 +267,9 @@ class CsvSeeder extends Seeder
             // Otherwise, union the query
             $subquery->unionAll($query);
 
+            // Return the subquery
+            return $subquery;
+
         }, null);
 
         // Select from the subquery
