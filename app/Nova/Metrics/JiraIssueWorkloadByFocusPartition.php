@@ -31,7 +31,7 @@ class JiraIssueWorkloadByFocusPartition extends Partition
         $counts = $issues->groupBy('focus')->map->sum(function($i) {
             return max($i['remaining'], 3600);
         })->map(function($v) {
-            return (float) number_format($v / 3600, 2);
+            return ceil($v / 3600);
         })->all();
 
         // Determine the results
