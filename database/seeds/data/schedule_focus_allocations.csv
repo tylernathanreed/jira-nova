@@ -1,4 +1,5 @@
 schedule_system_name,focus_group_system_name,sunday_allocation,monday_allocation,tuesday_allocation,wednesday_allocation,thursday_allocation,friday_allocation,saturday_allocation,trashed
 standard,Dev,0,16200,0,18000,0,18000,0,0
 standard,Other,0,6300,5400,5400,6300,5400,0,0
+standard,Ticket,0,0,18000,0,16200,0,0,1
 standard,Ticket,0,0,18000,0,16200,0,0,0
