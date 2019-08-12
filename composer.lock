@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "d48e2e4416806ad38b4dff920fdcea4d",
@@ -447,30 +447,28 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "1.1.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea"
+                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/e17f069ede36f7534b95adec71910ed1b49c74ea",
-                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/1febd6c3ef84253d7c815bed85fc622ad207a9f8",
+                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": ">=5.3.2"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^6.0",
-                "phpstan/phpstan": "^0.11.8",
-                "phpunit/phpunit": "^8.2"
+                "phpunit/phpunit": "^4.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
@@ -484,12 +482,12 @@
             ],
             "authors": [
                 {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
                 },
                 {
                     "name": "Johannes Schmitt",
@@ -505,7 +503,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-07-30T19:33:28+00:00"
+            "time": "2019-06-08T11:03:04+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -1418,11 +1416,11 @@
         },
         {
             "name": "mnobrega/php-jira-agile-rest-client",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "./packages/mnobrega/php-jira-agile-rest-client",
-                "reference": "663811c00e28c8e05b5fe395b73010560c9397d0",
+                "reference": "1a847fc47b6cc05377058cf3b5a5b332613ecdbd",
                 "shasum": null
             },
             "require": {
@@ -1751,11 +1749,11 @@
         },
         {
             "name": "nova-components/color-swatch",
-            "version": "dev-tasks/1/focus-groups",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/ColorSwatch",
-                "reference": "9ad02d126094a882f2081766f4ac5c9e8fb46a66",
+                "reference": "1137ed59747638960feb5a5bd7d0a3ec1c2dba1a",
                 "shasum": null
             },
             "require": {
@@ -1785,7 +1783,7 @@
         },
         {
             "name": "nova-components/jira-issue-prioritizer",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/jira-issue-prioritizer",
@@ -2535,16 +2533,16 @@
         },
         {
             "name": "reedware/nova-icons",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/nova-icons.git",
-                "reference": "613b6eeab8f583ec8ff59592994e5faad0d1db33"
+                "reference": "7dad843b4f55f3bfade5d6e025a9156a1d4e746d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/613b6eeab8f583ec8ff59592994e5faad0d1db33",
-                "reference": "613b6eeab8f583ec8ff59592994e5faad0d1db33",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/7dad843b4f55f3bfade5d6e025a9156a1d4e746d",
+                "reference": "7dad843b4f55f3bfade5d6e025a9156a1d4e746d",
                 "shasum": ""
             },
             "require": {
@@ -2583,7 +2581,7 @@
                 "nova",
                 "vue"
             ],
-            "time": "2019-08-01T01:35:54+00:00"
+            "time": "2019-08-11T23:03:06+00:00"
         },
         {
             "name": "reedware/nova-partition-metric-style-fix",
