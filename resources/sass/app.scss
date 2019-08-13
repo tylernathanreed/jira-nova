@@ -1,51 +1,71 @@
 @import '../../vendor/laravel/nova/resources/css/app.css';
 
 :root {
-  --transparent: transparent;
-  --black: #22292f;
-  --white: white;
-  --white-50: rgba(255, 255, 255, 0.5);
-  --danger: #e74444;
-  --success: #21b978;
-  --warning: #ffeb3b;
-  --info: #03a9f4;
-  --primary: #4099de;
-  --primary-dark: #297ec0;
-  --primary-70: rgba(64, 153, 222, 0.7);
-  --primary-50: rgba(64, 153, 222, 0.5);
-  --primary-30: rgba(64, 153, 222, 0.3);
-  --primary-10: rgba(64, 153, 222, 0.1);
-  --logo: #252d37;
-  --sidebar-icon: #b3c1d1;
-  #{"--20"}: #f6fbff;
-  #{"--30"}: #f4f7fa;
-  #{"--40"}: #eef1f4;
-  #{"--50"}: #e3e7eb;
-  #{"--60"}: #bacad6;
-  #{"--70"}: #b3b9bf;
-  #{"--80"}: #7c858e;
-  #{"--90"}: #3c4b5f;
-  #{"--90-half"}: rgba(40, 54, 61, 0.5);
-  #{"--90-third"}: rgba(40, 54, 61, 0.3333);
-  #{"--90-quarter"}: rgba(40, 54, 61, 0.25);
-  --warning-light: #fefcbf;
-  --warning-dark: #b7791f;
-  --success-light: #c6f6d5;
-  --success-dark: #38a169;
-  --danger-light: #fed7d7;
-  --danger-dark: #e53e3e;
-  --info-light: #bee3f8;
-  --info-dark: #3182ce;
+    --transparent: transparent;
+    --black: #22292f;
+    --white: white;
+    --white-50: rgba(255, 255, 255, 0.5);
+    --danger: #e74444;
+    --success: #21b978;
+    --warning: #ffeb3b;
+    --info: #03a9f4;
+    --primary: #4099de;
+    --primary-dark: #297ec0;
+    --primary-70: rgba(64, 153, 222, 0.7);
+    --primary-50: rgba(64, 153, 222, 0.5);
+    --primary-30: rgba(64, 153, 222, 0.3);
+    --primary-10: rgba(64, 153, 222, 0.1);
+    --logo: #252d37;
+    --sidebar-icon: #b3c1d1;
+    #{"--20"}: #f6fbff;
+    #{"--30"}: #f4f7fa;
+    #{"--40"}: #eef1f4;
+    #{"--50"}: #e3e7eb;
+    #{"--60"}: #bacad6;
+    #{"--70"}: #b3b9bf;
+    #{"--80"}: #7c858e;
+    #{"--90"}: #3c4b5f;
+    #{"--90-half"}: rgba(40, 54, 61, 0.5);
+    #{"--90-third"}: rgba(40, 54, 61, 0.3333);
+    #{"--90-quarter"}: rgba(40, 54, 61, 0.25);
+    --warning-light: #fefcbf;
+    --warning-dark: #b7791f;
+    --success-light: #c6f6d5;
+    --success-dark: #38a169;
+    --danger-light: #fed7d7;
+    --danger-dark: #e53e3e;
+    --info-light: #bee3f8;
+    --info-dark: #3182ce;
 }
 
 .sidebar-item {
-	@apply .cursor-pointer .flex .items-center .font-normal .text-white .no-underline .select-none;
+    @apply .cursor-pointer .flex .items-center .font-normal .text-white .no-underline .select-none;
 
-	&:hover {
-		@apply .bg-90-half;
-	}
+    &:hover {
+        @apply .bg-90-half;
+    }
 }
 
 .sidebar-icon {
-  @apply .text-sidebar-icon;
+    @apply .text-sidebar-icon;
+}
+
+.nova-fullscreen-enabled {
+
+    .fullscreen\:hidden {
+        display: none;
+    }
+
+    .content {
+        max-width: 100%;
+    }
+
+}
+
+.nova-fullscreen-disabled {
+
+    .normalscreen\:hidden {
+        display: none;
+    }
+
 }

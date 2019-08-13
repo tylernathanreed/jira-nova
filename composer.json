@@ -60,6 +60,10 @@
         {
             "type": "path",
             "url": "./nova-components/ColorSwatch"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/splash-screen"
         }
     ],
     "config": {

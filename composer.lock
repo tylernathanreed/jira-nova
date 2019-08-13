@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d48e2e4416806ad38b4dff920fdcea4d",
+    "content-hash": "cc5c1c745c60a88644e6d350c2ceb356",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1700,16 +1700,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.2",
+            "version": "v4.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "1bd73cc04c3843ad8d6b0bfc0956026a151fc420"
+                "reference": "e612609022e935f3d0337c1295176505b41188c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1bd73cc04c3843ad8d6b0bfc0956026a151fc420",
-                "reference": "1bd73cc04c3843ad8d6b0bfc0956026a151fc420",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/e612609022e935f3d0337c1295176505b41188c8",
+                "reference": "e612609022e935f3d0337c1295176505b41188c8",
                 "shasum": ""
             },
             "require": {
@@ -1717,7 +1717,7 @@
                 "php": ">=7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.5 || ^7.0"
+                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
             },
             "bin": [
                 "bin/php-parse"
@@ -1747,15 +1747,15 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-05-25T20:07:01+00:00"
+            "time": "2019-08-12T20:17:41+00:00"
         },
         {
             "name": "nova-components/color-swatch",
-            "version": "dev-tasks/1/focus-groups",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/ColorSwatch",
-                "reference": "9ad02d126094a882f2081766f4ac5c9e8fb46a66",
+                "reference": "1137ed59747638960feb5a5bd7d0a3ec1c2dba1a",
                 "shasum": null
             },
             "require": {
@@ -2535,16 +2535,16 @@
         },
         {
             "name": "reedware/nova-icons",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/nova-icons.git",
-                "reference": "613b6eeab8f583ec8ff59592994e5faad0d1db33"
+                "reference": "7dad843b4f55f3bfade5d6e025a9156a1d4e746d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/613b6eeab8f583ec8ff59592994e5faad0d1db33",
-                "reference": "613b6eeab8f583ec8ff59592994e5faad0d1db33",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/7dad843b4f55f3bfade5d6e025a9156a1d4e746d",
+                "reference": "7dad843b4f55f3bfade5d6e025a9156a1d4e746d",
                 "shasum": ""
             },
             "require": {
@@ -2583,7 +2583,7 @@
                 "nova",
                 "vue"
             ],
-            "time": "2019-08-01T01:35:54+00:00"
+            "time": "2019-08-11T23:03:06+00:00"
         },
         {
             "name": "reedware/nova-partition-metric-style-fix",

@@ -126,7 +126,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleBuildError: Module build failed (from ./node_modules/postcss-loader/src/index.js):\nError: ENOENT: no such file or directory, open 'F:\\Program Files (x86)\\Wamp\\3.1.7\\www\\projects\\jira-nova\\vendor\\laravel\\nova\\resources\\css\\app.css'\n    at runLoaders (F:\\Program Files (x86)\\Wamp\\3.1.7\\www\\projects\\jira-nova\\node_modules\\webpack\\lib\\NormalModule.js:301:20)\n    at F:\\Program Files (x86)\\Wamp\\3.1.7\\www\\projects\\jira-nova\\node_modules\\loader-runner\\lib\\LoaderRunner.js:367:11\n    at F:\\Program Files (x86)\\Wamp\\3.1.7\\www\\projects\\jira-nova\\node_modules\\loader-runner\\lib\\LoaderRunner.js:203:19\n    at process.nextTick (F:\\Program Files (x86)\\Wamp\\3.1.7\\www\\projects\\jira-nova\\node_modules\\enhanced-resolve\\lib\\CachedInputFileSystem.js:73:15)\n    at process._tickCallback (internal/process/next_tick.js:61:11)");
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 

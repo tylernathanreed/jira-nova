@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full font-sans antialiased">
+
+<?php $fullscreen = request()->fullscreen ?? false; ?>
+<?php $theme = request()->theme ?? 'default'; ?>
+
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full font-sans antialiased nova-{{ $theme }}-theme nova-fullscreen-{{ $fullscreen ? 'enabled' : 'disabled' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=1280">
@@ -22,7 +26,7 @@
     <div id="nova">
         <div v-cloak class="flex min-h-screen">
             <!-- Sidebar -->
-            <div class="min-h-screen flex-none min-h-screen w-sidebar bg-grad-sidebar">
+            <div class="min-h-screen flex-none min-h-screen w-sidebar bg-grad-sidebar fullscreen:hidden">
                 <a href="{{ Nova::path() }}" class="no-underline">
                     <div class="bg-logo flex items-center w-sidebar h-header px-6 text-white">
                        @include('nova::partials.logo')
@@ -42,7 +46,7 @@
 
             <!-- Content -->
             <div class="content">
-                <div class="flex items-center relative shadow h-header bg-white z-20 px-6">
+                <div class="flex items-center relative shadow h-header bg-white z-20 px-6 fullscreen:hidden">
                     @if(count(Nova::globallySearchableResources(request())) > 0)
                         <global-search></global-search>
                     @endif
@@ -50,6 +54,10 @@
                     <dropdown class="ml-auto h-9 flex items-center dropdown-right">
                         @include('nova::partials.user')
                     </dropdown>
+                </div>
+
+                <div class="flex items-center h-header w-sidebar z-20 px-6 pt-search normalscreen:hidden">
+                    @include('nova::partials.logo')
                 </div>
 
                 <div data-testid="content" class="px-view py-view mx-auto">

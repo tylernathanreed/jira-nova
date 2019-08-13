@@ -702,6 +702,7 @@ input[type='search']::-webkit-search-cancel-button {
 
 .bg-grad-sidebar {
   background-image: linear-gradient(0deg, #7e8ea1 0%, #3c4655 100%);
+  background-attachment: fixed;
 }
 
 /* Custom Padding
@@ -5421,4 +5422,16 @@ trix-editor.disabled {
 
 .sidebar-icon {
   color: var(--sidebar-icon);
+}
+
+.nova-fullscreen-enabled .fullscreen\:hidden {
+  display: none;
+}
+
+.nova-fullscreen-enabled .content {
+  max-width: 100%;
+}
+
+.nova-fullscreen-disabled .normalscreen\:hidden {
+  display: none;
 }
