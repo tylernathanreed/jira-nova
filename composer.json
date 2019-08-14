@@ -30,7 +30,8 @@
         "reedware/nova-icons": "^1.0",
         "reedware/nova-partition-metric-style-fix": "dev-master",
         "reedware/nova-treeview": "dev-master",
-        "reedware/nova-value-toggle": "dev-master"
+        "reedware/nova-value-toggle": "dev-master",
+        "nova-components/cache-manager": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -64,6 +65,10 @@
         {
             "type": "path",
             "url": "./nova-components/splash-screen"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/cache-manager"
         }
     ],
     "config": {

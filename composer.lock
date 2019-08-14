@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc5c1c745c60a88644e6d350c2ceb356",
+    "content-hash": "7303387b90edffc75192b36c1a38fdd9",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -563,16 +563,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.10",
+            "version": "2.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec"
+                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
-                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/92dd169c32f6f55ba570c309d83f5209cefb5e23",
+                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23",
                 "shasum": ""
             },
             "require": {
@@ -591,7 +591,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -617,7 +617,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-07-19T20:52:08+00:00"
+            "time": "2019-08-13T17:33:27+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -809,16 +809,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.31",
+            "version": "v5.8.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "24cc1786bd55876fa52380306354772355345efd"
+                "reference": "ee16d719516dfd77ed6c9538000bca49ded284e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/24cc1786bd55876fa52380306354772355345efd",
-                "reference": "24cc1786bd55876fa52380306354772355345efd",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ee16d719516dfd77ed6c9538000bca49ded284e2",
+                "reference": "ee16d719516dfd77ed6c9538000bca49ded284e2",
                 "shasum": ""
             },
             "require": {
@@ -952,21 +952,21 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-08-06T15:09:02+00:00"
+            "time": "2019-08-13T14:11:52+00:00"
         },
         {
             "name": "laravel/nova",
-            "version": "v2.0.10",
+            "version": "v2.0.11",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "d61a6f1b331164bed3f31c92b96e0c11cc645b10"
+                "reference": "055b382736bf2726754e8dcd674b4a0101ab6ac9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-d61a6f1b331164bed3f31c92b96e0c11cc645b10-zip-00810f.zip",
-                "reference": "d61a6f1b331164bed3f31c92b96e0c11cc645b10",
-                "shasum": "c5eb4b7fc42ec13f341c645f0f2f37ddd05aa4d2"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-055b382736bf2726754e8dcd674b4a0101ab6ac9-zip-bcb2d5.zip",
+                "reference": "055b382736bf2726754e8dcd674b4a0101ab6ac9",
+                "shasum": "a0dde4bca15de2b3f06aa62043728ce485283a4d"
             },
             "require": {
                 "cakephp/chronos": "^1.0",
@@ -1022,7 +1022,7 @@
                 "admin",
                 "laravel"
             ],
-            "time": "2019-08-07T16:05:57+00:00"
+            "time": "2019-08-13T17:17:17+00:00"
         },
         {
             "name": "laravel/telescope",
@@ -1088,16 +1088,16 @@
         },
         {
             "name": "laravel/tinker",
-            "version": "v1.0.9",
+            "version": "v1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/tinker.git",
-                "reference": "eb0075527fdeeb1cc1d68bd4ca7d50256b30a827"
+                "reference": "ad571aacbac1539c30d480908f9d0c9614eaf1a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/tinker/zipball/eb0075527fdeeb1cc1d68bd4ca7d50256b30a827",
-                "reference": "eb0075527fdeeb1cc1d68bd4ca7d50256b30a827",
+                "url": "https://api.github.com/repos/laravel/tinker/zipball/ad571aacbac1539c30d480908f9d0c9614eaf1a7",
+                "reference": "ad571aacbac1539c30d480908f9d0c9614eaf1a7",
                 "shasum": ""
             },
             "require": {
@@ -1147,7 +1147,7 @@
                 "laravel",
                 "psysh"
             ],
-            "time": "2019-07-29T18:09:25+00:00"
+            "time": "2019-08-07T15:10:45+00:00"
         },
         {
             "name": "league/csv",
@@ -1748,6 +1748,40 @@
                 "php"
             ],
             "time": "2019-08-12T20:17:41+00:00"
+        },
+        {
+            "name": "nova-components/cache-manager",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/cache-manager",
+                "reference": "170ab195af78e78e004210a2dd1351359be4d0db",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NovaComponents\\CacheManager\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NovaComponents\\CacheManager\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ]
         },
         {
             "name": "nova-components/color-swatch",
@@ -2535,16 +2569,16 @@
         },
         {
             "name": "reedware/nova-icons",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/nova-icons.git",
-                "reference": "7dad843b4f55f3bfade5d6e025a9156a1d4e746d"
+                "reference": "ce86f3e8f5493011779525fc0d1d3b1c7c5a5b0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/7dad843b4f55f3bfade5d6e025a9156a1d4e746d",
-                "reference": "7dad843b4f55f3bfade5d6e025a9156a1d4e746d",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/ce86f3e8f5493011779525fc0d1d3b1c7c5a5b0f",
+                "reference": "ce86f3e8f5493011779525fc0d1d3b1c7c5a5b0f",
                 "shasum": ""
             },
             "require": {
@@ -2583,7 +2617,7 @@
                 "nova",
                 "vue"
             ],
-            "time": "2019-08-11T23:03:06+00:00"
+            "time": "2019-08-14T13:29:29+00:00"
         },
         {
             "name": "reedware/nova-partition-metric-style-fix",
