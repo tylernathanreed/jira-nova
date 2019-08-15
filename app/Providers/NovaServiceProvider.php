@@ -117,7 +117,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new \NovaComponents\JiraIssuePrioritizer\JiraIssuePrioritizer,
-            new \MadWeb\NovaTelescopeLink\TelescopeLink('Telescope', 'blank')
+            new \NovaComponents\CacheManager\CacheManager,
+            new \MadWeb\NovaTelescopeLink\TelescopeLink('Telescope', 'blank'),
         ];
     }
 
