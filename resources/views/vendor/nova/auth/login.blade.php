@@ -33,9 +33,18 @@
     </div>
 
     <div class="mb-6 {{ $errors->has('password') ? ' has-error' : '' }}">
-        <label class="block font-bold mb-2" for="password">{{ __('Password') }}</label>
+        <label class="block font-bold mb-2 flex" for="password">
+            <span class="flex-1">
+                {{ __('Password') }}
+            </span>
+            <a href="https://confluence.atlassian.com/cloud/api-tokens-938839638.html" target="_blank" class="no-underline">
+                Need an API token?
+            </a>
+        </label>
         <input class="form-control form-input form-input-bordered w-full" id="password" type="password" name="password" required>
     </div>
+
+
 
     <button class="w-full btn btn-default btn-primary hover:bg-primary-dark" type="submit">
         {{ __('Login') }}
