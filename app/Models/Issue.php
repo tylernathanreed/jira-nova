@@ -6,13 +6,15 @@ use DB;
 use Jira;
 use Carbon\Carbon;
 use App\Nova\Filters\Filter;
+use App\Events\CacheStatusUpdate;
 use JiraRestApi\Issue\IssueField;
+use App\Support\Contracts\Cacheable;
 use App\Support\Jira\RankingOperation;
 use JiraRestApi\Issue\Issue as JiraIssue;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Nova\Resources\JiraIssue as IssueResource;
 
-class Issue extends Model
+class Issue extends Model implements Cacheable
 {
     /////////////////
     //* Constants *//
@@ -518,6 +520,103 @@ class Issue extends Model
             'ghx-label-13' => '#57d9a3',
             'ghx-label-14' => '#ff8f73',
         ];
+    }
+
+    /////////////
+    //* Cache *//
+    /////////////
+    /**
+     * Creates the cache records in this table from the cache source.
+     *
+     * @return void
+     */
+    public static function createFromCache()
+    {
+        static::buildFromCache();
+    }
+
+    /**
+     * Updates the cache records in this table from the cache source.
+     *
+     * @param  \Carbon\Carbon  $since
+     *
+     * @return void
+     */
+    public static function updateFromCache(Carbon $since)
+    {
+        static::buildFromCache($since);
+    }
+
+    /**
+     * Builds the cache records in this table from the cache source.
+     *
+     * @param  \Carbon\Carbon|null  $since
+     *
+     * @return void
+     */
+    public static function buildFromCache(Carbon $since = null)
+    {
+        static::unguarded(function() use ($since) {
+
+            static::newCacheQuery($since)->chunk(100, function($chunk, $page) {
+
+                $result->issues->keyBy('key')->map(function($issue) {
+
+                    $issue = array_except((array) $issue, [
+                        'url',
+                        'parent_url'
+                    ]);
+
+                    return $issue;
+
+                })->each(function($issue, $key) {
+                    static::updateOrCreate(compact('key'), $issue);
+                });
+
+                event(new CacheStatusUpdate(static::class, $page * 100, $chunk->count));
+
+            });
+
+        });
+    }
+
+    /**
+     * Creates and returns a new cache query.
+     *
+     * @param  \Carbon\Carbon|null  $since
+     *
+     * @return \App\Support\Jira\Query\Builder
+     */
+    public static function newCacheQuery(Carbon $since = null)
+    {
+        // Create a new query
+        $query = Jira::newQuery();
+
+        // Enforce an order by clause
+        $query->orderBy('issuekey');
+
+        // If we've never cached before, return the query as-is
+        if(is_null($since)) {
+            return $query;
+        }
+
+        // Exclude issues that we've already updated
+        $query->where('updated', '>=', $since->toDateString());
+
+        // Return the query
+        return $query;
+    }
+
+    /**
+     * Returns the number of records that will be created or updated from busting the cache.
+     *
+     * @param  \Carbon\Carbon  $since
+     *
+     * @return integer
+     */
+    public static function getNextCacheUpdateCount(Carbon $since) : integer
+    {
+        return static::newCacheQuery($since)->count();
     }
 
     ///////////////
