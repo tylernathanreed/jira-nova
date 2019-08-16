@@ -6,7 +6,7 @@ return [
 
     'cli' => [
         'username' => env('JIRA_CLI_USER'),
-        'password' => env('JIRA_CLI_PASS'),
+        'password' => env('JIRA_CLI_PASS')
     ],
 
     'fields' => [
