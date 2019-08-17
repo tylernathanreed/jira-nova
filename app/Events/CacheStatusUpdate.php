@@ -12,6 +12,13 @@ class CacheStatusUpdate extends Event
     public $model;
 
     /**
+     * The operation being performed.
+     *
+     * @var string
+     */
+    public $operation;
+
+    /**
      * The number of issues that have already been updated.
      *
      * @var integer
@@ -29,14 +36,16 @@ class CacheStatusUpdate extends Event
      * Create a new event instance.
      *
      * @param  string   $model
+     * @param  string   $operation
      * @param  integer  $current
      * @param  integer  $total
      *
      * @return void
      */
-    public function __construct($model, $current, $total)
+    public function __construct($model, $operation, $current, $total)
     {
         $this->model = $model;
+        $this->operation = $operation;
         $this->current = $current;
         $this->total = $total;
     }

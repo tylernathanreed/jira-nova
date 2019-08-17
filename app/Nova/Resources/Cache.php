@@ -4,6 +4,7 @@ namespace App\Nova\Resources;
 
 use Nova;
 use Field;
+use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
 use App\Support\Contracts\Cacheable;
 
@@ -73,9 +74,31 @@ class Cache extends Resource
                 return Nova::resourceForModel($this->model_class)::label();
             })->options($models),
 
-            Field::dateTime('Updated', 'updated_at')->exceptOnForms(),
+            Field::text('Status', 'status')->onlyOnDetail(),
 
-            Field::dateTime('Built', 'built_at')->exceptOnForms()
+            new Panel('Build Details', [
+                Field::dateTime('Started At', 'build_started_at')->onlyOnDetail(),
+                Field::dateTime('Completed At', 'build_completed_at')->onlyOnDetail(),
+                Field::number('Record Count', 'build_record_count')->onlyOnDetail(),
+                Field::number('Record Total', 'build_record_total')->onlyOnDetail(),
+                Field::text('Progress', function() {
+                    return $this->build_record_total ? number_format($this->build_record_count / $this->build_record_total * 100, 2) . '%' : null;
+                })->onlyOnDetail(),
+            ]),
+
+            new Panel('Update Details', [
+                Field::dateTime('Started At', 'update_started_at')->onlyOnDetail(),
+                Field::dateTime('Completed At', 'update_completed_at')->onlyOnDetail(),
+                Field::number('Record Count', 'update_record_count')->onlyOnDetail(),
+                Field::number('Record Total', 'update_record_total')->onlyOnDetail(),
+                Field::text('Progress', function() {
+                    return $this->update_record_total ? number_format($this->update_record_count / $this->update_record_total * 100, 2) . '%' : null;
+                })->onlyOnDetail(),
+                Field::number('Updates Since Build', 'updates_since_build')->exceptOnForms(),
+            ]),
+
+            Field::dateTime('Created At', 'created_at')->exceptOnForms(),
+            Field::dateTime('Updated At', 'updated_at')->exceptOnForms(),
 
         ];
     }

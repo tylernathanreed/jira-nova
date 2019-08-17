@@ -19,10 +19,21 @@ class CreateCachesTable extends Migration
             $table->bigIncrements('id');
 
             // Attributes
-            $table->string('model_class', 255);
-            $table->string('cache_interval', 50)->nullable();
-            $table->datetime('built_at')->nullable();
-            $table->datetime('updated_at')->nullable();
+            $table->string('model_class', 255)->index();
+            $table->string('cache_interval', 100)->nullable();
+            $table->string('status', 20)->nullable();
+            $table->datetime('build_started_at')->nullable();
+            $table->datetime('build_completed_at')->nullable();
+            $table->integer('build_record_count')->unsigned()->nullable();
+            $table->integer('build_record_total')->unsigned()->nullable();
+            $table->datetime('update_started_at')->nullable();
+            $table->datetime('update_completed_at')->nullable();
+            $table->integer('update_record_count')->unsigned()->nullable();
+            $table->integer('update_record_total')->unsigned()->nullable();
+            $table->integer('updates_since_build')->unsigned()->nullable();
+
+            // Revision tracking
+            $table->timestamps();
 
         });
     }

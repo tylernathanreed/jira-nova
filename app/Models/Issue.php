@@ -6,7 +6,6 @@ use DB;
 use Jira;
 use Carbon\Carbon;
 use App\Nova\Filters\Filter;
-use App\Events\CacheStatusUpdate;
 use JiraRestApi\Issue\IssueField;
 use App\Support\Contracts\Cacheable;
 use App\Support\Jira\RankingOperation;
@@ -526,41 +525,25 @@ class Issue extends Model implements Cacheable
     //* Cache *//
     /////////////
     /**
-     * Creates the cache records in this table from the cache source.
-     *
-     * @return void
-     */
-    public static function createFromCache()
-    {
-        static::buildFromCache();
-    }
-
-    /**
-     * Updates the cache records in this table from the cache source.
-     *
-     * @param  \Carbon\Carbon  $since
-     *
-     * @return void
-     */
-    public static function updateFromCache(Carbon $since)
-    {
-        static::buildFromCache($since);
-    }
-
-    /**
-     * Builds the cache records in this table from the cache source.
+     * Returns the pages that need to be cached.
      *
      * @param  \Carbon\Carbon|null  $since
      *
-     * @return void
+     * @return array
      */
-    public static function buildFromCache(Carbon $since = null)
+    public static function getCachePages(Carbon $since = null)
     {
-        static::unguarded(function() use ($since) {
+        // Initialize the list of pages
+        $pages = [];
 
-            static::newCacheQuery($since)->chunk(100, function($chunk, $page) {
+        // Iterate through the pages to cache
+        static::newCacheQuery($since)->chunk(100, function($chunk, $page) use (&$pages) {
 
-                $result->issues->keyBy('key')->map(function($issue) {
+            // Add each page
+            $pages[] = [
+                'current' => $page * 100,
+                'total' => $chunk->count,
+                'records' => $chunk->issues->keyBy('key')->map(function($issue) {
 
                     $issue = array_except((array) $issue, [
                         'url',
@@ -569,15 +552,27 @@ class Issue extends Model implements Cacheable
 
                     return $issue;
 
-                })->each(function($issue, $key) {
-                    static::updateOrCreate(compact('key'), $issue);
-                });
+                }),
+                'perform' => function($issues) {
 
-                event(new CacheStatusUpdate(static::class, $page * 100, $chunk->count));
+                    // Enable mass assignment
+                    static::unguarded(function() {
 
-            });
+                        // Update or create each issue
+                        $issues->each(function($issue, $key) {
+                            static::updateOrCreate(compact('key'), $issue);
+                        });
+
+                    });
+
+                }
+
+            ];
 
         });
+
+        // Return the pages
+        return $pages;
     }
 
     /**
@@ -605,18 +600,6 @@ class Issue extends Model implements Cacheable
 
         // Return the query
         return $query;
-    }
-
-    /**
-     * Returns the number of records that will be created or updated from busting the cache.
-     *
-     * @param  \Carbon\Carbon  $since
-     *
-     * @return integer
-     */
-    public static function getNextCacheUpdateCount(Carbon $since) : integer
-    {
-        return static::newCacheQuery($since)->count();
     }
 
     ///////////////
