@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7303387b90edffc75192b36c1a38fdd9",
+    "content-hash": "d9d9a2932af3d6b1e174ec791cb48a02",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1591,16 +1591,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.22.3",
+            "version": "2.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "738fbd8d80b2c5e158fda76c29c2de432fcc6f7e"
+                "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/738fbd8d80b2c5e158fda76c29c2de432fcc6f7e",
-                "reference": "738fbd8d80b2c5e158fda76c29c2de432fcc6f7e",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/767617a047e5b8b8b3b0b6023a2650847ed7df02",
+                "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02",
                 "shasum": ""
             },
             "require": {
@@ -1647,30 +1647,34 @@
                     "homepage": "http://github.com/kylekatarnls"
                 }
             ],
-            "description": "A simple API extension for DateTime.",
+            "description": "A API extension for DateTime that supports 281 different languages.",
             "homepage": "http://carbon.nesbot.com",
             "keywords": [
                 "date",
                 "datetime",
                 "time"
             ],
-            "time": "2019-08-07T12:36:44+00:00"
+            "time": "2019-08-17T13:57:34+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
-            "version": "v1.5.2",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweiske/jsonmapper.git",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c"
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
+                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
+                "ext-pcre": "*",
+                "ext-reflection": "*",
+                "ext-spl": "*",
                 "php": ">=5.6"
             },
             "require-dev": {
@@ -1696,7 +1700,7 @@
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
-            "time": "2019-08-04T19:56:28+00:00"
+            "time": "2019-08-15T19:41:25+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -1748,40 +1752,6 @@
                 "php"
             ],
             "time": "2019-08-12T20:17:41+00:00"
-        },
-        {
-            "name": "nova-components/cache-manager",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "./nova-components/cache-manager",
-                "reference": "170ab195af78e78e004210a2dd1351359be4d0db",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "NovaComponents\\CacheManager\\ToolServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "NovaComponents\\CacheManager\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova tool.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ]
         },
         {
             "name": "nova-components/color-swatch",
@@ -2711,11 +2681,16 @@
         {
             "name": "reedware/nova-value-toggle",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tylernathanreed/nova-value-toggle.git",
+                "reference": "5263b335e2afda8b545e4531bf67bc36136f645c"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../packages/reedware/nova-value-toggle",
+                "type": "zip",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-value-toggle/zipball/5263b335e2afda8b545e4531bf67bc36136f645c",
                 "reference": "5263b335e2afda8b545e4531bf67bc36136f645c",
-                "shasum": null
+                "shasum": ""
             },
             "require": {
                 "illuminate/contracts": ">=5.1",
@@ -2738,6 +2713,7 @@
                     "Reedware\\NovaValueToggle\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2748,7 +2724,8 @@
                 "nova",
                 "toggle",
                 "value"
-            ]
+            ],
+            "time": "2019-06-04T12:48:29+00:00"
         },
         {
             "name": "spatie/once",

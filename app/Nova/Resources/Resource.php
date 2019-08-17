@@ -29,6 +29,13 @@ abstract class Resource extends NovaResource
     public static $defaultOrderings = [];
 
     /**
+     * The relationship counts that should be eager loaded when performing an index query.
+     *
+     * @var array
+     */
+    public static $withCount = [];
+
+    /**
      * Build an "index" query for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -38,7 +45,7 @@ abstract class Resource extends NovaResource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query;
+        return $query->withCount(static::$withCount);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DB;
 use Jira;
+use Closure;
 use Carbon\Carbon;
 use App\Nova\Filters\Filter;
 use JiraRestApi\Issue\IssueField;
@@ -525,54 +526,56 @@ class Issue extends Model implements Cacheable
     //* Cache *//
     /////////////
     /**
-     * Returns the pages that need to be cached.
+     * Caches the issues.
      *
+     * @param  \Closure             $callback
      * @param  \Carbon\Carbon|null  $since
      *
      * @return array
      */
-    public static function getCachePages(Carbon $since = null)
+    public static function runCacheHandler(Closure $callback, Carbon $since = null)
     {
-        // Initialize the list of pages
-        $pages = [];
-
         // Iterate through the pages to cache
-        static::newCacheQuery($since)->chunk(100, function($chunk, $page) use (&$pages) {
+        static::newCacheQuery($since)->chunk(100, function($chunk, $page) use ($callback) {
 
-            // Add each page
-            $pages[] = [
-                'current' => $page * 100,
-                'total' => $chunk->count,
-                'records' => $chunk->issues->keyBy('key')->map(function($issue) {
+            // Determine the issues
+            $issues = $chunk->issues->keyBy('key')->map(function($issue) {
 
-                    $issue = array_except((array) $issue, [
-                        'url',
-                        'parent_url'
-                    ]);
+                $issue = array_except((array) $issue, [
+                    'url',
+                    'parent_url'
+                ]);
 
-                    return $issue;
+                return $issue;
 
-                }),
-                'perform' => function($issues) {
+            });
 
-                    // Enable mass assignment
-                    static::unguarded(function() {
+            // Enable mass assignment
+            static::unguarded(function() use ($issues) {
 
-                        // Update or create each issue
-                        $issues->each(function($issue, $key) {
-                            static::updateOrCreate(compact('key'), $issue);
-                        });
+                // Update or create each issue
+                $issues->each(function($issue, $key) {
+                    static::updateOrCreate(compact('key'), $issue);
+                });
 
-                    });
+            });
 
-                }
-
-            ];
+            // Invoke the handler
+            $callback($page * 100, $chunk->count);
 
         });
+    }
 
-        // Return the pages
-        return $pages;
+    /**
+     * Returns the number of records that need to be cached.
+     *
+     * @param  \Carbon\Carbon|null  $since
+     *
+     * @return integer
+     */
+    public static function getCacheRecordCount(Carbon $since = null)
+    {
+        return static::newCacheQuery($since)->count();
     }
 
     /**
@@ -623,7 +626,8 @@ class Issue extends Model implements Cacheable
             DB::raw('case when estimate_remaining is null then 3600 when estimate_remaining < 3600 then 3600 else estimate_remaining end as estimate_remaining'),
             'focus',
             'epic_name',
-            'assignee_name'
+            'assignee_name',
+            'project_id'
         ]);
 
         // Wrap the query into a subquery
@@ -651,5 +655,18 @@ class Issue extends Model implements Cacheable
             'Testing Passed [Test]',
             'Testing passed [UAT]'
         ]);
+    }
+
+    /////////////////
+    //* Relations *//
+    /////////////////
+    /**
+     * Returns the project that this issue belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
     }
 }

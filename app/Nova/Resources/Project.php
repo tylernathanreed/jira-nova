@@ -36,11 +36,13 @@ class Project extends Resource
     public static $globallySearchable = false;
 
     /**
-     * Indicates if the resource should be displayed in the sidebar.
+     * The relationship counts that should be eager loaded when performing an index query.
      *
-     * @var bool
+     * @var array
      */
-    public static $displayInNavigation = true;
+    public static $withCount = [
+        'issues'
+    ];
 
     /**
      * Get the fields displayed by the resource.
@@ -58,9 +60,13 @@ class Project extends Resource
 
             Field::text('Jira Key', 'jira_key')->exceptOnForms(),
 
-            Field::avatar('Avatar', 'avatar_url')->exceptOnForms(),
+            Field::avatar('Icon', 'avatar_url')->thumbnail(function() {
+                return $this->avatar_url;
+            })->maxWidth(32)->exceptOnForms(),
 
-            Field::text('Name', 'name')->exceptOnForms()
+            Field::text('Name', 'name')->exceptOnForms(),
+
+            Field::number('Issues', 'issues_count')->onlyOnIndex()
 
         ];
     }
@@ -74,7 +80,9 @@ class Project extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Metrics\IssueWorkloadByProjectPartition
+        ];
     }
 
     /**

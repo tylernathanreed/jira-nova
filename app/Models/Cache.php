@@ -47,6 +47,9 @@ class Cache extends Model
      */
     public function bust($since = null)
     {
+        // Parse the timestamp
+        $since = is_null($since) ? null : carbon($since);
+
         // Determine the model class
         $model = $this->model_class;
 
@@ -59,7 +62,7 @@ class Cache extends Model
 
         // Initialize the operation counts
         $this->setAttribute("{$operation}_record_count", 0);
-        $this->setAttribute("{$operation}_record_total", 0);
+        $this->setAttribute("{$operation}_record_total", $model::getCacheRecordCount($since));
 
         // Update the status
         $this->status = $operation == 'build' ? static::STATUS_BUILDING : static::STATUS_UPDATING;
@@ -67,49 +70,35 @@ class Cache extends Model
         // Save this cache
         $this->save();
 
-        // Determine the cache pages
-        $pages = $model::getCachePages(carbon($since));
+        // Fire the status update event
+        event(new CacheStatusUpdate($this, $operation));
 
-        // Update the record total
-        $this->setAttribute("{$operation}_record_total", head($pages)['total']);
-
-        /**
-         * @todo Event for record total
-         */
-
-        // Save this cache
-        $this->save();
-
-        // Iterate through each page
-        foreach($pages as $page) {
-
-            // Handle each page
-            call_user_func($page['perform'], $page['records']);
+        // Cache the records
+        $model::runCacheHandler(function($current, $total) use ($operation) {
 
             // Update the operation statistics
-            $this->setAttribute("{$operation}_record_count", $page['current']);
-            $this->setAttribute("{$operation}_record_total", $page['total']);
+            $this->setAttribute("{$operation}_record_count", $current);
+            $this->setAttribute("{$operation}_record_total", $total);
 
             // Save this cache
             $this->save();
 
             // Fire the update event
-            event(new CacheStatusUpdate($model, $operation, $page['current'], $page['total']));
+            event(new CacheStatusUpdate($this, $operation));
 
-        }
+        }, $since);
 
         // Mark the operation as completed
         $this->setAttribute("{$operation}_completed_at", carbon());
 
         // Update the status
-        $this->status = $operation == 'build' ? static::STATUS_BUILT : static::STATUS_UPDATING;
-
-        /**
-         * @todo Event for complete.
-         */
+        $this->status = $operation == 'build' ? static::STATUS_BUILT : static::STATUS_UPDATED;
 
         // Save this cache
         $this->save();
+
+        // Fire the update event
+        event(new CacheStatusUpdate($this, $operation));
 
         // Allow chaining
         return $this;
@@ -122,6 +111,14 @@ class Cache extends Model
      */
     public function rebuild()
     {
+        // Flush the update statistics
+        $this->update_started_at = null;
+        $this->update_completed_at = null;
+        $this->update_record_count = null;
+        $this->update_record_total = null;
+        $this->updates_since_build = 0;
+
+        // Rebuild the cache
         return $this->bust(null);
     }
 

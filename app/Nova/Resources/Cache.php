@@ -74,7 +74,14 @@ class Cache extends Resource
                 return Nova::resourceForModel($this->model_class)::label();
             })->options($models),
 
-            Field::text('Status', 'status')->onlyOnDetail(),
+            Field::text('Status', 'status')->exceptOnForms(),
+            Field::text('Progress', function() {
+
+                return $this->update_record_total ? number_format($this->update_record_count / $this->update_record_total * 100, 2) . '%' : (
+                    $this->build_record_total ? number_format($this->build_record_count / $this->build_record_total * 100, 2) . '%' : null
+                );
+
+            })->onlyOnIndex(),
 
             new Panel('Build Details', [
                 Field::dateTime('Started At', 'build_started_at')->onlyOnDetail(),
@@ -94,11 +101,11 @@ class Cache extends Resource
                 Field::text('Progress', function() {
                     return $this->update_record_total ? number_format($this->update_record_count / $this->update_record_total * 100, 2) . '%' : null;
                 })->onlyOnDetail(),
-                Field::number('Updates Since Build', 'updates_since_build')->exceptOnForms(),
+                // Field::number('Updates Since Build', 'updates_since_build')->exceptOnForms(),
             ]),
 
-            Field::dateTime('Created At', 'created_at')->exceptOnForms(),
-            Field::dateTime('Updated At', 'updated_at')->exceptOnForms(),
+            Field::dateTime('Created At', 'created_at')->onlyOnDetail(),
+            Field::dateTime('Updated At', 'updated_at')->onlyOnDetail(),
 
         ];
     }
