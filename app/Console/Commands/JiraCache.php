@@ -46,22 +46,6 @@ class JiraCache extends Command
 
         // Handle the caches
         $this->handleCaches();
-
-        /*
-        // Make sure there's issues to cache
-        if(($count = $this->newJiraCacheQuery()->count()) == 0) {
-
-            $this->info('No issues to cache.');
-            return;
-
-        }
-
-        // Indicate how many issues are getting cached
-        $this->info("Caching {$count} issues...");
-
-        // Cache the issues
-        $this->cacheIssues();
-        */
     }
 
     /**
@@ -102,6 +86,9 @@ class JiraCache extends Command
             // Determine the record count and total
             $count = $cache->getAttribute("{$operation}_record_count");
             $total = $cache->getAttribute("{$operation}_record_total");
+
+            // Make sure the count doesn't exceed the total
+            $count = min($count, $total);
 
             // Determine the start and complete times
             $start = $cache->getAttribute("{$operation}_started_at");
@@ -145,7 +132,7 @@ class JiraCache extends Command
     public function handleCaches()
     {
         // Determine all of the caches
-        $caches = Cache::all();
+        $caches = Cache::orderBy('execution_order')->get();
 
         // Determine the operation
         $operation = $this->option('all') ? 'rebuild' : 'recache';
@@ -154,119 +141,5 @@ class JiraCache extends Command
         foreach($caches as $cache) {
             $cache->{$operation}();
         }
-    }
-
-    /**
-     * Caches the issues.
-     *
-     * @return void
-     */
-    public function cacheIssues()
-    {
-        $this->newJiraCacheQuery()->chunk(100, function($chunk, $page) {
-
-            // Cache the chunk result
-            $this->cacheChunkResult($chunk);
-
-            // Log the status
-            $this->logStatus($page, $chunk->count);
-
-        });
-    }
-
-    /**
-     * Creates and returns a new jira cache query.
-     *
-     * @return \App\Support\Jira\Query\Builder
-     */
-    public function newJiraCacheQuery()
-    {
-        // Create a new query
-        $query = Jira::newQuery();
-
-        // Enforce an order by clause
-        $query->orderBy('issuekey');
-
-        // If we're loading all issues, return the query as-is
-        if($this->option('all')) {
-            return $query;
-        }
-
-        // Determine the previous cache date
-        $date = $this->getPreviousCacheDate();
-
-        // If we've never cached before, return the query as-is
-        if(is_null($date)) {
-            return $query;
-        }
-
-        // Exclude issues that we've already updated
-        $query->where('updated', '>=', $date->toDateString());
-
-        // Return the query
-        return $query;
-    }
-
-    /**
-     * Returns the previous cache date.
-     *
-     * @return \Carbon\Carbon|null
-     */
-    protected function getPreviousCacheDate()
-    {
-        // Determine the previous cache date
-        $date = Issue::max('updated_at');
-
-        // If no date exists, return null
-        if(is_null($date)) {
-            return null;
-        }
-
-        // Parse the date
-        return carbon($date);
-    }
-
-    /**
-     * Caches the specified chunk result.
-     *
-     * @param  \stdClass  $result
-     *
-     * @return void
-     */
-    protected function cacheChunkResult($result)
-    {
-        Issue::unguarded(function() use ($result) {
-
-            $result->issues->keyBy('key')->map(function($issue) {
-
-                $issue = array_except((array) $issue, [
-                    'url',
-                    'parent_url'
-                ]);
-
-                return $issue;
-
-            })->each(function($issue, $key) {
-                Issue::updateOrCreate(compact('key'), $issue);
-            });
-
-        });
-    }
-
-    /**
-     * Logs the status of the specified page.
-     *
-     * @param  integer  $page
-     * @param  integer  $total
-     *
-     * @return void
-     */
-    protected function logStatus($page, $total)
-    {
-        $this->info(sprintf('-> Cached %s of %s issues [%s complete].',
-            min($page * 100, $total),
-            $total,
-            number_format(min($page * 100, $total) / $total * 100, 2) . '%'
-        ));
     }
 }
