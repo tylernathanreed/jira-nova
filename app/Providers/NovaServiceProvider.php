@@ -49,6 +49,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::serving(function(ServingNova $event) {
 
             Nova::provideToScript([
+                'name' => Nova::name(),
                 'user' => $event->request->user()->toArray(),
                 'schedule' => $event->request->user()->getScheduleForNova(),
                 'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData()

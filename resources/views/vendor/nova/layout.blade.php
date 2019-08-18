@@ -9,7 +9,11 @@
     <meta name="viewport" content="width=1280">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ Nova::name() }}</title>
+    @if(!empty($path = Str::title(str_replace('-', ' ', str_replace('/', ' :: ', ltrim(request()->path(), Nova::path()))))))
+        <title>{{ Nova::name() }} :: {{ $path }}</title>
+    @else
+        <title>{{ Nova::name() }}</title>
+    @endif
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,800,800i,900,900i" rel="stylesheet">
@@ -95,6 +99,29 @@
     <!-- Start Nova -->
     <script>
         Nova.liftOff()
+    </script>
+
+    <!-- Custom Scripts -->
+    <script>
+        (function() {
+
+            let f = Nova.app.$loading.finish;
+
+            Nova.app.$loading.finish = function() {
+
+                f();
+
+                let path = Nova.app._route.path.replace(/^\//, '').replace(/\//g, ' :: ').replace(/-/g, ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, s => s.toUpperCase());
+
+                if(path) {
+                    document.title = Nova.config.name + ' :: ' + path;
+                } else {
+                    document.title = Nova.config.name;
+                }
+
+            };
+
+        })();
     </script>
 </body>
 </html>

@@ -65,7 +65,7 @@ class Cache extends Resource
 
             Field::select('Model', 'model_class', function() {
                 return Nova::resourceForModel($this->model_class)::label();
-            })->options($models),
+            })->options($models)->hideWhenUpdating(),
 
             Field::text('Status', 'status')->exceptOnForms(),
             Field::text('Progress', function() {
@@ -96,6 +96,8 @@ class Cache extends Resource
                 })->onlyOnDetail(),
                 // Field::number('Updates Since Build', 'updates_since_build')->exceptOnForms(),
             ]),
+
+            Field::number('Execution Order', 'execution_order')->sortable(),
 
             Field::dateTime('Created At', 'created_at')->onlyOnDetail(),
             Field::dateTime('Updated At', 'updated_at')->onlyOnDetail(),

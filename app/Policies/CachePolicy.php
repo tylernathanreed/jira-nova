@@ -45,6 +45,19 @@ class CachePolicy extends Policy
     }
 
     /**
+     * Returns whether the user can update the specified cache.
+     *
+     * @param  \App\Models\User   $user
+     * @param  \App\Models\Cache  $cache
+     *
+     * @return mixed
+     */
+    public function update(User $user, Cache $cache)
+    {
+        return true;
+    }
+
+    /**
      * Returns whether the user can delete the specified cache.
      *
      * @param  \App\Models\User   $user
