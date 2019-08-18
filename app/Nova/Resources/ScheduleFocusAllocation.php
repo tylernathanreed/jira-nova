@@ -29,13 +29,6 @@ class ScheduleFocusAllocation extends Resource
     public static $globallySearchable = false;
 
     /**
-     * Indicates if the resource should be displayed in the sidebar.
-     *
-     * @var bool
-     */
-    public static $displayInNavigation = true;
-
-    /**
      * Get the displayable label of the resource.
      *
      * @return string

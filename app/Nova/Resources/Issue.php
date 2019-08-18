@@ -12,7 +12,7 @@ class Issue extends Resource
      *
      * @var string
      */
-    public static $group = 'Issues';
+    public static $group = self::class;
 
     /**
      * The model the resource corresponds to.
@@ -36,6 +36,13 @@ class Issue extends Resource
     public static $displayInNavigation = false;
 
     /**
+     * The number of resources to show per page via relationships.
+     *
+     * @var int
+     */
+    public static $perPageViaRelationship = 10;
+
+    /**
      * The columns that should be searched.
      *
      * @var array
@@ -56,9 +63,25 @@ class Issue extends Resource
 
             Field::id()->onlyOnDetail(),
 
-            Field::text('Key', 'key'),
+            Field::avatar('T')->thumbnail(function() {
+                return $this->type_icon_url;
+            })->maxWidth(16)->onlyOnIndex(),
 
-            Field::text('URL', 'url')->onlyOnDetail(),
+            // Field::text('Type', 'type_name')->onlyOnDetail(),
+
+            Field::avatar('P')->thumbnail(function() {
+                return $this->priority_icon_url;
+            })->maxWidth(16)->onlyOnIndex(),
+
+            // Field::text('Priority', 'priority_name')->onlyOnDetail(),
+
+            Field::text('Key', 'key')->exceptOnForms(),
+
+            Field::text('Epic', 'epic_name')->exceptOnForms(),
+            // Field::text('epic_key', 'epic_key'),
+            // Field::text('epic_url', 'epic_url'),
+            // Field::text('epic_color', 'epic_color'),
+
 
             Field::text('Summary', 'summary', function() {
                 return strlen($this->summary) > 80 ? substr($this->summary, 0, 80) . '...' : $this->summary;
@@ -66,40 +89,35 @@ class Issue extends Resource
 
             Field::text('Summary', 'summary')->onlyOnDetail(),
 
-            Field::text('Priority', 'priority_name')->onlyOnDetail(),
-            // Field::text('priority_icon_url', 'priority_icon_url'),
+            Field::text('Status', 'status_name')->exceptOnForms(),
+            // Field::text('status_color', 'status_color'),
 
             Field::text('Issue Category', 'issue_category')->onlyOnDetail(),
-            Field::text('Focus', 'focus'),
-
-            Field::date('Due', 'due_date'),
-
-            Field::number('Remaining', 'estimate_remaining')->onlyOnDetail(),
-            Field::date('Estimate', 'estimate_date'),
-            // Field::text('estimate_diff', 'estimate_diff'),
-
-            Field::text('Type', 'type_name')->onlyOnDetail(),
-            // Field::text('type_icon_url', 'type_icon_url'),
-
-            // Field::text('is_subtask', 'is_subtask'),
-            Field::text('Parent', 'parent_key')->onlyOnDetail(),
-            // Field::text('parent_url', 'parent_url'),
-
-            Field::text('Status', 'status_name')->onlyOnDetail(),
-            // Field::text('status_color', 'status_color'),
+            Field::text('Focus', 'focus')->onlyOnDetail(),
 
             // Field::text('reporter_key', 'reporter_key'),
             Field::text('Reporter', 'reporter_name')->onlyOnDetail(),
             // Field::text('reporter_icon_url', 'reporter_icon_url'),
 
             // Field::text('assignee_key', 'assignee_key'),
-            Field::text('Assignee', 'assignee_name'),
+            Field::text('Assignee', 'assignee_name')->exceptOnForms(),
             // Field::text('assignee_icon_url', 'assignee_icon_url'),
 
-            // Field::text('epic_key', 'epic_key'),
-            // Field::text('epic_url', 'epic_url'),
-            Field::text('Epic', 'epic_name')->onlyOnDetail(),
-            // Field::text('epic_color', 'epic_color'),
+            Field::date('Due', 'due_date')->sortable(),
+
+            Field::date('Estimate', 'estimate_date')->sortable()->exceptOnForms(),
+
+            Field::number('Remaining', 'estimate_remaining')->displayUsing(function($value) {
+                return number_format($value / 3600, 2);
+            })->exceptOnForms()->sortable(),
+
+            // Field::text('estimate_diff', 'estimate_diff'),
+
+            Field::text('URL', 'url')->onlyOnDetail(),
+
+            // Field::text('is_subtask', 'is_subtask'),
+            Field::text('Parent', 'parent_key')->onlyOnDetail(),
+            // Field::text('parent_url', 'parent_url'),
 
             Field::code('labels', 'labels')->json()->onlyOnDetail(),
 
@@ -122,7 +140,7 @@ class Issue extends Resource
     public function cards(Request $request)
     {
         return [
-            new \App\Nova\Metrics\IssueWorkloadByFocus
+            // new \App\Nova\Metrics\IssueWorkloadByFocus
         ];
     }
 
@@ -134,7 +152,10 @@ class Issue extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\AssigneeIssueFilter,
+            new \App\Nova\Filters\StatusIssueFilter
+        ];
     }
 
     /**

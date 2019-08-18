@@ -2539,16 +2539,16 @@
         },
         {
             "name": "reedware/nova-icons",
-            "version": "v1.0.4",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/nova-icons.git",
-                "reference": "ce86f3e8f5493011779525fc0d1d3b1c7c5a5b0f"
+                "reference": "0323a5b328c5e6ff54e256c1f5baad083e4686e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/ce86f3e8f5493011779525fc0d1d3b1c7c5a5b0f",
-                "reference": "ce86f3e8f5493011779525fc0d1d3b1c7c5a5b0f",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/0323a5b328c5e6ff54e256c1f5baad083e4686e5",
+                "reference": "0323a5b328c5e6ff54e256c1f5baad083e4686e5",
                 "shasum": ""
             },
             "require": {
@@ -2587,7 +2587,7 @@
                 "nova",
                 "vue"
             ],
-            "time": "2019-08-14T13:29:29+00:00"
+            "time": "2019-08-18T13:53:47+00:00"
         },
         {
             "name": "reedware/nova-partition-metric-style-fix",

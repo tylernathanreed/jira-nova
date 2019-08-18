@@ -60,13 +60,13 @@ class Project extends Resource
 
             Field::text('Jira Key', 'jira_key')->exceptOnForms(),
 
-            Field::avatar('Icon', 'avatar_url')->thumbnail(function() {
-                return $this->avatar_url;
-            })->maxWidth(32)->exceptOnForms(),
+            Field::iconUrl('Icon', 'avatar_url')->maxWidth(32)->exceptOnForms(),
 
             Field::text('Name', 'name')->exceptOnForms(),
 
-            Field::number('Issues', 'issues_count')->onlyOnIndex()
+            Field::number('Issues', 'issues_count')->onlyOnIndex(),
+
+            Field::hasMany('Issues', 'issues', Issue::class)
 
         ];
     }

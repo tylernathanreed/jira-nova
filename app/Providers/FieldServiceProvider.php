@@ -62,5 +62,20 @@ class FieldServiceProvider extends ServiceProvider
                 );
 
         });
+
+        /**
+         * Creates and returns a new icon url field.
+         *
+         * @return \Laravel\Nova\Fields\Avatar
+         */
+        $fields->macro('iconUrl', function($label, $url) use ($fields) {
+
+            return $fields->avatar($label, $url)->thumbnail(function($value) {
+                return $value;
+            })->preview(function($value) {
+                return $value;
+            })->disableDownload();
+
+        });
     }
 }

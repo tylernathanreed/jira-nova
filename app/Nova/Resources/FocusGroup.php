@@ -37,13 +37,6 @@ class FocusGroup extends Resource
     public static $globallySearchable = false;
 
     /**
-     * Indicates if the resource should be displayed in the sidebar.
-     *
-     * @var bool
-     */
-    public static $displayInNavigation = true;
-
-    /**
      * The default ordering to use when listing this resource.
      *
      * @var array

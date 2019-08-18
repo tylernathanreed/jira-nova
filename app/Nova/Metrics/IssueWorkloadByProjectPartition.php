@@ -9,6 +9,8 @@ use Laravel\Nova\Metrics\PartitionResult;
 
 class IssueWorkloadByProjectPartition extends Partition
 {
+    use Concerns\QualifiedGroupByPartitionFix;
+
     /**
      * The element's component.
      *

@@ -52,8 +52,6 @@ class ScheduleFocusAllocationDailyByFocusPartition extends Partition
         // Order by the day order
         $query->orderBy('day_order');
 
-        dump($query->toSql());
-
         // Return the result
         return $this->sum($request, $query, 'allocation', 'day_of_week');
     }

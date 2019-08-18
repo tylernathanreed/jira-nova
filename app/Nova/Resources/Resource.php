@@ -15,13 +15,6 @@ abstract class Resource extends NovaResource
     public static $globallySearchable = false;
 
     /**
-     * Indicates if the resource should be displayed in the sidebar.
-     *
-     * @var bool
-     */
-    public static $displayInNavigation = false;
-
-    /**
      * The default ordering to use when listing this resource.
      *
      * @var array
