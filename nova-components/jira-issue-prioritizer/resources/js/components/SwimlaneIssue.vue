@@ -19,7 +19,7 @@
                     <img class="icon" :src="issue.priority_icon_url"/>
                 </div>
 
-                <div class="swimlane-issue-field-group text-center" style="min-width: 80px; max-width: 80px">
+                <div class="swimlane-issue-field-group text-center" style="min-width: 100px; max-width: 100px">
                     <div class="swimlane-issue-field text-center" data-field="key">
                         <a :href="issue.parent_url || issue.url" target="_blank" v-text="issue.parent_key || issue.key"/>
                     </div>
