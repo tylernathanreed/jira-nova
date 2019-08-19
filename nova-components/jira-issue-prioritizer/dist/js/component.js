@@ -34019,7 +34019,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                                 // Determine the counts for each label
                                 counts = _.flatten(_.map(this.resources, function (r) {
-                                    return JSON.parse(r.labels);
+                                    return Array.isArray(r.labels) ? r.labels : JSON.parse(r.labels);
                                 })).reduce(function (counts, label) {
                                     return (counts[label] = (counts[label] || 0) + 1) && counts;
                                 }, {});

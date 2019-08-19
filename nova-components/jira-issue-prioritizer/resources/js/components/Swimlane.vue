@@ -563,7 +563,7 @@
             async calculateLabelData() {
 
                 // Determine the counts for each label
-                let counts = _.flatten(_.map(this.resources, (r) => JSON.parse(r.labels))).reduce(function(counts, label) {
+                let counts = _.flatten(_.map(this.resources, (r) => Array.isArray(r.labels) ? r.labels : JSON.parse(r.labels))).reduce(function(counts, label) {
                     return (counts[label] = (counts[label] || 0) + 1) && counts;
                 }, {});
 
