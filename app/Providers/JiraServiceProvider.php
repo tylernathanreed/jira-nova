@@ -218,9 +218,9 @@ class JiraServiceProvider extends ServiceProvider
                 'epic_name' => data_get($fields, $mapping['epic_name']),
                 'epic_color' => data_get($fields, $mapping['epic_color']),
 
-                'labels' => json_encode($fields['labels'] ?? []),
+                'labels' => $fields['labels'] ?? [],
 
-                'links' => json_encode(array_map(function($link) {
+                'links' => array_map(function($link) {
 
                     $related = $link->inwardIssue ?? $link->outwardIssue;
 
@@ -233,7 +233,7 @@ class JiraServiceProvider extends ServiceProvider
                         ]
                     ];
 
-                }, $fields['issuelinks'] ?? [])),
+                }, $fields['issuelinks'] ?? []),
 
                 'rank' => data_get($fields, $mapping['rank']),
 
@@ -295,7 +295,7 @@ class JiraServiceProvider extends ServiceProvider
 
         // Fill the the missing epics
         $rawEpics = empty($missingEpics) ? collect() :
-            $this->app->make(JiraService::class)->newQuery()->whereIn('issuekey', $epics)->get()->issues->keyBy('key')->map(function($epic) {
+            $this->app->make(JiraService::class)->newQuery()->whereIn('issuekey', $missingEpics)->get()->issues->keyBy('key')->map(function($epic) {
 
                 return [
                     'name' => $epic->epic_name,

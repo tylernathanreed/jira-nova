@@ -418,7 +418,7 @@ class Issue extends Model implements Cacheable
             }
 
             // Find the block-type links
-            $links = array_filter(json_decode($links, true), function($link) {
+            $links = array_filter(is_array($links) ? $links : json_decode($links, true), function($link) {
 
                 // Ignore non-block type links
                 if($link['type'] != 'Blocks') {
