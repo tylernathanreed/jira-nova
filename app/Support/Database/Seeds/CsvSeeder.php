@@ -94,6 +94,13 @@ class CsvSeeder extends Seeder
     public $required = [];
 
     /**
+     * The columns to ignore for seeding.
+     *
+     * @var array
+     */
+    public $ignore = [];
+
+    /**
      * The columns for ordering.
      *
      * @var array
@@ -113,7 +120,6 @@ class CsvSeeder extends Seeder
      * @var array
      */
     public $inverseJoinRelations = [];
-
 
     ///////////////////
     //* Constructor *//
@@ -441,6 +447,11 @@ class CsvSeeder extends Seeder
         // If the model uses soft deletes, remove the timestamp
         if($softDeletes) {
             $listing = array_except($listing, [$model->getDeletedAtColumn()]);
+        }
+
+        // Remove any columns that should be explicitly omitted
+        if(!empty($this->ignore)) {
+            $listing = array_except($listing, $this->ignore);
         }
 
         // Qualify each column

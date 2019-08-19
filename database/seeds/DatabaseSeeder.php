@@ -13,5 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(FocusGroupsTableSeeder::class);
         $this->call(SchedulesTableSeeder::class);
+        $this->call(ScheduleFocusAllocationsTableSeeder::class);
+        $this->call(CachesTableSeeder::class);
     }
 }

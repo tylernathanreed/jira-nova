@@ -77,7 +77,7 @@ class Cache extends Model
         $model::runCacheHandler(function($current, $total) use ($operation) {
 
             // Update the operation statistics
-            $this->setAttribute("{$operation}_record_count", $current);
+            $this->setAttribute("{$operation}_record_count", min($current, $total));
             $this->setAttribute("{$operation}_record_total", $total);
 
             // Save this cache
