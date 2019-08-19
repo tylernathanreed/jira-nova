@@ -47,7 +47,7 @@ class IssueWeeklySatisfactionTrend extends Trend
         $weeks = $results->groupBy(function($issue) {
 
             // Return the max week per issue
-            return array_reduce(json_decode(json_decode($issue->labels)), function($week, $label) {
+            return array_reduce(json_decode($issue->labels), function($week, $label) {
 
                 // Determine the week index
                 $index = strpos($label, 'Week') === 0 ? substr($label, 4) : null;
