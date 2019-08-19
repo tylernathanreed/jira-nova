@@ -52,7 +52,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 'name' => Nova::name(),
                 'user' => $event->request->user()->toArray(),
                 'schedule' => $event->request->user()->getScheduleForNova(),
-                'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData()
+                'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData(),
+                'colors' => $this->app->make('config')->get('jira.colors')
             ]);
 
         });
@@ -95,11 +96,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            (new \App\Nova\Metrics\IssueTicketCreatedByDateValue),
+            (new \App\Nova\Metrics\IssueCreatedByDateValue)->where('focus', 'Ticket')->setName('Ticket Entry'),
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->width('2/3'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->label('Last Week')->reference('-1 week'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->label('This Week'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->label('Next Week')->reference('+1 week'),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week'),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week'),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Next Week')->reference('+1 week'),
             (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend),
             (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend),
             new \App\Nova\Metrics\IssueWeeklySatisfactionTrend,

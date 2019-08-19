@@ -6,7 +6,7 @@ use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
-class IssueWorkloadByEpicPartition extends Partition
+class IssueCountByEpicPartition extends Partition
 {
     /**
      * The element's component.
@@ -31,7 +31,7 @@ class IssueWorkloadByEpicPartition extends Partition
         $query->whereNotNull('epic_name');
 
         // Determine the workload per epic
-        $result = $this->sum($request, $query, 'estimate_remaining', 'epic_name');
+        $result = $this->count($request, $query, 'epic_name');
 
         // Determine the result value
         $value = $result->value;
@@ -96,28 +96,13 @@ class IssueWorkloadByEpicPartition extends Partition
     }
 
     /**
-     * Format the aggregate result for the partition.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $result
-     * @param  string                               $groupBy
-     *
-     * @return array
-     */
-    protected function formatAggregateResult($result, $groupBy)
-    {
-        $key = $result->{last(explode('.', $groupBy))};
-
-        return [$key => round($result->aggregate / 3600, 0)];
-    }
-
-    /**
      * Get the displayable name of the metric.
      *
      * @return string
      */
     public function name()
     {
-        return 'Remaining Workload (By Epic)';
+        return 'Remaining Issues (By Epic)';
     }
 
 }

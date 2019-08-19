@@ -8,8 +8,9 @@ use Laravel\Nova\Metrics\Trend;
 
 class IssueDelinquentByEstimatedDateTrend extends Trend
 {
-    use Concerns\DashboardCaching;
+    use Concerns\Nameable;
     use Concerns\FutureRange;
+    use Concerns\InlineFilterable;
 
     /**
      * The element's component.
@@ -17,6 +18,13 @@ class IssueDelinquentByEstimatedDateTrend extends Trend
      * @var string
      */
     public $component = 'trend-metric';
+
+    /**
+     * The displayable name of the metric.
+     *
+     * @var string
+     */
+    public $name = 'Estimated Delinquencies';
 
     /**
      * Calculate the value of the metric.
@@ -59,6 +67,9 @@ class IssueDelinquentByEstimatedDateTrend extends Trend
         // Make sure the issues are not complete
         $query->incomplete();
 
+        // Apply the filter
+        $this->applyFilter($query);
+
         // Return the query
         return $query;
     }
@@ -79,15 +90,5 @@ class IssueDelinquentByEstimatedDateTrend extends Trend
             365 => 'Due up to 1 year from now',
             $max => 'All time',
         ];
-    }
-
-    /**
-     * Get the displayable name of the metric.
-     *
-     * @return string
-     */
-    public function name()
-    {
-        return 'Estimated Delinquencies';
     }
 }

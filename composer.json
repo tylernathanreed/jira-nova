@@ -12,6 +12,7 @@
         "david-griffiths/nova-dark-theme": "^1.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "inspheric/nova-url-field": "^1.32",
         "laravel/framework": "5.8.*",
         "laravel/nova": "^2.0",
         "laravel/telescope": "^2.0",
@@ -30,7 +31,9 @@
         "reedware/nova-icons": "^1.0",
         "reedware/nova-partition-metric-style-fix": "dev-master",
         "reedware/nova-treeview": "dev-master",
-        "reedware/nova-value-toggle": "dev-master"
+        "reedware/nova-value-toggle": "dev-master",
+        "timothyasp/nova-badge-field": "^1.0",
+        "nova-components/badge-url": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -56,6 +59,10 @@
         {
             "type": "path",
             "url": "./nova-components/ColorSwatch"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/BadgeUrl"
         }
     ],
     "config": {

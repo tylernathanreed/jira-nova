@@ -9,7 +9,8 @@ use Laravel\Nova\Metrics\PartitionResult;
 
 class IssueWorkloadByAssigneePartition extends Partition
 {
-    use Concerns\DashboardCaching;
+    use Concerns\Nameable;
+    use Concerns\InlineFilterable;
 
     /**
      * The element's component.
@@ -17,6 +18,13 @@ class IssueWorkloadByAssigneePartition extends Partition
      * @var string
      */
     public $component = 'partition-metric';
+
+    /**
+     * The displayable name of the metric.
+     *
+     * @var string
+     */
+    public $name = 'Remaining Workload (By Assignee)';
 
     /**
      * Calculate the value of the metric.
@@ -32,6 +40,9 @@ class IssueWorkloadByAssigneePartition extends Partition
 
         // Make sure the assignee exists
         $query->whereNotNull('assignee_name');
+
+        // Apply the filter
+        $this->applyFilter($query);
 
         // Determine the result
         $result = $this->sum($request, $query, 'estimate_remaining', 'assignee_name');
@@ -63,15 +74,4 @@ class IssueWorkloadByAssigneePartition extends Partition
 
         return [$key => round($result->aggregate / 3600, 0)];
     }
-
-    /**
-     * Get the displayable name of the metric.
-     *
-     * @return string
-     */
-    public function name()
-    {
-        return 'Workload (By Assignee)';
-    }
-
 }

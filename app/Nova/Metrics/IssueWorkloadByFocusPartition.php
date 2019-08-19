@@ -67,7 +67,7 @@ class IssueWorkloadByFocusPartition extends Partition
      */
     public function name()
     {
-        return 'Workload (By Focus)';
+        return 'Remaining Workload (By Focus)';
     }
 
 }

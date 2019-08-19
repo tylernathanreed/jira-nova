@@ -623,8 +623,10 @@ class Issue extends Model implements Cacheable
 
         // Make sure the remaining estimate is capped to be a one hour minimum
         $query->select([
+            'id',
             DB::raw('case when estimate_remaining is null then 3600 when estimate_remaining < 3600 then 3600 else estimate_remaining end as estimate_remaining'),
             'focus',
+            'epic_id',
             'epic_name',
             'assignee_name',
             'project_id'

@@ -46,7 +46,10 @@ return [
 	/**
 	 * Package Fields
 	 */
+	'badge'       => \Timothyasp\Badge\Badge::class,
+	'badgeUrl'    => \NovaComponents\BadgeUrl\BadgeUrl::class,
+	'swatch'      => \NovaComponents\ColorSwatch\ColorSwatch::class,
+	'url'         => \Inspheric\Fields\Url::class,
 	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class,
-	'swatch' => \NovaComponents\ColorSwatch\ColorSwatch::class
 
 ];

@@ -24,8 +24,34 @@
                         <a :href="issue.parent_url || issue.url" target="_blank" v-text="issue.parent_key || issue.key"/>
                     </div>
 
-                    <div v-if="issue.epic_key" :class="'swimlane-issue-field text-center epic-label ' + (issue.epic_color || 'ghx-label-0')" data-field="epic">
-                        <a :href="issue.epic_url" target="_blank" v-text="issue.epic_name"/>
+                    <div v-if="issue.epic_key" class="swimlane-issue-field text-center" data-field="epic">
+                        <badge-url
+                            v-if="issue.epic_id"
+                            :field="{
+                                label: issue.epic_name,
+                                background: colors[issue.epic_color].background,
+                                foreground: colors[issue.epic_color].color,
+                                to: {
+                                    name: 'detail',
+                                    params: {
+                                        resourceName: 'epics',
+                                        resourceId: issue.epic_id,
+                                    }
+                                },
+                                style: {
+                                    borderRadius: '3px',
+                                    marginTop: '0.125rem'
+                                }
+                            }"
+                        />
+                        <a
+                            v-else
+                            :href="issue.epic_url"
+                            target="_blank"
+                            class="epic-label px-1 py-1 whitespace-no-wrap"
+                            :class="(issue.epic_color || 'ghx-label-0')"
+                            v-text="issue.epic_name"
+                        />
                     </div>
                 </div>
 
@@ -211,6 +237,10 @@
 
             },
 
+            colors: function() {
+                return Nova.config.colors;
+            },
+
             labels: function() {
                 return this.getSwimlane().labelData[this.issueKey] || [];
             },
@@ -328,11 +358,6 @@
         border-radius: 3px;
         font-size: 12px;
         font-weight: normal;
-        line-height: 1;
-        padding-top: 1px;
-        padding-left: 5px;
-        padding-right: 5px;
-        padding-bottom: 2px;
         margin-left: 3px;
         margin-right: 3px;
     }

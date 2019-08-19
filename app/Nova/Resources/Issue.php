@@ -4,6 +4,7 @@ namespace App\Nova\Resources;
 
 use Field;
 use Illuminate\Http\Request;
+use App\Models\Epic as EpicModel;
 
 class Issue extends Resource
 {
@@ -77,11 +78,18 @@ class Issue extends Resource
 
             Field::text('Key', 'key')->exceptOnForms(),
 
-            Field::text('Epic', 'epic_name')->exceptOnForms(),
-            // Field::text('epic_key', 'epic_key'),
-            // Field::text('epic_url', 'epic_url'),
-            // Field::text('epic_color', 'epic_color'),
-
+            Field::badgeUrl('Epic', 'epic_name')->backgroundUsing(function($value, $resource) {
+                return config("jira.colors.{$resource->epic_color}.background");
+            })->foregroundUsing(function($value, $resource) {
+                return config("jira.colors.{$resource->epic_color}.color");
+            })->linkUsing(function($value, $resource) {
+                return !is_null($resource->epic_id) ? EpicModel::getInternalUrlForId($resource->epic_id) : $resource->epic_url;
+            })->style([
+                'borderRadius' => '3px',
+                'fontFamily' => '\'Segoe UI\'',
+                'fontSize' => '12px',
+                'fontWeight' => 'normal'
+            ])->exceptOnForms(),
 
             Field::text('Summary', 'summary', function() {
                 return strlen($this->summary) > 80 ? substr($this->summary, 0, 80) . '...' : $this->summary;

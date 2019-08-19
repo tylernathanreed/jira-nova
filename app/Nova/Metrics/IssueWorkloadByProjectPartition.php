@@ -74,7 +74,7 @@ class IssueWorkloadByProjectPartition extends Partition
      */
     public function name()
     {
-        return 'Workload (By Project)';
+        return 'Remaining Workload (By Project)';
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use DB;
+use App\Models\Epic;
 use App\Models\Issue;
 use App\Support\Jira\JiraService;
 use App\Support\Jira\Query\Builder;
@@ -211,6 +212,7 @@ class JiraServiceProvider extends ServiceProvider
                 'assignee_name' => data_get($fields, 'assignee.displayName'),
                 'assignee_icon_url' => data_get($fields, 'assignee.avatarUrls.16x16'),
 
+                'epic_id' => null,
                 'epic_key' => $epicKey = data_get($fields, $mapping['epic_key']),
                 'epic_url' => !is_null($epicKey) ? $host . '/browse/' . $epicKey : null,
                 'epic_name' => data_get($fields, $mapping['epic_name']),
@@ -260,9 +262,6 @@ class JiraServiceProvider extends ServiceProvider
             // Assign the epic meta data
             $issues = $this->assignEpicMetaDataFromIssues($issues);
 
-            // Cache the issue data
-            // $this->cacheIssueData($issues, $query);
-
             return $issues;
 
         });
@@ -278,13 +277,41 @@ class JiraServiceProvider extends ServiceProvider
     protected function assignEpicMetaDataFromIssues($issues)
     {
         // Determine the epic keys
-        $epics = array_values(array_unique(array_filter(array_pluck($issues, 'epic_key'))));
+        $epicKeys = array_values(array_unique(array_filter(array_pluck($issues, 'epic_key'))));
+
+        // Determine the cached epics
+        $cachedEpics = Epic::whereIn('key', $epicKeys)->get()->keyBy('key')->map(function($epic) {
+
+            return [
+                'id' => $epic->id,
+                'name' => $epic->name,
+                'color' => $epic->color
+            ];
+
+        });
+
+        // Determine the missing epics
+        $missingEpics = array_diff($epicKeys, $cachedEpics->keys()->toArray());
+
+        // Fill the the missing epics
+        $rawEpics = empty($missingEpics) ? collect() :
+            $this->app->make(JiraService::class)->newQuery()->whereIn('issuekey', $epics)->get()->issues->keyBy('key')->map(function($epic) {
+
+                return [
+                    'name' => $epic->epic_name,
+                    'color' => $epic->epic_color,
+                ];
+
+            });
+
+        // Determine the epic information
+        $epics = array_merge(
+            $cachedEpics->toArray(),
+            $rawEpics->toArray()
+        );
 
         // Check if any epics were found
         if(!empty($epics)) {
-
-            // Map the epics into issues
-            $epics = $this->app->make(JiraService::class)->newQuery()->whereIn('issuekey', $epics)->get()->issues->keyBy('key');
 
             // Fill in the epic details for the non-epic issues
             $issues = array_map(function($issue) use ($epics) {
@@ -303,8 +330,9 @@ class JiraServiceProvider extends ServiceProvider
                 }
 
                 // Fill in the epic information
-                $issue->epic_name = $epic->epic_name;
-                $issue->epic_color = $epic->epic_color;
+                $issue->epic_id = $epic['id'] ?? null;
+                $issue->epic_name = $epic['name'];
+                $issue->epic_color = $epic['color'];
 
                 // Return the issue
                 return $issue;
@@ -315,41 +343,5 @@ class JiraServiceProvider extends ServiceProvider
 
         // Return the issues
         return $issues;
-    }
-
-    /**
-     * Caches the issue data for the specified issues.
-     *
-     * @param  array                            $issues
-     * @param  \App\Support\Jira\Query\Builder  $query
-     *
-     * @return void
-     */
-    protected function cacheIssueData($issues, $query)
-    {
-        // Determine the default columns
-        $columns = (new Issue)->getDefaultColumns();
-
-        // If any non-standard columns were selected, don't cache
-        if($query->columns != $columns) {
-            return;
-        }
-
-        Issue::unguarded(function() use ($issues) {
-
-            collect($issues)->keyBy('key')->map(function($issue) {
-
-                $issue = array_except((array) $issue, [
-                    'url',
-                    'parent_url'
-                ]);
-
-                return $issue;
-
-            })->each(function($issue, $key) {
-                Issue::updateOrCreate(compact('key'), $issue);
-            });
-
-        });
     }
 }

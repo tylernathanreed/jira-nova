@@ -6,9 +6,10 @@ use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;
 
-class IssueTicketCreatedByDateValue extends Value
+class IssueCreatedByDateValue extends Value
 {
-    use Concerns\DashboardCaching;
+    use Concerns\Nameable;
+    use Concerns\InlineFilterable;
 
     /**
      * The element's component.
@@ -16,6 +17,13 @@ class IssueTicketCreatedByDateValue extends Value
      * @var string
      */
     public $component = 'value-metric';
+
+    /**
+     * The displayable name of the metric.
+     *
+     * @var string
+     */
+    public $name = 'New Issues';
 
     /**
      * Calculate the value of the metric.
@@ -28,7 +36,7 @@ class IssueTicketCreatedByDateValue extends Value
     {
         $query = (new Issue)->newQuery();
 
-        $query->where('focus', 'Ticket');
+        $this->applyFilter($query);
 
         return $this->count($request, $query, null, 'entry_date');
     }
@@ -43,21 +51,8 @@ class IssueTicketCreatedByDateValue extends Value
         return [
             30 => '30 Days',
             60 => '60 Days',
-            365 => '365 Days',
-            'MTD' => 'Month To Date',
-            'QTD' => 'Quarter To Date',
-            'YTD' => 'Year To Date',
+            90 => '90 Days',
+            365 => '1 Year'
         ];
     }
-
-    /**
-     * Get the displayable name of the metric.
-     *
-     * @return string
-     */
-    public function name()
-    {
-        return 'Ticket Entry';
-    }
-
 }

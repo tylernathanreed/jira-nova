@@ -48,6 +48,21 @@ return [
         'port' => env('JIRA_PROXY_PORT'),
         'user' => env('JIRA_PROXY_USER'),
         'password' => env('JIRA_PROXY_PASSWORD'),
+    ],
+
+    'colors' => [
+        'ghx-label-0' => ['background' => '#f5f5f5', 'color' => '#0065ff'],
+        'ghx-label-2' => ['background' => '#ffc400', 'color' => '#172B4D'],
+        'ghx-label-4' => ['background' => '#2684ff', 'color' => '#fff'],
+        'ghx-label-5' => ['background' => '#00C7E6', 'color' => '#172B4D'],
+        'ghx-label-6' => ['background' => '#abf5d1', 'color' => '#42526e'],
+        'ghx-label-7' => ['background' => '#8777d9', 'color' => '#fff'],
+        'ghx-label-8' => ['background' => '#998dd9', 'color' => '#172B4D'],
+        'ghx-label-9' => ['background' => '#ff7452', 'color' => '#fff'],
+        'ghx-label-11' => ['background' => '#79e2f2', 'color' => '#42526e'],
+        'ghx-label-12' => ['background' => '#7a869a', 'color' => '#fff'],
+        'ghx-label-13' => ['background' => '#57d9a3', 'color' => '#172B4D'],
+        'ghx-label-14' => ['background' => '#ff8f73', 'color' => '#fff']
     ]
 
 ];
