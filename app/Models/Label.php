@@ -58,6 +58,9 @@ class Label extends Model implements Cacheable
         // Rebuild the labels within a transaction
         DB::transaction(function() use ($labels) {
 
+            // Truncate the pivot table
+            (new static)->issues()->newPivotStatement()->truncate();
+
             // Truncate the table
             static::query()->truncate();
 
@@ -72,6 +75,17 @@ class Label extends Model implements Cacheable
 
             // Fill in the table with the new labels
             static::query()->insertUsing(['name'], $query);
+
+            // Convert the pivot table into a subquery
+            $query = static::query()->join('issues', function($join) {
+                $join->on('issues.labels', 'like', DB::raw('"%""" || labels.name || """%"'));
+            })->select([
+                'issues.id as issue_id',
+                'labels.name as label_name'
+            ]);
+
+            // Fill in the pivot table with new relations
+            (new static)->issues()->newPivotStatement()->insertUsing(['issue_id', 'label_name'], $query);
 
         });
 
@@ -99,5 +113,18 @@ class Label extends Model implements Cacheable
     public static function getLabelsFromIssues()
     {
         return Issue::where('labels', '!=', '[]')->select('labels')->distinct()->get()->pluck('labels')->collapse()->unique()->sort()->values()->toBase();
+    }
+
+    /////////////////
+    //* Relations *//
+    /////////////////
+    /**
+     * Returns the issues associated to this label.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function issues()
+    {
+        return $this->belongsToMany(Issue::class, 'issues_labels');
     }
 }

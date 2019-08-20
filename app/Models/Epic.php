@@ -84,8 +84,13 @@ class Epic extends Model implements Cacheable
      */
     public static function runCacheHandler(Closure $callback, Carbon $since = null)
     {
+        // Determine the search expression
+        $expression = is_null($since)
+            ? 'issuetype = Epic'
+            : ('issuetype = Epic and updated >= ' . $since->toDateString());
+
         // Determine all of the epics
-        $epics = Jira::issues()->search('issuetype = Epic', 0, 100)->issues;
+        $epics = Jira::issues()->search($expression, 0, 100)->issues;
 
         // Determine the host endpoint
         $host = rtrim(config('jira.host'), '/');
@@ -118,18 +123,15 @@ class Epic extends Model implements Cacheable
 
             // Update or create each epic
             $epics->each(function($epic, $key) {
-
-                // Update or create each epic
-                $epic = static::updateOrCreate(compact('key'), $epic);
-
-                // Associate the issues back to this epic
-                Issue::where('epic_key', '=', $epic->key)->whereNull('epic_id')->update([
-                    'epic_id' => $epic->id
-                ]);
-
+                static::updateOrCreate(compact('key'), $epic);
             });
 
         });
+
+        // Associate the issues back to this epic
+        Issue::query()->getQuery()->whereNull('epic_id')->whereNotNull('epic_key')->update([
+            'epic_id' => DB::raw('(select epics.id from epics where epics.key = issues.epic_key)')
+        ]);
 
         // Invoke the handler
         $callback(count($epics), count($epics));
@@ -144,7 +146,13 @@ class Epic extends Model implements Cacheable
      */
     public static function getCacheRecordCount(Carbon $since = null)
     {
-        return Jira::issues()->search('issuetype = Epic', 0, 0)->total;
+        // Determine the search expression
+        $expression = is_null($since)
+            ? 'issuetype = Epic'
+            : ('issuetype = Epic and updated >= ' . $since->toDateString());
+
+        // Return the cache record count
+        return Jira::issues()->search($expression, 0, 0)->total;
     }
 
     ///////////////
