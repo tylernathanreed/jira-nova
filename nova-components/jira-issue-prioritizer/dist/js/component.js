@@ -37447,7 +37447,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "swimlane-issue-field-group text-center",
-                  staticStyle: { "min-width": "80px", "max-width": "80px" }
+                  staticStyle: { "min-width": "100px", "max-width": "100px" }
                 },
                 [
                   _c(
