@@ -16,7 +16,7 @@ trait EpicColors
     public function assignEpicColors($result)
     {
         // Determine the epic colors
-        $colors = $this->getEpicColors();
+        $colors = $this->getEpicColors(array_keys($result->value));
 
         // Assign the colors
         $result->colors($colors);
@@ -28,9 +28,11 @@ trait EpicColors
     /**
      * Returns the epic colors.
      *
+     * @param  array  $epics
+     *
      * @return array
      */
-    public function getEpicColors()
+    public function getEpicColors($epics)
     {
         // Determine the epic colors
         $colors = (new Issue)->select(['epic_name', 'epic_color'])->whereNotNull('epic_name')->distinct()->getQuery()->get()->pluck('epic_color', 'epic_name');
@@ -47,7 +49,7 @@ trait EpicColors
         $colors['Other'] = '#777';
 
         // Reduce the color list to only present values
-        $colors = $colors->only(array_keys($value));
+        $colors = $colors->only($epics);
 
         // Initialize the color counts
         $counts = $colors->flip()->map(function($color) {
