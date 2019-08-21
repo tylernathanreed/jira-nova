@@ -58,4 +58,23 @@ trait InlineFilterable
 
         return $this;
     }
+
+    /**
+     * Add a basic where clause as a filter.
+     *
+     * @param  string         $relation
+     * @param  \Closure|null  $callback
+     * @param  string         $operator
+     * @param  integer        $count
+     *
+     * @return $this
+     */
+    public function whereHas($relation, Closure $callback = null, $operator = '>=', $count = 1)
+    {
+        $this->filter(function($query) use ($relation, $callback, $operator, $count) {
+            $query->whereHas($relation, $callback, $operator, $count);
+        });
+
+        return $this;
+    }
 }

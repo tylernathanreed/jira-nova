@@ -6,10 +6,10 @@ use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
-class IssueCountByEpicPartition extends Partition
+class IssueCountByLabelPartition extends Partition
 {
-    use Concerns\EpicColors;
     use Concerns\PartitionLimits;
+    use Concerns\QualifiedGroupByPartitionFix;
 
     /**
      * The element's component.
@@ -30,17 +30,20 @@ class IssueCountByEpicPartition extends Partition
         // Create a new remaining workload query
         $query = (new Issue)->newRemainingWorkloadQuery();
 
+        // Make sure the issues using labels
+        $query->where('labels', '!=', '[]');
+
+        // Join into labels
+        $query->joinRelation('labels');
+
         // Make sure the issues are part of an epic
         $query->whereNotNull('epic_name');
 
-        // Determine the workload per epic
-        $result = $this->count($request, $query, 'epic_name');
+        // Determine the count per label
+        $result = $this->count($request, $query, 'labels.name');
 
         // Limit the results
         $this->limitPartitionResult($result);
-
-        // Assign the epic colors
-        $this->assignEpicColors($result);
 
         // Return the partition result
         return $result;
@@ -53,7 +56,7 @@ class IssueCountByEpicPartition extends Partition
      */
     public function name()
     {
-        return 'Remaining Issues (By Epic)';
+        return 'Remaining Issues (By Label)';
     }
 
 }

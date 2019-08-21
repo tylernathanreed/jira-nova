@@ -55,6 +55,35 @@ class Label extends Resource
     ];
 
     /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder    $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        // Create a new index query
+        $query = parent::indexQuery($request, $query);
+
+        // Create a new remaining workload subquery
+        $subquery = static::newModel()->newIssueAggregatesQuery();
+
+        // Join into the subquery
+        $query->leftJoinSub($subquery, 'aggregates', function($join) {
+            $join->on('aggregates.name', '=', 'labels.name');
+        });
+
+        // Include the aggregates
+        $query->addSelect('aggregates.estimate_remaining as estimate_remaining');
+        $query->addSelect('aggregates.issues_remaining as issues_remaining');
+
+        // Return the query
+        return $query;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -68,7 +97,12 @@ class Label extends Resource
 
             Field::text('Name', 'name')->sortable(),
 
-            Field::number('Issues', 'issues_count')->onlyOnIndex()->sortable(),
+            Field::number('Remaining Issues', 'issues_remaining')->onlyOnIndex()->sortable(),
+            Field::number('Remaining Workload', 'estimate_remaining')->displayUsing(function($value) {
+                return number_format($value / 3600, 2);
+            })->onlyOnIndex()->sortable(),
+
+            Field::number('Total Issues', 'issues_count')->onlyOnIndex()->sortable(),
 
             Field::belongsToMany('Issues', 'issues', Issue::class)
 
@@ -84,7 +118,33 @@ class Label extends Resource
      */
     public function cards(Request $request)
     {
+        $scope = function($filter) use ($request) {
+
+            $filter->whereHas('labels', function($query) use ($request) {
+                $query->where('labels.name', '=', $request->resourceId);
+            });
+
+            return $filter;
+
+        };
+
         return [
+
+            // Index metrics
+            new \App\Nova\Metrics\IssueWorkloadByLabelPartition,
+            new \App\Nova\Metrics\IssueCountByLabelPartition,
+            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
+                $query->where('labels', '!=', '[]');
+            })->setName('Issues (for Labels) Created Per Day'),
+
+            // Detail metrics
+            $scope(new \App\Nova\Metrics\IssueCreatedByDateValue)->onlyOnDetail(),
+            $scope(new \App\Nova\Metrics\IssueCreatedByDateTrend)->onlyOnDetail(),
+            $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
+            $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),
+            $scope(new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->onlyOnDetail(),
+            $scope(new \App\Nova\Metrics\IssueWorkloadByAssigneePartition)->onlyOnDetail(),
+
         ];
     }
 
@@ -97,7 +157,9 @@ class Label extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\ExistenceFilter('Has Incomplete Issues', 'issues', function($query) { $query->incomplete(); })
+        ];
     }
 
     /**

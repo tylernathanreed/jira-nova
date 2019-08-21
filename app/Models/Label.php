@@ -115,6 +115,50 @@ class Label extends Model implements Cacheable
         return Issue::where('labels', '!=', '[]')->select('labels')->distinct()->get()->pluck('labels')->collapse()->unique()->sort()->values()->toBase();
     }
 
+    ///////////////
+    //* Queries *//
+    ///////////////
+    /**
+     * Creates and returns a new issue aggregates query.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function newIssueAggregatesQuery()
+    {
+        // Create a new query
+        $query = $this->newQuery();
+
+        // Join into issues
+        $query->joinRelation('issues', function($join) {
+
+            // Ignore completed issues
+            $join->incomplete();
+
+        });
+
+        // Select the sum per label
+        $query->select([
+            'labels.name',
+            DB::raw('max(issues.due_date) as due_date'),
+            DB::raw('max(issues.estimate_date) as estimate_date'),
+            DB::raw('count(*) as issues_remaining'),
+            DB::raw(preg_replace('/\s\s+/', ' ', '
+                sum(
+                    case
+                        when issues.estimate_remaining is null
+                            then 3600
+                        when issues.estimate_remaining < 3600
+                            then 3600
+                        else issues.estimate_remaining
+                    end
+                ) as estimate_remaining
+            '))
+        ])->groupBy('labels.name');
+
+        // Return the query
+        return $query;
+    }
+
     /////////////////
     //* Relations *//
     /////////////////

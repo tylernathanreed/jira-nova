@@ -629,7 +629,8 @@ class Issue extends Model implements Cacheable
             'epic_id',
             'epic_name',
             'assignee_name',
-            'project_id'
+            'project_id',
+            'labels'
         ]);
 
         // Wrap the query into a subquery
@@ -670,5 +671,15 @@ class Issue extends Model implements Cacheable
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    /**
+     * Returns the labels associated to this issue.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function labels()
+    {
+        return $this->belongsToMany(Label::class, 'issues_labels');
     }
 }

@@ -6,10 +6,10 @@ use App\Models\Issue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
-class IssueCountByEpicPartition extends Partition
+class IssueWorkloadByLabelPartition extends Partition
 {
-    use Concerns\EpicColors;
     use Concerns\PartitionLimits;
+    use Concerns\QualifiedGroupByPartitionFix;
 
     /**
      * The element's component.
@@ -30,20 +30,35 @@ class IssueCountByEpicPartition extends Partition
         // Create a new remaining workload query
         $query = (new Issue)->newRemainingWorkloadQuery();
 
-        // Make sure the issues are part of an epic
-        $query->whereNotNull('epic_name');
+        // Make sure the issues using labels
+        $query->where('labels', '!=', '[]');
 
-        // Determine the workload per epic
-        $result = $this->count($request, $query, 'epic_name');
+        // Join into labels
+        $query->joinRelation('labels');
+
+        // Determine the workload per label
+        $result = $this->sum($request, $query, 'estimate_remaining', 'labels.name');
 
         // Limit the results
         $this->limitPartitionResult($result);
 
-        // Assign the epic colors
-        $this->assignEpicColors($result);
-
         // Return the partition result
         return $result;
+    }
+
+    /**
+     * Format the aggregate result for the partition.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $result
+     * @param  string                               $groupBy
+     *
+     * @return array
+     */
+    protected function formatAggregateResult($result, $groupBy)
+    {
+        $key = $result->{last(explode('.', $groupBy))};
+
+        return [$key => round($result->aggregate / 3600, 0)];
     }
 
     /**
@@ -53,7 +68,7 @@ class IssueCountByEpicPartition extends Partition
      */
     public function name()
     {
-        return 'Remaining Issues (By Epic)';
+        return 'Remaining Workload (By Label)';
     }
 
 }
