@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     protected function autoDiscoverPolicies()
     {
         Gate::guessPolicyNamesUsing(function ($modelClass) {
-            return 'App\\Policies\\' . basename($modelClass) . 'Policy';
+            return 'App\\Policies\\' . class_basename($modelClass) . 'Policy';
         });
     }
 }
