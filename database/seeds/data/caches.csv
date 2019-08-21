@@ -1,4 +1,5 @@
 model_class,cache_interval,execution_order
 "App\Models\Epic",,3
 "App\Models\Issue",,1
+"App\Models\Label",,4
 "App\Models\Project",,2
