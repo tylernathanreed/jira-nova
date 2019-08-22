@@ -219,6 +219,7 @@ class JiraServiceProvider extends ServiceProvider
                 'epic_color' => data_get($fields, $mapping['epic_color']),
 
                 'labels' => $fields['labels'] ?? [],
+                'fix_versions' => collect(data_get($fields, 'fixVersions', []))->pluck('name')->toArray(),
 
                 'links' => array_map(function($link) {
 

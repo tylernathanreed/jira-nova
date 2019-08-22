@@ -58,6 +58,7 @@ class Issue extends Model implements Cacheable
      */
     protected $casts = [
         'labels' => 'array',
+        'fix_versions' => 'array',
         'links' => 'json'
     ];
 
@@ -630,7 +631,8 @@ class Issue extends Model implements Cacheable
             'epic_name',
             'assignee_name',
             'project_id',
-            'labels'
+            'labels',
+            'fix_versions'
         ]);
 
         // Wrap the query into a subquery
@@ -681,5 +683,15 @@ class Issue extends Model implements Cacheable
     public function labels()
     {
         return $this->belongsToMany(Label::class, 'issues_labels');
+    }
+
+    /**
+     * Returns the versions associated to this issue.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function versions()
+    {
+        return $this->belongsToMany(Version::class, 'issues_fix_versions');
     }
 }
