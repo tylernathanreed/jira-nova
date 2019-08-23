@@ -136,8 +136,8 @@ class Version extends Resource
         return [
 
             // Index metrics
-            // new \App\Nova\Metrics\IssueWorkloadByVersionPartition,
-            // new \App\Nova\Metrics\IssueCountByVersionPartition,
+            new \App\Nova\Metrics\IssueWorkloadByVersionPartition,
+            new \App\Nova\Metrics\IssueCountByVersionPartition,
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
                 $query->where('fix_versions', '!=', '[]');
             })->setName('Issues (for Versions) Created Per Day'),
@@ -162,9 +162,8 @@ class Version extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
-
         return [
+            new \App\Nova\Filters\FieldBooleanFilter('released', 'Released'),
             new \App\Nova\Filters\ExistenceFilter('Has Incomplete Issues', 'issues', function($query) { $query->incomplete(); })
         ];
     }
