@@ -1,27 +1,14 @@
-Phase 1:
+To-Do:
+ - Schedule Types (for simple scheduling)
+ - Project / User associations (using canSee authorization)
+ - Holidays & Vacation Days
+ - Focus Group Abstraction
+ - Splash Screens
+ - Multiple Dashboards
+ - Permission Lockdown
+ - Field Abstraction
 
-issues
- - id
- - jira_id
- - jira_key
- - project_id
- - project_key
- - focus_group_id
- - (field data...)
-
-projects
- - id
- - jira_id
- - jira_key
- - display_name
- - icon_url
-
-users
- - id
- - jira_id
- - schedule_id
-
-Phase 2:
+Schema:
 
 holidays
  - id
@@ -33,7 +20,6 @@ vacation_days
  - user_id
  - date
  - percentage
-
 
 Phase 3:
 
@@ -47,30 +33,3 @@ fields
  - display_name
  - jira_name
  - system_name
-
-
-Phase 4:
-
-epics
- - id
- - display_name
- - style_name
- - background_color
- - text_color
-
-labels
- - id
- - display_name
-
-versions
- - id
- - project_id
- - jira_id
- - jira_project_id
- - display_name
- - description
- - archived
- - released
- - start_date
- - release_date
-
