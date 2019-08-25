@@ -134,7 +134,6 @@ class JiraIssue extends Resource
     public function filters(Request $request)
     {
         return [
-            new \App\Nova\Filters\IssueFocus,
             new \App\Nova\Filters\Assignee
         ];
     }

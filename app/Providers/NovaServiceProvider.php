@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Laravel\Nova\Nova;
 use App\Models\FocusGroup;
+use Illuminate\Http\Request;
 use Laravel\Nova\Cards\Help;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
@@ -23,7 +24,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         // Alias the login controller
         $this->aliasLoginController();
+
+        // Provide the configuration variables to the front-end
         $this->provideNovaConfiguration();
+
+        // Set the timezone
+        $this->setUserTimezone();
     }
 
     /**
@@ -51,11 +57,23 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Nova::provideToScript([
                 'name' => Nova::name(),
                 'user' => $event->request->user()->toArray(),
-                'schedule' => $event->request->user()->getScheduleForNova(),
+                'schedule' => $event->request->user()->getSchedule()->toNovaData(),
                 'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData(),
                 'colors' => $this->app->make('config')->get('jira.colors')
             ]);
 
+        });
+    }
+
+    /**
+     * Sets the timezone resolver for the request user.
+     *
+     * @return void
+     */
+    protected function setUserTimezone()
+    {
+        Nova::userTimezone(function(Request $request) {
+            return config('app.timezone');
         });
     }
 

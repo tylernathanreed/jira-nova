@@ -38,8 +38,9 @@ class ToolServiceProvider extends ServiceProvider
 
         // Register the tool routes
         Route::middleware(['nova', Authorize::class])
-                ->prefix('nova-vendor/jira-priorities')
-                ->group(__DIR__ . '/../routes/api.php');
+            ->namespace('NovaComponents\JiraIssuePrioritizer\Http\Controllers')
+            ->prefix('nova-vendor/jira-priorities')
+            ->group(__DIR__ . '/../routes/api.php');
 
         // Register the nova api routes
         Route::group($this->novaRouteConfiguration(), function () {

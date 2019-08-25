@@ -1,9 +1,9 @@
 <?php
 
-namespace NovaComponents\JiraIssueManager\Http\Middleware;
+namespace NovaComponents\JiraIssuePrioritizer\Http\Middleware;
 
 use Laravel\Nova\Nova;
-use NovaComponents\JiraIssueManager\JiraIssueManager;
+use NovaComponents\JiraIssuePrioritizer\JiraIssuePrioritizer;
 
 class Authorize
 {
@@ -29,6 +29,6 @@ class Authorize
      */
     public function matchesTool($tool)
     {
-        return $tool instanceof JiraIssueManager;
+        return $tool instanceof JiraIssuePrioritizer;
     }
 }

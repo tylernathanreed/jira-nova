@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Schedule;
 use App\Models\ScheduleFocusAllocation;
 
 class ScheduleFocusAllocationPolicy extends Policy
@@ -16,6 +17,17 @@ class ScheduleFocusAllocationPolicy extends Policy
      */
     public function viewAny(User $user)
     {
+        // Check for a schedule
+        if(!is_null($schedule = $this->getModelFromRequest(Schedule::class))) {
+
+            // If the schedule is simple, then we can't use allocations
+            if($schedule->type == Schedule::TYPE_SIMPLE) {
+                return false;
+            }
+
+        }
+
+        // Authorized
         return true;
     }
 

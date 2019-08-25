@@ -57,6 +57,22 @@ class Schedule extends Resource
                 ->creationRules('unique:schedules,system_name')
                 ->updateRules('unique:schedules,system_name,{{resourceId}}'),
 
+            Field::select('Type', 'type')->options([
+                'Simple' => 'Simple',
+                'Advanced' => 'Advanced'
+            ])->rules('required'),
+
+            Field::number('Weekly Allocation', 'simple_weekly_allocation')
+                ->rules('required_if:type,Simple')
+                ->min(0)
+                ->max(40)
+                ->step(0.5)
+                ->help('Measured in hours.')
+                ->onlyOnForms()
+                ->valueToggle(function($query) {
+                    $query->where('type', '=', 'Simple');
+                }),
+
             Field::textarea('Description', 'description')
                 ->hideFromIndex()
                 ->rules('nullable', 'string', 'max:255'),
@@ -71,15 +87,7 @@ class Schedule extends Resource
                 ->onlyOnDetail(),
 
             Field::number('Weekly Allocation', function() {
-                return (
-                    $this->allocations->sum('sunday_allocation') +
-                    $this->allocations->sum('monday_allocation') +
-                    $this->allocations->sum('tuesday_allocation') +
-                    $this->allocations->sum('wednesday_allocation') +
-                    $this->allocations->sum('thursday_allocation') +
-                    $this->allocations->sum('friday_allocation') +
-                    $this->allocations->sum('saturday_allocation')
-                ) / 3600 . ' Hours';
+                return $this->getWeeklyAllocationTotal() / 3600 . ' Hours';
             }),
 
             Field::hasMany('Allocations', 'allocations', ScheduleFocusAllocation::class)

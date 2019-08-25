@@ -6,6 +6,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Schedule extends Model
 {
+    /////////////////
+    //* Constants *//
+    /////////////////
+    /**
+     * The schedule type constants.
+     *
+     * @var array
+     */
+    const TYPE_SIMPLE = 'Simple';
+    const TYPE_ADVANCED = 'Advanced';
+
+    //////////////
+    //* Traits *//
+    //////////////
     use SoftDeletes;
 
     //////////////////
@@ -18,34 +32,165 @@ class Schedule extends Model
      */
     protected $table = 'schedules';
 
-    ////////////
-    //* Nova *//
-    ////////////
+    /////////////////
+    //* Accessors *//
+    /////////////////
     /**
-     * Returns the default schedule data for Nova.
+     * Returns the default schedule.
+     *
+     * @return static
+     */
+    public static function getDefaultSchedule()
+    {
+        return (new Schedule)->setAttribute('type', static::TYPE_SIMPLE)->setAttribute('simple_weekly_allocation', 30);
+    }
+
+    /**
+     * Returns the weekly allocation total.
+     *
+     * @return integer
+     */
+    public function getWeeklyAllocationTotal()
+    {
+        // Check for simple
+        if($this->type == static::TYPE_SIMPLE) {
+            return $this->simple_weekly_allocation * 3600;
+        }
+
+        // Use the advanced calculation
+        return (
+            $this->allocations->sum('sunday_allocation') +
+            $this->allocations->sum('monday_allocation') +
+            $this->allocations->sum('tuesday_allocation') +
+            $this->allocations->sum('wednesday_allocation') +
+            $this->allocations->sum('thursday_allocation') +
+            $this->allocations->sum('friday_allocation') +
+            $this->allocations->sum('saturday_allocation')
+        );
+    }
+
+    //////////////////
+    //* Estimation *//
+    //////////////////
+    /**
+     * Returns the allocation limit for the specified day of the week.
+     *
+     * @param  integer      $day
+     * @param  string|null  $focus
+     *
+     * @return integer
+     */
+    public function getAllocationLimit($day, $focus = null)
+    {
+        // Determine the weekday allocations
+        $allocations = $this->getWeekdayAllocations();
+
+        // If we're using a simple schedule, return the limit for the day
+        if($this->type == static::TYPE_SIMPLE) {
+            return $allocations[$day];
+        }
+
+        // Return the focus limit for the day
+        return $allocations[$day][$focus];
+    }
+
+    /**
+     * Returns the first assignment date for each focus.
      *
      * @return array
      */
-    public static function getDefaultScheduleDataForNova()
+    public function getFirstAssignmentDatesByFocus()
     {
+        // If this is a simple schedule, don't split by focus
+        if($this->type == static::TYPE_SIMPLE) {
+            return ['all' => $this->getFirstAssignmentDate()];
+        }
+
+        // Return the first assignment date for each focus
         return [
-            0 => ['Dev' => 0,             'Ticket' => 0,             'Other' => 0                  ],
-            1 => ['Dev' => 4.5 * 60 * 60, 'Ticket' => 0,             'Other' => 3.5 * 60 * 60 * 0.5],
-            2 => ['Dev' => 0,             'Ticket' => 5 * 60 * 60,   'Other' => 3 * 60 * 60 * 0.5  ],
-            3 => ['Dev' => 5 * 60 * 60,   'Ticket' => 0,             'Other' => 3 * 60 * 60 * 0.5  ],
-            4 => ['Dev' => 0,             'Ticket' => 4.5 * 60 * 60, 'Other' => 3.5 * 60 * 60 * 0.5],
-            5 => ['Dev' => 5 * 60 * 60,   'Ticket' => 0,             'Other' => 3 * 60 * 60 * 0.5  ],
-            6 => ['Dev' => 0,             'Ticket' => 0,             'Other' => 0                  ],
+            Issue::FOCUS_DEV => $this->getFirstAssignmentDate(Issue::FOCUS_DEV),
+            Issue::FOCUS_TICKET => $this->getFirstAssignmentDate(Issue::FOCUS_TICKET),
+            Issue::FOCUS_OTHER => $this->getFirstAssignmentDate(Issue::FOCUS_OTHER)
         ];
     }
 
     /**
-     * Returns the Nova data for this schedule.
+     * Returns the first assignment date for the specified focus.
+     *
+     * @param  string|null  $focus
+     *
+     * @return \Carbon\Carbon
+     */
+    public function getFirstAssignmentDate($focus = null)
+    {
+        // Determine the soonest we can start scheduling
+        $start = carbon()->lte(carbon('11 AM')) // If it's prior to 11 AM
+            ? carbon()->startOfDay() // Start no sooner than today
+            : carbon()->addDays(1)->startOfDay(); // Otherwise, start no sooner than tomorrow
+
+        // Determine the latest we can start scheduling
+        $end = carbon()->addDays(8)->startOfDay(); // Start no later than a week after tomorrow
+
+        // Determine the weekday allocations
+        $allocations = $this->getWeekdayAllocations();
+
+        // Determine the first date where we can start assigning due dates
+        $date = array_reduce(array_keys($allocations), function($date, $key) use ($start, $focus, $allocations) {
+
+            // If the schedule is simple, and has no allocation for the day, don't change the date
+            if($this->type == static::TYPE_SIMPLE && $allocations[$key] <= 0) {
+                return $date;
+            }
+
+            // If the schedule is advanced has no focus allocation, don't change the date
+            if($this->type == static::TYPE_ADVANCED && $allocations[$key][$focus] <= 0) {
+                return $date;
+            }
+
+            // Determine the date for this week
+            $thisWeek = carbon()->weekday($key)->startOfDay();
+
+            // Make sure this week comes after the start date
+            if($thisWeek->lt($start)) {
+                $thisWeek = $thisWeek->addWeek();
+            }
+
+            // Return the smaller of the two dates
+            return $date->min($thisWeek);
+
+        }, $end);
+
+        // Return the date
+        return $date;
+    }
+
+    /**
+     * Returns the weekday (or total) allocations for each day of the week.
      *
      * @return array
      */
-    public function toNovaData()
+    public function getWeekdayAllocations()
     {
+        // If we're using simple allocation, then we can evenly spread
+        // the hourly amount to each of the five business days. The
+        // math for this should be simple, hence the name. Derp.
+
+        // Check for simple
+        if($this->type == static::TYPE_SIMPLE) {
+
+            // Return the total allocation per day
+            return [
+                0 => 0,
+                1 => $this->simple_weekly_allocation / 5 * 3600,
+                2 => $this->simple_weekly_allocation / 5 * 3600,
+                3 => $this->simple_weekly_allocation / 5 * 3600,
+                4 => $this->simple_weekly_allocation / 5 * 3600,
+                5 => $this->simple_weekly_allocation / 5 * 3600,
+                6 => 0
+            ];
+
+        }
+
         // Determine the days of the week attributes
         $attributes = [
             0 => 'sunday_allocation',
@@ -61,7 +206,7 @@ class Schedule extends Model
         $data = array_combine(array_keys($attributes), array_fill(0, count($attributes), []));
 
         // Determine the allocations
-        $allocations = $this->allocations->load('focusGroup');
+        $allocations = $this->allocations->loadMissing('focusGroup');
 
         // Iterate through each allocation
         foreach($allocations as $allocation) {
@@ -78,6 +223,43 @@ class Schedule extends Model
 
         // Return the data
         return $data;
+    }
+
+    ////////////
+    //* Nova *//
+    ////////////
+    /**
+     * Returns the default schedule data for Nova.
+     *
+     * @return array
+     */
+    public static function getDefaultScheduleDataForNova()
+    {
+        return [
+            'type' => 'Simple',
+            'allocations' => [
+                0 => 0,
+                1 => 30 / 5 * 3600,
+                2 => 30 / 5 * 3600,
+                3 => 30 / 5 * 3600,
+                4 => 30 / 5 * 3600,
+                5 => 30 / 5 * 3600,
+                6 => 0,
+            ]
+        ];
+    }
+
+    /**
+     * Returns the Nova data for this schedule.
+     *
+     * @return array
+     */
+    public function toNovaData()
+    {
+        return [
+            'type' => $this->type,
+            'allocations' => $this->getWeekdayAllocations()
+        ];
     }
 
     /////////////////

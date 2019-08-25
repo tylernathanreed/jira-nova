@@ -51,15 +51,9 @@ class User extends Authenticatable
      *
      * @return array
      */
-    public function getScheduleForNova()
+    public function getSchedule()
     {
-        // If this user doesn't have a schedule, use the default one
-        if(is_null($schedule = $this->schedule)) {
-            return Schedule::getDefaultScheduleDataForNova();
-        }
-
-        // Otherwise, return the nova data for the schedule
-        return $schedule->toNovaData();
+        return $this->schedule ?: Schedule::getDefaultSchedule();
     }
 
     ////////////

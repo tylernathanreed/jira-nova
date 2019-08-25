@@ -33464,8 +33464,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__);
 
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //
@@ -33598,7 +33596,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             selectedActionKey: 'save-swimlane-changes',
 
             dragging: false,
-            schedule: Nova.config.schedule
+            scheduleType: Nova.config.schedule.type,
+            allocations: Nova.config.schedule.allocations
         };
     },
 
@@ -33667,7 +33666,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.draggingComponent.dragging = false;
             this.draggingComponent = null;
 
-            this.resources = this.assignEstimatedCompletionDates(this.resources);
+            this.assignEstimatedCompletionDates();
         },
 
         onDragChange: function onDragChange(e) {
@@ -33705,25 +33704,31 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     // Remember the response
                     _this2.resourceResponse = data;
 
-                    // Determine the raw resources
+                    // Determine the resources
                     var resources = data.resources;
-
-                    // Assign the estimated completion dates
-                    resources = _this2.assignEstimatedCompletionDates(resources);
-
-                    // Order the issues
-                    resources = _this2.applyOrder(resources);
 
                     // Update the resources
                     _this2.resources = resources;
 
+                    _this2.$forceUpdate();
+
+                    var self = _this2;
+
+                    // Assign the estimated completion dates (this happens asynchronously)
+                    _this2.assignEstimatedCompletionDates(function () {
+
+                        // Order the issues
+                        self.resources = self.applyOrder(self.resources);
+
+                        // Mark the resources as loaded
+                        self.loading = false;
+
+                        // Let everyone know the resources are ready
+                        Nova.$emit('resources-loaded');
+                    });
+
                     // Calculate the label data
                     _this2.calculateLabelData();
-
-                    _this2.loading = false;
-
-                    _this2.$forceUpdate();
-                    Nova.$emit('resources-loaded');
                 });
             });
         },
@@ -33784,13 +33789,33 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
          * Gather the action FormData for the given action.
          */
         actionFormData: function actionFormData() {
-            var _this4 = this;
 
-            return _.tap(new FormData(), function (formData) {
-
-                formData.append('resources', _.map(_this4.resources, 'key'));
-                formData.append('resourceData', JSON.stringify(_this4.getResourceData()));
+            return this.newFormData({
+                resources: _.map(this.resources, 'key'),
+                resourceData: JSON.stringify(this.getResourceData())
             });
+        },
+
+
+        /**
+         * Creates and returns new form data using the specified data.
+         *
+         * @param  {object}  data
+         *
+         * @return {FormData}
+         */
+        newFormData: function newFormData(data) {
+
+            // Create a new form data instance
+            var formData = new FormData();
+
+            // Add each data element to the form data
+            _.each(data, function (value, key) {
+                formData.append(key, value);
+            });
+
+            // Return the form data
+            return formData;
         },
         getResourceData: function getResourceData() {
             return _.map(this.$refs.issue, 'resourceData');
@@ -33837,170 +33862,68 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
         /**
-         * Assigns estimated complete dates to the issues.
+         * Assigns estimated completion dates to the issues.
          *
-         * @param  {Array}  issues
+         * @param  {Function|null}  after
          *
-         * @return {Array}
+         * @return {void}
          */
-        assignEstimatedCompletionDates: function assignEstimatedCompletionDates(issues) {
-            var _dates;
+        assignEstimatedCompletionDates: function assignEstimatedCompletionDates() {
+            var _this4 = this;
 
-            // Make sure issues have been provided
-            if (typeof issues === 'undefined') {
-                return [];
-            }
+            var after = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-            // Our schedule is broken down into focus times. Issues can be allocated
-            // to one or more focuses, and these focus times are when we can work
-            // on these issues. We ought to respect the focus in the schedule.
 
-            // Initialize the dates for each focus
-            var dates = (_dates = {}, _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET)), _defineProperty(_dates, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER, this.getFirstAssignmentDate(__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER)), _dates);
+            var self = this;
 
-            // Determine the schedule
-            var schedule = this.schedule;
-
-            // Remap the issues
-            return issues.map(function (issue) {
-
-                // Determine the issue focus
-                var focuses = issue['priority_name'] == __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].PRIORITY_HIGHEST ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_OTHER] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_TICKET, __WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0 ? [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_TICKET] : [__WEBPACK_IMPORTED_MODULE_1__support_constants_js__["a" /* default */].FOCUS_DEV];
-
-                // Determine the remaining estimate
-                var remaining = Math.max(issue['estimate_remaining'] || 0, 1 * 60 * 60);
-
-                // Since an issue on its own can take longer than a day to complete,
-                // we essentially have to chip away at the remaining estimate so
-                // that we can correctly spread the work effort into many days.
-
-                // Initialize the date
-                var date = null;
-
-                // Allocate the remaining estimate in a time loop until its all gone
-
-                var _loop = function _loop() {
-
-                    // Determine the applicable focus dates
-                    var focusDates = _.pick(dates, focuses);
-
-                    // Determine the earliest focus date
-                    date = Object.values(focusDates).reduce(function (date, focusDate) {
-                        return date == null ? focusDate : moment(moment.min(date, focusDate));
-                    }, null);
-
-                    // Determine the focus with that date
-                    var focus = _.last(focuses.filter(function (focus) {
-                        return focusDates[focus].isSame(date);
-                    }));
-
-                    // Determine how much time as already been allocated for the day
-                    var allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
-
-                    // Determine the daily focus limit
-                    var limit = schedule[date.weekday()][focus];
-
-                    // If the previous issue ended cleanly on the exact amount of allocatable
-                    // time, we wanted it to end on that date. However, we have to advance
-                    // to the next day for the next issue, otherwise we'll loop forever.
-
-                    // Check if we've run out of time for the day
-                    if (allocated >= limit) {
-
-                        // Advance to the next day
-                        date = date.add(1, 'day').startOf('day');
-
-                        // Update the focus date
-                        dates[focus] = date;
-
-                        // Try again
-                        return 'continue';
-                    }
-
-                    // Determine how much time we can allocate for today
-                    var allocatable = Math.min(remaining, limit - allocated);
-
-                    // Allocate the time
-                    date = date.add(allocatable, 'second');
-
-                    // Reduce the remaining time by how much was allocated
-                    remaining -= allocatable;
-
-                    // If we have exceeded the daily limit, advance to the next day
-                    if (allocated + allocatable > limit) {
-                        date = date.add(1, 'day').startOf('day');
-                    }
-
-                    // Skip dates that have no allocatable time
-                    while (schedule[date.weekday()][focus] <= 0) {
-                        date = date.add(1, 'day');
-                    }
-
-                    // Update the focus date
-                    dates[focus] = date;
-                };
-
-                while (remaining > 0) {
-                    var _ret = _loop();
-
-                    if (_ret === 'continue') continue;
-                }
-
-                // Assign the estimated completion date
-                issue['new_estimated_completion_date'] = date.format('YYYY-MM-DD');
-
-                // Return the issue
-                return issue;
+            // Clear the estimate dates
+            _.each(this.resources, function (issue) {
+                issue['new_estimated_completion_date'] = null;
             });
-        },
 
+            // Determine the issues
+            var issues = this.resources.map(function (issue, index) {
+                return {
+                    'key': issue.key,
+                    'order': index,
+                    'assignee': issue.assignee_key,
+                    'focus': issue.focus,
+                    'remaining': issue.estimate_remaining
+                };
+            });
 
-        /**
-         * Returns the first assignment date for the schedule.
-         *
-         * @param  {string}  focus
-         *
-         * @return {Date}
-         */
-        getFirstAssignmentDate: function getFirstAssignmentDate(focus) {
+            Nova.request({
+                method: 'post',
+                url: '/nova-vendor/jira-priorities/estimate',
+                data: this.newFormData({ 'issues': JSON.stringify(issues) })
+            }).then(function (response) {
 
-            // Determine the schedule
-            var schedule = this.schedule;
+                // Iterate through the estimates
+                _.each(response.data.estimates, function (estimate) {
 
-            // Until we have a better scheduling concept, we're going to
-            // base everything off of the default schedule, and probit
-            // issues from being scheduled same-day after 11:00 AM.
+                    // Find the associated issue
+                    var issue = _.find(self.resources, { key: estimate.key });
 
-            // Determine the soonest we can start scheduling
-            var start = moment().isBefore(moment().startOf('day').add(11, 'hours')) // If it's prior to 11 AM
-            ? moment().startOf('day') // Start no sooner than today
-            : moment().add(1, 'day').startOf('day'); // Otherwise, start no sooner than tomorrow
+                    // If we found the issue, update the estimate
+                    if (issue) {
+                        issue.new_estimated_completion_date = estimate.estimate;
+                    }
+                });
 
-            // Determine the latest we can start scheduling
-            var end = moment().add(8, 'days').startOf('day'); // Start no later than a week after tomorrow
-
-            // Determine the first date where we can start assigning due dates
-            var date = Object.keys(schedule).reduce(function (date, key) {
-
-                // If the schedule has no focus allocation, don't change the date
-                if (schedule[key][focus] <= 0) {
-                    return date;
+                // Invoke the after callback
+                if (after) {
+                    after();
                 }
+            }).catch(function (error) {
 
-                // Determine the date for this week
-                var thisWeek = moment().weekday(key).startOf('day');
+                if (!error.response) {
 
-                // Make sure this week comes after the start date
-                if (thisWeek.isBefore(start)) {
-                    thisWeek = thisWeek.add(1, 'week');
+                    console.warn(error);
+                    _this4.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.message);
+                } else if (error.response.status == 422) {
+                    _this4.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
                 }
-
-                // Use the smaller of the two dates
-                return moment.min(date, thisWeek);
-            }, end);
-
-            // Return the date
-            return date;
+            });
         },
 
 
@@ -34120,12 +34043,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             // Start with the resource count
             heading += this.resources.length;
-
-            // Determine the focus
-            var focus = this.getFilterValue('Issue Focus');
-
-            // Add the focus verbiage
-            heading += focus ? ' ' + focus + ' ' : '';
 
             // Add in the "issue" verbiage
             heading += ' ' + (this.resources.length == 1 ? 'Issue' : 'Issues');
@@ -35019,7 +34936,7 @@ if (hadRuntime) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (Object.freeze({
+/* unused harmony default export */ var _unused_webpack_default_export = (Object.freeze({
 
 	/**
   * The focus constants.
@@ -37042,7 +36959,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         est: function est() {
-            return this.issue.new_estimated_completion_date;
+            return this.issue.new_estimated_completion_date || this.issue.estimate_date;
         },
 
         offset: function offset() {
@@ -37091,6 +37008,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     'order': this.order,
                     'est': this.issue.estimate_date
                 }
+            };
+        },
+
+        estimateData: function estimateData() {
+
+            return {
+                'key': this.issue.key,
+                'order': this.index,
+                'assignee': this.issue.assignee_key,
+                'focus': this.issue.focus,
+                'remaining': this.issue.estimate_remaining
             };
         }
 
@@ -37712,25 +37640,20 @@ var render = function() {
                     _c("div", { staticClass: "flex items-center" }, [
                       _c("label", [_vm._v("E")]),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "flex-1" },
-                        [
-                          _vm.est
-                            ? _c("span", {
-                                domProps: {
-                                  textContent: _vm._s(
-                                    _vm
-                                      .moment(_vm.est)
-                                      .toDate()
-                                      .toLocaleDateString()
-                                  )
-                                }
-                              })
-                            : _c("loader", { staticClass: "text-gray" })
-                        ],
-                        1
-                      )
+                      _c("div", { staticClass: "flex-1" }, [
+                        _vm.est
+                          ? _c("span", {
+                              domProps: {
+                                textContent: _vm._s(
+                                  _vm
+                                    .moment(_vm.est)
+                                    .toDate()
+                                    .toLocaleDateString()
+                                )
+                              }
+                            })
+                          : _c("span", [_vm._v("—")])
+                      ])
                     ])
                   ]
                 )

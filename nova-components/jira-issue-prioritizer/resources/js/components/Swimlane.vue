@@ -147,7 +147,8 @@
                 selectedActionKey: 'save-swimlane-changes',
 
                 dragging: false,
-                schedule: Nova.config.schedule
+                scheduleType: Nova.config.schedule.type,
+                allocations: Nova.config.schedule.allocations
             };
 
         },
@@ -199,7 +200,7 @@
                 this.draggingComponent.dragging = false;
                 this.draggingComponent = null;
 
-                this.resources = this.assignEstimatedCompletionDates(this.resources);
+                this.assignEstimatedCompletionDates();
 
             },
 
@@ -238,25 +239,33 @@
                         // Remember the response
                         this.resourceResponse = data;
 
-                        // Determine the raw resources
+                        // Determine the resources
                         let resources = data.resources;
-
-                        // Assign the estimated completion dates
-                        resources = this.assignEstimatedCompletionDates(resources);
-
-                        // Order the issues
-                        resources = this.applyOrder(resources);
 
                         // Update the resources
                         this.resources = resources;
 
+                        this.$forceUpdate();
+
+
+                        let self = this;
+
+                        // Assign the estimated completion dates (this happens asynchronously)
+                        this.assignEstimatedCompletionDates(function() {
+
+                            // Order the issues
+                            self.resources = self.applyOrder(self.resources);
+
+                            // Mark the resources as loaded
+                            self.loading = false;
+
+                            // Let everyone know the resources are ready
+                            Nova.$emit('resources-loaded');
+
+                        });
+
                         // Calculate the label data
                         this.calculateLabelData();
-
-                        this.loading = false;
-
-                        this.$forceUpdate();
-                        Nova.$emit('resources-loaded');
 
                     });
 
@@ -328,12 +337,32 @@
              */
             actionFormData() {
 
-                return _.tap(new FormData(), formData => {
-
-                    formData.append('resources', _.map(this.resources, 'key'));
-                    formData.append('resourceData', JSON.stringify(this.getResourceData()));
-
+                return this.newFormData({
+                    resources: _.map(this.resources, 'key'),
+                    resourceData: JSON.stringify(this.getResourceData())
                 });
+
+            },
+
+            /**
+             * Creates and returns new form data using the specified data.
+             *
+             * @param  {object}  data
+             *
+             * @return {FormData}
+             */
+            newFormData(data) {
+
+                // Create a new form data instance
+                let formData = new FormData();
+
+                // Add each data element to the form data
+                _.each(data, function(value, key) {
+                    formData.append(key, value);
+                });
+
+                // Return the form data
+                return formData;
 
             },
 
@@ -383,175 +412,73 @@
             },
 
             /**
-             * Assigns estimated complete dates to the issues.
+             * Assigns estimated completion dates to the issues.
              *
-             * @param  {Array}  issues
+             * @param  {Function|null}  after
              *
-             * @return {Array}
+             * @return {void}
              */
-            assignEstimatedCompletionDates(issues) {
+            assignEstimatedCompletionDates(after = null) {
 
-                // Make sure issues have been provided
-                if(typeof issues === 'undefined') {
-                    return [];
-                }
+                let self = this;
 
-                // Our schedule is broken down into focus times. Issues can be allocated
-                // to one or more focuses, and these focus times are when we can work
-                // on these issues. We ought to respect the focus in the schedule.
-
-                // Initialize the dates for each focus
-                let dates = {
-                    [Constants.FOCUS_DEV]: this.getFirstAssignmentDate(Constants.FOCUS_DEV),
-                    [Constants.FOCUS_TICKET]: this.getFirstAssignmentDate(Constants.FOCUS_TICKET),
-                    [Constants.FOCUS_OTHER]: this.getFirstAssignmentDate(Constants.FOCUS_OTHER)
-                };
-
-                // Determine the schedule
-                let schedule = this.schedule;
-
-                // Remap the issues
-                return issues.map(function(issue) {
-
-                    // Determine the issue focus
-                    let focuses = issue['priority_name'] == Constants.PRIORITY_HIGHEST
-                        ? [Constants.FOCUS_DEV, Constants.FOCUS_TICKET, Constants.FOCUS_OTHER]
-                        : (
-                            [Constants.ISSUE_CATEGORY_TICKET, Constants.ISSUE_CATEGORY_DATA].indexOf(issue['issue_category']) >= 0
-                                ? [Constants.FOCUS_TICKET]
-                                : [Constants.FOCUS_DEV]
-                        );
-
-                    // Determine the remaining estimate
-                    let remaining = Math.max(issue['estimate_remaining'] || 0, 1 * 60 * 60);
-
-                    // Since an issue on its own can take longer than a day to complete,
-                    // we essentially have to chip away at the remaining estimate so
-                    // that we can correctly spread the work effort into many days.
-
-                    // Initialize the date
-                    let date = null;
-
-                    // Allocate the remaining estimate in a time loop until its all gone
-                    while(remaining > 0) {
-
-                        // Determine the applicable focus dates
-                        let focusDates = _.pick(dates, focuses);
-
-                        // Determine the earliest focus date
-                        date = Object.values(focusDates).reduce(function(date, focusDate) {
-                            return date == null ? focusDate : moment(moment.min(date, focusDate));
-                        }, null);
-
-                        // Determine the focus with that date
-                        let focus = _.last(focuses.filter(function(focus) {
-                            return focusDates[focus].isSame(date);
-                        }));
-
-                        // Determine how much time as already been allocated for the day
-                        let allocated = (date.get('hour') * 60 + date.get('minute')) * 60 + date.get('second');
-
-                        // Determine the daily focus limit
-                        let limit = schedule[date.weekday()][focus];
-
-                        // If the previous issue ended cleanly on the exact amount of allocatable
-                        // time, we wanted it to end on that date. However, we have to advance
-                        // to the next day for the next issue, otherwise we'll loop forever.
-
-                        // Check if we've run out of time for the day
-                        if(allocated >= limit) {
-
-                            // Advance to the next day
-                            date = date.add(1, 'day').startOf('day');
-
-                            // Update the focus date
-                            dates[focus] = date;
-
-                            // Try again
-                            continue;
-
-                        }
-
-                        // Determine how much time we can allocate for today
-                        let allocatable = Math.min(remaining, limit - allocated);
-
-                        // Allocate the time
-                        date = date.add(allocatable, 'second');
-
-                        // Reduce the remaining time by how much was allocated
-                        remaining -= allocatable;
-
-                        // If we have exceeded the daily limit, advance to the next day
-                        if(allocated + allocatable > limit) {
-                            date = date.add(1, 'day').startOf('day');
-                        }
-
-                        // Skip dates that have no allocatable time
-                        while(schedule[date.weekday()][focus] <= 0) {
-                            date = date.add(1, 'day');
-                        }
-
-                        // Update the focus date
-                        dates[focus] = date;
-
-                    }
-
-                    // Assign the estimated completion date
-                    issue['new_estimated_completion_date'] = date.format('YYYY-MM-DD');
-
-                    // Return the issue
-                    return issue;
-
+                // Clear the estimate dates
+                _.each(this.resources, function(issue) {
+                    issue['new_estimated_completion_date'] = null;
                 });
-            },
 
-            /**
-             * Returns the first assignment date for the schedule.
-             *
-             * @param  {string}  focus
-             *
-             * @return {Date}
-             */
-            getFirstAssignmentDate(focus) {
+                // Determine the issues
+                let issues = this.resources.map(function(issue, index) {
+                    return {
+                        'key': issue.key,
+                        'order': index,
+                        'assignee': issue.assignee_key,
+                        'focus': issue.focus,
+                        'remaining': issue.estimate_remaining
+                    };
+                })
 
-                // Determine the schedule
-                let schedule = this.schedule;
+                Nova.request({
+                    method: 'post',
+                    url: '/nova-vendor/jira-priorities/estimate',
+                    data: this.newFormData({'issues': JSON.stringify(issues)}),
+                })
+                    .then(response => {
 
-                // Until we have a better scheduling concept, we're going to
-                // base everything off of the default schedule, and probit
-                // issues from being scheduled same-day after 11:00 AM.
+                        // Iterate through the estimates
+                        _.each(response.data.estimates, function(estimate) {
 
-                // Determine the soonest we can start scheduling
-                let start = moment().isBefore(moment().startOf('day').add(11, 'hours')) // If it's prior to 11 AM
-                    ? moment().startOf('day') // Start no sooner than today
-                    : moment().add(1, 'day').startOf('day'); // Otherwise, start no sooner than tomorrow
+                            // Find the associated issue
+                            let issue = _.find(self.resources, {key: estimate.key});
 
-                // Determine the latest we can start scheduling
-                let end = moment().add(8, 'days').startOf('day'); // Start no later than a week after tomorrow
+                            // If we found the issue, update the estimate
+                            if(issue) {
+                                issue.new_estimated_completion_date = estimate.estimate;
+                            }
 
-                // Determine the first date where we can start assigning due dates
-                let date = Object.keys(schedule).reduce(function(date, key) {
+                        });
 
-                    // If the schedule has no focus allocation, don't change the date
-                    if(schedule[key][focus] <= 0) {
-                        return date;
-                    }
+                        // Invoke the after callback
+                        if(after) {
+                            after();
+                        }
 
-                    // Determine the date for this week
-                    let thisWeek = moment().weekday(key).startOf('day');
+                    })
+                    .catch(error => {
 
-                    // Make sure this week comes after the start date
-                    if(thisWeek.isBefore(start)) {
-                        thisWeek = thisWeek.add(1, 'week');
-                    }
+                        if(!error.response) {
 
-                    // Use the smaller of the two dates
-                    return moment.min(date, thisWeek);
+                            console.warn(error);
+                            this.errors = new Errors(error.message);
 
-                }, end);
+                        }
 
-                // Return the date
-                return date;
+                        else if(error.response.status == 422) {
+                            this.errors = new Errors(error.response.data.errors);
+                        }
+
+                    })
+
 
             },
 
@@ -647,12 +574,6 @@
 
                 // Start with the resource count
                 heading += this.resources.length;
-
-                // Determine the focus
-                let focus = this.getFilterValue('Issue Focus');
-
-                // Add the focus verbiage
-                heading += focus ? ' ' + focus + ' ' : '';
 
                 // Add in the "issue" verbiage
                 heading += ' ' + (this.resources.length == 1 ? 'Issue' : 'Issues');

@@ -126,7 +126,7 @@
                             <label>E</label>
                             <div class="flex-1">
                                 <span v-if="est" v-text="moment(est).toDate().toLocaleDateString()"/>
-                                <loader v-else class="text-gray" />
+                                <span v-else>&mdash;</span>
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
             },
 
             est: function() {
-                return this.issue.new_estimated_completion_date;
+                return this.issue.new_estimated_completion_date || this.issue.estimate_date;
             },
 
             offset: function() {
@@ -271,6 +271,18 @@
                         'order': this.order,
                         'est': this.issue.estimate_date
                     }
+                };
+
+            },
+
+            estimateData: function() {
+
+                return {
+                    'key': this.issue.key,
+                    'order': this.index,
+                    'assignee': this.issue.assignee_key,
+                    'focus': this.issue.focus,
+                    'remaining': this.issue.estimate_remaining
                 };
 
             }
