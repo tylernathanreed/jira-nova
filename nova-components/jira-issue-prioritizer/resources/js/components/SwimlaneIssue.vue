@@ -3,9 +3,9 @@
         <div
             class="p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none"
             :class="{
-                'bg-white border-50': !dragging && (!est || offset > -7),
+                'bg-white border-50': !dragging && (!issue.estimate || offset > -7),
                 'bg-delinquent border-delinquent hover:bg-delinquent-light': !dragging && (offset <= -7),
-                'hover:bg-20': !dragging && (!est || offset > -7) && !getSwimlane().dragging,
+                'hover:bg-20': !dragging && (!issue.estimate || offset > -7) && !getSwimlane().dragging,
                 'bg-50 border-60': dragging
             }"
         >
@@ -125,7 +125,7 @@
                         <div class="flex items-center">
                             <label>E</label>
                             <div class="flex-1">
-                                <span v-if="est" v-text="moment(est).toDate().toLocaleDateString()"/>
+                                <span v-if="issue.estimate" v-text="moment(issue.estimate).toDate().toLocaleDateString()"/>
                                 <span v-else>&mdash;</span>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="swimlane-issue-field" data-field="estimated-offset" style="min-width: 32px; max-width: 32px; text-align: center">
-                    <span v-if="!due || !est || due == est">&mdash;</span>
+                    <span v-if="!due || !issue.estimate || due == issue.estimate">&mdash;</span>
                     <span v-else-if="offset > 0"
                         class="text-success"
                         v-text="'(+' + (offset > 99 ? '++' : offset) + ')'"
@@ -220,18 +220,14 @@
                 return this.issue.due_date;
             },
 
-            est: function() {
-                return this.issue.new_estimated_completion_date || this.issue.estimate_date;
-            },
-
             offset: function() {
 
-                if(!this.due || !this.est) {
+                if(!this.due || !this.issue.estimate) {
                     return null;
                 }
 
                 let a = this.moment(this.due);
-                let b = this.moment(this.est);
+                let b = this.moment(this.issue.estimate);
 
                 return a.diff(b, 'days', 0);
 
@@ -258,8 +254,8 @@
                 return {
                     'key': this.issue.key,
                     'order': this.index,
-                    'assignee': this.issue.assignee_name,
-                    'est': this.est,
+                    'assignee': this.issue.assignee_key,
+                    'est': this.issue.estimate,
                     'due': this.due,
                     'focus': this.issue.focus,
                     'remaining': this.issue.estimate_remaining,

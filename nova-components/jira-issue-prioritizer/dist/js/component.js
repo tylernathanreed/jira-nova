@@ -33661,12 +33661,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         },
 
         onDragEnd: function onDragEnd() {
+            var _this2 = this;
 
             this.dragging = false;
             this.draggingComponent.dragging = false;
             this.draggingComponent = null;
 
-            this.assignEstimatedCompletionDates();
+            this.$nextTick(function () {
+                _this2.assignEstimatedCompletionDates();
+            });
         },
 
         onDragChange: function onDragChange(e) {
@@ -33681,7 +33684,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
          * Get the resources based on the current page, search, filters, etc.
          */
         getResources: function getResources() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.loading = true;
             this.labelsLoading = true;
@@ -33689,33 +33692,33 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             this.$nextTick(function () {
 
-                _this2.resources = [];
+                _this3.resources = [];
 
                 return Object(__WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Minimum"])(Nova.request().get('/jira-api/issues', {
-                    params: _this2.resourceRequestQueryString
+                    params: _this3.resourceRequestQueryString
                 }), 500).then(function (_ref2) {
                     var data = _ref2.data;
 
 
                     // Reset the resources
-                    _this2.resources = [];
-                    _this2.labelData = [];
+                    _this3.resources = [];
+                    _this3.labelData = [];
 
                     // Remember the response
-                    _this2.resourceResponse = data;
+                    _this3.resourceResponse = data;
 
                     // Determine the resources
                     var resources = data.resources;
 
                     // Update the resources
-                    _this2.resources = resources;
+                    _this3.resources = resources;
 
-                    _this2.$forceUpdate();
+                    _this3.$forceUpdate();
 
-                    var self = _this2;
+                    var self = _this3;
 
                     // Assign the estimated completion dates (this happens asynchronously)
-                    _this2.assignEstimatedCompletionDates(function () {
+                    _this3.assignEstimatedCompletionDates(function () {
 
                         // Order the issues
                         self.resources = self.applyOrder(self.resources);
@@ -33728,7 +33731,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     });
 
                     // Calculate the label data
-                    _this2.calculateLabelData();
+                    _this3.calculateLabelData();
                 });
             });
         },
@@ -33751,7 +33754,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
          * Saves the changes made to the issues
          */
         saveChanges: function saveChanges() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.working = true;
 
@@ -33762,14 +33765,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 data: this.actionFormData()
             }).then(function (response) {
 
-                _this3.handleActionResponse(response.data);
-                _this3.working = false;
+                _this4.handleActionResponse(response.data);
+                _this4.working = false;
             }).catch(function (error) {
 
-                _this3.working = false;
+                _this4.working = false;
 
                 if (error.response.status == 422) {
-                    _this3.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
+                    _this4.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
                 }
             });
         },
@@ -33869,7 +33872,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
          * @return {void}
          */
         assignEstimatedCompletionDates: function assignEstimatedCompletionDates() {
-            var _this4 = this;
+            var _this5 = this;
 
             var after = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -33878,7 +33881,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             // Clear the estimate dates
             _.each(this.resources, function (issue) {
-                issue['new_estimated_completion_date'] = null;
+                issue['estimate'] = null;
+            });
+
+            // Update the children
+            _.each(this.$refs.issue, function (child) {
+                child.$forceUpdate();
             });
 
             // Determine the issues
@@ -33904,9 +33912,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     // Find the associated issue
                     var issue = _.find(self.resources, { key: estimate.key });
 
+                    // Find the associated child component
+                    var child = _.find(self.$refs.issue, { issueKey: estimate.key });
+
                     // If we found the issue, update the estimate
-                    if (issue) {
-                        issue.new_estimated_completion_date = estimate.estimate;
+                    if (issue && issue.estimate != estimate.estimate) {
+
+                        // Update the estimate
+                        issue.estimate = estimate.estimate;
+
+                        // Update the child
+                        if (child) {
+                            child.$forceUpdate();
+                        }
                     }
                 });
 
@@ -33919,9 +33937,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 if (!error.response) {
 
                     console.warn(error);
-                    _this4.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.message);
+                    _this5.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.message);
                 } else if (error.response.status == 422) {
-                    _this4.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
+                    _this5.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
                 }
             });
         },
@@ -36958,18 +36976,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.issue.due_date;
         },
 
-        est: function est() {
-            return this.issue.new_estimated_completion_date || this.issue.estimate_date;
-        },
-
         offset: function offset() {
 
-            if (!this.due || !this.est) {
+            if (!this.due || !this.issue.estimate) {
                 return null;
             }
 
             var a = this.moment(this.due);
-            var b = this.moment(this.est);
+            var b = this.moment(this.issue.estimate);
 
             return a.diff(b, 'days', 0);
         },
@@ -36995,8 +37009,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return {
                 'key': this.issue.key,
                 'order': this.index,
-                'assignee': this.issue.assignee_name,
-                'est': this.est,
+                'assignee': this.issue.assignee_key,
+                'est': this.issue.estimate,
                 'due': this.due,
                 'focus': this.issue.focus,
                 'remaining': this.issue.estimate_remaining,
@@ -37325,12 +37339,12 @@ var render = function() {
             "p-2 ml-3 flex items-center border rounded rounded-l-none min-h-input w-full text-90 text-xs leading-rem font-segoe-ui shadow-sm cursor-move select-none",
           class: {
             "bg-white border-50":
-              !_vm.dragging && (!_vm.est || _vm.offset > -7),
+              !_vm.dragging && (!_vm.issue.estimate || _vm.offset > -7),
             "bg-delinquent border-delinquent hover:bg-delinquent-light":
               !_vm.dragging && _vm.offset <= -7,
             "hover:bg-20":
               !_vm.dragging &&
-              (!_vm.est || _vm.offset > -7) &&
+              (!_vm.issue.estimate || _vm.offset > -7) &&
               !_vm.getSwimlane().dragging,
             "bg-50 border-60": _vm.dragging
           }
@@ -37641,12 +37655,12 @@ var render = function() {
                       _c("label", [_vm._v("E")]),
                       _vm._v(" "),
                       _c("div", { staticClass: "flex-1" }, [
-                        _vm.est
+                        _vm.issue.estimate
                           ? _c("span", {
                               domProps: {
                                 textContent: _vm._s(
                                   _vm
-                                    .moment(_vm.est)
+                                    .moment(_vm.issue.estimate)
                                     .toDate()
                                     .toLocaleDateString()
                                 )
@@ -37671,7 +37685,9 @@ var render = function() {
                   attrs: { "data-field": "estimated-offset" }
                 },
                 [
-                  !_vm.due || !_vm.est || _vm.due == _vm.est
+                  !_vm.due ||
+                  !_vm.issue.estimate ||
+                  _vm.due == _vm.issue.estimate
                     ? _c("span", [_vm._v("—")])
                     : _vm.offset > 0
                     ? _c("span", {

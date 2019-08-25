@@ -200,7 +200,9 @@
                 this.draggingComponent.dragging = false;
                 this.draggingComponent = null;
 
-                this.assignEstimatedCompletionDates();
+                this.$nextTick(() => {
+                    this.assignEstimatedCompletionDates();
+                });
 
             },
 
@@ -424,7 +426,12 @@
 
                 // Clear the estimate dates
                 _.each(this.resources, function(issue) {
-                    issue['new_estimated_completion_date'] = null;
+                    issue['estimate'] = null;
+                });
+
+                // Update the children
+                _.each(this.$refs.issue, function(child) {
+                    child.$forceUpdate();
                 });
 
                 // Determine the issues
@@ -451,9 +458,20 @@
                             // Find the associated issue
                             let issue = _.find(self.resources, {key: estimate.key});
 
+                            // Find the associated child component
+                            let child = _.find(self.$refs.issue, {issueKey: estimate.key});
+
                             // If we found the issue, update the estimate
-                            if(issue) {
-                                issue.new_estimated_completion_date = estimate.estimate;
+                            if(issue && issue.estimate != estimate.estimate) {
+
+                                // Update the estimate
+                                issue.estimate = estimate.estimate;
+
+                                // Update the child
+                                if(child) {
+                                    child.$forceUpdate();
+                                }
+
                             }
 
                         });

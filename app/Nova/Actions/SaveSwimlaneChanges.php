@@ -2,7 +2,9 @@
 
 namespace App\Nova\Actions;
 
+use App\Models\User;
 use App\Models\Issue;
+use App\Models\Schedule;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Actions\ActionMethod;
@@ -25,9 +27,25 @@ class SaveSwimlaneChanges extends Action
         // We want to undo this zippering on the backend so that we do
         // not actually update ranks to map the result of zippering.
 
+        // Determine the assignees
+        $users = User::whereIn('jira_key', $issues->pluck('assignee')->unique()->all())->get()->keyBy('jira_key');
+
         // Split the issues apart from their zipper groups
-        $groups = $issues->groupBy(function($issue) {
-            return json_encode(['assignee' => $issue['assignee'], 'focus' => $issue['focus']]);
+        $groups = $issues->groupBy(function($issue) use ($users) {
+
+            // Determine the assignee's schedule
+            $schedule = ($users[$issue['assignee']] ?? new User)->getSchedule();
+
+            // Determine the criteria for the group
+            $criteria = [
+                'assignee' => $issue['assignee'],
+                'type' => $schedule->type,
+                'focus' => $schedule->type == Schedule::TYPE_SIMPLE ? 'all' : $issue['focus']
+            ];
+
+            // Return the encoded criteria
+            return json_encode($criteria);
+
         });
 
         // Iterate through each group
@@ -46,7 +64,7 @@ class SaveSwimlaneChanges extends Action
             }
 
             // Determine the "other" group for the same assignee
-            $other = $groups[json_encode(['assignee' => $criteria['assignee'], 'focus' => Issue::FOCUS_OTHER])] ?? collect();
+            $other = $groups[json_encode(['assignee' => $criteria['assignee'], 'type' => Schedule::TYPE_ADVANCED, 'focus' => Issue::FOCUS_OTHER])] ?? collect();
 
             // Merge the other group into this one
             $group = $group->merge($other);
