@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DB;
 use Jira;
+use Nova;
 use Closure;
 use Carbon\Carbon;
 use App\Nova\Filters\Filter;
@@ -72,6 +73,53 @@ class Issue extends Model implements Cacheable
         'estimate_date',
         'entry_date'
     ];
+
+    /////////////////
+    //* Accessors *//
+    /////////////////
+    /**
+     * Returns the internal url to this epic in Nova.
+     *
+     * @return string
+     */
+    public function getInternalUrl()
+    {
+        return static::getInternalUrlForId($this->id);
+    }
+
+    /**
+     * Returns the internal url to the specified epic in Nova.
+     *
+     * @param  integer  $id
+     *
+     * @return string
+     */
+    public static function getInternalUrlForId($id)
+    {
+        return url(Nova::path() . '/resources/issues/' . $id);
+    }
+
+    /**
+     * Returns the external url to this epic in Jira.
+     *
+     * @return string
+     */
+    public function getExternalUrl()
+    {
+        return static::getExternalUrlForKey($this->key);
+    }
+
+    /**
+     * Returns the external url to the specified epic in Nova.
+     *
+     * @param  string  $key
+     *
+     * @return string
+     */
+    public static function getExternalUrlForKey($key)
+    {
+        return rtrim(config('jira.host'), '/') . '/browse/' . $key;
+    }
 
     ////////////
     //* Jira *//

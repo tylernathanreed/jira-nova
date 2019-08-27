@@ -27,14 +27,22 @@ class Issue extends Resource
      *
      * @var string
      */
-    public static $title = 'summary';
+    public static $title = 'key';
 
     /**
-     * Indicates if the resource should be displayed in the sidebar.
+     * The additional value that can be used to provide context for the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $subtitle = 'summary';
+
+    /**
+     * Indicates if the resoruce should be globally searchable.
      *
      * @var bool
      */
-    public static $displayInNavigation = false;
+    public static $globallySearchable = true;
+
 
     /**
      * The number of resources to show per page via relationships.
@@ -49,7 +57,7 @@ class Issue extends Resource
      * @var array
      */
     public static $search = [
-        'jira_key', 'summary'
+        'key', 'summary'
     ];
 
     /**
@@ -76,7 +84,19 @@ class Issue extends Resource
 
             // Field::text('Priority', 'priority_name')->onlyOnDetail(),
 
-            Field::text('Key', 'key')->exceptOnForms(),
+            Field::badgeUrl('Key', 'key')->toUsing(function($value, $resource) {
+                return [
+                    'name' => 'detail',
+                    'params' => [
+                        'resourceName' => 'issues',
+                        'resourceId' => $resource->id,
+                    ],
+                ];
+            })->style([
+                'fontFamily' => '\'Segoe UI\'',
+                'fontSize' => '14px',
+                'fontWeight' => '400',
+            ])->exceptOnForms(),
 
             Field::badgeUrl('Epic', 'epic_name')->backgroundUsing(function($value, $resource) {
                 return config("jira.colors.{$resource->epic_color}.background");
@@ -88,7 +108,8 @@ class Issue extends Resource
                 'borderRadius' => '3px',
                 'fontFamily' => '\'Segoe UI\'',
                 'fontSize' => '12px',
-                'fontWeight' => 'normal'
+                'fontWeight' => 'normal',
+                'marginTop' => '0.25rem'
             ])->exceptOnForms(),
 
             Field::text('Summary', 'summary', function() {
@@ -97,19 +118,37 @@ class Issue extends Resource
 
             Field::text('Summary', 'summary')->onlyOnDetail(),
 
-            Field::text('Status', 'status_name')->exceptOnForms(),
+            Field::badgeUrl('Status', 'status_name')->backgroundUsing(function($value, $resource) {
+                return config("jira.colors.{$resource->status_color}.background");
+            })->foregroundUsing(function($value, $resource) {
+                return config("jira.colors.{$resource->status_color}.color");
+            })->style([
+                'fontFamily' => '\'Segoe UI\'',
+                'fontSize' => '12px',
+                'fontWeight' => '600',
+                'borderRadius' => '3px',
+                'textTransform' => 'uppercase',
+                'marginTop' => '0.25rem'
+            ])->exceptOnForms(),
+
             // Field::text('status_color', 'status_color'),
 
             Field::text('Issue Category', 'issue_category')->onlyOnDetail(),
             Field::text('Focus', 'focus')->onlyOnDetail(),
 
+            // Field::text('assignee_key', 'assignee_key'),
+            Field::text('Assignee', 'assignee_name')->onlyOnDetail(),
+
+            Field::avatar('A')->thumbnail(function() {
+                return $this->assignee_icon_url;
+            })->maxWidth(16)->onlyOnIndex(),
+
             // Field::text('reporter_key', 'reporter_key'),
             Field::text('Reporter', 'reporter_name')->onlyOnDetail(),
-            // Field::text('reporter_icon_url', 'reporter_icon_url'),
 
-            // Field::text('assignee_key', 'assignee_key'),
-            Field::text('Assignee', 'assignee_name')->exceptOnForms(),
-            // Field::text('assignee_icon_url', 'assignee_icon_url'),
+            Field::avatar('R')->thumbnail(function() {
+                return $this->reporter_icon_url;
+            })->maxWidth(16)->onlyOnIndex(),
 
             Field::date('Due', 'due_date')->sortable(),
 
@@ -127,12 +166,12 @@ class Issue extends Resource
             Field::text('Parent', 'parent_key')->onlyOnDetail(),
             // Field::text('parent_url', 'parent_url'),
 
-            Field::code('labels', 'labels')->json()->onlyOnDetail(),
+            Field::code('Labels', 'labels')->json()->onlyOnDetail(),
 
-            Field::code('links', 'links')->json()->onlyOnDetail(),
+            Field::code('Links', 'links')->json()->onlyOnDetail(),
             // Field::text('blocks', 'blocks'),
 
-            Field::text('Rank', 'rank')->onlyOnDetail(),
+            Field::text('Rank', 'rank')->exceptOnForms()->sortable(),
 
             Field::date('Created', 'entry_date')->onlyOnDetail()
 
@@ -148,7 +187,8 @@ class Issue extends Resource
     public function cards(Request $request)
     {
         return [
-            // new \App\Nova\Metrics\IssueWorkloadByFocus
+            (new \App\Nova\Metrics\IssueCreatedByDateValue)->where('focus', 'Ticket')->setName('Ticket Entry'),
+            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->width('2/3'),
         ];
     }
 
@@ -174,7 +214,9 @@ class Issue extends Resource
      */
     public function lenses(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Lenses\PastDueIssuesLens(static::newModel())
+        ];
     }
 
     /**

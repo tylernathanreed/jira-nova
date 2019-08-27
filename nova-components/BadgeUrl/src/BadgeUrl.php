@@ -35,6 +35,13 @@ class BadgeUrl extends Field
     public $linkCallback;
 
     /**
+     * The callback to be used to resolve the field's router link.
+     *
+     * @var \Closure
+     */
+    public $toCallback;
+
+    /**
      * The callback to be used to resolve the field's style.
      *
      * @var \Closure
@@ -119,6 +126,33 @@ class BadgeUrl extends Field
         return $this;
     }
 
+
+    /**
+     * The router link to use.
+     *
+     * @param  string  $link
+     *
+     * @return $this
+     */
+    public function to($to)
+    {
+        return $this->withMeta(compact('to'));
+    }
+
+    /**
+     * Define the callback that should be used to resolve the field's router link.
+     *
+     * @param  callable  $toCallback
+     *
+     * @return $this
+     */
+    public function toUsing(callable $toCallback)
+    {
+        $this->toCallback = $toCallback;
+
+        return $this;
+    }
+
     /**
      * The additional styles to apply.
      *
@@ -171,6 +205,11 @@ class BadgeUrl extends Field
         // Resolve the link callback
         if(is_callable($this->linkCallback)) {
             $this->link(call_user_func($this->linkCallback, $this->value, $resource));
+        }
+
+        // Resolve the to callback
+        if(is_callable($this->toCallback)) {
+            $this->to(call_user_func($this->toCallback, $this->value, $resource));
         }
 
         // Resolve the style callback

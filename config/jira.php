@@ -62,7 +62,11 @@ return [
         'ghx-label-11' => ['background' => '#79e2f2', 'color' => '#42526e'],
         'ghx-label-12' => ['background' => '#7a869a', 'color' => '#fff'],
         'ghx-label-13' => ['background' => '#57d9a3', 'color' => '#172B4D'],
-        'ghx-label-14' => ['background' => '#ff8f73', 'color' => '#fff']
+        'ghx-label-14' => ['background' => '#ff8f73', 'color' => '#fff'],
+
+        'blue-gray' => ['background' => '#dfe1e6', 'color' => '#253858'],
+        'yellow' => ['background' => '#0052cc', 'color' => '#fff'],
+        'green' => ['background' => '#00875a', 'color' => '#fff']
     ]
 
 ];

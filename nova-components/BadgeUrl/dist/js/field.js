@@ -10890,7 +10890,8 @@ var render = function() {
         ? _c(
             "router-link",
             {
-              staticClass: "cursor-pointer no-underline hover:underline",
+              staticClass:
+                "cursor-pointer text-primary no-underline hover:underline",
               style: { color: _vm.field.foreground },
               attrs: { to: _vm.field.to }
             },
@@ -10905,9 +10906,14 @@ var render = function() {
             ]
           )
         : _vm.field.value
-        ? _c("span", { staticClass: "block truncate" }, [
-            _vm._v(_vm._s(_vm.field.value))
-          ])
+        ? _c(
+            "span",
+            {
+              staticClass: "block truncate",
+              style: { color: _vm.field.foreground }
+            },
+            [_vm._v(_vm._s(_vm.field.value))]
+          )
         : _c("span", [_vm._v("—")])
     ],
     1

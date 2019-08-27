@@ -156,4 +156,18 @@ abstract class Resource extends NovaResource
 
         return parent::applyOrderings($query, $orderings);
     }
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string|null
+     */
+    public function subtitle()
+    {
+        if(property_exists($this, 'subtitle')) {
+            return $this->{static::$subtitle};
+        }
+
+        return null;
+    }
 }

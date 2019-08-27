@@ -1457,8 +1457,9 @@ textarea.form-input:read-only,
 -----------------------------------------------------------------------------*/
 
 .chartist-tooltip {
-  min-width: 14em !important;
-  padding: .2em !important;
+  min-width: 0 !important;
+  white-space: nowrap;
+  padding: .2em 1em !important;
   background: var(--white) !important;
   color: var(--primary) !important;
   border-radius: .25rem !important;
@@ -5433,5 +5434,36 @@ trix-editor.disabled {
 }
 
 .nova-fullscreen-disabled .normalscreen\:hidden {
+  display: none;
+}
+
+[dusk=issues-index-component] .table th,
+[dusk=delinquencies-lens-component] .table th {
+  padding-left: .25rem;
+  padding-right: .25rem;
+}
+
+[dusk=issues-index-component] .table td,
+[dusk=delinquencies-lens-component] .table td {
+  height: 2rem;
+  font-size: .875rem;
+  padding-left: .25rem;
+  padding-right: .25rem;
+  min-width: 0;
+}
+
+[dusk=issues-index-component] .table td img,
+[dusk=delinquencies-lens-component] .table td img {
+  width: 1rem;
+  height: 1rem;
+}
+
+[dusk=issues-index-component] .table th:last-child,
+[dusk=delinquencies-lens-component] .table th:last-child {
+  display: none;
+}
+
+[dusk=issues-index-component] .table td:last-child,
+[dusk=delinquencies-lens-component] .table td:last-child {
   display: none;
 }
