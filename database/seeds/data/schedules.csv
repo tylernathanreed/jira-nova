@@ -1,7 +1,4 @@
 display_name,system_name,description,type,simple_weekly_allocation,trashed
 Simple,simple,"The default simple schedule using 30 hours of allocated time.",Simple,30,0
 Standard,standard,"M / W / F for Dev, T / R for Ticket",Advanced,,0
-"Tyler's Schedule",tyler,"9:00 AM to 10:59 AM: 0 (Warm Up, Checkpoint, and Grooming)
-11:00 AM to 11:59 AM: 0.5 (Collaboration)
-12:00 PM to 4:59 PM: 4 (Focus & Lunch)
-5:00 PM to 6:00 PM: 0 (Cool down)",Simple,22.5,0
+"Tyler's Schedule",tyler,"9:00 AM to 10:59 AM: 0 (Warm Up, Checkpoint, and Grooming)\r\n11:00 AM to 11:59 AM: 0.5 (Collaboration)\r\n12:00 PM to 4:59 PM: 4 (Focus & Lunch)\r\n5:00 PM to 6:00 PM: 0 (Cool down)",Simple,22.5,0

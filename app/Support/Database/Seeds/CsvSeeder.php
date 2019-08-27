@@ -158,21 +158,8 @@ class CsvSeeder extends Seeder
      */
     public function seedUsingCsv()
     {
-        // Create a new reader
-        $reader = $this->newCsvReader();
-
-        // Determine the headers
-        $headers = $reader->getHeader();
-
-        // Determine the records
-        $records = [];
-
-        foreach($reader as $record) {
-            $records[] = $record;
-        }
-
         // Convert the records into update results
-        $results = $this->newUpdateQuery($headers, $records)->get();
+        $results = $this->newUpdateQuery()->get();
 
         // Create a new model instance for reference
         $model = static::newModel();
@@ -180,11 +167,24 @@ class CsvSeeder extends Seeder
         // Perform the inserts and updates without mass assignment protection
         $model::unguarded(function() use ($results, $model) {
 
+            // Determine the model casts
+            $casts = $model->getCasts();
+
             // Iterate through each result
             foreach($results as $result) {
 
                 // Cast the result to an array
                 $result = $result->getAttributes();
+
+                // Iterate through the attributes
+                foreach($result as $key => &$value) {
+
+                    // If the attribute casts as json, decode it
+                    if($casts[$key] ?? null == 'json') {
+                        $value = json_decode($value);
+                    }
+
+                }
 
                 // Extract the matching data
                 $match = Arr::only($result, $this->match);
@@ -211,13 +211,14 @@ class CsvSeeder extends Seeder
     /**
      * Creates and returns a new update query.
      *
-     * @param  array  $headers
-     * @param  array  $records
-     *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function newUpdateQuery($headers, $records)
+    public function newUpdateQuery()
     {
+        // Determine the header and records
+        $headers = $this->getHeader();
+        $records = $this->getRecords();
+
         // Create a new query
         $query = $this->newQueryFromRecords($records);
 
@@ -262,7 +263,13 @@ class CsvSeeder extends Seeder
 
             // Select each key/value pair
             foreach($record as $key => $value) {
-                $query->addSelect("{$value} as {$key}");
+
+                // Wrap the value
+                $value = str_replace('_DECIMAL_', '.', $query->getGrammar()->wrap(str_replace('.', '_DECIMAL_', $value)));
+
+                // Select the value aliased as the key
+                $query->addSelect($query->raw("{$value} as {$key}"));
+
             }
 
             // If a subquery doesn't exist, use the query
@@ -286,6 +293,27 @@ class CsvSeeder extends Seeder
         // Return the query
         return $query;
     }
+
+    /**
+     * Returns the header in the seed data file.
+     *
+     * @return array
+     */
+    public function getHeader()
+    {
+        return $this->newCsvReader()->getHeader();
+    }
+
+    /**
+     * Returns the records in the seed data file.
+     *
+     * @return array
+     */
+    public function getRecords()
+    {
+        return iterator_to_array($this->newCsvReader()->getRecords());
+    }
+
 
     /**
      * Creates and returns a new csv reader.
