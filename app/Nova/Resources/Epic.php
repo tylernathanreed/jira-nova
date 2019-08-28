@@ -108,7 +108,11 @@ class Epic extends Resource
                 'fontWeight' => 'normal'
             ])->exceptOnForms(),
 
-            Field::text('Summary', 'summary'),
+            Field::text('Summary', 'summary')->onlyOnDetail(),
+
+            Field::text('Summary', 'summary', function() {
+                return strlen($this->summary) > 80 ? substr($this->summary, 0, 80) . '...' : $this->summary;
+            })->onlyOnIndex(),
 
             Field::textarea('Description', 'description'),
 

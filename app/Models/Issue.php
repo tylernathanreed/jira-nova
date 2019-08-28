@@ -710,6 +710,62 @@ class Issue extends Model implements Cacheable
         ]);
     }
 
+    /**
+     * Filters to issues that are actively delinquent.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed                                  $when
+     *
+     * @return void
+     */
+    public function scopeDelinquent($query, $when = 'now')
+    {
+        $query->incomplete()->where('due_date', '<=', carbon($when));
+    }
+
+    /**
+     * Filters to issues that will become delinquent.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed                                  $when
+     *
+     * @return void
+     */
+    public function scopeWillBeDelinquent($query, $when = 'now')
+    {
+        $query->incomplete()->whereColumn('due_date', '<=', 'estimate_date');
+    }
+
+    /**
+     * Filters to issues that have the specified label name.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string                                 $name
+     *
+     * @return void
+     */
+    public function scopeHasLabel($query, $name)
+    {
+        $query->whereHas('labels', function($query) use ($name) {
+            $query->where('labels.name', '=', $name);
+        });
+    }
+
+    /**
+     * Filters to issues that have a label like the specified name.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string                                 $name
+     *
+     * @return void
+     */
+    public function scopeHasLabelLike($query, $name)
+    {
+        $query->whereHas('labels', function($query) use ($name) {
+            $query->where('labels.name', 'like', $name);
+        });
+    }
+
     /////////////////
     //* Relations *//
     /////////////////

@@ -2,17 +2,26 @@
 
 namespace App\Nova\Lenses;
 
+use Closure;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\LensRequest;
 
-class PastDueIssuesLens extends Lens
+class FilterLens extends Lens
 {
+    use Concerns\InlineFilterable;
+
     /**
-     * The displayable name of the lens.
+     * Creates and returns a new lens.
      *
-     * @var string
+     * @param  \Laravel\Nova\Resource  $resource
+     * @param  string                  $name
+     *
+     * @return static
      */
-    public $name = 'Delinquencies';
+    public static function make($resource, $name)
+    {
+        return (new static($resource::newModel()))->setName($name);
+    }
 
     /**
      * Get the query builder / paginator for the lens.
@@ -23,7 +32,7 @@ class PastDueIssuesLens extends Lens
      */
     public static function query(LensRequest $request, $query)
     {
-        $query->where('due_date', '<=', carbon())->incomplete();
+        static::applyQueryScope($request, $query);
 
         return $request->withOrdering($request->withFilters(
             $query

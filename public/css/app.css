@@ -5437,14 +5437,12 @@ trix-editor.disabled {
   display: none;
 }
 
-[dusk=issues-index-component] .table th,
-[dusk=delinquencies-lens-component] .table th {
+.table th {
   padding-left: .25rem;
   padding-right: .25rem;
 }
 
-[dusk=issues-index-component] .table td,
-[dusk=delinquencies-lens-component] .table td {
+.table td {
   height: 2rem;
   font-size: .875rem;
   padding-left: .25rem;
@@ -5452,18 +5450,7 @@ trix-editor.disabled {
   min-width: 0;
 }
 
-[dusk=issues-index-component] .table td img,
-[dusk=delinquencies-lens-component] .table td img {
+.table td img {
   width: 1rem;
   height: 1rem;
-}
-
-[dusk=issues-index-component] .table th:last-child,
-[dusk=delinquencies-lens-component] .table th:last-child {
-  display: none;
-}
-
-[dusk=issues-index-component] .table td:last-child,
-[dusk=delinquencies-lens-component] .table td:last-child {
-  display: none;
 }

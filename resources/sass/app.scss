@@ -70,33 +70,20 @@
 
 }
 
-[dusk=issues-index-component],
-[dusk=delinquencies-lens-component] {
+.table th {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
 
-    .table th {
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
+.table td {
+    height: 2rem;
+    font-size: 0.875rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    min-width: 0;
+}
 
-    .table td {
-        height: 2rem;
-        font-size: 0.875rem;
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-        min-width: 0;
-    }
-
-    .table td img {
-        width: 1rem;
-        height: 1rem;
-    }
-
-    .table th:last-child {
-        display: none;
-    }
-
-    .table td:last-child {
-        display: none;
-    }
-
+.table td img {
+    width: 1rem;
+    height: 1rem;
 }
