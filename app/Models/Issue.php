@@ -766,6 +766,30 @@ class Issue extends Model implements Cacheable
         });
     }
 
+    /**
+     * Filters to issues that have been assigned.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return void
+     */
+    public function scopeAssigned($query)
+    {
+        $query->whereNotNull('assignee_name');
+    }
+
+    /**
+     * Filters to issues that have not been assigned.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return void
+     */
+    public function scopeUnassigned($query)
+    {
+        $query->whereNull('assignee_name');
+    }
+
     /////////////////
     //* Relations *//
     /////////////////
