@@ -36,9 +36,6 @@ class IssueCountByVersionPartition extends Partition
         // Join into fix versions
         $query->joinRelation('versions');
 
-        // Make sure the issues are part of an epic
-        $query->whereNotNull('epic_name');
-
         // Determine the count per version
         $result = $this->count($request, $query, 'versions.name');
 
