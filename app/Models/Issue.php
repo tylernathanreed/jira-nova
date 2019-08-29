@@ -677,7 +677,9 @@ class Issue extends Model implements Cacheable
             'focus',
             'epic_id',
             'epic_name',
+            'status_name',
             'assignee_name',
+            'due_date',
             'project_id',
             'labels',
             'fix_versions'

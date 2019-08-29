@@ -24,7 +24,9 @@ trait PartitionLimits
         arsort($value);
 
         // Merge the last results into a labelled category
-        $value = array_merge(array_slice($value, 0, $limit - 1), [($label ?? 'Other') => array_sum(array_slice($value, $limit - 1))]);
+        if(count($value) >= 10) {
+            $value = array_merge(array_slice($value, 0, $limit - 1), [($label ?? 'Other') => array_sum(array_slice($value, $limit - 1))]);
+        }
 
         // Update the value
         $result->value = $value;

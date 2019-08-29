@@ -38,9 +38,6 @@ class IssueWorkloadByAssigneePartition extends Partition
         // Create a new remaining workload query
         $query = (new Issue)->newRemainingWorkloadQuery();
 
-        // Make sure the assignee exists
-        $query->whereNotNull('assignee_name');
-
         // Apply the filter
         $this->applyFilter($query);
 
@@ -55,6 +52,11 @@ class IssueWorkloadByAssigneePartition extends Partition
 
         // Update the result
         $result->value = $value;
+
+        // Label the results
+        $result->label(function($label) {
+            return $label ?: 'Unassigned';
+        });
 
         // Return the partition result
         return $result;
