@@ -3,16 +3,24 @@
 namespace App\Nova\Lenses\Concerns;
 
 use Closure;
+use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\LensRequest;
 
 trait InlineFilterable
 {
     /**
-     * The query scope for this metric.
+     * The query scope for this lens.
      *
      * @var \Closure|null
      */
     public $scope;
+
+    /**
+     * The scopeable cards for this lens.
+     *
+     * @var array
+     */
+    public $scopedCards = [];
 
     /**
      * Sets the scope for this metric.
@@ -90,5 +98,43 @@ trait InlineFilterable
         });
 
         return $this;
+    }
+
+    /**
+     * Adds the specified scoped cards to this lens.
+     *
+     * @param  array  $cards
+     *
+     * @return $this
+     */
+    public function addScopedCards($cards)
+    {
+        $this->scopedCards = $cards;
+
+        return $this;
+    }
+
+    /**
+     * Returns the scoped cards (with their scopes applied).
+     *
+     * @return array
+     */
+    public function getScopedCards()
+    {
+        return array_map(function($card) {
+            return $card->filter($this->scope);
+        }, $this->scopedCards);
+    }
+
+    /**
+     * Get the cards available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return array
+     */
+    public function cards(Request $request)
+    {
+        return $this->getScopedCards();
     }
 }
