@@ -33710,6 +33710,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     // Determine the resources
                     var resources = data.resources;
 
+                    // Order the issues
+                    resources = _this3.applyOrder(resources);
+
                     // Update the resources
                     _this3.resources = resources;
 
@@ -33720,7 +33723,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     // Assign the estimated completion dates (this happens asynchronously)
                     _this3.assignEstimatedCompletionDates(function () {
 
-                        // Order the issues
+                        // Order the issues again
                         self.resources = self.applyOrder(self.resources);
 
                         // Mark the resources as loaded
@@ -33886,7 +33889,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             // Update the children
             _.each(this.$refs.issue, function (child) {
-                child.$forceUpdate();
+                child.setEstimate(null);
+                // child.$forceUpdate();
             });
 
             // Determine the issues
@@ -33923,7 +33927,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                         // Update the child
                         if (child) {
-                            child.$forceUpdate();
+                            child.setEstimate(issue.estimate);
                         }
                     }
                 });
@@ -36952,16 +36956,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
 
+        var issue = this.getIssue(this.issueKey);
+
         return {
             'order': this.index,
-            'dragging': false
+            'dragging': false,
+            'due': issue.due_date,
+            'estimate': issue.estimate,
+            'offset': this.calculateDiffInDays(issue.due_date, issue.estimate)
         };
     },
 
     methods: {
 
-        moment: __WEBPACK_IMPORTED_MODULE_0_moment___default.a
+        moment: __WEBPACK_IMPORTED_MODULE_0_moment___default.a,
 
+        calculateDiffInDays: function calculateDiffInDays(a, b) {
+
+            if (!a || !b) {
+                return null;
+            }
+
+            var ma = this.moment(a);
+            var mb = this.moment(b);
+
+            return ma.diff(mb, 'days', 0);
+        },
+        setEstimate: function setEstimate(estimate) {
+
+            this.estimate = estimate;
+            this.offset = this.calculateDiffInDays(this.due, estimate);
+        }
     },
 
     inject: ['getIssue', 'getSwimlane'],
@@ -36970,22 +36995,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         issue: function issue() {
             return this.getIssue(this.issueKey);
-        },
-
-        due: function due() {
-            return this.issue.due_date;
-        },
-
-        offset: function offset() {
-
-            if (!this.due || !this.issue.estimate) {
-                return null;
-            }
-
-            var a = this.moment(this.due);
-            var b = this.moment(this.issue.estimate);
-
-            return a.diff(b, 'days', 0);
         },
 
         colors: function colors() {
@@ -37010,8 +37019,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'key': this.issue.key,
                 'order': this.index,
                 'assignee': this.issue.assignee_key,
-                'est': this.issue.estimate,
+                'est': this.estimate,
                 'due': this.due,
+                'offset': this.offset,
                 'focus': this.issue.focus,
                 'remaining': this.issue.estimate_remaining,
                 'priority': this.issue.priority_name,
@@ -37655,12 +37665,12 @@ var render = function() {
                       _c("label", [_vm._v("E")]),
                       _vm._v(" "),
                       _c("div", { staticClass: "flex-1" }, [
-                        _vm.issue.estimate
+                        _vm.estimate
                           ? _c("span", {
                               domProps: {
                                 textContent: _vm._s(
                                   _vm
-                                    .moment(_vm.issue.estimate)
+                                    .moment(_vm.estimate)
                                     .toDate()
                                     .toLocaleDateString()
                                 )
@@ -37685,9 +37695,7 @@ var render = function() {
                   attrs: { "data-field": "estimated-offset" }
                 },
                 [
-                  !_vm.due ||
-                  !_vm.issue.estimate ||
-                  _vm.due == _vm.issue.estimate
+                  !_vm.due || !_vm.estimate || _vm.due == _vm.estimate
                     ? _c("span", [_vm._v("—")])
                     : _vm.offset > 0
                     ? _c("span", {

@@ -27,15 +27,6 @@ class JiraIssueDelinquentByDiffTrend extends Trend
         // Determine the isssues
         $issues = collect(json_decode($request->resourceData, true));
 
-        // Estimate the difference for each issue
-        $issues->transform(function($issue) {
-
-            $issue['offset'] = (is_null($issue['est']) || is_null($issue['due'])) ? null : carbon($issue['est'])->diffInDays($issue['due'], false);
-
-            return $issue;
-
-        });
-
         // Initialize the result
         $result = array_combine(array_map(function($v) {
             return $v . ($v == 1 ? ' day' : ' days');

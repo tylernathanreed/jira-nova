@@ -125,7 +125,7 @@
                         <div class="flex items-center">
                             <label>E</label>
                             <div class="flex-1">
-                                <span v-if="issue.estimate" v-text="moment(issue.estimate).toDate().toLocaleDateString()"/>
+                                <span v-if="estimate" v-text="moment(estimate).toDate().toLocaleDateString()"/>
                                 <span v-else>&mdash;</span>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="swimlane-issue-field" data-field="estimated-offset" style="min-width: 32px; max-width: 32px; text-align: center">
-                    <span v-if="!due || !issue.estimate || due == issue.estimate">&mdash;</span>
+                    <span v-if="!due || !estimate || due == estimate">&mdash;</span>
                     <span v-else-if="offset > 0"
                         class="text-success"
                         v-text="'(+' + (offset > 99 ? '++' : offset) + ')'"
@@ -192,16 +192,41 @@
 
         data: function() {
 
+            let issue = this.getIssue(this.issueKey);
+
             return {
                 'order': this.index,
-                'dragging': false
+                'dragging': false,
+                'due': issue.due_date,
+                'estimate': issue.estimate,
+                'offset': this.calculateDiffInDays(issue.due_date, issue.estimate)
             }
 
         },
 
         methods: {
 
-            moment: moment
+            moment: moment,
+
+            calculateDiffInDays(a, b) {
+
+                if(!a || !b) {
+                    return null;
+                }
+
+                let ma = this.moment(a);
+                let mb = this.moment(b);
+
+                return ma.diff(mb, 'days', 0);
+
+            },
+
+            setEstimate(estimate) {
+
+                this.estimate = estimate;
+                this.offset = this.calculateDiffInDays(this.due, estimate);
+
+            }
 
         },
 
@@ -214,23 +239,6 @@
 
             issue: function() {
                 return this.getIssue(this.issueKey);
-            },
-
-            due: function() {
-                return this.issue.due_date;
-            },
-
-            offset: function() {
-
-                if(!this.due || !this.issue.estimate) {
-                    return null;
-                }
-
-                let a = this.moment(this.due);
-                let b = this.moment(this.issue.estimate);
-
-                return a.diff(b, 'days', 0);
-
             },
 
             colors: function() {
@@ -255,8 +263,9 @@
                     'key': this.issue.key,
                     'order': this.index,
                     'assignee': this.issue.assignee_key,
-                    'est': this.issue.estimate,
+                    'est': this.estimate,
                     'due': this.due,
+                    'offset': this.offset,
                     'focus': this.issue.focus,
                     'remaining': this.issue.estimate_remaining,
                     'priority': this.issue.priority_name,

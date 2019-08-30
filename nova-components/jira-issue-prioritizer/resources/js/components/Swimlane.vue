@@ -244,18 +244,20 @@
                         // Determine the resources
                         let resources = data.resources;
 
+                        // Order the issues
+                        resources = this.applyOrder(resources);
+
                         // Update the resources
                         this.resources = resources;
 
                         this.$forceUpdate();
-
 
                         let self = this;
 
                         // Assign the estimated completion dates (this happens asynchronously)
                         this.assignEstimatedCompletionDates(function() {
 
-                            // Order the issues
+                            // Order the issues again
                             self.resources = self.applyOrder(self.resources);
 
                             // Mark the resources as loaded
@@ -431,7 +433,8 @@
 
                 // Update the children
                 _.each(this.$refs.issue, function(child) {
-                    child.$forceUpdate();
+                    child.setEstimate(null);
+                    // child.$forceUpdate();
                 });
 
                 // Determine the issues
@@ -469,7 +472,7 @@
 
                                 // Update the child
                                 if(child) {
-                                    child.$forceUpdate();
+                                    child.setEstimate(issue.estimate);
                                 }
 
                             }
