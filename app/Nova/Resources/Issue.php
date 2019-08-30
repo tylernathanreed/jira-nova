@@ -96,7 +96,13 @@ class Issue extends Resource
                 'fontFamily' => '\'Segoe UI\'',
                 'fontSize' => '14px',
                 'fontWeight' => '400',
-            ])->exceptOnForms(),
+            ])->onlyOnIndex(),
+
+            Field::url('Key', function() {
+                return $this->getExternalUrl();
+            })->labelUsing(function() {
+                return $this->key;
+            })->alwaysClickable()->onlyOnDetail(),
 
             Field::badgeUrl('Epic', 'epic_name')->backgroundUsing(function($value, $resource) {
                 return config("jira.colors.{$resource->epic_color}.background");
@@ -215,14 +221,14 @@ class Issue extends Resource
     public function lenses(Request $request)
     {
         return [
-            \App\Nova\Lenses\FilterLens::make($this, 'Backlog')->scope(function($query) { $query->hasLabel('Backlog')->incomplete(); })->addScopedCards([
+            \App\Nova\Lenses\FilterLens::make($this, 'Backlog')->scope(function($query) { $query->hasLabel('Backlog')->assigned()->incomplete(); })->addScopedCards([
                 new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Delinquencies')->scope(function($query) { $query->delinquent(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                new \App\Nova\Metrics\IssueDelinquentByDueDateTrend,
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
