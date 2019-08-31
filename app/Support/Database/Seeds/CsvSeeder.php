@@ -235,6 +235,12 @@ class CsvSeeder extends Seeder
                 $header = $this->inverseReplacements[$header];
             }
 
+            // Otherwise, qualify the header
+            else {
+                $header = "records.{$header}";
+            }
+
+            // Select the header
             $query->addSelect($header);
 
         }
@@ -266,6 +272,9 @@ class CsvSeeder extends Seeder
 
                 // Wrap the value
                 $value = str_replace('_DECIMAL_', '.', $query->getGrammar()->wrap(str_replace('.', '_DECIMAL_', $value)));
+
+                // Wrap the key
+                $key = $query->getGrammar()->wrap($key);
 
                 // Select the value aliased as the key
                 $query->addSelect($query->raw("{$value} as {$key}"));

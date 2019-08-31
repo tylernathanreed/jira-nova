@@ -950,6 +950,26 @@ textarea.form-input:read-only,
   box-shadow: 0 0 8px var(--primary);
 }
 
+/* Boolean
+---------------------------------------------------------------------------- */
+
+.boolean-field {
+  height: 0px !important;
+  font-weight: bold;
+}
+
+.boolean-field-false:before {
+  content: '\D7';
+  color: var(--danger);
+  font-size: 125%;
+  margin-top: -7px !important;
+}
+
+.boolean-field-true:before {
+  content: '\2713';
+  color: var(--success);
+}
+
 /* File Upload
 ---------------------------------------------------------------------------- */
 
@@ -5453,4 +5473,8 @@ trix-editor.disabled {
 .table td img {
   width: 1rem;
   height: 1rem;
+}
+
+html {
+  scroll-behavior: smooth;
 }

@@ -1,0 +1,8 @@
+.slideshow-enabled .slideshow\:hidden {
+  display: none;
+}
+
+.slideshow-enabled .slideshow\:p-0 {
+  padding: 0;
+}
+

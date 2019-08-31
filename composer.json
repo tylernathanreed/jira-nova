@@ -21,8 +21,10 @@
         "lesstif/php-jira-rest-client": "^1.37",
         "mad-web/nova-telescope-link": "^2.0",
         "mnobrega/php-jira-agile-rest-client": "dev-master",
-        "nova-components/color-swatch": "*",
+        "nova-components/badge-url": "dev-master",
+        "nova-components/color-swatch": "dev-master",
         "nova-components/jira-issue-prioritizer": "dev-master",
+        "nova-components/slideshow-player": "dev-master",
         "rcknr/nova-multiselect-filter": "^1.2",
         "reedware/carbon-helper": "^1.0",
         "reedware/laravel-blueprints": "^1.0@dev",
@@ -32,8 +34,7 @@
         "reedware/nova-partition-metric-style-fix": "dev-master",
         "reedware/nova-treeview": "dev-master",
         "reedware/nova-value-toggle": "dev-master",
-        "timothyasp/nova-badge-field": "^1.0",
-        "nova-components/badge-url": "*"
+        "timothyasp/nova-badge-field": "^1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -63,6 +64,10 @@
         {
             "type": "path",
             "url": "./nova-components/BadgeUrl"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/slideshow-player"
         }
     ],
     "config": {

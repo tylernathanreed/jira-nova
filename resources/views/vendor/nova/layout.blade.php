@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 
-<?php $fullscreen = request()->fullscreen ?? false; ?>
+<?php $fullscreen = request()->fullscreen ? 'enabled' : 'disabled'; ?>
 <?php $theme = request()->theme ?? 'default'; ?>
 
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full font-sans antialiased nova-{{ $theme }}-theme nova-fullscreen-{{ $fullscreen ? 'enabled' : 'disabled' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ implode(' ', array_filter([
+    'h-full',
+    'font-sans',
+    'antialiased',
+    "nova-{$theme}-theme",
+    "nova-fullscreen-{$fullscreen}"
+]))}}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=1280">
@@ -60,11 +66,11 @@
                     </dropdown>
                 </div>
 
-                <div class="flex items-center h-header w-sidebar z-20 px-6 pt-search normalscreen:hidden">
+                <div class="flex items-center h-header w-sidebar z-20 px-6 pt-search normalscreen:hidden slideshow:hidden">
                     @include('nova::partials.logo')
                 </div>
 
-                <div data-testid="content" class="px-view py-view mx-auto">
+                <div data-testid="content" class="px-view py-view mx-auto slideshow:p-0">
                     @yield('content')
 
                     @include('nova::partials.footer')

@@ -2,14 +2,14 @@
 
 use App\Support\Database\Seeds\CsvSeeder;
 
-class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
+class SlideshowPagesTableSeeder extends CsvSeeder
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\ScheduleFocusAllocation::class;
+    public static $model = \App\Models\SlideshowPage::class;
 
     /**
      * The attributes to match when creating or updating records.
@@ -17,8 +17,8 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $match = [
-        'schedule_id',
-        'focus_group_id'
+        'slideshow_id',
+        'display_name'
     ];
 
     /**
@@ -27,8 +27,7 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $replacements = [
-        'schedule_id' => 'schedules.system_name as schedule_system_name',
-        'focus_group_id' => 'focus_groups.system_name as focus_group_system_name'
+        'slideshow_id' => 'slideshows.system_name as slideshow_system_name'
     ];
 
     /**
@@ -37,8 +36,7 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $inverseReplacements = [
-        'schedule_system_name' => 'schedules.id as schedule_id',
-        'focus_group_system_name' => 'focus_groups.id as focus_group_id'
+        'slideshow_system_name' => 'slideshows.id as slideshow_id'
     ];
 
     /**
@@ -47,8 +45,7 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $required = [
-        'schedules.system_name',
-        'focus_groups.system_name'
+        'slideshows.system_name'
     ];
 
     /**
@@ -57,8 +54,8 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $orderings = [
-        'schedules.system_name' => 'asc',
-        'focus_groups.system_name' => 'asc'
+        'slideshows.system_name' => 'asc',
+        'order' => 'asc'
     ];
 
     /**
@@ -67,8 +64,7 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $joinRelations = [
-        'schedule',
-        'focusGroup'
+        'slideshow'
     ];
 
     /**
@@ -77,7 +73,6 @@ class ScheduleFocusAllocationsTableSeeder extends CsvSeeder
      * @var array
      */
     public $inverseJoinRelations = [
-        'scheduleFromSeed',
-        'focusGroupFromSeed'
+        'slideshowFromSeed'
     ];
 }

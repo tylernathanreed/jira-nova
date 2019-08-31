@@ -43,7 +43,6 @@ class Issue extends Resource
      */
     public static $globallySearchable = true;
 
-
     /**
      * The number of resources to show per page via relationships.
      *
