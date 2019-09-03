@@ -237,7 +237,7 @@ class CsvSeeder extends Seeder
 
             // Otherwise, qualify the header
             else {
-                $header = "records.{$header}";
+                $header = "records.{$header} as {$header}";
             }
 
             // Select the header
