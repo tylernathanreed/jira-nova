@@ -26,7 +26,7 @@
         bottom: 0px;
         height: 2px;
         width: 0%;
-        transition: width 0.2s;
+        transition: width 1s;
         z-index: 999999;
     }
 </style>
@@ -186,11 +186,12 @@
 
                 }
 
-                this._pageCut = 100 / (this.pageDuration / 100);
+                this._pageTickInterval = 3000;
+                this._pageCut = 100 / (this.pageDuration / this._pageTickInterval);
 
                 this._pageTimer = setInterval(() => {
                     this.tickPageTimer();
-                }, 100);
+                }, this._pageTickInterval);
 
                 setTimeout(() => {
                     setTimeout(() => {
@@ -248,11 +249,12 @@
                     clearInterval(this._scrollTimer);
                 }
 
-                this._scrollStep = this.getScrollLimit() / (this.getScrollInterval() / 100);
+                this._scrollTickInterval = 3000;
+                this._scrollStep = this.getScrollLimit() / (this.getScrollInterval() / this._scrollTickInterval);
 
                 this._scrollTimer = setInterval(() => {
                     this.tickScrollTimer();
-                }, 100);
+                }, this._scrollTickInterval);
 
             },
 
