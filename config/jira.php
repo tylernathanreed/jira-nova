@@ -2,6 +2,29 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Jira Connection Name
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify which of the jira api connections below you wish
+    | to use as your default connection for all jira api work. Of course
+    | you may use many connections at once using the jira api service.
+    |
+    */
+
+    'default' => env('JIRA_CONNECTION', 'cli'),
+
+    'connections' => [
+
+        'cli' => [
+            'url' => env('JIRA_HOST'),
+            'username' => env('JIRA_CLI_USER'),
+            'password' => env('JIRA_CLI_PASS')
+        ]
+
+    ],
+
     'host' => env('JIRA_HOST'),
 
     'cli' => [

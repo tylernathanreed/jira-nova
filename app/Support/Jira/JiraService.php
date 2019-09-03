@@ -50,6 +50,16 @@ class JiraService
 	}
 
 	/**
+	 * Returns the jira connection.
+	 *
+	 * @return \App\Support\Jira\JiraConnection
+	 */
+	public function connection()
+	{
+		return $this->app->make(JiraConnection::class);
+	}
+
+	/**
 	 * Returns the issue service.
 	 *
 	 * @return \JiraRestApi\User\IssueService

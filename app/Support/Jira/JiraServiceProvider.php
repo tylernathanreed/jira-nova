@@ -2,6 +2,7 @@
 
 namespace App\Support\Jira;
 
+use App\Support\Jira\Api\ApiManager;
 use Illuminate\Support\ServiceProvider;
 use App\Support\Jira\Auth\JiraUserProvider;
 use App\Support\Jira\Config\SharedConfiguration;
@@ -16,8 +17,33 @@ class JiraServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // $this->registerJiraClient();
+        $this->registerJiraApiManager();
         $this->registerJiraService();
+        // $this->registerJiraConnection();
         $this->registerJiraAuthProvider();
+    }
+
+    /**
+     * Registers the Jira service.
+     *
+     * @return void
+     */
+    protected function registerJiraApiManager()
+    {
+        $this->app->singleton(ApiManager::class);
+    }
+
+    /**
+     * Registers the Jira service.
+     *
+     * @return void
+     */
+    protected function registerJiraClient()
+    {
+        $this->app->singleton(JiraClient::class, function($app) {
+            return new JiraClient($app, $app->make(SharedConfiguration::class));
+        });
     }
 
     /**
