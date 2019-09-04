@@ -28,7 +28,7 @@ class LoginUsingRequest
         app()->make(LoginController::class)->login($request);
 
         // Redirect to the dashboard
-        return redirect()->to(Nova::path() . '?' . http_build_query([
+        return redirect()->to($request->url() . '?' . http_build_query([
             'fullscreen' => $request->fullscreen,
             'theme' => $request->theme
         ]));
