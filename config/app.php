@@ -246,7 +246,7 @@ return [
         /**
          * Support Facades...
          */
-        'Api' => App\Support\Jira\Api\Facade::class,
+        'Api' => Reedware\LaravelApi\Facade::class,
         'Jira' => App\Support\Jira\Facade::class,
 
     ],
