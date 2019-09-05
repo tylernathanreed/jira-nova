@@ -2,11 +2,12 @@
 
 namespace App\Support\Jira;
 
-use App\Support\Jira\Api\ApiManager;
 use Illuminate\Support\ServiceProvider;
 use App\Support\Jira\Auth\JiraUserProvider;
 use App\Support\Jira\Config\SharedConfiguration;
+use Reedware\LaravelApi\Connection as ApiConnection;
 use JiraRestApi\Configuration\ConfigurationInterface;
+use App\Support\Jira\Api\Connection as JiraConnection;
 
 class JiraServiceProvider extends ServiceProvider
 {
@@ -17,33 +18,9 @@ class JiraServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // $this->registerJiraClient();
-        $this->registerJiraApiManager();
         $this->registerJiraService();
-        // $this->registerJiraConnection();
+        $this->registerJiraConnection();
         $this->registerJiraAuthProvider();
-    }
-
-    /**
-     * Registers the Jira service.
-     *
-     * @return void
-     */
-    protected function registerJiraApiManager()
-    {
-        $this->app->singleton(ApiManager::class);
-    }
-
-    /**
-     * Registers the Jira service.
-     *
-     * @return void
-     */
-    protected function registerJiraClient()
-    {
-        $this->app->singleton(JiraClient::class, function($app) {
-            return new JiraClient($app, $app->make(SharedConfiguration::class));
-        });
     }
 
     /**
@@ -62,6 +39,18 @@ class JiraServiceProvider extends ServiceProvider
     {
         $this->app->auth->provider('jira', function($app, $config) {
             return new JiraUserProvider($this->app->make(JiraService::class), $this->app['hash'], $config['model']);
+        });
+    }
+
+    /**
+     * Registers the jira connection.
+     *
+     * @return void
+     */
+    protected function registerJiraConnection()
+    {
+        ApiConnection::resolverFor('jira', function($connection, $config) {
+            return new JiraConnection($connection, $config);
         });
     }
 

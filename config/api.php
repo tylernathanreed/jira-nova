@@ -29,6 +29,8 @@ return [
     'connections' => [
 
         'jira' => [
+            'driver' => 'jira',
+            'version' => '3',
             'host' => env('JIRA_HOST'),
             'username' => env('JIRA_CLI_USER'),
             'password' => env('JIRA_CLI_PASS'),
