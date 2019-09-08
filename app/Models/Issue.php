@@ -71,7 +71,8 @@ class Issue extends Model implements Cacheable
     protected $dates = [
         'due_date',
         'estimate_date',
-        'entry_date'
+        'entry_date',
+        'changelogs_updated_at'
     ];
 
     /////////////////
@@ -679,6 +680,7 @@ class Issue extends Model implements Cacheable
             'epic_name',
             'status_name',
             'assignee_name',
+            'priority_name',
             'due_date',
             'project_id',
             'labels',
@@ -705,6 +707,23 @@ class Issue extends Model implements Cacheable
     public function scopeIncomplete($query)
     {
         $query->whereNotIn('status_name', [
+            'Done',
+            'Canceled',
+            'Testing Passed [Test]',
+            'Testing passed [UAT]'
+        ]);
+    }
+
+    /**
+     * Filters out completed issues.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return void
+     */
+    public function scopeComplete($query)
+    {
+        $query->whereIn('status_name', [
             'Done',
             'Canceled',
             'Testing Passed [Test]',
@@ -823,5 +842,15 @@ class Issue extends Model implements Cacheable
     public function versions()
     {
         return $this->belongsToMany(Version::class, 'issues_fix_versions');
+    }
+
+    /**
+     * Returns the changelogs associated to this issue.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function changelogs()
+    {
+        return $this->hasMany(IssueChangelog::class, 'issue_id');
     }
 }

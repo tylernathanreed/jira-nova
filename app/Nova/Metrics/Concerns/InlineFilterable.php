@@ -3,6 +3,8 @@
 namespace App\Nova\Metrics\Concerns;
 
 use Closure;
+use ReflectionFunction;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait InlineFilterable
 {
@@ -60,6 +62,23 @@ trait InlineFilterable
     }
 
     /**
+     * Add a basic where in clause as a scope.
+     *
+     * @param  string|array|\Closure  $column
+     * @param  array                  $values
+     *
+     * @return $this
+     */
+    public function whereIn($column, $values = null)
+    {
+        $this->filter(function($query) use ($column, $values) {
+            $query->whereIn($column, $values);
+        });
+
+        return $this;
+    }
+
+    /**
      * Add a basic where clause as a filter.
      *
      * @param  string         $relation
@@ -76,5 +95,46 @@ trait InlineFilterable
         });
 
         return $this;
+    }
+
+    /**
+     * Returns the appropriate cache key for the metric.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     *
+     * @return string
+     */
+    protected function getCacheKey(NovaRequest $request)
+    {
+        return parent::getCacheKey() . '.' . $this->getScopeIdentifier();
+    }
+
+    /**
+     * Get the URI key for the metric.
+     *
+     * @return string
+     */
+    public function uriKey()
+    {
+        return parent::uriKey() . '-' . $this->getScopeIdentifier();
+    }
+
+    /**
+     * Returns the string identifier for the scope.
+     *
+     * @return string
+     */
+    public function getScopeIdentifier()
+    {
+        // If no filter exists, use a constant
+        if(is_null($this->filter)) {
+            return 'no-scope';
+        }
+
+        // Determine the reflection function
+        $reflection = (new ReflectionFunction($this->filter));
+
+        // Return an identifier based on the filter
+        return md5($reflection->getFileName() . ':' . $reflection->getEndLine());
     }
 }

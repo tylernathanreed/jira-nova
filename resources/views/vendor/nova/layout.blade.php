@@ -94,40 +94,20 @@
     </script>
 
     <!-- Tool Scripts -->
-    @foreach (Nova::availableScripts(request()) as $name => $path)
-        @if (\Illuminate\Support\Str::startsWith($path, ['http://', 'https://']))
+    @foreach(Nova::availableScripts(request()) as $name => $path)
+        @if(\Illuminate\Support\Str::startsWith($path, ['http://', 'https://']))
             <script src="{!! $path !!}"></script>
         @else
             <script src="/nova-api/scripts/{{ $name }}"></script>
         @endif
     @endforeach
 
+    <!-- Before Liftoff -->
+    <script src="{{ url('js/before-liftoff.js') }}"></script>
+
     <!-- Start Nova -->
     <script>
         Nova.liftOff()
-    </script>
-
-    <!-- Custom Scripts -->
-    <script>
-        (function() {
-
-            let f = Nova.app.$loading.finish;
-
-            Nova.app.$loading.finish = function() {
-
-                f();
-
-                let path = Nova.app._route.path.replace(/^\//, '').replace(/\//g, ' :: ').replace(/-/g, ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, s => s.toUpperCase());
-
-                if(path) {
-                    document.title = Nova.config.name + ' :: ' + path;
-                } else {
-                    document.title = Nova.config.name;
-                }
-
-            };
-
-        })();
     </script>
 </body>
 </html>

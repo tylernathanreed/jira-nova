@@ -702,6 +702,7 @@ input[type='search']::-webkit-search-cancel-button {
 .bg-grad-sidebar {
   background-image: -webkit-gradient(linear, left bottom, left top, from(#7e8ea1), to(#3c4655));
   background-image: linear-gradient(0deg, #7e8ea1 0%, #3c4655 100%);
+  background-attachment: fixed;
 }
 
 /* Custom Padding
@@ -963,6 +964,26 @@ textarea.form-input:read-only,
 .checkbox:focus {
   -webkit-box-shadow: 0 0 8px var(--primary);
           box-shadow: 0 0 8px var(--primary);
+}
+
+/* Boolean
+---------------------------------------------------------------------------- */
+
+.boolean-field {
+  height: 0px !important;
+  font-weight: bold;
+}
+
+.boolean-field-false:before {
+  content: '\D7';
+  color: var(--danger);
+  font-size: 125%;
+  margin-top: -7px !important;
+}
+
+.boolean-field-true:before {
+  content: '\2713';
+  color: var(--success);
 }
 
 /* File Upload
@@ -1487,8 +1508,9 @@ textarea.form-input:read-only,
 -----------------------------------------------------------------------------*/
 
 .chartist-tooltip {
-  min-width: 14em !important;
-  padding: .2em !important;
+  min-width: 0 !important;
+  white-space: nowrap;
+  padding: .2em 1em !important;
   background: var(--white) !important;
   color: var(--primary) !important;
   border-radius: .25rem !important;
@@ -3278,10 +3300,6 @@ trix-editor.disabled {
 
 .font-sans {
   font-family: Nunito, system-ui, BlinkMacSystemFont, -apple-system, sans-serif;
-}
-
-.font-serif {
-  font-family: Constantia, Lucida Bright, Lucidabright, Lucida Serif, Lucida, DejaVu Serif, Bitstream Vera Serif, Liberation Serif, Georgia, serif;
 }
 
 .font-mono {

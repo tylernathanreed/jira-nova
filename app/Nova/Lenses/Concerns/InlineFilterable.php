@@ -82,6 +82,23 @@ trait InlineFilterable
     }
 
     /**
+     * Add a basic where in clause as a scope.
+     *
+     * @param  string|array|\Closure  $column
+     * @param  array                  $values
+     *
+     * @return $this
+     */
+    public function whereIn($column, $values = null)
+    {
+        $this->scope(function($query) use ($column, $values) {
+            $query->whereIn($column, $values);
+        });
+
+        return $this;
+    }
+
+    /**
      * Add a basic where clause as a scope.
      *
      * @param  string         $relation

@@ -9,6 +9,8 @@ use Laravel\Nova\Metrics\Partition;
 class IssueWorkloadByEpicPartition extends Partition
 {
     use Concerns\EpicColors;
+    use Concerns\InlineFilterable;
+    use Concerns\Nameable;
     use Concerns\PartitionLimits;
 
     /**
@@ -17,6 +19,13 @@ class IssueWorkloadByEpicPartition extends Partition
      * @var string
      */
     public $component = 'partition-metric';
+
+    /**
+     * The displayable name of the metric.
+     *
+     * @var string
+     */
+    public $name = 'Remaining Workload (By Epic)';
 
     /**
      * Calculate the value of the metric.
@@ -32,6 +41,9 @@ class IssueWorkloadByEpicPartition extends Partition
 
         // Make sure the issues are part of an epic
         $query->whereNotNull('epic_name');
+
+        // Apply the filter
+        $this->applyFilter($query);
 
         // Determine the workload per epic
         $result = $this->sum($request, $query, 'estimate_remaining', 'epic_name');
@@ -60,15 +72,4 @@ class IssueWorkloadByEpicPartition extends Partition
 
         return [$key => round($result->aggregate / 3600, 0)];
     }
-
-    /**
-     * Get the displayable name of the metric.
-     *
-     * @return string
-     */
-    public function name()
-    {
-        return 'Remaining Workload (By Epic)';
-    }
-
 }

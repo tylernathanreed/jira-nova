@@ -1696,16 +1696,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.24.0",
+            "version": "1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266"
+                "reference": "c5dcc05defbaf8780c728c1ea31b1a0704d44f56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
-                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c5dcc05defbaf8780c728c1ea31b1a0704d44f56",
+                "reference": "c5dcc05defbaf8780c728c1ea31b1a0704d44f56",
                 "shasum": ""
             },
             "require": {
@@ -1770,7 +1770,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2018-11-05T09:00:11+00:00"
+            "time": "2019-09-06T12:21:24+00:00"
         },
         {
             "name": "moontoast/math",
@@ -2762,12 +2762,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/laravel-api.git",
-                "reference": "a8071f29e29dbc1eccc0353249145a731632de0f"
+                "reference": "afc2baae3de5b99fd29b5cd721ee8ec336358247"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/laravel-api/zipball/a8071f29e29dbc1eccc0353249145a731632de0f",
-                "reference": "a8071f29e29dbc1eccc0353249145a731632de0f",
+                "url": "https://api.github.com/repos/tylernathanreed/laravel-api/zipball/afc2baae3de5b99fd29b5cd721ee8ec336358247",
+                "reference": "afc2baae3de5b99fd29b5cd721ee8ec336358247",
                 "shasum": ""
             },
             "require": {
@@ -2807,7 +2807,7 @@
                 "api",
                 "laravel"
             ],
-            "time": "2019-09-05T13:21:15+00:00"
+            "time": "2019-09-06T12:45:12+00:00"
         },
         {
             "name": "reedware/laravel-blueprints",
