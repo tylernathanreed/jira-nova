@@ -321,7 +321,7 @@
              */
             slideshowPagesRequestQueryString() {
                 return {
-                    slideshow: true,
+                    is_slideshow: true,
                     search: '',
                     filters: [],
                     orderBy: '',

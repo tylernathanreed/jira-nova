@@ -59,7 +59,7 @@ class SlideshowPage extends Resource
      */
     public function fields(Request $request)
     {
-        if($request->slideshow) {
+        if($request->is_slideshow) {
 
             return [
                 Field::text('URL', function() {
