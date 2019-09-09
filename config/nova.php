@@ -124,6 +124,7 @@ return [
     'resource-group-icons' => [
         \App\Nova\Resources\Issue::class => 'icon-tasks',
         'Management' => 'icon-cubes',
+        'Meta' => 'icon-code',
         'Scheduling' => 'icon-calendar',
         'System' => 'icon-cogs'
     ]

@@ -4,6 +4,8 @@ namespace App\Nova\Dashboards;
 
 class TestingDashboard extends Dashboard
 {
+    use Concerns\StatusMetrics;
+
     /**
      * The displayable name for this dashboard.
      *
@@ -49,16 +51,9 @@ class TestingDashboard extends Dashboard
     public function cards()
     {
         return [
-            (new \App\Nova\Metrics\IssueStatusTransitionByDateValue)
-                ->onlyTo(static::$statuses)
-                ->exceptFrom(array_merge(static::$priorStatuses, static::$statuses))
-                ->setName(static::$label . ' Kickbacks'),
+            static::getKickbacksValueMetric(),
 
-            (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
-                ->onlyTo(static::$statuses)
-                ->exceptFrom(array_merge(static::$priorStatuses, static::$statuses))
-                ->setName(static::$label . ' Kickbacks')
-                ->width('2/3'),
+            static::getKickbacksTrendMetric()->width('2/3'),
 
             (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
                 ->onlyTo(static::$statuses)

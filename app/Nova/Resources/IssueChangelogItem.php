@@ -5,7 +5,7 @@ namespace App\Nova\Resources;
 use Field;
 use Illuminate\Http\Request;
 
-class IssueChangelog extends Resource
+class IssueChangelogItem extends Resource
 {
     /**
      * The logical group associated with the resource.
@@ -19,7 +19,7 @@ class IssueChangelog extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\IssueChangelog::class;
+    public static $model = \App\Models\IssueChangelogItem::class;
 
     /**
      * The number of resources to show per page via relationships.
@@ -29,32 +29,30 @@ class IssueChangelog extends Resource
     public static $perPageViaRelationship = 10;
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * The columns that should be searched.
      *
      * @var array
      */
     public static $search = [
-        'issue_key'
+        'item_field_name'
     ];
 
     /**
-     * The relationship counts that should be eager loaded when performing an index query.
+     * The default ordering to use when listing this resource.
      *
      * @var array
      */
-    public static $withCount = [
-        'items'
+    public static $defaultOrderings = [
+        'issue_changelog_id' => 'asc',
+        'item_index' => 'asc'
     ];
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return 'Changelogs';
-    }
 
     /**
      * Get the fields displayed by the resource.
@@ -68,19 +66,23 @@ class IssueChangelog extends Resource
 
             Field::id()->onlyOnDetail(),
 
-            Field::number('Jira ID', 'jira_id')->exceptOnForms()->sortable(),
+            Field::belongsTo('Changelog', 'changelog', IssueChangelog::class)->exceptOnForms()->sortable(),
 
-            Field::belongsTo('Issue', 'issue', Issue::class)->exceptOnForms()->sortable(),
+            Field::number('Item Index', 'item_index')->exceptOnForms()->sortable(),
 
-            Field::avatar('A')->thumbnail(function() {
-                return $this->author_icon_url;
-            })->maxWidth(16)->onlyOnIndex(),
+            Field::text('Field', 'item_field_name')->exceptOnForms()->sortable(),
 
-            Field::text('Author', 'author_name')->exceptOnForms()->sortable(),
+            Field::text('From', 'item_from', function() {
+                return strlen($this->item_from) > 80 ? substr($this->item_from, 0, 80) . '...' : $this->item_from;
+            })->onlyOnIndex(),
 
-            Field::date('Created', 'created_at')->exceptOnForms()->sortable(),
+            Field::text('From', 'item_from')->onlyOnDetail(),
 
-            Field::hasMany('Changes', 'items', IssueChangelogItem::class)
+            Field::text('To', 'item_to', function() {
+                return strlen($this->item_to) > 80 ? substr($this->item_to, 0, 80) . '...' : $this->item_to;
+            })->onlyOnIndex(),
+
+            Field::text('To', 'item_to')->onlyOnDetail()
 
         ];
     }
@@ -118,9 +120,7 @@ class IssueChangelog extends Resource
      */
     public function lenses(Request $request)
     {
-        return [
-            new \App\Nova\Lenses\StatusTransitionChangelogLens
-        ];
+        return [];
     }
 
     /**

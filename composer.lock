@@ -1696,16 +1696,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.25.0",
+            "version": "1.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c5dcc05defbaf8780c728c1ea31b1a0704d44f56"
+                "reference": "70e65a5470a42cfec1a7da00d30edb6e617e8dcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c5dcc05defbaf8780c728c1ea31b1a0704d44f56",
-                "reference": "c5dcc05defbaf8780c728c1ea31b1a0704d44f56",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/70e65a5470a42cfec1a7da00d30edb6e617e8dcf",
+                "reference": "70e65a5470a42cfec1a7da00d30edb6e617e8dcf",
                 "shasum": ""
             },
             "require": {
@@ -1770,7 +1770,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2019-09-06T12:21:24+00:00"
+            "time": "2019-09-06T13:49:17+00:00"
         },
         {
             "name": "moontoast/math",
@@ -2093,7 +2093,7 @@
             "dist": {
                 "type": "path",
                 "url": "./nova-components/slideshow-player",
-                "reference": "8f1942b5d68d557619cbce169ec0a231e991fea1",
+                "reference": "617ddea1d67499620bab9d06a8e1e2204058261d",
                 "shasum": null
             },
             "require": {
@@ -2982,16 +2982,16 @@
         },
         {
             "name": "reedware/nova-icons",
-            "version": "v1.0.6",
+            "version": "v1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/nova-icons.git",
-                "reference": "0323a5b328c5e6ff54e256c1f5baad083e4686e5"
+                "reference": "fdeb61ab7aa52d64f4b7ff2a82f8031c54e5e6c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/0323a5b328c5e6ff54e256c1f5baad083e4686e5",
-                "reference": "0323a5b328c5e6ff54e256c1f5baad083e4686e5",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/fdeb61ab7aa52d64f4b7ff2a82f8031c54e5e6c1",
+                "reference": "fdeb61ab7aa52d64f4b7ff2a82f8031c54e5e6c1",
                 "shasum": ""
             },
             "require": {
@@ -3030,7 +3030,7 @@
                 "nova",
                 "vue"
             ],
-            "time": "2019-08-18T13:53:47+00:00"
+            "time": "2019-09-09T12:52:35+00:00"
         },
         {
             "name": "reedware/nova-partition-metric-style-fix",
