@@ -73,7 +73,7 @@ class IssueStatusSatisfactionByDateValue extends Value
         // so that the amount will be a delta, not a percentage.
 
         // Determine the substituted previous
-        $substitute = ($currentValue - $previousValue - 1) == 0 ? -1 : $currentValue / ($currentValue - $previousValue + 1);
+        $substitute = ($currentValue - $previousValue + 1) == 0 ? -1 : $currentValue / ($currentValue - $previousValue + 1);
 
         // Return the result
         return (new ValueResult($currentValue))

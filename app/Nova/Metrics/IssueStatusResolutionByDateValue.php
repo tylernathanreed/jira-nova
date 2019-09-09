@@ -66,7 +66,7 @@ class IssueStatusResolutionByDateValue extends Value
         // so that the amount will be a delta, not a percentage.
 
         // Determine the substituted previous
-        $substitute = ($value - $previous - 1) == 0 ? -1 : round($value / ($value - $previous + 1), 2);
+        $substitute = ($value - $previous + 1) == 0 ? -1 : round($value / ($value - $previous + 1), 2);
 
         // Return the result
         return (new ValueResult($value))
