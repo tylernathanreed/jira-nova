@@ -115,6 +115,29 @@ class Connection extends ApiConnection
     }
 
     /**
+     * Returns the list of users matching the given criteria that can be assigned to an issue.
+     *
+     * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-user-assignable-search-get
+     *
+     * @param  array  $options
+     *
+     * @option  {string}   "query"               A query string that will be matched against user attributes.
+     * @option  {string}   "sessionId"           The sessionId of this request.
+     * @option  {string}   "accountId"           A query string that is matched against the user accountId.
+     * @option  {string}   "project"             The project id or key (case sensistive). Required unless "issueKey" is specified.
+     * @option  {string}   "issueKey"            The key of the issue. Required unless "project" is specified.
+     * @option  {integer}  "startAt"             The page offset (defaults to 0).
+     * @option  {integer}  "maxResults"          The maximum number of items to return per page (defaults to 50, maximum is 1000).
+     * @option  {integer}  "actionDescriptorId"  The id of the transition.
+     *
+     * @return array
+     */
+    public function findUsersAssignableToIssues($options = [])
+    {
+        return $this->request()->path('user/assignable/search')->get($options);
+    }
+
+    /**
      * Creates and returns a new request builder instance.
      *
      * @return \Reedware\LaravelApi\Request\Builder

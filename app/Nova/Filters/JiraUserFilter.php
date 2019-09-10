@@ -2,17 +2,39 @@
 
 namespace App\Nova\Filters;
 
+use Api;
 use Jira;
 use Illuminate\Http\Request;
 
-class AssigneeIssueFilter extends SelectFilter
+class JiraUserFilter extends SelectFilter
 {
     /**
      * The displayable name of the filter.
      *
      * @var string
      */
-    public $name = 'Assignee';
+    public $name;
+
+    /**
+     * The column to compare against.
+     *
+     * @var string
+     */
+    public $key;
+
+    /**
+     * Creates and returns a new filter instance.
+     *
+     * @param  string  $name
+     * @param  string  $key
+     *
+     * @return $this
+     */
+    public function __construct($name, $key)
+    {
+        $this->name = $name;
+        $this->key = $key;
+    }
 
     /**
      * Apply the filter to the given query.
@@ -25,7 +47,7 @@ class AssigneeIssueFilter extends SelectFilter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('assignee_key', '=', $value);
+        return $query->where($this->key, '=', $value);
     }
 
     /**
@@ -38,7 +60,7 @@ class AssigneeIssueFilter extends SelectFilter
     public function options(Request $request)
     {
         return array_flip(
-            collect(Jira::users()->findAssignableUsers(['project' => 'UAS']))->pluck('displayName', 'key')->all()
+            collect(Api::findUsersAssignableToIssues(['project' => 'UAS']))->pluck('displayName', 'key')->all()
         );
     }
 }

@@ -206,7 +206,7 @@ class Issue extends Resource
     public function filters(Request $request)
     {
         return [
-            new \App\Nova\Filters\AssigneeIssueFilter,
+            new \App\Nova\Filters\JiraUserFilter('Assignee', 'assignee_key'),
             new \App\Nova\Filters\StatusIssueFilter
         ];
     }
