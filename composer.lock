@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba3e132246ff2520a33303b010f18bbc",
+    "content-hash": "68bd0c5d31050c16d3233b057ebf832d",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -2758,16 +2758,16 @@
         },
         {
             "name": "reedware/laravel-api",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/laravel-api.git",
-                "reference": "afc2baae3de5b99fd29b5cd721ee8ec336358247"
+                "reference": "148dfbda0d7cf23f667b7fc1a957aaafdb1469a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/laravel-api/zipball/afc2baae3de5b99fd29b5cd721ee8ec336358247",
-                "reference": "afc2baae3de5b99fd29b5cd721ee8ec336358247",
+                "url": "https://api.github.com/repos/tylernathanreed/laravel-api/zipball/148dfbda0d7cf23f667b7fc1a957aaafdb1469a7",
+                "reference": "148dfbda0d7cf23f667b7fc1a957aaafdb1469a7",
                 "shasum": ""
             },
             "require": {
@@ -2807,7 +2807,7 @@
                 "api",
                 "laravel"
             ],
-            "time": "2019-09-06T12:45:12+00:00"
+            "time": "2019-09-10T13:02:09+00:00"
         },
         {
             "name": "reedware/laravel-blueprints",
@@ -6570,7 +6570,6 @@
         "nova-components/color-swatch": 20,
         "nova-components/jira-issue-prioritizer": 20,
         "nova-components/slideshow-player": 20,
-        "reedware/laravel-api": 20,
         "reedware/laravel-blueprints": 20,
         "reedware/nova-field-manager": 20,
         "reedware/nova-partition-metric-style-fix": 20,
