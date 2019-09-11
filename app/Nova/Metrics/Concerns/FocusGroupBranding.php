@@ -8,6 +8,16 @@ use Laravel\Nova\Metrics\PartitionResult;
 trait FocusGroupBranding
 {
     /**
+     * Returns the focus group colors.
+     *
+     * @return array
+     */
+    public function getFocusGroupColors()
+    {
+        return FocusGroup::all()->pluck('color.primary', 'system_name')->toArray();
+    }
+
+    /**
      * Brands the specified metric result as a focus group result.
      *
      * @param  \Laravel\Nova\Metrics\PartitionResult  $result

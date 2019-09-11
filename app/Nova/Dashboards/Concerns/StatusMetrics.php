@@ -109,7 +109,8 @@ trait StatusMetrics
      */
     public static function getWorkloadByEpicPartitionMetric()
     {
-        return (new \App\Nova\Metrics\IssueWorkloadByEpicPartition)
+        return (new \App\Nova\Metrics\IssueWorkloadPartition)
+            ->groupByEpic()
             ->whereIn('status_name', static::$statuses)
             ->setName(static::$label . ' Rem. Workload (by Epic)');
     }
@@ -121,7 +122,8 @@ trait StatusMetrics
      */
     public static function getWorkloadByPriorityPartitionMetric()
     {
-        return (new \App\Nova\Metrics\IssueWorkloadByPriorityPartition)
+        return (new \App\Nova\Metrics\IssueWorkloadPartition)
+            ->groupByPriority()
             ->whereIn('status_name', static::$statuses)
             ->setName(static::$label . ' Rem. Workload (by Priority)');
     }
@@ -133,7 +135,8 @@ trait StatusMetrics
      */
     public static function getWorkloadByAssigneePartitionMetric()
     {
-        return (new \App\Nova\Metrics\IssueWorkloadByAssigneePartition)
+        return (new \App\Nova\Metrics\IssueWorkloadPartition)
+            ->groupByAssignee()
             ->whereIn('status_name', static::$statuses)
             ->setName(static::$label . ' Rem. Workload (by Assignee)');
     }

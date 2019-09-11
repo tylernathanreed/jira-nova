@@ -122,9 +122,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend),
             (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend),
             new \App\Nova\Metrics\IssueWeeklySatisfactionTrend,
-            new \App\Nova\Metrics\IssueWorkloadByEpicPartition,
-            new \App\Nova\Metrics\IssueWorkloadByFocusPartition,
-            new \App\Nova\Metrics\IssueWorkloadByAssigneePartition
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByFocus(),
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()
         ];
     }
 

@@ -131,7 +131,7 @@ class Label extends Resource
         return [
 
             // Index metrics
-            new \App\Nova\Metrics\IssueWorkloadByLabelPartition,
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByLabel(),
             new \App\Nova\Metrics\IssueCountByLabelPartition,
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
                 $query->where('labels', '!=', '[]');
@@ -143,7 +143,7 @@ class Label extends Resource
             $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueWorkloadByAssigneePartition)->onlyOnDetail(),
+            $scope((new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee())->onlyOnDetail(),
 
         ];
     }

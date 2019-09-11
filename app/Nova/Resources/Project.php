@@ -81,7 +81,7 @@ class Project extends Resource
     public function cards(Request $request)
     {
         return [
-            new \App\Nova\Metrics\IssueWorkloadByProjectPartition
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByProject()
         ];
     }
 

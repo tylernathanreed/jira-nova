@@ -221,7 +221,7 @@ class Issue extends Resource
     {
         return [
             \App\Nova\Lenses\FilterLens::make($this, 'Backlog')->scope(function($query) { $query->hasLabel('Backlog')->assigned()->incomplete(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
@@ -233,37 +233,37 @@ class Issue extends Resource
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Estimated Delinquencies')->scope(function($query) { $query->willBeDelinquent(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Stale Issues')->scope(function($query) { $query->hasLabel('Stale')->incomplete(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Stretch Items')->scope(function($query) { $query->hasLabel('Stretch')->incomplete(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Tech Debt')->scope(function($query) { $query->hasLabel('Tech-Debt')->incomplete(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Unassigned')->scope(function($query) { $query->unassigned(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Weekly Commitments')->scope(function($query) { $query->hasLabelLike('Week%')->incomplete(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueWorkloadByAssigneePartition,
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueCountByAssigneePartition,
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),

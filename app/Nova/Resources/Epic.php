@@ -145,7 +145,7 @@ class Epic extends Resource
         return [
 
             // Index metrics
-            new \App\Nova\Metrics\IssueWorkloadByEpicPartition,
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
             new \App\Nova\Metrics\IssueCountByEpicPartition,
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
                 $query->whereNotNull('epic_name');
@@ -157,7 +157,7 @@ class Epic extends Resource
             (new \App\Nova\Metrics\IssueStatusPartition)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
             (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
             (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
-            (new \App\Nova\Metrics\IssueWorkloadByAssigneePartition)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
         ];
     }
 

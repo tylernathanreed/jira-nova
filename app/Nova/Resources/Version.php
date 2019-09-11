@@ -136,7 +136,7 @@ class Version extends Resource
         return [
 
             // Index metrics
-            new \App\Nova\Metrics\IssueWorkloadByVersionPartition,
+            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByVersion(),
             new \App\Nova\Metrics\IssueCountByVersionPartition,
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
                 $query->where('fix_versions', '!=', '[]');
@@ -148,7 +148,7 @@ class Version extends Resource
             $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueWorkloadByAssigneePartition)->onlyOnDetail(),
+            $scope((new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee())->onlyOnDetail(),
 
         ];
     }
