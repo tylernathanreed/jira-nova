@@ -811,6 +811,69 @@ class Issue extends Model implements Cacheable
         $query->whereNull('assignee_name');
     }
 
+    /**
+     * Filters to issues that are classified as defects.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return void
+     */
+    public function scopeDefects($query)
+    {
+        // Use a nested "where" clause
+        $query->where(function($query) {
+
+            // Exclude issue types that are not defects
+            $query->whereNotIn('type_name', [
+                'Subtask',
+                'Sub-task',
+                'Consistency',
+                'Epic',
+                'Fit and Finish',
+                'Improvement',
+                'Research',
+                'New Feature'
+            ]);
+
+            // Use a nested "where" clause for each issue category
+            $query->where(function($query) {
+
+                // All data issues are defects
+                $query->where('issue_category', '=', 'Data');
+
+                // All tickets are defects
+                $query->orWhere('issue_category', '=', 'Ticket');
+
+                // Some dev items are defects
+                $query->orWhere(function($query) {
+
+                    // Check for dev item
+                    $query->where(function($query) {
+
+                        // Issue category can be "Dev" or blank
+                        $query->where('issue_category', '=', 'Dev');
+                        $query->orWhereNull('issue_category');
+
+                    });
+
+                    // Dev tasks are not defects
+                    $query->whereNotIn('type_name', [
+                        'Task'
+                    ]);
+
+                });
+
+                // All highest priorities are defects
+                $query->orWhere('priority_name', '=', 'Highest');
+
+                // All executive labelled issues are defects
+                $query->orWhere('labels', 'like', '%"Executive"%');
+
+            });
+
+        });
+    }
+
     /////////////////
     //* Relations *//
     /////////////////
