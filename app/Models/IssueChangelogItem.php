@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use DB;
+
 class IssueChangelogItem extends Model
 {
     /////////////////
@@ -182,6 +184,71 @@ class IssueChangelogItem extends Model
             });
 
         }
+
+        // Return the query
+        return $query;
+    }
+
+    /**
+     * Creates and returns a new resolution date query.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newResolutionDateQuery()
+    {
+        // Create a new issue query
+        $query = (new Issue)->newQuery();
+
+        // Create a new resolution date subquery
+        $subquery = $this->newResolutionDateSubquery();
+
+        // Join into the subquery
+        $query->joinSub($subquery, 'resolutions', function($join) {
+            $join->on('resolutions.issue_id', '=', 'issues.id');
+        });
+
+        // Select the issue columns and the resolution date
+        $query->select([
+            'issues.*',
+            'resolutions.resolved_at'
+        ]);
+
+        // Return the query
+        return $query;
+    }
+
+    /**
+     * Creates and returns a new resolution date subquery.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newResolutionDateSubquery()
+    {
+        // Create a new issue query
+        $query = (new Issue)->newQuery();
+
+        // Only look at completed issues
+        $query->complete();
+
+        // Join into issue changelog items
+        $query->joinRelation('changelogs.items', function($join) {
+
+            // Only look at status changes
+            $join->where('issue_changelog_items.item_field_name', '=', static::FIELD_STATUS);
+
+            // Only look at transitions to the current status
+            $join->whereColumn('issue_changelog_items.item_to', '=', 'issues.status_name');
+
+        });
+
+        // Group by the issue id
+        $query->groupBy('issues.id');
+
+        // Select the issue and the most recent status transition date
+        $query->select([
+            'issues.id as issue_id',
+            DB::raw('max(issue_changelogs.created_at) as resolved_at')
+        ]);
 
         // Return the query
         return $query;

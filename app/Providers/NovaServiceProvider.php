@@ -139,7 +139,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \App\Nova\Dashboards\GroomingDashboard,
             new \App\Nova\Dashboards\DevelopmentDashboard,
             new \App\Nova\Dashboards\TestingDashboard,
-            // new \App\Nova\Dashboards\DefectDashboard,
+            new \App\Nova\Dashboards\DefectsDashboard,
         ];
     }
 

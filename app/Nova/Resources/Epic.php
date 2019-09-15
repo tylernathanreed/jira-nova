@@ -146,7 +146,7 @@ class Epic extends Resource
 
             // Index metrics
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
-            new \App\Nova\Metrics\IssueCountByEpicPartition,
+            (new \App\Nova\Metrics\IssueCountPartition)->groupByEpic(),
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
                 $query->whereNotNull('epic_name');
             })->setName('Issues (for Epics) Created Per Day'),

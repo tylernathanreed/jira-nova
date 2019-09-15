@@ -154,6 +154,9 @@ class IssueChangelog extends Model implements Cacheable
 
             });
 
+            // Update issue attributes that are aggregated from changelogs
+            static::updateIssueAggregates();
+
         });
     }
 
@@ -187,6 +190,48 @@ class IssueChangelog extends Model implements Cacheable
             $query->orWhereColumn('changelogs_updated_at', '<', 'updated_at');
 
         });
+    }
+
+    /**
+     * Updates the issue attributes that are aggregated from changelogs.
+     *
+     * @return void
+     */
+    public static function updateIssueAggregates()
+    {
+        // Update the resolution date
+        static::updateIssueResolutionDate();
+    }
+
+    /**
+     * Updates the issue resolution date.
+     *
+     * @return void
+     */
+    public static function updateIssueResolutionDate()
+    {
+        // Create a new resolution date query
+        $query = (new IssueChangelogItem)->newResolutionDateQuery();
+
+        // Select the issue id and resolution date
+        $query->select([
+            'issues.id',
+            'resolutions.resolved_at'
+        ]);
+
+        // Alias the query
+        $query = DB::query()->fromSub($query, 'resolutions');
+
+        // Add a subselect filter
+        $query->whereColumn('resolutions.id', '=', 'issues.id');
+
+        // Select the update value
+        $query->select('resolutions.resolved_at');
+
+        // Update the resolution date
+        (new Issue)->newQuery()->update([
+            'resolution_date' => DB::raw('(' . $query->toRealSql() . ')')
+        ]);
     }
 
     /**

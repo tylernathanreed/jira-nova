@@ -132,7 +132,7 @@ class Label extends Resource
 
             // Index metrics
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByLabel(),
-            new \App\Nova\Metrics\IssueCountByLabelPartition,
+            (new \App\Nova\Metrics\IssueCountPartition)->groupByLabel(),
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
                 $query->where('labels', '!=', '[]');
             })->setName('Issues (for Labels) Created Per Day'),

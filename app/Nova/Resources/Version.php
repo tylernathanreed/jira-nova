@@ -137,7 +137,7 @@ class Version extends Resource
 
             // Index metrics
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByVersion(),
-            new \App\Nova\Metrics\IssueCountByVersionPartition,
+            (new \App\Nova\Metrics\IssueCountPartition)->groupByVersion(),
             (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
                 $query->where('fix_versions', '!=', '[]');
             })->setName('Issues (for Versions) Created Per Day'),
