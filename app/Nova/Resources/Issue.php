@@ -60,6 +60,15 @@ class Issue extends Resource
     ];
 
     /**
+     * The default ordering to use when listing this resource.
+     *
+     * @var array
+     */
+    public static $defaultOrderings = [
+        'rank' => 'asc'
+    ];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
