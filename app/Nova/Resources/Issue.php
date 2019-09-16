@@ -235,6 +235,12 @@ class Issue extends Resource
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
 
+            \App\Nova\Lenses\FilterLens::make($this, 'Defects')->scope(function($query) { $query->defects()->incomplete(); })->addScopedCards([
+                (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
+                (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
+                new \App\Nova\Metrics\IssueStatusPartition
+            ]),
+
             \App\Nova\Lenses\FilterLens::make($this, 'Delinquencies')->scope(function($query) { $query->delinquent(); })->addScopedCards([
                 new \App\Nova\Metrics\IssueDelinquentByDueDateTrend,
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
