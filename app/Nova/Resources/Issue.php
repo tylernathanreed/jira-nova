@@ -84,13 +84,13 @@ class Issue extends Resource
                 return $this->type_icon_url;
             })->maxWidth(16)->onlyOnIndex(),
 
-            // Field::text('Type', 'type_name')->onlyOnDetail(),
+            Field::text('Type', 'type_name')->onlyOnDetail(),
 
             Field::avatar('P')->thumbnail(function() {
                 return $this->priority_icon_url;
             })->maxWidth(16)->onlyOnIndex(),
 
-            // Field::text('Priority', 'priority_name')->onlyOnDetail(),
+            Field::text('Priority', 'priority_name')->onlyOnDetail(),
 
             Field::badgeUrl('Key', 'key')->toUsing(function($value, $resource) {
                 return [
