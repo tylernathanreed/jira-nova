@@ -4,10 +4,11 @@ standard,Backlog,resources/issues/lens/backlog,5,2,1
 standard,"Grooming Dashboard",dashboards/grooming-dashboard,5,2,0
 standard,"Development Dashboard",dashboards/development-dashboard,5,3,0
 standard,"Testing Dashboard",dashboards/testing-dashboard,5,4,0
-standard,Delinquencies,resources/issues/lens/delinquencies,5,5,0
 standard,"Stale Issues",resources/issues/lens/stale-issues,5,5,1
-standard,"Estimated Delinquencies",resources/issues/lens/estimated-delinquencies,5,6,0
+standard,Defects,dashboards/defects-dashboard,5,5,0
+standard,Delinquencies,resources/issues/lens/delinquencies,5,6,0
 standard,"Stretch Items",resources/issues/lens/stretch-items,5,6,1
+standard,"Estimated Delinquencies",resources/issues/lens/estimated-delinquencies,5,7,0
 standard,Tech-Debt,resources/issues/lens/tech-debt,5,7,1
 standard,"Weekly Commitments",resources/issues/lens/weekly-commitments,5,8,1
 standard,"Weekly Commitments",resources/issues/lens/weekly-commitments,5,8,1
