@@ -122,13 +122,13 @@ class IssueCountPartition extends Partition
         // Determine by grouping mechanism
         switch($this->groupBy) {
 
-            case static::GROUP_BY_ASSIGNEE: return 'Remaining Workload (by Assignee)';
-            case static::GROUP_BY_EPIC: return 'Remaining Workload (by Epic)';
-            case static::GROUP_BY_FOCUS: return 'Remaining Workload (by Focus)';
-            case static::GROUP_BY_LABEL: return 'Remaining Workload (by Label)';
-            case static::GROUP_BY_PRIORITY: return 'Remaining Workload (by Priority)';
-            case static::GROUP_BY_PROJECT: return 'Remaining Workload (by Project)';
-            case static::GROUP_BY_VERSION: return 'Remaining Workload (by Version)';
+            case static::GROUP_BY_ASSIGNEE: return 'Remaining Count (by Assignee)';
+            case static::GROUP_BY_EPIC: return 'Remaining Count (by Epic)';
+            case static::GROUP_BY_FOCUS: return 'Remaining Count (by Focus)';
+            case static::GROUP_BY_LABEL: return 'Remaining Count (by Label)';
+            case static::GROUP_BY_PRIORITY: return 'Remaining Count (by Priority)';
+            case static::GROUP_BY_PROJECT: return 'Remaining Count (by Project)';
+            case static::GROUP_BY_VERSION: return 'Remaining Count (by Version)';
 
             default: throw new InvalidArgumentException("Grouping label for [{$this->groupBy}] not defined.");
 
