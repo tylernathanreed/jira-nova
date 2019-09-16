@@ -25,12 +25,12 @@ class JiraUserFilter extends SelectFilter
     /**
      * Creates and returns a new filter instance.
      *
-     * @param  string  $name
-     * @param  string  $key
+     * @param  string|null  $name
+     * @param  string|null  $key
      *
      * @return $this
      */
-    public function __construct($name, $key)
+    public function __construct($name = null, $key = null)
     {
         $this->name = $name;
         $this->key = $key;
@@ -47,7 +47,17 @@ class JiraUserFilter extends SelectFilter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where($this->key, '=', $value);
+        if($value == 'NotNull') {
+            return $query->whereNotNull($this->key);
+        }
+
+        if($value == 'Null') {
+            return $query->whereNull($this->key);
+        }
+
+        else {
+            return $query->where($this->key, '=', $value);
+        }
     }
 
     /**
@@ -59,8 +69,21 @@ class JiraUserFilter extends SelectFilter
      */
     public function options(Request $request)
     {
-        return array_flip(
+        return array_merge(['(Assigned)' => 'NotNull', '(Unassigned)' => 'Null'], array_flip(
             collect(Api::findUsersAssignableToIssues(['project' => 'UAS']))->pluck('displayName', 'key')->all()
-        );
+        ));
+    }
+
+    /**
+     * Use this filter as an assignee filter.
+     *
+     * @return $this
+     */
+    public function useAssignee()
+    {
+        $this->name = 'Assignee';
+        $this->key = 'assignee_key';
+
+        return $this;
     }
 }
