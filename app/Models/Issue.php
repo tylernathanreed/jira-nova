@@ -825,14 +825,15 @@ class Issue extends Model implements Cacheable
 
             // Exclude issue types that are not defects
             $query->whereNotIn('type_name', [
-                'Subtask',
-                'Sub-task',
                 'Consistency',
                 'Epic',
                 'Fit and Finish',
                 'Improvement',
+                'New Feature',
+                'Recommendation',
                 'Research',
-                'New Feature'
+                'Sub-task',
+                'Subtask'
             ]);
 
             // Use a nested "where" clause for each issue category
