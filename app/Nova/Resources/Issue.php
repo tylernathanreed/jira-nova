@@ -185,7 +185,9 @@ class Issue extends Resource
             Field::code('Links', 'links')->json()->onlyOnDetail(),
             // Field::text('blocks', 'blocks'),
 
-            Field::text('Rank', 'rank')->exceptOnForms()->sortable(),
+            Field::text('Rank', 'rank_index')->onlyOnIndex()->sortable(),
+            Field::text('Rank Index', 'rank_index')->onlyOnDetail(),
+            Field::text('Rank', 'rank')->onlyOnDetail(),
 
             Field::date('Created', 'entry_date')->onlyOnDetail()
 
