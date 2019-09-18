@@ -614,6 +614,9 @@ class Issue extends Model implements Cacheable
             $callback($page * 100, $chunk->count);
 
         });
+
+        // Update issue attributes that are aggregated from jira attributes
+        static::updateIssueAggregates();
     }
 
     /**
@@ -655,6 +658,42 @@ class Issue extends Model implements Cacheable
         return $query;
     }
 
+    /**
+     * Updates the issue attributes that are aggregated from jira attributes.
+     *
+     * @return void
+     */
+    public static function updateIssueAggregates()
+    {
+        // Update the rank index
+        static::updateIssueRankIndex();
+    }
+
+    /**
+     * Updates the issue rank index for all issues.
+     *
+     * @return void
+     */
+    public static function updateIssueRankIndex()
+    {
+        // Create a new rank index query
+        $query = (new static)->newRankIndexQuery();
+
+        // Alias the query
+        $query = DB::query()->fromSub($query, 'rank_indexes');
+
+        // Add a subselect filter
+        $query->whereColumn('rank_indexes.id', '=', 'issues.id');
+
+        // Select the update value
+        $query->select('rank_indexes.rank_index');
+
+        // Update the rank index
+        (new Issue)->newQuery()->update([
+            'rank_index' => DB::raw('(' . $query->toRealSql() . ')')
+        ]);
+    }
+
     ///////////////
     //* Queries *//
     ///////////////
@@ -689,6 +728,29 @@ class Issue extends Model implements Cacheable
 
         // Wrap the query into a subquery
         $query->fromSub($query, 'issues');
+
+        // Return the query
+        return $query;
+    }
+
+    /**
+     * Creates and returns a new rank index query.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function newRankIndexQuery()
+    {
+        // Create a new query
+        $query = $this->newQuery();
+
+        // Only look at issues that have ranks
+        $query->whereNotNull('rank');
+
+        // Select the issue id and rank index
+        $query->select([
+            'id',
+            DB::raw('row_number() over(order by rank asc) as rank_index')
+        ]);
 
         // Return the query
         return $query;
