@@ -164,9 +164,11 @@ class Issue extends Resource
                 return $this->reporter_icon_url;
             })->maxWidth(16)->onlyOnIndex(),
 
-            Field::date('Due', 'due_date')->sortable(),
+            Field::date('Due', 'due_date')->format('M/D')->onlyOnIndex()->sortable(),
+            Field::date('Due', 'due_date')->hideFromIndex(),
 
-            Field::date('Estimate', 'estimate_date')->sortable()->exceptOnForms(),
+            Field::date('Estimate', 'estimate_date')->format('M/D')->onlyOnIndex()->sortable(),
+            Field::date('Estimate', 'estimate_date')->onlyOnDetail(),
 
             Field::number('Remaining', 'estimate_remaining')->displayUsing(function($value) {
                 return number_format($value / 3600, 2);
