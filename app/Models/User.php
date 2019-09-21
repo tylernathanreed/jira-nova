@@ -202,4 +202,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Schedule::class, 'schedule_id');
     }
+
+    /**
+     * Returns the time off associated to this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function timeoffs()
+    {
+        return $this->hasMany(TimeOff::class, 'user_id');
+    }
 }
