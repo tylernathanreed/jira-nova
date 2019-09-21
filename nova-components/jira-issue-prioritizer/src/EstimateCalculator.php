@@ -21,8 +21,11 @@ class EstimateCalculator
         // Determine the schedule for the assignee
         $schedule = static::getScheduleForAssignee($assignee);
 
+        // Determine the schedule adjustments for the assignee
+        $adjustments = static::getScheduleAdjustmentsForAssignee($assignee);
+
         // Determine the estimated cmopletion dates
-        $estimates = static::getEstimatedCompletionDates($issues, $schedule);
+        $estimates = static::getEstimatedCompletionDates($issues, $schedule, $adjustments);
 
         // Return the completion dates
         return array_map(function($issue) {
@@ -52,14 +55,46 @@ class EstimateCalculator
     }
 
     /**
+     * Returns the schedule adjustments for the specified assignee.
+     *
+     * @return array
+     */
+    public static function getScheduleAdjustmentsForAssignee($assignee)
+    {
+        // If the assignee cannot be mapped to a user, there are no adjustments
+        if(is_null($user = User::where('jira_key', '=', $assignee)->first())) {
+            return [];
+        }
+
+        // Initialize the adjustments
+        $adjustments = [];
+
+        // The first adjustment that can happen is the user can take time
+        // off. The time off module keeps track of the day and percent
+        // of time off being used. We'll need to flip the percent.
+
+        // Determine the time off by date
+        $timeoffs = $user->timeoffs()->pluck('percent', 'date');
+
+        // Add the each time off as an adjustment
+        foreach($timeoffs as $date => $percent) {
+            $adjustments[carbon($date)->toDateString()] = 1 - $percent;
+        }
+
+        // Return the adjustments
+        return $adjustments;
+    }
+
+    /**
      * Returns the estimated completion dates for the specified issues.
      *
      * @param  array  $issues
      * @param  mixed  $schedule
+     * @param  array  $adjustments
      *
      * @return array
      */
-    public static function getEstimatedCompletionDates($issues, $schedule)
+    public static function getEstimatedCompletionDates($issues, $schedule, $adjustments = [])
     {
         // Our schedule is broken down into focus times. Issues can be allocated
         // to one or more focuses, and these focus times are when we can work
@@ -70,6 +105,9 @@ class EstimateCalculator
 
         // Initialize the dates for each focus
         $dates = $schedule->getFirstAssignmentDatesByFocus();
+
+        // Initialize the allocations
+        $allocations = [];
 
         // Iterate through each issue
         foreach($issues as $index => &$issue) {
@@ -112,6 +150,12 @@ class EstimateCalculator
                 // Determine the daily focus limit
                 $limit = $schedule->getAllocationLimit($date->dayOfWeek, $focus);
 
+                // Determine the adjustment for the date
+                $adjustment = min(max($adjustments[$date->toDateString()] ?? 1, 0), 1);
+
+                // Adjust the limit
+                $limit *= $adjustment;
+
                 // If the previous issue ended cleanly on the exact amount of allocatable
                 // time, we wanted it to end on that date. However, we have to advance
                 // to the next day for the next issue, otherwise we'll loop forever.
@@ -133,6 +177,9 @@ class EstimateCalculator
                 // Allocate the time
                 $date = $date->addSeconds($allocatable);
 
+                // Add the allocation to the tracking array
+                $allocations[$date->toDateString()][$issue['key']] = round($allocatable / 3600, 2);
+
                 // Reduce the remaining time by how much was allocated
                 $remaining -= $allocatable;
 
@@ -142,7 +189,7 @@ class EstimateCalculator
                 }
 
                 // Skip dates that have no allocatable time
-                while($schedule->getAllocationLimit($date->dayOfWeek, $focus) <= 0) {
+                while($schedule->getAllocationLimit($date->dayOfWeek, $focus) <= 0 || ($adjustments[$date->toDateString()] ?? 1) <= 0) {
                     $date = $date->addDay();
                 }
 
@@ -155,6 +202,9 @@ class EstimateCalculator
             $issue['new_estimated_completion_date'] = $date->toDateString();
 
         }
+
+        // Dump the allocations for debugging
+        // dump($allocations);
 
         // Return the issues
         return $issues;
