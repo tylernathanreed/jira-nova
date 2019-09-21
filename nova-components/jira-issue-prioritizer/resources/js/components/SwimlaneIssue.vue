@@ -19,7 +19,7 @@
                     <img class="icon" :src="issue.priority_icon_url"/>
                 </div>
 
-                <div class="swimlane-issue-field-group text-center" style="min-width: 100px; max-width: 100px">
+                <div class="swimlane-issue-field-group text-center" style="min-width: 120px; max-width: 120px">
                     <div class="swimlane-issue-field text-center" data-field="key">
                         <a :href="issue.parent_url || issue.url" target="_blank" v-text="issue.parent_key || issue.key"/>
                     </div>
@@ -48,8 +48,12 @@
                             v-else
                             :href="issue.epic_url"
                             target="_blank"
-                            class="epic-label px-1 py-1 whitespace-no-wrap"
+                            class="px-2 leading-normal text-xs inline-block whitespace-no-wrap"
                             :class="(issue.epic_color || 'ghx-label-0')"
+                            :style="{
+                                borderRadius: '3px',
+                                marginTop: '0.125rem'
+                            }"
                             v-text="issue.epic_name"
                         />
                     </div>
@@ -370,6 +374,18 @@
         border-color: #b3d4ff;
     }
 
+    .swimlane-issue a {
+        color: #0052cc;
+        text-decoration: none;
+    }
+
+    .swimlane-issue a:active,
+    .swimlane-issue a:hover,
+    .swimlane-issue a:focus {
+        color: rgb(0, 73, 176);
+        text-decoration: underline;
+    }
+
     .epic-label {
         display: inline-block;
         border-radius: 3px;
@@ -387,74 +403,74 @@
     }
 
     .ghx-label-0 {
-        color: #0065ff;
+        color: #0065ff !important;
         background-color: #f5f5f5;
         border-color: #ccc;
         border-width: 1px;
     }
 
     .ghx-label-2 {
-        color: #172B4D;
+        color: #172B4D !important;
         background-color: #ffc400;
         border-color: #ffc400;
     }
 
     .ghx-label-4 {
-        color: #fff;
+        color: #fff !important;
         background-color: #2684ff;
         border-color: #2684ff;
     }
 
     .ghx-label-5 {
-        color: #172B4D;
+        color: #172B4D !important;
         background-color: #00C7E6;
         border-color: #00C7E6;
     }
 
     .ghx-label-6 {
-        color: #42526e;
+        color: #42526e !important;
         background-color: #abf5d1;
         border-color: #abf5d1;
     }
 
     .ghx-label-7 {
-        color: #fff;
+        color: #fff !important;
         background-color: #8777d9;
         border-color: #8777d9;
     }
 
     .ghx-label-8 {
-        color: #172B4D;
+        color: #172B4D !important;
         background-color: #998dd9;
         border-color: #998dd9;
     }
 
     .ghx-label-9 {
-        color: #fff;
+        color: #fff !important;
         background-color: #ff7452;
         border-color: #ff7452;
     }
 
     .ghx-label-11 {
-        color: #42526e;
+        color: #42526e !important;
         background-color: #79e2f2;
         border-color: #79e2f2;
     }
 
     .ghx-label-12 {
-        color: #fff;
+        color: #fff !important;
         background-color: #7a869a;
         border-color: #7a869a;
     }
 
     .ghx-label-13 {
-        color: #172B4D;
+        color: #172B4D !important;
         background-color: #57d9a3;
         border-color: #57d9a3;
     }
 
     .ghx-label-14 {
-        color: #fff;
+        color: #fff !important;
         background-color: #ff8f73;
         border-color: #ff8f73;
     }
@@ -599,17 +615,5 @@
 
     .swimlane-issue label {
         margin: 0;
-    }
-
-    .swimlane-issue a {
-        color: #0052cc;
-        text-decoration: none;
-    }
-
-    .swimlane-issue a:active,
-    .swimlane-issue a:hover,
-    .swimlane-issue a:focus {
-        color: rgb(0, 73, 176);
-        text-decoration: underline;
     }
 </style>
