@@ -196,7 +196,7 @@ class User extends Authenticatable
     /**
      * Returns the schedule associated to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function schedule()
     {
