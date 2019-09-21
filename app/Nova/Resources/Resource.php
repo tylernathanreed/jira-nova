@@ -170,4 +170,30 @@ abstract class Resource extends NovaResource
 
         return null;
     }
+
+    /**
+     * Creates and returns a fresh instance of the model represented by the resource.
+     *
+     * @return mixed
+     */
+    public static function newModel()
+    {
+        $model = static::$model;
+
+        $instance = new $model;
+
+        $instance->setRawAttributes(static::getDefaultAttributes());
+
+        return $instance;
+    }
+
+    /**
+     * Returns the default attributes for new model instances.
+     *
+     * @return array
+     */
+    public static function getDefaultAttributes()
+    {
+        return static::$defaultAttributes ?? [];
+    }
 }
