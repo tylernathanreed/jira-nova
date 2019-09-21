@@ -77,5 +77,28 @@ class FieldServiceProvider extends ServiceProvider
             })->disableDownload();
 
         });
+
+        /**
+         * Creates and returns a new percent field.
+         *
+         * @return \Laravel\Nova\Fields\Avatar
+         */
+        $fields->macro('percent', function($label, $attribute) use ($fields) {
+
+            return $fields->number($label, $attribute)
+                ->min(1)
+                ->step(1)
+                ->max(100)
+                ->displayUsing(function($value) {
+                    return ($value * 100) . '%';
+                })
+                ->resolveUsing(function($value) {
+                    return $value * 100;
+                })
+                ->fillUsing(function($request, $model, $attribute, $requestAttribute) {
+                    return $model->setAttribute($attribute, $request->{$requestAttribute} / 100);
+                });
+
+        });
     }
 }
