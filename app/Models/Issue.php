@@ -973,7 +973,7 @@ class Issue extends Model implements Cacheable
     /**
      * Returns the changelogs associated to this issue.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function changelogs()
     {

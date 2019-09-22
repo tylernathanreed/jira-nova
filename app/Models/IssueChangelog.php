@@ -271,7 +271,7 @@ class IssueChangelog extends Model implements Cacheable
      */
     public function author()
     {
-        return $this->belongsToMany(User::class, 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     /**
