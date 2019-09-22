@@ -67,11 +67,11 @@ class Connection extends ApiConnection
      * @param  string  $issueIdOrKey
      * @param  array   $options
      *
-     * @option  {string|array}  "fields"         A comma-separated list of fields to return for the issue (Default is "*navigable").
-     * @option  {boolean}       "fieldsByKeys"   Whether or not fields are referenced by keys rather than ids (Default is false).
-     * @option  {string|array}  "expand"         The additional information about the issue to include in the response (Default is null).
-     * @option  {string|array}  "properties"     The properties to include for the issue (Default is null).
-     * @option  {boolean}       "updateHistory"  Whether or not the issue should be added to the user's viewing history (Default is false).
+     * @option  {string|array}  "fields"         A comma-separated list of fields to return for the issue (defaults to "*navigable").
+     * @option  {boolean}       "fieldsByKeys"   Whether or not fields are referenced by keys rather than ids (defaults to false).
+     * @option  {string|array}  "expand"         The additional information about the issue to include in the response (defaults to null).
+     * @option  {string|array}  "properties"     The properties to include for the issue (defaults to null).
+     * @option  {boolean}       "updateHistory"  Whether or not the issue should be added to the user's viewing history (defaults to false).
      *
      * @return \stdClass
      */
