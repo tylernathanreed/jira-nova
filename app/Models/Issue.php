@@ -689,7 +689,7 @@ class Issue extends Model implements Cacheable
         $query->select('rank_indexes.rank_index');
 
         // Update the rank index
-        (new Issue)->newQuery()->update([
+        (new Issue)->newQuery()->getQuery()->update([
             'rank_index' => DB::raw('(' . $query->toRealSql() . ')')
         ]);
     }

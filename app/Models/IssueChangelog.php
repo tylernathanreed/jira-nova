@@ -140,7 +140,9 @@ class IssueChangelog extends Model implements Cacheable
                         $issue->changelogs_updated_at = carbon('+1 second');
 
                         // Save the issue
+                        $issue->timestamps = false;
                         $issue->save();
+                        $issue->timestamps = true;
 
                     });
 
@@ -229,7 +231,7 @@ class IssueChangelog extends Model implements Cacheable
         $query->select('resolutions.resolved_at');
 
         // Update the resolution date
-        (new Issue)->newQuery()->update([
+        (new Issue)->newQuery()->getQuery()->update([
             'resolution_date' => DB::raw('(' . $query->toRealSql() . ')')
         ]);
     }

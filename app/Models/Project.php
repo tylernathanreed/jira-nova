@@ -47,7 +47,7 @@ class Project extends Model implements Cacheable
                 $project = static::updateOrCreate(compact('jira_key'), $project);
 
                 // Associate the issues back to this project
-                Issue::where('key', 'like', $project->jira_key . '-%')->whereNull('project_id')->update([
+                (new Issue)->newQuery()->getQuery()->where('key', 'like', $project->jira_key . '-%')->whereNull('project_id')->update([
                     'project_key' => $project->jira_key,
                     'project_id' => $project->id
                 ]);

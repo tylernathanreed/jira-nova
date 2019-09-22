@@ -129,7 +129,7 @@ class Epic extends Model implements Cacheable
         });
 
         // Associate the issues back to this epic
-        Issue::query()->getQuery()->whereNull('epic_id')->whereNotNull('epic_key')->update([
+        (new Issue)->newQuery()->getQuery()->whereNull('epic_id')->whereNotNull('epic_key')->update([
             'epic_id' => DB::raw('(select epics.id from epics where epics.key = issues.epic_key)')
         ]);
 
