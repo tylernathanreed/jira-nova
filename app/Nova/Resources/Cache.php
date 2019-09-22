@@ -39,6 +39,15 @@ class Cache extends Resource
     public static $globallySearchable = false;
 
     /**
+     * The default ordering to use when listing this resource.
+     *
+     * @var array
+     */
+    public static $defaultOrderings = [
+        'execution_order' => 'asc'
+    ];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
