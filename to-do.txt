@@ -1,12 +1,31 @@
 To-Do:
- - Schedule Types (for simple scheduling)
- - Project / User associations (using canSee authorization)
- - Holidays & Vacation Days
- - Focus Group Abstraction
- - Splash Screens
- - Multiple Dashboards
- - Permission Lockdown
- - Field Abstraction
+ - September-ish:
+    - Worklog Dasboard
+    - Sync Jobs
+ - October-ish:
+    - Holidays
+    - Roles
+    - My Dashboard
+    - Roles / Policies (Permissions)
+ - November-ish:
+   - User / Issue associations (using canSee authorization)
+   - Jira Users (without Jinora)
+   - Nova Users (without Jira)
+   - System User
+ - December-ish:
+   - Guest User
+   - Laravel 6
+   - Remove old Jira API
+   - Process (jobs)
+ - January-ish:
+   - Automated testing for cards
+   - Automated testing for landing pages
+ - TBD:
+   - Focus Group Abstraction
+   - Field Abstraction
+   - Roadmap Due Dates
+   - Issue Show Page
+
 
 Schema:
 
@@ -15,13 +34,56 @@ holidays
  - display_name
  - date
 
-vacation_days
- - id
- - user_id
- - date
- - percentage
-
 Phase 3:
+
+process_family
+ - uuid
+ - batch_uuid
+ - created_by_user_id (integer)
+
+process
+ - uuid
+ - family_uuid (integer)
+ - family_order (integer)
+ - batch_uuid (string)
+ - batch_order (integer)
+ - connection (string)
+ - queue (string)
+ - payload (text)
+ - attempts (integer)
+ - first_dispatched_at (datetime)
+ - first_available_at (datetime)
+ - first_reserved_at (datetime)
+ - last_released_at (datetime)
+ - failed (bit)
+ - cancelled_at (datetime)
+ - cancelled_reason (string)
+ - created_at (datetime)
+ - created_by_process_uuid (string)
+
+process_attempts
+ - uuid
+ - process_uuid
+ - job_id
+ - reserved_at (datetime)
+ - released_at (datetime)
+ - failed (bit)
+ - failed_exception (text)
+ - available_at (datetime)
+ - created_at (datetime)
+
+process_dependencies
+ - id
+ - process_uuid
+ - dependency_process_uuid
+ - satisfied (bit)
+ - can_continue_on_failure (bit)
+
+process_tags
+ - process_uuid
+ - tag
+
+Phase 4:
 
 issue_field_data
  - id
