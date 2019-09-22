@@ -83,6 +83,13 @@ class FluentPartition extends Partition
     public $queryCallbacks = [];
 
     /**
+     * The direction to sort the results.
+     *
+     * @var  string|null
+     */
+    public $sort;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -105,6 +112,9 @@ class FluentPartition extends Partition
 
         // Determine the result
         $result = $this->aggregate($request, $query, $this->function, $this->column, $this->groupBy);
+
+        // Apply the result sort
+        $this->applyResultSort($result);
 
         // Return the result
         return $result;
@@ -327,6 +337,50 @@ class FluentPartition extends Partition
     }
 
     /**
+     * Sets the display callback for this metric.
+     *
+     * @param  callable  $callback
+     *
+     * @return $this
+     */
+    public function displayUsing(callable $callback)
+    {
+        $this->displayCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Sets the dispaly callback to use division.
+     *
+     * @param  integer|float  $quotient
+     *
+     * @return $this
+     */
+    public function divideBy($quotient)
+    {
+        return $this->displayUsing(function($value) use ($quotient) {
+            return $value / $quotient;
+        });
+    }
+
+    /**
+     * Applies the result format to the specified value.
+     *
+     * @param  mixed  $value
+     *
+     * @return mixed
+     */
+    public function applyResultFormat($value)
+    {
+        if(is_null($callback = $this->displayCallback)) {
+            return $value;
+        }
+
+        return $callback($value);
+    }
+
+    /**
      * Applies the query callbacks to the specified query.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -341,6 +395,58 @@ class FluentPartition extends Partition
     }
 
     /**
+     * Sorts the results in the specified order.
+     *
+     * @param  string  $direction
+     *
+     * @return $this
+     */
+    public function sort($direction = 'asc')
+    {
+        $this->sort = $direction;
+
+        return $this;
+    }
+
+    /**
+     * Sorts the results in descending order.
+     *
+     * @return $this
+     */
+    public function sortDesc()
+    {
+        return $this->sort('desc');
+    }
+
+    /**
+     * Applies the sorting direction on the specified result.
+     *
+     * @param  \Laravel\Nova\Metrics\PartitionResult  $result
+     *
+     * @return void
+     */
+    public function applyResultSort($result)
+    {
+        // Make sure sorting has been specified
+        if(is_null($this->sort)) {
+            return;
+        }
+
+        // Determine the result value
+        $value = $result->value;
+
+        // Sort the result
+        if($this->sort == 'asc') {
+            asort($value);
+        } else {
+            arsort($value);
+        }
+
+        // Update the value
+        $result->value = $value;
+    }
+
+    /**
      * Format the aggregate result for the partition.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $result
@@ -351,7 +457,7 @@ class FluentPartition extends Partition
     {
         $key = $result->{last(explode('.', $groupBy))};
 
-        return [$key => round($result->aggregate, $this->precision)];
+        return [$key => round($this->applyResultFormat($result->aggregate), $this->precision)];
     }
 
     /**

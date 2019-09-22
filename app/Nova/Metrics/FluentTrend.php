@@ -75,6 +75,13 @@ class FluentTrend extends Trend
     public $precision = 0;
 
     /**
+     * The callback used to format the results.
+     *
+     * @var \Closure|null
+     */
+    public $displayCallback;
+
+    /**
      * The value suffix for this metric.
      *
      * @var string|null
@@ -116,8 +123,13 @@ class FluentTrend extends Trend
 
         // Determine the trend value
         $result->result(
-            array_sum($result->trend)
+            $this->applyResultFormat(array_sum($result->trend))
         );
+
+        // Format each trend value
+        foreach($result->trend as &$value) {
+            $value = $this->applyResultFormat($value);
+        }
 
         // Return the result
         return $result;
@@ -248,6 +260,50 @@ class FluentTrend extends Trend
         $this->precision = $precision;
 
         return $this;
+    }
+
+    /**
+     * Sets the display callback for this metric.
+     *
+     * @param  callable  $callback
+     *
+     * @return $this
+     */
+    public function displayUsing(callable $callback)
+    {
+        $this->displayCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Sets the dispaly callback to use division.
+     *
+     * @param  integer|float  $quotient
+     *
+     * @return $this
+     */
+    public function divideBy($quotient)
+    {
+        return $this->displayUsing(function($value) use ($quotient) {
+            return round($value / $quotient, $this->precision);
+        });
+    }
+
+    /**
+     * Applies the result format to the specified value.
+     *
+     * @param  mixed  $value
+     *
+     * @return mixed
+     */
+    public function applyResultFormat($value)
+    {
+        if(is_null($callback = $this->displayCallback)) {
+            return $value;
+        }
+
+        return $callback($value);
     }
 
     /**
