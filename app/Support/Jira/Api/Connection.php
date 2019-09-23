@@ -138,6 +138,71 @@ class Connection extends ApiConnection
     }
 
     /**
+     * Returns all of the worklogs for the specified issue.
+     *
+     * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-issue-issueIdOrKey-worklog-get
+     *
+     * @param  string  $issueIdOrKey
+     * @param  array   $options
+     *
+     * @option  {integer}       "startAt"     The page offset (defaults to 0).
+     * @option  {integer}       "maxResults"  The maximum number of items to return per page (defaults to 1048576, maximum is 1048576).
+     * @option  {string|array}  "expand"      The additional information to include about each worklog.
+     *
+     * @return array
+     */
+    public function getIssueWorklogs($issueIdOrKey, $options = [])
+    {
+        return $this->request()->path("issue/{$issueIdOrKey}/worklog")->get($options);
+    }
+
+    /**
+     * Returns the specified workload.
+     *
+     * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-issue-issueIdOrKey-worklog-id-get
+     *
+     * @param  string  $issueIdOrKey
+     * @param  string  $worklogId
+     * @param  array   $options
+     *
+     * @option  {string|array}  "expand"  The additional information to include about the worklog.
+     *
+     * @return array
+     */
+    public function getWorklog($issueIdOrKey, $worklogId, $options = [])
+    {
+        return $this->request()->path("issue/{$issueIdOrKey}/worklog/{$worklogId}")->get($options);
+    }
+
+    /**
+     * Returns the list of worklogs updated after the given timestamp.
+     *
+     * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-worklog-updated-get
+     *
+     * @param  array  $options
+     *
+     * @option  {mixed}         "since"   The UNIX timestamp after which updated worklogs are returned (defaults to 0).
+     * @option  {string|array}  "expand"  The additional information about each worklog to include in the response (defaults to null).
+     *
+     * @return \stdClass
+     */
+    public function getUpdatedWorklogs($options = [])
+    {
+        // Convert the "since" option to a timestamp
+        if(isset($options['since']) && !is_int($options['since'])) {
+            $options['since'] = carbon($options['since'])->timestamp * 1000;
+        }
+
+        // Convert the "expand" option to a string
+        if(isset($options['expand']) && is_array($options['expand'])) {
+            $options['expand'] = implode(',', $options['expand']);
+        }
+
+        // Submit the request and return the result
+        return $this->request()->path('worklog/updated')->get($options);
+    }
+
+    /**
      * Creates and returns a new request builder instance.
      *
      * @return \Reedware\LaravelApi\Request\Builder
