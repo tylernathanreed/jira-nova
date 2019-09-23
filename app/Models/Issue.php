@@ -72,7 +72,8 @@ class Issue extends Model implements Cacheable
         'due_date',
         'estimate_date',
         'entry_date',
-        'changelogs_updated_at'
+        'changelogs_updated_at',
+        'worklogs_updated_at'
     ];
 
     /////////////////
@@ -978,5 +979,15 @@ class Issue extends Model implements Cacheable
     public function changelogs()
     {
         return $this->hasMany(IssueChangelog::class, 'issue_id');
+    }
+
+    /**
+     * Returns the worklogs associated to this issue.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function worklogs()
+    {
+        return $this->hasMany(IssueWorklog::class, 'issue_id');
     }
 }
