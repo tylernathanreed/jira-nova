@@ -4,6 +4,7 @@ namespace App\Nova\Resources;
 
 use Field;
 use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class IssueWorklog extends Resource
 {
@@ -34,7 +35,8 @@ class IssueWorklog extends Resource
      * @var array
      */
     public static $search = [
-        'author_name'
+        'author_name',
+        'issues.key'
     ];
 
     /**
@@ -54,6 +56,29 @@ class IssueWorklog extends Resource
     public static function label()
     {
         return 'Worklogs';
+    }
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder    $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        // Join into issues
+        $query->joinRelation('issue');
+
+        // Select the worklog attributes
+        $query->select('issue_worklogs.*');
+
+        // Call the parent method
+        $query = parent::indexQuery($request, $query);
+
+        // Return the query
+        return $query;
     }
 
     /**
@@ -177,7 +202,10 @@ class IssueWorklog extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\WhereDateFilter('Started On or After', 'started_at', '>='),
+            new \App\Nova\Filters\WhereDateFilter('Started On or Before', 'started_at', '<=')
+        ];
     }
 
     /**
