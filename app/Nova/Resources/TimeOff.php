@@ -27,7 +27,7 @@ class TimeOff extends Resource
      * @var array
      */
     public static $defaultOrderings = [
-        'date' => 'asc'
+        'date' => 'desc'
     ];
 
     /**
@@ -63,9 +63,9 @@ class TimeOff extends Resource
                 ->sortable()
                 ->onlyOnDetail(),
 
-            Field::belongsTo('User', 'user', User::class),
+            Field::belongsTo('User', 'user', User::class)->sortable(),
 
-            Field::date('Date', 'date'),
+            Field::date('Date', 'date')->sortable(),
 
             Field::percent('Percent', 'percent')
                 ->help('Enter a whole number between 0 (0%) and 100 (100%).')
@@ -167,7 +167,10 @@ class TimeOff extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\WhereDateFilter('On or After', 'date', '>='),
+            new \App\Nova\Filters\WhereDateFilter('On or Before', 'date', '<=')
+        ];
     }
 
     /**
