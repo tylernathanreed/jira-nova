@@ -76,6 +76,13 @@ class FluentPartition extends Partition
     public $precision = 0;
 
     /**
+     * The callback used to display the result.
+     *
+     * @var callback|null
+     */
+    public $displayCallback;
+
+    /**
      * The query callbacks for this metric.
      *
      * @var array
