@@ -667,7 +667,7 @@ class Issue extends Model implements Cacheable
     public static function updateIssueAggregates()
     {
         // Update the rank index
-        static::updateIssueRankIndex();
+        // static::updateIssueRankIndex();
     }
 
     /**
