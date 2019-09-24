@@ -133,6 +133,11 @@ class Epic extends Model implements Cacheable
             'epic_id' => DB::raw('(select epics.id from epics where epics.key = issues.epic_key)')
         ]);
 
+        // Update the epic names
+        (new Issue)->newQuery()->getQuery()->whereNotNull('epic_key')->update([
+            'epic_name' => DB::raw('(select epics.name from epics where epics.key = issues.epic_key)')
+        ]);
+
         // Invoke the handler
         $callback(count($epics), count($epics));
     }
