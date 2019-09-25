@@ -30,6 +30,10 @@ class IssueWeekStatusPartition extends IssueStatusPartition
 
         // Filter the query
         $query->where('labels', 'like', "%\"{$label}%");
+
+        if(!is_null($this->filter)) {
+            call_user_func($this->filter, $query);
+        }
     }
 
     /**
