@@ -123,7 +123,7 @@ class IssueWorklog extends Resource
     {
         return [
             $this->getWorklogTrend(),
-            $this->getWorklogPartition(),
+            $this->getWorklogByAuthorPartition(),
             $this->getEfficiencyValue()
         ];
     }
@@ -146,11 +146,50 @@ class IssueWorklog extends Resource
     }
 
     /**
-     * Creates and returns a new worklog partition.
+     * Creates and returns a new worklog by epic partition.
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getWorklogPartition()
+    public function getWorklogByEpicPartition()
+    {
+        return (new \App\Nova\Metrics\FluentPartition)
+            ->model(static::$model)
+            ->label('Worklog by Epic (Past 30 Days)')
+            ->sumOf('time_spent')
+            ->joinRelation('issue')
+            ->whereNotNull('issues.epic_name')
+            ->groupBy('issues.epic_name')
+            ->range(30)
+            ->dateColumn('started_at')
+            ->divideBy(3600)
+            ->sortDesc();
+    }
+
+    /**
+     * Creates and returns a new worklog by priority partition.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getWorklogByPriorityPartition()
+    {
+        return (new \App\Nova\Metrics\FluentPartition)
+            ->model(static::$model)
+            ->label('Worklog by Priority (Past 30 Days)')
+            ->sumOf('time_spent')
+            ->joinRelation('issue')
+            ->groupBy('issues.priority_name')
+            ->range(30)
+            ->dateColumn('started_at')
+            ->divideBy(3600)
+            ->sortDesc();
+    }
+
+    /**
+     * Creates and returns a new worklog by author partition.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getWorklogByAuthorPartition()
     {
         return (new \App\Nova\Metrics\FluentPartition)
             ->model(static::$model)
@@ -161,6 +200,36 @@ class IssueWorklog extends Resource
             ->dateColumn('started_at')
             ->divideBy(3600)
             ->sortDesc();
+    }
+
+    /**
+     * Creates and returns a new expected worklog value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getExpectedWorklogValue()
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Expected Worklog')
+            ->select('schedules.simple_weekly_allocation / 5.0 * 20.0')
+            ->leftJoinRelation('author')
+            ->join('schedules', function($join) {
+                $join->where(function($join) {
+                    $join->on('schedules.id', '=', 'users.schedule_id');
+                    $join->orWhere(function($join) {
+                        $join->whereNull('users.schedule_id');
+                        $join->where('schedules.system_name', '=', 'simple');
+                    });
+                });
+            })
+            ->groupBy([
+                'issue_worklogs.author_name',
+                'schedules.simple_weekly_allocation'
+            ])
+            ->useSumOfAggregates()
+            ->dateColumn('started_at')
+            ->precision(2);
     }
 
     /**

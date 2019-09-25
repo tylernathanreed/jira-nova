@@ -99,6 +99,13 @@ class FluentValue extends Value
     public $queryCallbacks = [];
 
     /**
+     * The value accessor for the query.
+     *
+     * @var \Closure|null
+     */
+    public $valueAccessor;
+
+    /**
      * The value formatting for this metric.
      *
      * @var string|array
@@ -370,6 +377,50 @@ class FluentValue extends Value
     }
 
     /**
+     * Sets the value accessor for this metric.
+     *
+     * @param  callable  $accessor
+     *
+     * @return $this
+     */
+    public function setValueAccesstor(callable $accessor)
+    {
+        $this->valueAccessor = $accessor;
+
+        return $this;
+    }
+
+    /**
+     * Sets the value accessor to use the sum of aggregates.
+     *
+     * @return $this
+     */
+    public function useSumOfAggregates()
+    {
+        return $this->setValueAccesstor(function($query) {
+            return DB::query()->fromSub($query, 'aggregates')->sum('aggregate');
+        });
+    }
+
+    /**
+     * Returns the aggregate value from the specified query.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     *
+     * @return mixed
+     */
+    public function getValueFromQuery($query)
+    {
+        // Determine the value accessor
+        $accessor = $this->valueAccessor ?? function($query) {
+            return $query->first()->aggregate ?? null;
+        };
+
+        // Return the value
+        return $accessor($query);
+    }
+
+    /**
      * Sets the value formatting for this metric.
      *
      * @param  string|array  $format
@@ -430,8 +481,8 @@ class FluentValue extends Value
         $previousQuery->select(DB::raw("{$select} as aggregate"));
 
         // Determine the current and previous values
-        $currentValue = round($currentQuery->first()->aggregate ?? null, $this->precision);
-        $previousValue = round($previousQuery->first()->aggregate ?? null, $this->precision);
+        $currentValue = round($this->getValueFromQuery($currentQuery), $this->precision);
+        $previousValue = round($this->getValueFromQuery($previousQuery), $this->precision);
 
         // Check if we're using a scalar difference
         if($this->useScalarDelta) {
