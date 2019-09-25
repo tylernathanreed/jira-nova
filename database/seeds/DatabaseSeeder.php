@@ -17,5 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CachesTableSeeder::class);
         $this->call(SlideshowsTableSeeder::class);
         $this->call(SlideshowPagesTableSeeder::class);
+        $this->call(WorkflowStatusGroupsTableSeeder::class);
+        $this->call(WorkflowStatusTypesTableSeeder::class);
     }
 }
