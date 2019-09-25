@@ -102,4 +102,14 @@ class WorkflowStatusType extends Model implements Cacheable
     {
         return $this->belongsTo(WorkflowStatusGroup::class, 'status_group_id');
     }
+
+    /**
+     * Returns the seed group that this status type belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function groupFromSeed()
+    {
+        return $this->belongsTo(WorkflowStatusGroup::class, 'status_group_system_name', 'system_name');
+    }
 }
