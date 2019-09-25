@@ -990,4 +990,14 @@ class Issue extends Model implements Cacheable
     {
         return $this->hasMany(IssueWorklog::class, 'issue_id');
     }
+
+    /**
+     * Returns the status that this issue belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status()
+    {
+        return $this->belongsTo(WorkflowStatusType::class, 'status_name', 'name');
+    }
 }

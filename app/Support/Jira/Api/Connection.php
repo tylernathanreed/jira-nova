@@ -203,6 +203,18 @@ class Connection extends ApiConnection
     }
 
     /**
+     * Returns the statuses available in a workflow.
+     *
+     * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-group-Workflow-statuses
+     *
+     * @return array
+     */
+    public function getAllStatuses()
+    {
+        return $this->request()->path('status')->get();
+    }
+
+    /**
      * Creates and returns a new request builder instance.
      *
      * @return \Reedware\LaravelApi\Request\Builder
