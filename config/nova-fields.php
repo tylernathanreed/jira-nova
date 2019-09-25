@@ -48,6 +48,7 @@ return [
 	 */
 	'badge'       => \Timothyasp\Badge\Badge::class,
 	'badgeUrl'    => \NovaComponents\BadgeUrl\BadgeUrl::class,
+	'color'       => \Timothyasp\Color\Color::class,
 	'swatch'      => \NovaComponents\ColorSwatch\ColorSwatch::class,
 	'url'         => \Inspheric\Fields\Url::class,
 	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class,
