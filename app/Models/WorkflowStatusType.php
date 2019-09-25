@@ -110,6 +110,6 @@ class WorkflowStatusType extends Model implements Cacheable
      */
     public function groupFromSeed()
     {
-        return $this->belongsTo(WorkflowStatusGroup::class, 'status_group_system_name', 'system_name');
+        return $this->belongsTo(WorkflowStatusGroup::class, 'workflow_status_group_system_name', 'system_name');
     }
 }
