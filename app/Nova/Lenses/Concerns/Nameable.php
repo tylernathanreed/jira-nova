@@ -17,4 +17,16 @@ trait Nameable
 
         return $this;
     }
+
+    /**
+     * Alias of {@see $this->setName()}.
+     *
+     * @param  string  $name
+     *
+     * @return $this
+     */
+    public function label($name)
+    {
+        return $this->setName($name);
+    }
 }

@@ -91,3 +91,31 @@
 html {
     scroll-behavior: smooth;
 }
+
+.relative[dusk][initialperpage] .card > .flex.items-center:not(.py-3) {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+div[dusk="casl-priorities-lens-component"] {
+
+    a[data-testid="lens-back"] {
+        display: none;
+
+        & + span {
+            display: none;
+        }
+    }
+
+    table tr {
+
+        td:first-child,
+        th:first-child,
+        td:last-child,
+        th:last-child {
+            display: none;
+        }
+
+    }
+
+}

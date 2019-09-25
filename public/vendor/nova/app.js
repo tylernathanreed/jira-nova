@@ -225,6 +225,7 @@ exports.default = {
 
                 if (error.response.status == 422) {
                     _this.errors = new _laravelNova.Errors(error.response.data.errors);
+                    Nova.error(_this.__('There was a problem submitting the form.'));
                 }
             });
         },
@@ -252,12 +253,12 @@ exports.default = {
         handleActionResponse: function handleActionResponse(response) {
             if (response.message) {
                 this.$emit('actionExecuted');
-                this.$toasted.show(response.message, { type: 'success' });
+                Nova.success(response.message);
             } else if (response.deleted) {
                 this.$emit('actionExecuted');
             } else if (response.danger) {
                 this.$emit('actionExecuted');
-                this.$toasted.show(response.danger, { type: 'error' });
+                Nova.error(response.danger);
             } else if (response.download) {
                 var link = document.createElement('a');
                 link.href = response.download;
@@ -273,7 +274,7 @@ exports.default = {
                 window.open(response.openInNewTab, '_blank');
             } else {
                 this.$emit('actionExecuted');
-                this.$toasted.show(this.__('The action ran successfully!'), { type: 'success' });
+                Nova.success(this.__('The action ran successfully!'));
             }
         }
     },
@@ -1608,6 +1609,17 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3529,6 +3541,10 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
 
 exports.default = {
     //
@@ -4337,6 +4353,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 
 function guid() {
     var S4 = function S4() {
@@ -4571,6 +4589,7 @@ exports.default = {
 //
 //
 //
+//
 
 /***/ }),
 
@@ -4583,7 +4602,6 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
 //
 //
 //
@@ -5507,6 +5525,8 @@ exports.default = {
             var placeType = this.field.placeType;
 
             var config = {
+                appId: Nova.config.algoliaAppId,
+                apiKey: Nova.config.algoliaApiKey,
                 container: document.querySelector('#' + this.field.attribute),
                 type: this.field.placeType ? this.field.placeType : 'address',
                 templates: {
@@ -6339,6 +6359,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
 
 exports.default = {
     mixins: [_vueClickaway.mixin],
@@ -6975,6 +6999,18 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     props: ['resourceName', 'field']
@@ -7129,6 +7165,7 @@ exports.default = {
         }
     }
 }; //
+//
 //
 //
 //
@@ -7712,9 +7749,21 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
 
 exports.default = {
-    props: ['resourceName', 'field']
+    props: ['resourceName', 'field'],
+
+    computed: {
+        /**
+         * Determine if the field has a value other than null.
+         */
+        hasValue: function hasValue() {
+            return this.field.value !== null;
+        }
+    }
 };
 
 /***/ }),
@@ -9162,6 +9211,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
 
 exports.default = {
     /**
@@ -9193,6 +9243,7 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+//
 //
 //
 //
@@ -9283,6 +9334,7 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+//
 //
 //
 //
@@ -9876,9 +9928,6 @@ exports.default = {
         }
     }
 }; //
-//
-//
-//
 //
 //
 //
@@ -10600,6 +10649,7 @@ exports.default = {
 
                                 if (_context.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
                             case 12:
@@ -10650,6 +10700,7 @@ exports.default = {
 
                                 if (_context2.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context2.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
                             case 12:
@@ -11072,9 +11123,9 @@ exports.default = {
 
                                 this.submittedViaCreateResource = false;
 
-                                this.$toasted.show(this.__('The :resource was created!', {
+                                Nova.success(this.__('The :resource was created!', {
                                     resource: this.resourceInformation.singularLabel.toLowerCase()
-                                }), { type: 'success' });
+                                }));
 
                                 this.$router.push({ path: redirect });
                                 _context3.next = 15;
@@ -11088,6 +11139,7 @@ exports.default = {
 
                                 if (_context3.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context3.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
                             case 15:
@@ -11128,9 +11180,9 @@ exports.default = {
 
                                 this.submittedViaCreateAndAddAnother = false;
 
-                                this.$toasted.show(this.__('The :resource was created!', {
+                                Nova.success(this.__('The :resource was created!', {
                                     resource: this.resourceInformation.singularLabel.toLowerCase()
-                                }), { type: 'success' });
+                                }));
 
                                 // Reset the form by refetching the fields
                                 this.getFields();
@@ -11147,6 +11199,7 @@ exports.default = {
 
                                 if (_context4.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context4.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting this form.'));
                                 }
 
                             case 15:
@@ -11480,7 +11533,7 @@ exports.default = {
                     return;
                 }
 
-                _this.$toasted.show(_this.__('This resource no longer exists'), { type: 'error' });
+                Nova.error(_this.__('This resource no longer exists'));
 
                 _this.$router.push({
                     name: 'index',
@@ -11579,9 +11632,9 @@ exports.default = {
                         switch (_context3.prev = _context3.next) {
                             case 0:
                                 this.deleteResources([this.resource], function () {
-                                    _this3.$toasted.show(_this3.__('The :resource was deleted!', {
+                                    Nova.success(_this3.__('The :resource was deleted!', {
                                         resource: _this3.resourceInformation.singularLabel.toLowerCase()
-                                    }), { type: 'success' });
+                                    }));
 
                                     if (!_this3.resource.softDeletes) {
                                         _this3.$router.push({
@@ -11639,9 +11692,9 @@ exports.default = {
                         switch (_context4.prev = _context4.next) {
                             case 0:
                                 this.restoreResources([this.resource], function () {
-                                    _this4.$toasted.show(_this4.__('The :resource was restored!', {
+                                    Nova.success(_this4.__('The :resource was restored!', {
                                         resource: _this4.resourceInformation.singularLabel.toLowerCase()
-                                    }), { type: 'success' });
+                                    }));
 
                                     _this4.closeRestoreModal();
                                     _this4.getResource();
@@ -11691,9 +11744,9 @@ exports.default = {
                         switch (_context5.prev = _context5.next) {
                             case 0:
                                 this.forceDeleteResources([this.resource], function () {
-                                    _this5.$toasted.show(_this5.__('The :resource was deleted!', {
+                                    Nova.success(_this5.__('The :resource was deleted!', {
                                         resource: _this5.resourceInformation.singularLabel.toLowerCase()
-                                    }), { type: 'success' });
+                                    }));
 
                                     _this5.$router.push({ name: 'index', params: { resourceName: _this5.resourceName } });
                                 });
@@ -14248,9 +14301,9 @@ exports.default = {
 
                                 this.submittedViaUpdateResource = false;
 
-                                this.$toasted.show(this.__('The :resource was updated!', {
+                                Nova.success(this.__('The :resource was updated!', {
                                     resource: this.resourceInformation.singularLabel.toLowerCase()
-                                }), { type: 'success' });
+                                }));
 
                                 _context3.next = 10;
                                 return this.updateLastRetrievedAtTimestamp();
@@ -14269,10 +14322,11 @@ exports.default = {
 
                                 if (_context3.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context3.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
                                 if (_context3.t0.response.status == 409) {
-                                    this.$toasted.show(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'), { type: 'error' });
+                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
                                 }
 
                             case 18:
@@ -14313,9 +14367,9 @@ exports.default = {
 
                                 this.submittedViaUpdateAndContinueEditing = false;
 
-                                this.$toasted.show(this.__('The :resource was updated!', {
+                                Nova.success(this.__('The :resource was updated!', {
                                     resource: this.resourceInformation.singularLabel.toLowerCase()
-                                }), { type: 'success' });
+                                }));
 
                                 // Reset the form by refetching the fields
                                 this.getFields();
@@ -14334,10 +14388,11 @@ exports.default = {
 
                                 if (_context4.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context4.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
                                 if (_context4.t0.response.status == 409) {
-                                    this.$toasted.show(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'), { type: 'error' });
+                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
                                 }
 
                             case 17:
@@ -14847,7 +14902,7 @@ exports.default = {
 
                                 this.submittedViaUpdateAttachedResource = false;
 
-                                this.$toasted.show(this.__('The resource was updated!'), { type: 'success' });
+                                Nova.success(this.__('The resource was updated!'));
 
                                 this.$router.push({
                                     name: 'detail',
@@ -14867,10 +14922,11 @@ exports.default = {
 
                                 if (_context4.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context4.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
                                 if (_context4.t0.response.status == 409) {
-                                    this.$toasted.show(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'), { type: 'error' });
+                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
                                 }
 
                             case 14:
@@ -14908,7 +14964,7 @@ exports.default = {
 
                                 this.submittedViaUpdateAndContinueEditing = false;
 
-                                this.$toasted.show(this.__('The resource was updated!'), { type: 'success' });
+                                Nova.success(this.__('The resource was updated!'));
 
                                 // Reset the form by refetching the fields
                                 this.initializeComponent();
@@ -14923,10 +14979,11 @@ exports.default = {
 
                                 if (_context5.t0.response.status == 422) {
                                     this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
+                                    Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
                                 if (_context5.t0.response.status == 409) {
-                                    this.$toasted.show(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'), { type: 'error' });
+                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
                                 }
 
                             case 14:
@@ -36580,7 +36637,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "bg-white overflow-hidden" },
+                { staticClass: "bg-white overflow-hidden key-value-items" },
                 _vm._l(_vm.theData, function(item, index) {
                   return _c("KeyValueItem", {
                     key: item.id,
@@ -36596,35 +36653,37 @@ var render = function() {
                   })
                 }),
                 1
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass:
-                    "appearance-none w-full font-semibold py-3 flex items-center justify-center text-80 hover:text-primary font-bold",
-                  attrs: { type: "button" },
-                  on: { click: _vm.addRowAndSelect }
-                },
-                [
-                  _c("icon", {
-                    attrs: {
-                      type: "add",
-                      width: "24",
-                      height: "24",
-                      "view-box": "0 0 24 24"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "ml-1" }, [
-                    _vm._v(_vm._s(_vm.field.actionText))
-                  ])
-                ],
-                1
               )
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "mr-11" }, [
+            _c(
+              "button",
+              {
+                staticClass:
+                  "btn btn-link dim cursor-pointer rounded-lg mx-auto text-primary mt-3 px-3 rounded-b-lg flex items-center",
+                attrs: { type: "button" },
+                on: { click: _vm.addRowAndSelect }
+              },
+              [
+                _c("icon", {
+                  attrs: {
+                    type: "add",
+                    width: "24",
+                    height: "24",
+                    "view-box": "0 0 24 24"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "ml-1" }, [
+                  _vm._v(_vm._s(_vm.field.actionText))
+                ])
+              ],
+              1
+            )
+          ])
         ],
         1
       )
@@ -38002,9 +38061,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { class: "text-" + _vm.field.textAlign }, [
-    _c("span", { staticClass: "whitespace-no-wrap" }, [
-      _vm._v(_vm._s(_vm.localizedDateTime))
-    ])
+    _vm.field.value
+      ? _c("span", { staticClass: "whitespace-no-wrap" }, [
+          _vm._v(_vm._s(_vm.localizedDateTime))
+        ])
+      : _c("span", { staticClass: "whitespace-no-wrap" }, [_vm._v("—")])
   ])
 }
 var staticRenderFns = []
@@ -38820,13 +38881,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: "text-" + _vm.field.textAlign }, [
-    _vm.field.asHtml
-      ? _c("div", { domProps: { innerHTML: _vm._s(_vm.field.value) } })
-      : _c("span", { staticClass: "whitespace-no-wrap" }, [
-          _vm._v(_vm._s(_vm.field.value))
-        ])
-  ])
+  return _c(
+    "div",
+    { class: "text-" + _vm.field.textAlign },
+    [
+      _vm.hasValue
+        ? [
+            _vm.field.asHtml
+              ? _c("div", { domProps: { innerHTML: _vm._s(_vm.field.value) } })
+              : _c("span", { staticClass: "whitespace-no-wrap" }, [
+                  _vm._v(_vm._s(_vm.field.value))
+                ])
+          ]
+        : _c("p", [_vm._v("—")])
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39305,25 +39375,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "flex border-b border-50" }, [
-    _c(
-      "div",
-      {
-        staticClass:
-          "w-48 uppercase font-bold text-xs text-80 tracking-wide px-3 py-3"
-      },
-      [_vm._v("\n        " + _vm._s(_vm.keyLabel) + "\n    ")]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass:
-          "flex-grow uppercase font-bold text-xs text-80 tracking-wide px-3 py-3 border-l border-50"
-      },
-      [_vm._v("\n        " + _vm._s(_vm.valueLabel) + "\n    ")]
-    )
-  ])
+  return _c(
+    "div",
+    { staticClass: "bg-30 rounded-t-lg flex border-b border-50" },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "bg-clip w-48 uppercase font-bold text-xs text-80 tracking-wide px-3 py-3"
+        },
+        [_vm._v("\n        " + _vm._s(_vm.keyLabel) + "\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "bg-clip flex-grow uppercase font-bold text-xs text-80 tracking-wide px-3 py-3 border-l border-50"
+        },
+        [_vm._v("\n        " + _vm._s(_vm.valueLabel) + "\n    ")]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39360,7 +39434,8 @@ var render = function() {
           ? _c(
               "select",
               {
-                staticClass: "ml-auto min-w-24 h-6 text-xs no-appearance bg-40",
+                staticClass:
+                  "select-box-sm ml-auto min-w-24 h-6 text-xs appearance-none bg-40 pl-2 pr-6 active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
                 on: { change: _vm.handleChange }
               },
               _vm._l(_vm.ranges, function(option) {
@@ -40157,7 +40232,8 @@ var render = function() {
           ? _c(
               "select",
               {
-                staticClass: "ml-auto min-w-24 h-6 text-xs no-appearance bg-40",
+                staticClass:
+                  "select-box-sm ml-auto min-w-24 h-6 text-xs appearance-none bg-40 pl-2 pr-6 active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
                 on: { change: _vm.handleChange }
               },
               _vm._l(_vm.ranges, function(option) {
@@ -40381,6 +40457,7 @@ var render = function() {
     "a",
     {
       staticClass: "btn btn-link dim cursor-pointer text-80 ml-auto mr-6",
+      attrs: { tabindex: "0" },
       on: {
         click: function($event) {
           return _vm.$router.back()
@@ -40453,6 +40530,30 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-34359573", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-36e11778\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/XCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function(_h, _vm) {
+  var _c = _vm._c
+  return _c("path", {
+    attrs: {
+      d:
+        "M4.93 19.07A10 10 0 1 1 19.07 4.93 10 10 0 0 1 4.93 19.07zm1.41-1.41A8 8 0 1 0 17.66 6.34 8 8 0 0 0 6.34 17.66zM13.41 12l1.42 1.41a1 1 0 1 1-1.42 1.42L12 13.4l-1.41 1.42a1 1 0 1 1-1.42-1.42L10.6 12l-1.42-1.41a1 1 0 1 1 1.42-1.42L12 10.6l1.41-1.42a1 1 0 1 1 1.42 1.42L13.4 12z"
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-36e11778", module.exports)
   }
 }
 
@@ -41323,9 +41424,8 @@ var render = function() {
     "div",
     {
       staticClass:
-        "relative rounded-t-lg rounded-b-lg shadow bg-30 border border-60",
-      class: { "mr-11": _vm.editMode },
-      staticStyle: { "background-clip": "border-box" }
+        "relative rounded-lg rounded-b-lg bg-30 bg-clip border border-60",
+      class: { "mr-11": _vm.editMode }
     },
     [_vm._t("default")],
     2
@@ -41621,7 +41721,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "appearance-none form-control form-input w-search pl-search",
+                    "appearance-none form-search w-search pl-search shadow",
                   attrs: {
                     "data-testid": "search-input",
                     dusk: "search",
@@ -42051,7 +42151,7 @@ var render = function() {
                           _c("create-resource-button", {
                             attrs: {
                               classes:
-                                "btn btn-sm btn-outline inline-flex items-center",
+                                "btn btn-sm btn-outline inline-flex items-center focus:outline-none focus:shadow-outline active:outline-none active:shadow-outline",
                               "singular-name": _vm.singularName,
                               "resource-name": _vm.resourceName,
                               "via-resource": _vm.viaResource,
@@ -42430,7 +42530,8 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn text-80 font-normal h-9 px-3 mr-3 btn-link",
+                  staticClass:
+                    "btn btn-link dim cursor-pointer text-80 ml-auto mr-6",
                   attrs: { dusk: "cancel-action-button", type: "button" },
                   on: {
                     click: function($event) {
@@ -43278,7 +43379,7 @@ var render = function() {
           { staticClass: "relative" },
           [
             _c("icon", {
-              staticClass: "absolute search-icon-center ml-3 text-70",
+              staticClass: "absolute search-icon-center ml-3 text-80",
               attrs: { type: "search" }
             }),
             _vm._v(" "),
@@ -43292,8 +43393,7 @@ var render = function() {
                 }
               ],
               ref: "input",
-              staticClass:
-                "pl-search form-control form-input form-input-bordered w-full",
+              staticClass: "pl-search w-full form-global-search",
               attrs: {
                 dusk: "global-search",
                 type: "search",
@@ -43478,7 +43578,11 @@ var render = function() {
                             [
                               item.avatar
                                 ? _c("img", {
-                                    staticClass: "h-8 w-8 rounded-full mr-3",
+                                    staticClass: "h-8 w-8 mr-3",
+                                    class: {
+                                      "rounded-full": item.rounded,
+                                      rounded: !item.rounded
+                                    },
                                     attrs: { src: item.avatar }
                                   })
                                 : _vm._e(),
@@ -44425,23 +44529,36 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("panel-item", { attrs: { field: _vm.field } }, [
-    _c(
-      "p",
-      { staticClass: "text-90", attrs: { slot: "value" }, slot: "value" },
-      [
-        _c("span", {
-          staticClass: "inline-block rounded-full w-2 h-2 mr-1",
-          class: {
-            "bg-success": _vm.field.value,
-            "bg-danger": !_vm.field.value
-          }
-        }),
-        _vm._v(" "),
-        _c("span", [_vm._v(_vm._s(_vm.label))])
-      ]
-    )
-  ])
+  return _c(
+    "panel-item",
+    { attrs: { field: _vm.field } },
+    [
+      _vm.field.value
+        ? _c("icon", {
+            staticClass: "text-success",
+            attrs: {
+              slot: "value",
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "check-circle"
+            },
+            slot: "value"
+          })
+        : _c("icon", {
+            staticClass: "text-danger",
+            attrs: {
+              slot: "value",
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "x-circle"
+            },
+            slot: "value"
+          })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -45179,85 +45296,90 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.isNotObject
-    ? _c("div", { staticClass: "flex items-center" }, [
-        _c("div", { staticClass: "flex flex-grow border-b border-50" }, [
-          _c("div", { staticClass: "w-48 cursor-text" }, [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.item.key,
-                  expression: "item.key"
-                }
-              ],
-              ref: "keyField",
-              staticClass:
-                "font-mono text-sm resize-none block min-h-input w-full form-control form-input form-input-row py-4",
-              class: {
-                "!bg-white": _vm.disabled,
-                "hover:bg-20 focus:bg-white": !_vm.disabled
-              },
-              attrs: {
-                dusk: "key-value-key-" + _vm.index,
-                type: "text",
-                disabled: _vm.disabled
-              },
-              domProps: { value: _vm.item.key },
-              on: {
-                focus: _vm.handleKeyFieldFocus,
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.item, "key", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "flex-grow border-l border-50",
-              on: { click: _vm.handleValueFieldFocus }
-            },
-            [
+    ? _c("div", { staticClass: "flex items-center key-value-item" }, [
+        _c(
+          "div",
+          { staticClass: "flex flex-grow border-b border-50 key-value-fields" },
+          [
+            _c("div", { staticClass: "w-48 cursor-text" }, [
               _c("textarea", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.item.value,
-                    expression: "item.value"
+                    value: _vm.item.key,
+                    expression: "item.key"
                   }
                 ],
-                ref: "valueField",
+                ref: "keyField",
                 staticClass:
-                  "font-mono text-sm hover:bg-20 focus:bg-white block min-h-input w-full form-control form-input form-input-row py-4",
+                  "font-mono text-sm resize-none block min-h-input w-full form-control form-input form-input-row py-4 text-90",
                 class: {
                   "!bg-white": _vm.disabled,
                   "hover:bg-20 focus:bg-white": !_vm.disabled
                 },
+                staticStyle: { "background-clip": "border-box" },
                 attrs: {
-                  dusk: "key-value-value-" + _vm.index,
+                  dusk: "key-value-key-" + _vm.index,
                   type: "text",
                   disabled: _vm.disabled
                 },
-                domProps: { value: _vm.item.value },
+                domProps: { value: _vm.item.key },
                 on: {
-                  focus: _vm.handleValueFieldFocus,
+                  focus: _vm.handleKeyFieldFocus,
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.item, "value", $event.target.value)
+                    _vm.$set(_vm.item, "key", $event.target.value)
                   }
                 }
               })
-            ]
-          )
-        ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-grow border-l border-50",
+                on: { click: _vm.handleValueFieldFocus }
+              },
+              [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.item.value,
+                      expression: "item.value"
+                    }
+                  ],
+                  ref: "valueField",
+                  staticClass:
+                    "font-mono text-sm hover:bg-20 focus:bg-white block min-h-input w-full form-control form-input form-input-row py-4 text-90",
+                  class: {
+                    "!bg-white": _vm.disabled,
+                    "hover:bg-20 focus:bg-white": !_vm.disabled
+                  },
+                  attrs: {
+                    dusk: "key-value-value-" + _vm.index,
+                    type: "text",
+                    disabled: _vm.disabled
+                  },
+                  domProps: { value: _vm.item.value },
+                  on: {
+                    focus: _vm.handleValueFieldFocus,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.item, "value", $event.target.value)
+                    }
+                  }
+                })
+              ]
+            )
+          ]
+        ),
         _vm._v(" "),
         !_vm.disabled
           ? _c(
@@ -45271,7 +45393,7 @@ var render = function() {
                   "button",
                   {
                     staticClass:
-                      "flex appearance-none cursor-pointer text-70 hover:text-primary",
+                      "flex appearance-none cursor-pointer text-70 hover:text-primary active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
                     attrs: { type: "button", tabindex: "-1", title: "Delete" },
                     on: {
                       click: function($event) {
@@ -46566,6 +46688,30 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-897bb47c", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-94c9e7f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/CheckCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function(_h, _vm) {
+  var _c = _vm._c
+  return _c("path", {
+    attrs: {
+      d:
+        "M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-94c9e7f0", module.exports)
   }
 }
 
@@ -48071,15 +48217,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: "text-" + _vm.field.textAlign }, [
-    _c("span", {
-      staticClass: "boolean-field",
-      class: {
-        "boolean-field-true": _vm.field.value,
-        "boolean-field-false": !_vm.field.value
-      }
-    })
-  ])
+  return _c(
+    "div",
+    { class: "text-" + _vm.field.textAlign },
+    [
+      _vm.field.value
+        ? _c("icon", {
+            staticClass: "text-success",
+            attrs: {
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "check-circle"
+            }
+          })
+        : _c("icon", {
+            staticClass: "text-danger",
+            attrs: {
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "x-circle"
+            }
+          })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48200,31 +48363,36 @@ var render = function() {
         "template",
         { slot: "value" },
         [
-          _c(
-            "KeyValueTable",
-            { staticClass: "overflow-hidden", attrs: { "edit-mode": false } },
-            [
-              _c("KeyValueHeader", {
-                attrs: {
-                  "key-label": _vm.field.keyLabel,
-                  "value-label": _vm.field.valueLabel
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "bg-white overflow-hidden" },
-                _vm._l(_vm.theData, function(item) {
-                  return _c("KeyValueItem", {
-                    key: item.key,
-                    attrs: { item: item, disabled: true }
-                  })
-                }),
+          _vm.theData.length > 0
+            ? _c(
+                "KeyValueTable",
+                {
+                  staticClass: "overflow-hidden",
+                  attrs: { "edit-mode": false }
+                },
+                [
+                  _c("KeyValueHeader", {
+                    attrs: {
+                      "key-label": _vm.field.keyLabel,
+                      "value-label": _vm.field.valueLabel
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "bg-white overflow-hidden key-value-items" },
+                    _vm._l(_vm.theData, function(item) {
+                      return _c("KeyValueItem", {
+                        key: item.key,
+                        attrs: { item: item, disabled: true }
+                      })
+                    }),
+                    1
+                  )
+                ],
                 1
               )
-            ],
-            1
-          )
+            : _vm._e()
         ],
         1
       )
@@ -48363,15 +48531,13 @@ var render = function() {
                               )
                             ]
                           )
-                        : _c("span", [
-                            _vm._v(" " + _vm._s(field.indexName) + " ")
-                          ])
+                        : _c("span", [_vm._v(_vm._s(field.indexName))])
                     ],
                     1
                   )
                 }),
                 _vm._v(" "),
-                _c("th", [_vm._v("\n                 ")])
+                _c("th", [_vm._v(" ")])
               ],
               2
             )
@@ -53440,6 +53606,30 @@ var Nova = function () {
                 return r.uriKey == uriKey;
             }) == undefined;
         }
+
+        /**
+         * Show an error message to the user.
+         *
+         * @param {string} message
+         */
+
+    }, {
+        key: 'error',
+        value: function error(message) {
+            _vue2.default.toasted.show(message, { type: 'error' });
+        }
+
+        /**
+         * Show a success message to the user.
+         *
+         * @param {string} message
+         */
+
+    }, {
+        key: 'success',
+        value: function success(message) {
+            _vue2.default.toasted.show(message, { type: 'success' });
+        }
     }]);
     return Nova;
 }();
@@ -53562,6 +53752,10 @@ var _Card2 = _interopRequireDefault(_Card);
 var _Cards = __webpack_require__("./resources/js/components/Cards.vue");
 
 var _Cards2 = _interopRequireDefault(_Cards);
+
+var _CheckCircle = __webpack_require__("./resources/js/components/Icons/CheckCircle.vue");
+
+var _CheckCircle2 = _interopRequireDefault(_CheckCircle);
 
 var _CardWrapper = __webpack_require__("./resources/js/components/CardWrapper.vue");
 
@@ -53815,6 +54009,10 @@ var _View = __webpack_require__("./resources/js/components/Icons/View.vue");
 
 var _View2 = _interopRequireDefault(_View);
 
+var _XCircle = __webpack_require__("./resources/js/components/Icons/XCircle.vue");
+
+var _XCircle2 = _interopRequireDefault(_XCircle);
+
 var _SelectFilter = __webpack_require__("./resources/js/components/Filters/SelectFilter.vue");
 
 var _SelectFilter2 = _interopRequireDefault(_SelectFilter);
@@ -53878,6 +54076,8 @@ _vue2.default.component('help', _HelpCard2.default);
 _vue2.default.component('help-text', _HelpText2.default);
 _vue2.default.component('icon', _Icon2.default);
 _vue2.default.component('icon-add', _Add2.default);
+_vue2.default.component('icon-check-circle', _CheckCircle2.default);
+_vue2.default.component('icon-x-circle', _XCircle2.default);
 _vue2.default.component('icon-delete', _Delete2.default);
 _vue2.default.component('icon-download', _Download2.default);
 _vue2.default.component('icon-edit', _Edit2.default);
@@ -57750,6 +57950,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/components/Icons/CheckCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-94c9e7f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/CheckCircle.vue")
+/* template functional */
+var __vue_template_functional__ = true
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/CheckCircle.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-94c9e7f0", Component.options)
+  } else {
+    hotAPI.rerender("data-v-94c9e7f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Icons/Delete.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -58603,6 +58851,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-057f4776", Component.options)
   } else {
     hotAPI.rerender("data-v-057f4776", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Icons/XCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-36e11778\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/XCircle.vue")
+/* template functional */
+var __vue_template_functional__ = true
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/XCircle.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-36e11778", Component.options)
+  } else {
+    hotAPI.rerender("data-v-36e11778", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
