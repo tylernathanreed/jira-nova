@@ -1,0 +1,6 @@
+display_name,system_name,transition_order,color,description,deleted_at
+Done,done,5,#098f56,"The issue has been completed.",
+Grooming,grooming,1,#f99037,"Design, requirements, prioritization, clarifications, etc. are being created or provided.",
+"In Progress",in_progress,3,#ffc000,"The issue is actively being worked on.",
+Ready,ready,2,#5b9bd5,"The issue is ready to be worked on.",
+Testing,testing,4,#9c6ade,"The issue is currently undergoing quality assurance.",
