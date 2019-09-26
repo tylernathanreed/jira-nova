@@ -189,6 +189,9 @@ class CsvSeeder extends Seeder
                 // Extract the matching data
                 $match = Arr::only($result, $this->match);
 
+                // Remember whether or not the model is treashed
+                $trashed = false;
+
                 // If result has a trashed entry, convert it to a timestamp
                 if(isset($result['trashed'])) {
 
@@ -198,10 +201,21 @@ class CsvSeeder extends Seeder
                     // Remove the trashed flag
                     unset($result['trashed']);
 
+                    // Remember that the model was trashed
+                    $trashed = true;
+
                 }
 
-                // Create or update the model
-                $instance = $model->updateOrCreate($match, $result);
+                // Find the first model or make a new one
+                $instance = $model->firstOrNew($match, $result);
+
+                // If the model doesn't exist, and is going to be soft deleted, skip it
+                if(!$instance->exists && $trashed) {
+                    continue;
+                }
+
+                // Update and save the model
+                $instance->fill($result)->save();
 
             }
 

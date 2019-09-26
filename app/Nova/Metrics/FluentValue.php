@@ -92,6 +92,20 @@ class FluentValue extends Value
     public $futuristic = false;
 
     /**
+     * Whether or not this metric should use ranges.
+     *
+     * @var boolean
+     */
+    public $noRanges = false;
+
+    /**
+     * Whether or not to use the current "to" range in the previous range.
+     *
+     * @var boolean
+     */
+    public $useCurrentToRange = false;
+
+    /**
      * The query callbacks for this metric.
      *
      * @var array
@@ -104,6 +118,13 @@ class FluentValue extends Value
      * @var \Closure|null
      */
     public $valueAccessor;
+
+    /**
+     * The query with range callbacks for this metric.
+     *
+     * @var array
+     */
+    public $queryWithRangeCallbacks = [];
 
     /**
      * The value formatting for this metric.
@@ -346,12 +367,30 @@ class FluentValue extends Value
     }
 
     /**
+     * Sets whether or not ranges should be using in this metric.
+     *
+     * @param  boolean  $noRanges
+     *
+     * @return $this
+     */
+    public function noRanges($noRanges = true)
+    {
+        $this->noRanges = $noRanges;
+
+        return $this;
+    }
+
+    /**
      * Get the ranges available for the metric.
      *
      * @return array
      */
     public function ranges()
     {
+        if($this->noRanges) {
+            return [];
+        }
+
         $adjective = $this->futuristic ? 'Next' : 'Past';
 
         return [
@@ -360,6 +399,20 @@ class FluentValue extends Value
             90 => $adjective . ' 90 Days',
             365 => $adjective . ' 1 Year'
         ];
+    }
+
+    /**
+     * Sets whether or not to use the current "to" range in the previous range.
+     *
+     * @param  boolean  $useCurrentToRange
+     *
+     * @return $this
+     */
+    public function useCurrentToRange($useCurrentToRange = true)
+    {
+        $this->useCurrentToRange = $useCurrentToRange;
+
+        return $this;
     }
 
     /**
@@ -379,11 +432,11 @@ class FluentValue extends Value
     /**
      * Sets the value accessor for this metric.
      *
-     * @param  callable  $accessor
+     * @param  \Closure  $accessor
      *
      * @return $this
      */
-    public function setValueAccesstor(callable $accessor)
+    public function setValueAccessor(Closure $accessor)
     {
         $this->valueAccessor = $accessor;
 
@@ -397,7 +450,7 @@ class FluentValue extends Value
      */
     public function useSumOfAggregates()
     {
-        return $this->setValueAccesstor(function($query) {
+        return $this->setValueAccessor(function($query) {
             return DB::query()->fromSub($query, 'aggregates')->sum('aggregate');
         });
     }
@@ -418,6 +471,48 @@ class FluentValue extends Value
 
         // Return the value
         return $accessor($query);
+    }
+
+    /**
+     * Adds the specified closure as a query callback.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function scope(Closure $callback)
+    {
+        $this->queryCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Applies the query with range callbacks to the specified query.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     *
+     * @return void
+     */
+    public function applyQueryWithRangeCallbacks($query, $range)
+    {
+        foreach($this->queryWithRangeCallbacks as $callback) {
+            $callback($query, $range);
+        }
+    }
+
+    /**
+     * Adds the specified closure as a query with range callback.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function scopeWithRange(Closure $callback)
+    {
+        $this->queryWithRangeCallbacks[] = $callback;
+
+        return $this;
     }
 
     /**
@@ -466,9 +561,23 @@ class FluentValue extends Value
         // Determine the date column
         $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
 
+        // Determine the ranges
+        $ranges = [
+            $this->currentRange($request->range),
+            $this->previousRange($request->range)
+        ];
+
         // Determine the current and previous queries
-        $currentQuery = with(clone $query)->whereBetween($dateColumn, $this->currentRange($request->range));
-        $previousQuery = with(clone $query)->whereBetween($dateColumn, $this->previousRange($request->range));
+        $currentQuery = ($this->noRanges || $dateColumn === false) ? (clone $query) : with(clone $query)->whereBetween($dateColumn, $ranges[0]);
+        $previousQuery = ($this->noRanges || $dateColumn === false) ? (clone $query) : with(clone $query)->whereBetween($dateColumn, $ranges[1]);
+
+        // If we're using ranges, apply the range callbacks
+        if(!$this->noRanges) {
+
+            $this->applyQueryWithRangeCallbacks($currentQuery, $ranges[0]);
+            $this->applyQueryWithRangeCallbacks($previousQuery, $ranges[1]);
+
+        }
 
         // Determine the aggregate column
         $column = $column ?? $query->getModel()->getQualifiedKeyName();
@@ -500,6 +609,24 @@ class FluentValue extends Value
 
         // Return the result
         return $this->result($currentValue)->previous($previousValue);
+    }
+
+    /**
+     * Calculate the previous range and calculate any short-cuts.
+     *
+     * @param  string|int  $range
+     *
+     * @return array
+     */
+    protected function previousRange($range)
+    {
+        $previous = parent::previousRange($range);
+
+        if($this->useCurrentToRange) {
+            $previous[1] = parent::currentRange($range)[1];
+        }
+
+        return $previous;
     }
 
     /**

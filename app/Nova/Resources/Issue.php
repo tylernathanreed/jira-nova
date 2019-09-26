@@ -187,8 +187,8 @@ class Issue extends Resource
             Field::code('Links', 'links')->json()->onlyOnDetail(),
             // Field::text('blocks', 'blocks'),
 
-            Field::text('Rank', 'rank_index')->onlyOnIndex()->sortable(),
-            Field::text('Rank Index', 'rank_index')->onlyOnDetail(),
+            Field::text('Rank', 'rank')->onlyOnIndex()->sortable(),
+            // Field::text('Rank Index', 'rank_index')->onlyOnDetail(),
             Field::text('Rank', 'rank')->onlyOnDetail(),
 
             Field::date('Created', 'entry_date')->onlyOnDetail()
@@ -238,6 +238,11 @@ class Issue extends Resource
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
+
+            /**
+             * This is a temporary lens and must eventually be removed!
+             */
+            (new \App\Nova\Lenses\IssueSingleEpicPrioritiesLens)->label('CASL Priorities')->epic('UAS-8950'),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Defects')->scope(function($query) { $query->defects()->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),

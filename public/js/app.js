@@ -137,8 +137,8 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\Program Files (x86)\Wamp\3.1.7\www\projects\jira-nova\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\Program Files (x86)\Wamp\3.1.7\www\projects\jira-nova\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! S:\Docroot\personal\jira-nova\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! S:\Docroot\personal\jira-nova\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -667,7 +667,7 @@ class Issue extends Model implements Cacheable
     public static function updateIssueAggregates()
     {
         // Update the rank index
-        static::updateIssueRankIndex();
+        // static::updateIssueRankIndex();
     }
 
     /**
@@ -989,5 +989,15 @@ class Issue extends Model implements Cacheable
     public function worklogs()
     {
         return $this->hasMany(IssueWorklog::class, 'issue_id');
+    }
+
+    /**
+     * Returns the status that this issue belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status()
+    {
+        return $this->belongsTo(WorkflowStatusType::class, 'status_name', 'name');
     }
 }

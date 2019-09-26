@@ -126,7 +126,8 @@ return [
         'Management' => 'icon-cubes',
         'Meta' => 'icon-code',
         'Scheduling' => 'icon-calendar',
-        'System' => 'icon-cogs'
+        'System' => 'icon-cogs',
+        'Workflows' => 'icon-project-diagram'
     ]
 
 ];
