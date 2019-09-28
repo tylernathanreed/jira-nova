@@ -4,6 +4,7 @@ namespace App\Nova\Resources;
 
 use Field;
 use Illuminate\Http\Request;
+use App\Models\IssueChangelogItem as IssueChangelogItemModel;
 
 class IssueChangelog extends Resource
 {
@@ -95,6 +96,92 @@ class IssueChangelog extends Resource
     public function cards(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Creates and returns a new estimate extensions value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getEstimateExtensionsValue()
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Estimate Extensions')
+            ->select('sum(item_to - item_from) / 3600.0')
+            ->precision(2)
+            ->dateColumn('created_at')
+            ->suffix('hours')
+            ->joinRelation('items', function($join) {
+
+                $join->where('item_field_name', '=', IssueChangelogItemModel::FIELD_ORIGINAL_ESTIMATE);
+
+                $join->whereNotNull('item_from');
+                $join->where('item_from', '!=', 0);
+                $join->whereRaw('cast(item_from as decimal) < cast(item_to as decimal)');
+
+            });
+    }
+
+    /**
+     * Creates and returns a new estimate reductions value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getEstimateReductionsValue()
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Estimate Reductions')
+            ->select('sum(item_from - item_to) / 3600.0')
+            ->precision(2)
+            ->dateColumn('created_at')
+            ->suffix('hours')
+            ->joinRelation('items', function($join) {
+
+                $join->where('item_field_name', '=', IssueChangelogItemModel::FIELD_ORIGINAL_ESTIMATE);
+
+                $join->whereNotNull('item_to');
+                $join->where('item_to', '!=', 0);
+                $join->whereRaw('cast(item_to as decimal) < cast(item_from as decimal)');
+
+            });
+    }
+
+    /**
+     * Creates and returns a new estimate reductions value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getEstimateInflationValue()
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Estimate Inflation')
+            ->select('1.0 * (max(cast(item_to as decimal)) - min(cast(item_from as decimal))) / min(cast(item_from as decimal))')
+            ->useAverageOfAggregates()
+            ->groupBy('issues.id')
+            ->dateColumn('issues.resolution_date')
+            ->joinRelation('issue', function($join) {
+                $join->whereNotNull('issues.resolution_date');
+            })
+            ->joinRelation('items', function($join) {
+
+                $join->where('item_field_name', '=', IssueChangelogItemModel::FIELD_ORIGINAL_ESTIMATE);
+
+                $join->whereNotNull('item_from');
+                $join->where('item_from', '!=', 0);
+
+                $join->whereNotNull('item_to');
+                $join->where('item_to', '!=', 0);
+
+            })
+            ->precision(2)
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ])
+            ->useScalarDelta();
     }
 
     /**

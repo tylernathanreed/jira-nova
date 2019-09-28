@@ -92,9 +92,23 @@ class FluentPartition extends Partition
     /**
      * The direction to sort the results.
      *
-     * @var  string|null
+     * @var string|null
      */
     public $sort;
+
+    /**
+     * The result limit after sorting.
+     *
+     * @var integer|null
+     */
+    public $limit;
+
+    /**
+     * The colors to assign to the partition.
+     *
+     * @var array
+     */
+    public $colors;
 
     /**
      * Calculate the value of the metric.
@@ -122,6 +136,12 @@ class FluentPartition extends Partition
 
         // Apply the result sort
         $this->applyResultSort($result);
+
+        // Apply the result limit
+        $this->applyResultLimit($result);
+
+        // Apply the result colors
+        $this->applyResultColors($result);
 
         // Return the result
         return $result;
@@ -451,6 +471,113 @@ class FluentPartition extends Partition
 
         // Update the value
         $result->value = $value;
+    }
+
+    /**
+     * Limits the results to the specified number of entries.
+     *
+     * @param  integer  $limit
+     *
+     * @return $this
+     */
+    public function limit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * Applies the limit on the specified result.
+     *
+     * @param  \Laravel\Nova\Metrics\PartitionResult  $result
+     *
+     * @return void
+     */
+    public function applyResultLimit($result)
+    {
+        // Make sure a limit has been specified
+        if(is_null($this->limit)) {
+            return;
+        }
+
+        // Determine the result value
+        $value = $result->value;
+
+        // Merge the last results into a labelled category
+        if(count($value) >= 10) {
+            $value = array_merge(array_slice($value, 0, $this->limit - 1), [($label ?? 'Other') => array_sum(array_slice($value, $this->limit - 1))]);
+        }
+
+        // Update the value
+        $result->value = $value;
+    }
+
+    /**
+     * Assigns the colors for this partition.
+     *
+     * @param  array  $colors
+     *
+     * @return $this
+     */
+    public function colors($colors)
+    {
+        $this->colors = $colors;
+
+        return $this;
+    }
+
+    /**
+     * Sets the colors on the partition result.
+     *
+     * @param  \Laravel\Nova\Metrics\PartitionResult  $result
+     *
+     * @return void
+     */
+    public function applyResultColors($result)
+    {
+        // Make sure colors have been provided
+        if(is_null($this->colors)) {
+            return;
+        }
+
+        // Determine the colors
+        $colors = collect($this->colors);
+
+        // Determine the labels
+        $labels = array_keys($result->value);
+
+        // Reduce the color list to only present values
+        $colors = collect($colors)->only($labels);
+
+        // Initialize the color counts
+        $counts = $colors->flip()->map(function($color) {
+            return 0;
+        });
+
+        // If a color is repeated, force a different color
+        $colors->transform(function($color, $label) use (&$counts) {
+
+            // Increase the color count
+            $counts[$color] = $counts[$color] + 1;
+
+            // If this is the first of its kind, keep it
+            if($counts[$color] == 1) {
+                return $color;
+            }
+
+            // Detemrine the count
+            $count = $counts[$color];
+
+            // Offset each digit
+            return '#' . implode('', array_map(function($v) use ($count) {
+                return dechex((hexdec($v) - $count + 16) % 16);
+            }, str_split(substr($color, 1))));
+
+        });
+
+        // Assign the colors
+        $result->colors($colors->all());
     }
 
     /**

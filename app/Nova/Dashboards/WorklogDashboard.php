@@ -19,6 +19,13 @@ class WorklogDashboard extends Dashboard
     protected static $resource = \App\Nova\Resources\IssueWorklog::class;
 
     /**
+     * The secondary resource for this dashboard.
+     *
+     * @var string
+     */
+    protected static $changelog = \App\Nova\Resources\IssueChangelog::class;
+
+    /**
      * Get the cards for the dashboard.
      *
      * @return array
@@ -26,17 +33,21 @@ class WorklogDashboard extends Dashboard
     public function cards()
     {
         return [
-            static::getInflowTrendMetric(),
-            static::getCountByAssigneePartitionMetric(),
-            static::getEfficiencyValue(),
+            static::getEstimateExtensionsValue(),
+            static::getEstimateReductionsValue(),
+            static::getEstimateInflationValue(),
+
+            static::getFeatureWorklogTrend(),
+            static::getDefectWorklogTrend(),
+            static::getUpkeepValue(),
 
             static::getWorklogTrend(),
-            static::getExpectedWorklogValue(),
-            static::getEquilibriumTrendMetric(),
+            static::getExpectedWorklogTrend(),
+            static::getEfficiencyValue(),
 
-            static::getActualDelinquenciesTrendMetric(),
-            static::getEstimatedDelinquenciesTrendMetric(),
-            static::getSatisfactionValueMetric(),
+            // static::getActualDelinquenciesTrendMetric(),
+            // static::getEstimatedDelinquenciesTrendMetric(),
+            // static::getSatisfactionValueMetric(),
 
             static::getWorklogByEpicPartition(),
             static::getWorklogByPriorityPartition(),
@@ -45,19 +56,7 @@ class WorklogDashboard extends Dashboard
     }
 
     /**
-     * Returns the scope for this dashboard.
-     *
-     * @return \Closure
-     */
-    public static function scope()
-    {
-        return function($query) {
-            $query->defects();
-        };
-    }
-
-    /**
-     * Creates and returns a new resource.
+     * Creates and returns a new primary resource.
      *
      * @return \App\Nova\Resources\Resource
      */
@@ -69,15 +68,55 @@ class WorklogDashboard extends Dashboard
     }
 
     /**
+     * Creates and returns a new secondary resource.
+     *
+     * @return \App\Nova\Resources\Resource
+     */
+    public static function changelog()
+    {
+        $class = static::$changelog;
+
+        return new $class($class::newModel());
+    }
+
+    /**
+     * Returns the time extensions metric for this dashboard.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getEstimateExtensionsValue()
+    {
+        return static::changelog()->getEstimateExtensionsValue();
+    }
+
+    /**
+     * Returns the time reductions metric for this dashboard.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getEstimateReductionsValue()
+    {
+        return static::changelog()->getEstimateReductionsValue();
+    }
+
+    /**
+     * Returns the time inflations metric for this dashboard.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getEstimateInflationValue()
+    {
+        return static::changelog()->getEstimateInflationValue();
+    }
+
+    /**
      * Returns the inflow trend metric for this dashboard.
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public static function getInflowTrendMetric()
+    public static function getFeatureWorklogTrend()
     {
-        return (new \App\Nova\Metrics\IssueCreatedByDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Inflow');
+        return static::resource()->getFeatureWorklogTrend();
     }
 
     /**
@@ -85,22 +124,19 @@ class WorklogDashboard extends Dashboard
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public static function getCountByAssigneePartitionMetric()
+    public static function getDefectWorklogTrend()
     {
-        return (new \App\Nova\Metrics\IssueCountPartition)
-            ->groupByAssignee()
-            ->filter(static::scope())
-            ->setName(static::$label . ' Rem. Count (by Assignee)');
+        return static::resource()->getDefectWorklogTrend();
     }
 
     /**
-     * Returns the efficiency value metric for this dashboard.
+     * Returns the equilibrium trend metric for this dashboard.
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public static function getEfficiencyValue()
+    public static function getUpkeepValue()
     {
-        return static::resource()->getEfficiencyValue();
+        return static::resource()->getUpkeepValue();
     }
 
     /**
@@ -118,73 +154,19 @@ class WorklogDashboard extends Dashboard
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public static function getExpectedWorklogValue()
+    public static function getExpectedWorklogTrend()
     {
-        return static::resource()->getExpectedWorklogValue();
+        return static::resource()->getExpectedWorklogTrend();
     }
 
     /**
-     * Returns the equilibrium trend metric for this dashboard.
+     * Returns the efficiency value metric for this dashboard.
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public static function getEquilibriumTrendMetric()
+    public static function getEfficiencyValue()
     {
-        return (new \App\Nova\Metrics\IssueCountResolutionByDateValue)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Equilibrium');
-    }
-
-    /**
-     * Returns the actual delinquencies trend metric for this dashboard.
-     *
-     * @return \Laravel\Nova\Metrics\Metric
-     */
-    public static function getActualDelinquenciesTrendMetric()
-    {
-        return (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Act. Delinquencies');
-    }
-
-    /**
-     * Returns the estimated delinquencies trend metric for this dashboard.
-     *
-     * @return \Laravel\Nova\Metrics\Metric
-     */
-    public static function getEstimatedDelinquenciesTrendMetric()
-    {
-        return (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Est. Delinquencies');
-    }
-
-    /**
-     * Returns the satisfaction value metric for this dashboard.
-     *
-     * @return \Laravel\Nova\Metrics\Metric
-     */
-    public static function getSatisfactionValueMetric()
-    {
-        return (new \App\Nova\Metrics\IssueStatusSatisfactionByDateValue)
-            ->filter(static::scope())
-            ->statuses([
-                'New',
-                'In Design',
-                'Need Client Clarification',
-                'Dev Help Needed',
-                'Waiting for approval',
-                'Validating',
-                'Assigned',
-                'Dev Hold',
-                'Dev Complete',
-                'In Development',
-                'Testing Failed',
-                'Ready to Test [Test]',
-                'Ready to test [UAT]',
-                'Test Help Needed'
-            ])
-            ->setName(static::$label . ' Commitments Kept');
+        return static::resource()->getEfficiencyValue();
     }
 
     /**

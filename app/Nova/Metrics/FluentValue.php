@@ -456,6 +456,18 @@ class FluentValue extends Value
     }
 
     /**
+     * Sets the value accessor to use the average of aggregates.
+     *
+     * @return $this
+     */
+    public function useAverageOfAggregates()
+    {
+        return $this->setValueAccessor(function($query) {
+            return DB::query()->fromSub($query, 'aggregates')->average('aggregate');
+        });
+    }
+
+    /**
      * Returns the aggregate value from the specified query.
      *
      * @param  \Illuminate\Database\Query\Builder  $query

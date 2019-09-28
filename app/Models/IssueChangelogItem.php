@@ -15,6 +15,7 @@ class IssueChangelogItem extends Model
      * @var string
      */
     const FIELD_STATUS = 'status';
+    const FIELD_ORIGINAL_ESTIMATE = 'timeoriginalestimate';
 
     //////////////////
     //* Attributes *//

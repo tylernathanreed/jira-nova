@@ -23,8 +23,6 @@ class FluentTrend extends Trend
     const USE_MAX = 'max';
     const USE_MIN = 'min';
 
-    use Concerns\InlineFilterable;
-
     /**
      * The element's component.
      *
@@ -54,6 +52,20 @@ class FluentTrend extends Trend
     public $function;
 
     /**
+     * The raw select statement of the aggregate for this metric.
+     *
+     * @var string|null
+     */
+    public $select;
+
+    /**
+     * The select statements to add before calculating the result.
+     *
+     * @var array
+     */
+    public $addSelects = [];
+
+    /**
      * The column for this metric.
      *
      * @var string
@@ -66,6 +78,20 @@ class FluentTrend extends Trend
      * @var string|null
      */
     public $dateColumn;
+
+    /**
+     * The query callbacks for this metric.
+     *
+     * @var array
+     */
+    public $queryCallbacks = [];
+
+    /**
+     * The query with range callbacks for this metric.
+     *
+     * @var array
+     */
+    public $queryWithRangeCallbacks = [];
 
     /**
      * The precision of aggregate values.
@@ -96,6 +122,34 @@ class FluentTrend extends Trend
     public $futuristic = false;
 
     /**
+     * Whether or not to use a date range query.
+     *
+     * @var boolean
+     */
+    public $useDateRangeQuery = false;
+
+    /**
+     * The callback used to provide additional date-based columns.
+     *
+     * @var \Closure|null
+     */
+    public $dateRangeCallback;
+
+    /**
+     * The additional columns to group by.
+     *
+     * @var array
+     */
+    public $groupByColumns = [];
+
+    /**
+     * The callback to reduce grouped results by date.
+     *
+     * @var \Closure|null
+     */
+    public $groupByResolver;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -108,10 +162,12 @@ class FluentTrend extends Trend
         $model = $this->model;
 
         // Create a new query
-        $query = (new $model)->newQuery();
+        $query = $this->useDateRangeQuery
+            ? $this->newDateRangeQuery($request)
+            : (new $model)->newQuery();
 
         // Apply the filter
-        $this->applyFilter($query);
+        $this->applyQueryCallbacks($query);
 
         // Determine the result
         $result = $this->aggregate($request, $query, $this->unit, $this->function, $this->column, $this->dateColumn);
@@ -212,6 +268,36 @@ class FluentTrend extends Trend
     public function useMin()     { return $this->use(self::USE_MIN); }
 
     /**
+     * Sets the raw select statement of the aggregate for this metric.
+     *
+     * @param  string  $select
+     *
+     * @return $this
+     */
+    public function select($select)
+    {
+        $this->select = $select;
+
+        return $this;
+    }
+
+    /**
+     * Adds the specified select statements before calculating the result.
+     *
+     * @param  string|array  $select
+     *
+     * @return $this
+     */
+    public function addSelect($addSelects)
+    {
+        $addSelects = (array) $addSelects;
+
+        $this->addSelects = array_merge($this->addSelects, $addSelects);
+
+        return $this;
+    }
+
+    /**
      * Sets the column for this metric.
      *
      * @param  string  $column
@@ -246,6 +332,94 @@ class FluentTrend extends Trend
         $this->dateColumn = $dateColumn;
 
         return $this;
+    }
+
+    /**
+     * Adds the specified closure as a query callback.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function scope(Closure $callback)
+    {
+        $this->queryCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Applies the query callbacks to the specified query.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     *
+     * @return void
+     */
+    public function applyQueryCallbacks($query)
+    {
+        foreach($this->queryCallbacks as $callback) {
+            $callback($query);
+        }
+    }
+
+    /**
+     * Adds the specified closure as a query with range callback.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function scopeWithRange(Closure $callback)
+    {
+        $this->queryWithRangeCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Applies the query with range callbacks to the specified query.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     *
+     * @return void
+     */
+    public function applyQueryWithRangeCallbacks($query, $range)
+    {
+        foreach($this->queryWithRangeCallbacks as $callback) {
+            $callback($query, $range);
+        }
+    }
+
+    /**
+     * Sets the value accessor for this metric.
+     *
+     * @param  \Closure  $accessor
+     *
+     * @return $this
+     */
+    public function setValueAccessor(Closure $accessor)
+    {
+        $this->valueAccessor = $accessor;
+
+        return $this;
+    }
+
+    /**
+     * Returns the aggregate value from the specified result.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $result
+     *
+     * @return mixed
+     */
+    public function getValueFromResult($result)
+    {
+        // Determine the value accessor
+        $accessor = $this->valueAccessor ?? function($result) {
+            return $result->aggregate ?? null;
+        };
+
+        // Return the value
+        return $accessor($result);
     }
 
     /**
@@ -335,6 +509,76 @@ class FluentTrend extends Trend
     }
 
     /**
+     * Sets whether or not to use a date range query as the base query.
+     *
+     * @param  \Closure|boolean  $callback
+     *
+     * @return $this
+     */
+    public function useDateRangeQuery($callback = true)
+    {
+        $this->useDateRangeQuery = $callback !== false;
+
+        $this->dateRangeCallback = $callback instanceof Closure ? $callback : null;
+
+        return $this;
+    }
+
+    /**
+     * Creates and returns a new date range query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newDateRangeQuery(Request $request)
+    {
+        // Determine the date range
+        $range = $this->getDateRange($request);
+
+        // Determine the date range callback
+        $callback = $this->dateRangeCallback;
+
+        // Determine the date handler
+        $handler = function($query, $date) use ($callback) {
+
+            // Check if a callback was provided
+            if(!is_null($callback)) {
+
+                // Select the result of the callback
+                $query->select($callback($date));
+
+            }
+
+            // Select the date
+            $query->selectRaw('? as date', [$date]);
+
+            // Return the query
+            return $query;
+        };
+
+        // Create a new query
+        $query = $handler(DB::query(), $range[0]);
+
+        // Iterate through the range
+        for($date = $range[0]->addDay(1); $date->lt($range[1]); $date = $date->addDay(1)) {
+            $query->unionAll($handler(DB::query(), $date));
+        }
+
+        // Convert the query to a subselect
+        $query = DB::query()->fromSub($query, 'dates');
+
+        // Determine the eloquent model
+        $model = $this->model;
+
+        // Convert the query to an eloquent query
+        $query = (new $model)->newQuery()->setQuery($query);
+
+        // Return the query
+        return $query;
+    }
+
+    /**
      * Get the ranges available for the metric.
      *
      * @return array
@@ -349,6 +593,35 @@ class FluentTrend extends Trend
             90 => $adjective . ' 90 Days',
             365 => $adjective . ' 1 Year'
         ];
+    }
+
+    /**
+     * Returns the date range for the specified request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return array
+     */
+    public function getDateRange($request)
+    {
+        return [
+            $this->futuristic ? Chronos::now() : $this->getAggregateStartingDate($request, $this->unit),
+            $this->futuristic ? $this->getAggregateEndingDate($request, $this->unit) : Chronos::now()
+        ];
+    }
+
+    /**
+     * Adds additional columns to group by and specifies how to reduce the groups afterwards.
+     *
+     * @param  array     $columns
+     * @param  \Closure  $callback
+     */
+    public function groupBy($columns, Closure $callback)
+    {
+        $this->groupByColumns = $columns;
+        $this->groupByResolver = $callback;
+
+        return $this;
     }
 
     /**
@@ -374,9 +647,11 @@ class FluentTrend extends Trend
             $unit, $timezone
         );
 
+        $dateRange = $this->getDateRange($request, $unit);
+
         $possibleDateResults = $this->getAllPossibleDateResults(
-            $startingDate = $this->futuristic ? Chronos::now() : $this->getAggregateStartingDate($request, $unit),
-            $endingDate = $this->futuristic ? $this->getAggregateEndingDate($request, $unit) : Chronos::now(),
+            $startingDate = $dateRange[0],
+            $endingDate = $dateRange[1],
             $unit,
             $timezone,
             $request->twelveHourTime === 'true'
@@ -384,17 +659,62 @@ class FluentTrend extends Trend
 
         $wrappedColumn = $query->getQuery()->getGrammar()->wrap($column);
 
-        $results = $query
-                ->select(DB::raw("{$expression} as date_result, {$function}({$wrappedColumn}) as aggregate"))
-                ->whereBetween($dateColumn, [$startingDate, $endingDate])
-                ->groupBy(DB::raw($expression))
-                ->orderBy('date_result')
-                ->get();
+        // Apply the ranged scopes
+        $this->applyQueryWithRangeCallbacks($query, $dateRange);
 
+        // Determine the select statement
+        $select = $this->select ?? "{$function}({$wrappedColumn})";
+
+        // Select the expression
+        $query->select(DB::raw("{$expression} as date_result, {$select} as aggregate"));
+
+        // Apply the date range
+        $query->whereBetween($dateColumn, [$startingDate, $endingDate]);
+
+        // Group by the expression
+        $query->groupBy(DB::raw($expression));
+
+        // Add additional groupings
+        if(!empty($this->groupByColumns)) {
+            $query->groupBy($this->groupByColumns);
+        }
+
+        // Order by date
+        $query->orderBy('date_result');
+
+        // Add any additional select statements
+        if(!empty($this->addSelects)) {
+            $query->addSelect($this->addSelects);
+        }
+
+        // Determine the query results
+        $results = $query->get();
+
+        // If we grouped by additional columns, then we'll need to group
+        // the results by the date result, and reduce each group to a
+        // single set of columns. How we do that is up to the dev.
+
+        // If we had additional groupings, reduce the groups
+        if(!empty($this->groupByColumns)) {
+
+            // Determine the base model
+            $model = $this->model;
+
+            // Determine the resolver
+            $resolver = $this->groupByResolver;
+
+            // Reduce the groups
+            $results = $results->groupBy('date_result')->map(function($group, $date) use ($model, $resolver) {
+                return (new $model)->forceFill(array_merge(['date_result' => $date], $resolver($group)));
+            });
+
+        }
+
+        // Determine the trend results
         $results = array_merge($possibleDateResults, $results->mapWithKeys(function ($result) use ($request, $unit) {
             return [$this->formatAggregateResultDate(
                 $result->date_result, $unit, $request->twelveHourTime === 'true'
-            ) => round($result->aggregate, $this->precision)];
+            ) => round($this->getValueFromResult($result), $this->precision)];
         })->all());
 
         if (count($results) > $request->range) {
@@ -440,5 +760,27 @@ class FluentTrend extends Trend
             default:
                 throw new InvalidArgumentException('Invalid trend unit provided.');
         }
+    }
+
+    /**
+     * Handles dynamic method calls into this metric.
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     *
+     * @return $this
+     */
+    public function __call($method, $parameters = [])
+    {
+        // Create a query callback based on the method call
+        $callback = function($query) use ($method, $parameters) {
+            $query->{$method}(...$parameters);
+        };
+
+        // Add the query callback
+        $this->queryCallbacks[] = $callback;
+
+        // Allow chaining
+        return $this;
     }
 }

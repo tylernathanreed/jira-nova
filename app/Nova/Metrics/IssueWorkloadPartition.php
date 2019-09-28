@@ -262,14 +262,7 @@ class IssueWorkloadPartition extends Partition
 
             // Priority
             case static::GROUP_BY_PRIORITY:
-
-                return [
-                    'Highest' => 'firebrick',
-                    'High' => '#f44',
-                    'Medium' => 'silver',
-                    'Low' => 'mediumseagreen',
-                    'Lowest' => 'green'
-                ];
+                return Issue::getPriorityColors();
 
             // Assignee, Label, Project, and Version
             case static::GROUP_BY_ASSIGNEE:

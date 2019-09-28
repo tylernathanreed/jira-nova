@@ -2,8 +2,11 @@
 
 namespace App\Nova\Resources;
 
+use DB;
 use Field;
 use Illuminate\Http\Request;
+use App\Models\Issue as IssueModel;
+use App\Models\Schedule as ScheduleModel;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class IssueWorklog extends Resource
@@ -137,12 +140,123 @@ class IssueWorklog extends Resource
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
-            ->label('Worklog')
+            ->label('Worklog History')
             ->sumOf('time_spent')
             ->dateColumn('started_at')
             ->suffix('hours')
             ->divideBy(3600)
             ->precision(2);
+    }
+
+    /**
+     * Creates and returns a new feature worklog trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getFeatureWorklogTrend()
+    {
+        return $this->getWorklogTrend()
+            ->label('Feature Worklog')
+            ->joinRelation('issue', function($join) {
+                $join->features();
+            });
+    }
+
+    /**
+     * Creates and returns a new defect worklog trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getDefectWorklogTrend()
+    {
+        return $this->getWorklogTrend()
+            ->label('Defect Worklog')
+            ->joinRelation('issue', function($join) {
+                $join->defects();
+            });
+    }
+
+    /**
+     * Creates and returns a new expected worklog value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getExpectedWorklogTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Expected Worklog')
+            ->useDateRangeQuery(function($date) {
+                return (($date->isSunday() || $date->isSaturday()) ? 1 : 0) . ' as is_weekend';
+            })
+            ->scopeWithRange(function($query, $range) {
+
+                $subquery = (new ScheduleModel)->newActiveSchedulesQuery($range);
+
+                $query->joinSub($subquery, 'active_schedules', function($join) {
+                    $join->whereRaw('1 = 1');
+                });
+
+                $query->leftJoin('time_off', function($join) {
+
+                    $join->on('time_off.user_id', '=', 'active_schedules.author_id');
+                    $join->on('time_off.date', '=', 'dates.date');
+                    $join->whereNull('time_off.deleted_at');
+
+                });
+
+            })
+            ->select(preg_replace('/\s\s+/', ' ', 'sum(active_schedules.simple_weekly_allocation / 5.0)'))
+            ->addSelect([
+                'dates.is_weekend',
+                'active_schedules.author_id',
+                'active_schedules.author_key',
+                DB::raw('sum(time_off.percent) as percent_off')
+            ])
+            ->groupBy(['author_id', 'author_name'], function($group) {
+                return [
+                    'aggregate' => $group->reduce(function($aggregate, $result) {
+                        return $aggregate + ($result->is_weekend ? 0 : ($result->aggregate * (1 - $result->percent_off)));
+                    }, 0)
+                ];
+            })
+            ->dateColumn('dates.date')
+            ->suffix('hours')
+            ->precision(2);
+    }
+
+    /**
+     * Creates and returns a new upkeep value.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getUpkeepValue()
+    {
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label('Upkeep')
+            ->trends([$this->getDefectWorklogTrend(), $this->getWorklogTrend()])
+            ->useScalarDelta()
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ]);
+    }
+
+    /**
+     * Creates and returns a new efficiency value.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getEfficiencyValue()
+    {
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label('Efficiency')
+            ->trends([$this->getWorklogTrend(), $this->getExpectedWorklogTrend()])
+            ->useScalarDelta()
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ]);
     }
 
     /**
@@ -162,7 +276,9 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->sortDesc();
+            ->limit(5)
+            ->sortDesc()
+            ->colors(IssueModel::getEpicColors());
     }
 
     /**
@@ -181,7 +297,8 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->sortDesc();
+            ->sortDesc()
+            ->colors(IssueModel::getPriorityColors());
     }
 
     /**
@@ -199,67 +316,8 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
+            ->limit(10)
             ->sortDesc();
-    }
-
-    /**
-     * Creates and returns a new expected worklog value metric.
-     *
-     * @return \Laravel\Nova\Metrics\Metric
-     */
-    public function getExpectedWorklogValue()
-    {
-        return (new \App\Nova\Metrics\FluentValue)
-            ->model(static::$model)
-            ->label('Expected Worklog')
-            ->select('schedules.simple_weekly_allocation / 5.0 * 20.0')
-            ->leftJoinRelation('author')
-            ->join('schedules', function($join) {
-                $join->where(function($join) {
-                    $join->on('schedules.id', '=', 'users.schedule_id');
-                    $join->orWhere(function($join) {
-                        $join->whereNull('users.schedule_id');
-                        $join->where('schedules.system_name', '=', 'simple');
-                    });
-                });
-            })
-            ->groupBy([
-                'issue_worklogs.author_name',
-                'schedules.simple_weekly_allocation'
-            ])
-            ->useSumOfAggregates()
-            ->dateColumn('started_at')
-            ->precision(2);
-    }
-
-    /**
-     * Creates and returns a new efficiency value.
-     *
-     * @return \Laravel\Nova\Metrics\Metric
-     */
-    public function getEfficiencyValue()
-    {
-        return (new \App\Nova\Metrics\FluentValue)
-            ->model(static::$model)
-            ->label('Efficiency')
-            ->select('(sum(issue_worklogs.time_spent) / 3600.0) / (sum(schedules.simple_weekly_allocation) / 5 * 20)')
-            ->leftJoinRelation('author')
-            ->join('schedules', function($join) {
-                $join->where(function($join) {
-                    $join->on('schedules.id', '=', 'users.schedule_id');
-                    $join->orWhere(function($join) {
-                        $join->whereNull('users.schedule_id');
-                        $join->where('schedules.system_name', '=', 'simple');
-                    });
-                });
-            })
-            ->dateColumn('started_at')
-            ->precision(2)
-            ->format([
-                'output' => 'percent',
-                'mantissa' => 0
-            ])
-            ->useScalarDelta();
     }
 
     /**

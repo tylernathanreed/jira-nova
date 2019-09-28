@@ -12,10 +12,17 @@ class Schedule extends Model
     /**
      * The schedule type constants.
      *
-     * @var array
+     * @var string
      */
     const TYPE_SIMPLE = 'Simple';
     const TYPE_ADVANCED = 'Advanced';
+
+    /**
+     * The pre-defined schedules.
+     *
+     * @var string
+     */
+    const SCHEDULE_DEFAULT = 'simple';
 
     //////////////
     //* Traits *//
@@ -260,6 +267,75 @@ class Schedule extends Model
             'type' => $this->type,
             'allocations' => $this->getWeekdayAllocations()
         ];
+    }
+
+    ///////////////
+    //* Queries *//
+    ///////////////
+    /**
+     * Creates and returns a new active schedules query.
+     *
+     * @param  array  $range
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newActiveSchedulesQuery($range)
+    {
+        // Start with an issue worklog query
+        $query = (new IssueWorklog)->newQuery();
+
+        // Left join into users
+        $query->leftJoinRelation('author');
+
+        // Join into schedules
+        $query->join('schedules', function($join) {
+
+            // Use a nested "where" clause to contain a disjunction
+            $join->where(function($join) {
+
+                // Join using the foreign key
+                $join->on('users.schedule_id', '=', 'schedules.id');
+
+                // There's a possibility that someone is logging time, but
+                // does not have a user within our application. We will
+                // find them, and link them to the default schedule.
+
+                // Use a nested "or where" clause for the fallback
+                $join->orWhere(function($join) {
+
+                    // Make sure the user doesn't have a schedule
+                    $join->whereNull('users.schedule_id');
+
+                    // Only join into the default schedule
+                    $join->where('schedules.system_name', '=', self::SCHEDULE_DEFAULT);
+
+                });
+
+            });
+
+        });
+
+        // Filter the worklogs to the given date range
+        $query->whereBetween('issue_worklogs.started_at', $range);
+
+        // Group by the author, schedule, and time
+        $query->groupBy([
+            'issue_worklogs.author_id',
+            'issue_worklogs.author_key',
+            'schedules.id',
+            'schedules.simple_weekly_allocation'
+        ]);
+
+        // Select the grouped columns
+        $query->select([
+            'issue_worklogs.author_id',
+            'issue_worklogs.author_key',
+            'schedules.id as schedule_id',
+            'schedules.simple_weekly_allocation'
+        ]);
+
+        // Return the query
+        return $query;
     }
 
     /////////////////

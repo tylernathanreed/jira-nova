@@ -551,6 +551,31 @@ class Issue extends Model implements Cacheable
     }
 
     /**
+     * Returns the epic colors.
+     *
+     * @return array
+     */
+    public static function getEpicColors()
+    {
+        // Determine the epic colors
+        $colors = (new static)->select(['epic_name', 'epic_color'])->whereNotNull('epic_name')->distinct()->getQuery()->get()->pluck('epic_color', 'epic_name');
+
+        // Determine the epic color hex map
+        $map = static::getEpicColorHexMap();
+
+        // Map the colors into hex values
+        $colors->transform(function($color) use ($map) {
+            return $map[$color ?? 'ghx-label-0'] ?? '#000';
+        });
+
+        // Add the "Other" color
+        $colors['Other'] = '#777';
+
+        // Return the colors
+        return $colors->all();
+    }
+
+    /**
      * Returns the epic color hex map.
      *
      * @return array
@@ -570,6 +595,22 @@ class Issue extends Model implements Cacheable
             'ghx-label-12' => '#7a869a',
             'ghx-label-13' => '#57d9a3',
             'ghx-label-14' => '#ff8f73',
+        ];
+    }
+
+    /**
+     * Returns the color mapping for priorities.
+     *
+     * @return array
+     */
+    public static function getPriorityColors()
+    {
+        return [
+            'Highest' => 'firebrick',
+            'High' => '#f44',
+            'Medium' => 'silver',
+            'Low' => 'mediumseagreen',
+            'Lowest' => 'green'
         ];
     }
 
@@ -872,6 +913,19 @@ class Issue extends Model implements Cacheable
     public function scopeUnassigned($query)
     {
         $query->whereNull('assignee_name');
+    }
+
+    /**
+     * Filters to issues that are classified as features.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return void
+     */
+    public function scopeFeatures($query)
+    {
+        // All issues that are not defects are considered features
+        $query->whereNotIn('issues.id', $this->newQuery()->defects()->select('id'));
     }
 
     /**

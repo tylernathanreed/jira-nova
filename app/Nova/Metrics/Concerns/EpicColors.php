@@ -35,21 +35,10 @@ trait EpicColors
     public function getEpicColors($epics)
     {
         // Determine the epic colors
-        $colors = (new Issue)->select(['epic_name', 'epic_color'])->whereNotNull('epic_name')->distinct()->getQuery()->get()->pluck('epic_color', 'epic_name');
-
-        // Determine the epic color hex map
-        $map = Issue::getEpicColorHexMap();
-
-        // Map the colors into hex values
-        $colors->transform(function($color) use ($map) {
-            return $map[$color ?? 'ghx-label-0'] ?? '#000';
-        });
-
-        // Add the "Other" color
-        $colors['Other'] = '#777';
+        $colors = Issue::getEpicColors();
 
         // Reduce the color list to only present values
-        $colors = $colors->only($epics);
+        $colors = collect($colors)->only($epics);
 
         // Initialize the color counts
         $counts = $colors->flip()->map(function($color) {
