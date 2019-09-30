@@ -191,7 +191,7 @@ class IssueSingleEpicPrioritiesLens extends Lens
                 ->countOf('issues.id')
                 ->dateColumn('resolution_date')
                 ->suffix('issue')
-                ->filter($scope),
+                ->scope($scope),
 
             (new \App\Nova\Metrics\FluentTrend)
                 ->model(\App\Models\Issue::class)
@@ -200,7 +200,7 @@ class IssueSingleEpicPrioritiesLens extends Lens
                 ->dateColumn('estimate_date')
                 ->suffix('issue')
                 ->futuristic()
-                ->filter($scope),
+                ->scope($scope),
 
             (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week')->filter($scope),
             (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week')->filter($scope),
