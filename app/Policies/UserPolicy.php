@@ -43,4 +43,21 @@ class UserPolicy extends Policy
     {
         return true;
     }
+
+    /**
+     * Returns whether the user can update any users.
+     *
+     * @param  \App\Models\User  $auth
+     * @param  \App\Models\User  $user
+     *
+     * @return mixed
+     */
+    public function delete(User $auth, User $user)
+    {
+        if($auth->id == $user->id) {
+            return false;
+        }
+
+        return true;
+    }
 }
