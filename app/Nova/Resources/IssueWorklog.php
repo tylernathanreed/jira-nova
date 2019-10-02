@@ -276,9 +276,7 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->limit(5)
-            ->sortDesc()
-            ->colors(IssueModel::getEpicColors());
+            ->resultClass(\App\Nova\Metrics\EpicPartitionResult::class);
     }
 
     /**

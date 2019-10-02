@@ -26,8 +26,7 @@ class IssueWorkloadPartition extends Partition
     /**
      * Concerns.
      */
-    use Concerns\EpicColors,
-        Concerns\FocusGroupBranding,
+    use Concerns\FocusGroupBranding,
         Concerns\InlineFilterable,
         Concerns\Nameable,
         Concerns\PartitionLimits,
@@ -55,6 +54,13 @@ class IssueWorkloadPartition extends Partition
     public $groupBy;
 
     /**
+     * The result class to use.
+     *
+     * @var string|null
+     */
+    public $resultClass;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -72,11 +78,21 @@ class IssueWorkloadPartition extends Partition
         // Apply the filter
         $this->applyFilter($query);
 
+        // Set the partition result class
+        $this->setPartitionResultClass();
+
         // Determine the result
         $result = $this->sum($request, $query, 'estimate_remaining', $this->getGroupByColumn());
 
+        // If the result has been customized, just return it
+        if(!is_null($this->resultClass) && $this->resultClass != PartitionResult::class) {
+            return $result;
+        }
+
         // Limit the results
-        $this->limitPartitionResult($result);
+        if(is_null($this->resultClass) || $this->resultClass != PartitionResult::class) {
+            $this->limitPartitionResult($result);
+        }
 
         // Apply colors
         $this->applyGroupingColors($result);
@@ -233,6 +249,11 @@ class IssueWorkloadPartition extends Partition
         // Determine the grouping colors
         $colors = $this->getGroupingColors($result);
 
+        // Make sure we're setting the colors
+        if(!$colors) {
+            return;
+        }
+
         // Add the "Other" color
         $colors['Other'] = $colors['Other'] ?? '#777';
 
@@ -254,7 +275,7 @@ class IssueWorkloadPartition extends Partition
 
             // Epic
             case static::GROUP_BY_EPIC:
-                return $this->getEpicColors(array_keys($result->value));
+                return false;
 
             // Focus
             case static::GROUP_BY_FOCUS:
@@ -308,6 +329,10 @@ class IssueWorkloadPartition extends Partition
      */
     public function applyGroupingOrder($result)
     {
+        if(!is_null($this->resultClass) && $this->resultClass != PartitionResult::class) {
+            return;
+        }
+
         // Determine the result value
         $value = $result->value;
 
@@ -381,4 +406,55 @@ class IssueWorkloadPartition extends Partition
     public function groupByPriority() { return $this->groupBy(static::GROUP_BY_PRIORITY); }
     public function groupByProject() { return $this->groupBy(static::GROUP_BY_PROJECT); }
     public function groupByVersion() { return $this->groupBy(static::GROUP_BY_VERSION); }
+
+    /**
+     * Sets the partition result class based on the grouping mechanism.
+     *
+     * @return $this
+     */
+    public function setPartitionResultClass()
+    {
+        // Determine by grouping mechanism
+        switch($this->groupBy) {
+
+            // Epic
+            case static::GROUP_BY_EPIC:
+                return $this->resultClass(EpicPartitionResult::class);
+
+            // Unknown
+            default:
+                return $this;
+
+        }
+    }
+
+    /**
+     * Sets the result class to a custom class.
+     *
+     * @param  string  $class
+     *
+     * @return $this
+     */
+    public function resultClass($resultClass)
+    {
+        $this->resultClass = $resultClass;
+
+        return $this;
+    }
+
+    /**
+     * Create a new partition metric result.
+     *
+     * @param  array  $value
+     *
+     * @return \Laravel\Nova\Metrics\PartitionResult
+     */
+    public function result(array $value)
+    {
+        // Determine the result class
+        $class = $this->resultClass ?: PartitionResult::class;
+
+        // Create and return the result
+        return new $class($value);
+    }
 }
