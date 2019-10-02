@@ -267,25 +267,6 @@ class IssueCountPartition extends Partition
         // Determine by grouping mechanism
         switch($this->groupBy) {
 
-            // Epic
-            case static::GROUP_BY_EPIC:
-                return $this->getEpicColors(array_keys($result->value));
-
-            // Focus
-            case static::GROUP_BY_FOCUS:
-                return $this->getFocusGroupColors();
-
-            // Priority
-            case static::GROUP_BY_PRIORITY:
-
-                return [
-                    'Highest' => 'firebrick',
-                    'High' => '#f44',
-                    'Medium' => 'silver',
-                    'Low' => 'mediumseagreen',
-                    'Lowest' => 'green'
-                ];
-
             // Assignee, Label, Project, and Version
             case static::GROUP_BY_ASSIGNEE:
             case static::GROUP_BY_LABEL:
