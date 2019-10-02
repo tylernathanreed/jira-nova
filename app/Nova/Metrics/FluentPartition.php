@@ -5,6 +5,7 @@ namespace App\Nova\Metrics;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
+use Laravel\Nova\Metrics\PartitionResult;
 
 class FluentPartition extends Partition
 {
@@ -88,6 +89,13 @@ class FluentPartition extends Partition
      * @var array
      */
     public $queryCallbacks = [];
+
+    /**
+     * The result class to use.
+     *
+     * @var string|null
+     */
+    public $resultClass;
 
     /**
      * The direction to sort the results.
@@ -422,6 +430,20 @@ class FluentPartition extends Partition
     }
 
     /**
+     * Sets the result class to a custom class.
+     *
+     * @param  string  $class
+     *
+     * @return $this
+     */
+    public function resultClass($resultClass)
+    {
+        $this->resultClass = $resultClass;
+
+        return $this;
+    }
+
+    /**
      * Sorts the results in the specified order.
      *
      * @param  string  $direction
@@ -592,6 +614,22 @@ class FluentPartition extends Partition
         $key = $result->{last(explode('.', $groupBy))};
 
         return [$key => round($this->applyResultFormat($result->aggregate), $this->precision)];
+    }
+
+    /**
+     * Create a new partition metric result.
+     *
+     * @param  array  $value
+     *
+     * @return \Laravel\Nova\Metrics\PartitionResult
+     */
+    public function result(array $value)
+    {
+        // Determine the result class
+        $class = $this->resultClass ?: PartitionResult::class;
+
+        // Create and return the result
+        return new $class($value);
     }
 
     /**
