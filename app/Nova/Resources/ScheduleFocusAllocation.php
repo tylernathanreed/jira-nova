@@ -29,6 +29,13 @@ class ScheduleFocusAllocation extends Resource
     public static $globallySearchable = false;
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * Get the displayable label of the resource.
      *
      * @return string
@@ -105,11 +112,7 @@ class ScheduleFocusAllocation extends Resource
      */
     public function cards(Request $request)
     {
-        return [
-            (new \App\Nova\Metrics\ScheduleFocusAllocationDailyByFocusPartition)->focus('Dev'),
-            (new \App\Nova\Metrics\ScheduleFocusAllocationDailyByFocusPartition)->focus('Ticket'),
-            (new \App\Nova\Metrics\ScheduleFocusAllocationDailyByFocusPartition)->focus('Other')
-        ];
+        return [];
     }
 
     /**

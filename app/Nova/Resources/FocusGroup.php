@@ -13,7 +13,7 @@ class FocusGroup extends Resource
      *
      * @var string
      */
-    public static $group = 'Scheduling';
+    public static $group = 'Management';
 
     /**
      * The model the resource corresponds to.
@@ -80,9 +80,7 @@ class FocusGroup extends Resource
      */
     public function cards(Request $request)
     {
-        return [
-            new \App\Nova\Metrics\ScheduleFocusAllocationPartition
-        ];
+        return [];
     }
 
     /**
