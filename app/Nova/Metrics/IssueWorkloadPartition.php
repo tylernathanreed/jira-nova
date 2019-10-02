@@ -26,8 +26,7 @@ class IssueWorkloadPartition extends Partition
     /**
      * Concerns.
      */
-    use Concerns\FocusGroupBranding,
-        Concerns\InlineFilterable,
+    use Concerns\InlineFilterable,
         Concerns\Nameable,
         Concerns\PartitionLimits,
         Concerns\QualifiedGroupByPartitionFix;
@@ -420,6 +419,14 @@ class IssueWorkloadPartition extends Partition
             // Epic
             case static::GROUP_BY_EPIC:
                 return $this->resultClass(EpicPartitionResult::class);
+
+            // Focus Group
+            case static::GROUP_BY_FOCUS:
+                return $this->resultClass(FocusGroupPartitionResult::class);
+
+            // Priority
+            case static::GROUP_BY_PRIORITY:
+                return $this->resultClass(PriorityPartitionResult::class);
 
             // Unknown
             default:

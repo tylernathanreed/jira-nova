@@ -295,8 +295,7 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->sortDesc()
-            ->colors(IssueModel::getPriorityColors());
+            ->resultClass(\App\Nova\Metrics\PriorityPartitionResult::class);
     }
 
     /**

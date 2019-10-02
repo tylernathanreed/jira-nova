@@ -42,7 +42,7 @@ class FocusGroup extends Resource
      * @var array
      */
     public static $defaultOrderings = [
-        'priority' => 'asc'
+        'display_order' => 'asc'
     ];
 
     /**
