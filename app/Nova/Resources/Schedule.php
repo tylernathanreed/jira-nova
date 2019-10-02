@@ -58,8 +58,7 @@ class Schedule extends Resource
                 ->updateRules('unique:schedules,system_name,{{resourceId}}'),
 
             Field::select('Type', 'type')->options([
-                'Simple' => 'Simple',
-                'Advanced' => 'Advanced'
+                'Simple' => 'Simple'
             ])->rules('required'),
 
             Field::number('Weekly Allocation', 'simple_weekly_allocation')

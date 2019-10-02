@@ -67,7 +67,7 @@ class SchedulePolicy extends Policy
      */
     public function delete(User $user, Schedule $schedule)
     {
-        if($schedule->system_name == 'standard') {
+        if($schedule->system_name == 'simple') {
             return false;
         }
 
