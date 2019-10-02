@@ -505,7 +505,7 @@ class FluentPartition extends Partition
         $value = $result->value;
 
         // Merge the last results into a labelled category
-        if(count($value) >= 10) {
+        if(count($value) >= $this->limit) {
             $value = array_merge(array_slice($value, 0, $this->limit - 1), [($label ?? 'Other') => array_sum(array_slice($value, $this->limit - 1))]);
         }
 
