@@ -12,6 +12,13 @@ class DefectsDashboard extends Dashboard
     protected static $label = 'Defects';
 
     /**
+     * The primary resource for this dashboard.
+     *
+     * @var string
+     */
+    protected static $resource = \App\Nova\Resources\Issue::class;
+
+    /**
      * Get the cards for the dashboard.
      *
      * @return array
@@ -47,6 +54,19 @@ class DefectsDashboard extends Dashboard
         return function($query) {
             $query->defects();
         };
+    }
+
+
+    /**
+     * Creates and returns a new primary resource.
+     *
+     * @return \App\Nova\Resources\Resource
+     */
+    public static function resource()
+    {
+        $class = static::$resource;
+
+        return new $class($class::newModel());
     }
 
     /**
@@ -94,9 +114,9 @@ class DefectsDashboard extends Dashboard
      */
     public static function getInflowTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueCreatedByDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Inflow');
+        return static::resource()->getIssueCreatedByDateTrend()
+            ->label(static::$label . ' Inflow')
+            ->scope(static::scope());
     }
 
     /**
@@ -106,10 +126,10 @@ class DefectsDashboard extends Dashboard
      */
     public static function getOutflowTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueCountByDateTrend)
-            ->filter(static::scope())
-            ->column('resolution_date')
-            ->setName(static::$label . ' Outflow');
+        return static::resource()->getIssueCreatedByDateTrend()
+            ->label(static::$label . ' Outflow')
+            ->dateColumn('resolution_date')
+            ->scope(static::scope());
     }
 
     /**

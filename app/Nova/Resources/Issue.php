@@ -206,8 +206,23 @@ class Issue extends Resource
     {
         return [
             (new \App\Nova\Metrics\IssueCreatedByDateValue)->where('focus', 'Ticket')->setName('Ticket Entry'),
-            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->width('2/3'),
+            $this->getIssueCreatedByDateTrend()->width('2/3')
         ];
+    }
+
+    /**
+     * Creates and returns a new issue created by date trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getIssueCreatedByDateTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Issues Created Per Day')
+            ->useCount()
+            ->dateColumn('entry_date')
+            ->suffix('issues');
     }
 
     /**
