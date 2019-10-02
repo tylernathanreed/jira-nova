@@ -53,6 +53,13 @@ class IssueCountPartition extends Partition
     public $groupBy;
 
     /**
+     * The result class to use.
+     *
+     * @var string|null
+     */
+    public $resultClass;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Illuminate\Http\Request  $request
