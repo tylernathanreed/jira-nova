@@ -45,10 +45,6 @@ class WorklogDashboard extends Dashboard
             static::getExpectedWorklogTrend(),
             static::getEfficiencyValue(),
 
-            // static::getActualDelinquenciesTrendMetric(),
-            // static::getEstimatedDelinquenciesTrendMetric(),
-            // static::getSatisfactionValueMetric(),
-
             static::getWorklogByEpicPartition(),
             static::getWorklogByPriorityPartition(),
             static::getWorklogByAuthorPartition()
