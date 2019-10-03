@@ -205,7 +205,7 @@ class Issue extends Resource
     public function cards(Request $request)
     {
         return [
-            (new \App\Nova\Metrics\IssueCreatedByDateValue)->where('focus', 'Ticket')->setName('Ticket Entry'),
+            $this->getTicketEntryValue(),
             $this->getIssueCreatedByDateTrend()->width('2/3')
         ];
     }
@@ -223,6 +223,18 @@ class Issue extends Resource
             ->useCount()
             ->dateColumn('entry_date')
             ->suffix('issues');
+    }
+
+    /**
+     * Creates and returns a new ticket entry value.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getTicketEntryValue()
+    {
+        return $this->getIssueCreatedByDateValue()
+            ->label('Ticket Entry')
+            ->where('focus', '=', 'Ticket');
     }
 
     /**
