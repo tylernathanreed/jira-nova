@@ -56,7 +56,6 @@ class DefectsDashboard extends Dashboard
         };
     }
 
-
     /**
      * Creates and returns a new primary resource.
      *

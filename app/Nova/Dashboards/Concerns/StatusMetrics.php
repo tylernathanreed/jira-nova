@@ -5,6 +5,25 @@ namespace App\Nova\Dashboards\Concerns;
 trait StatusMetrics
 {
     /**
+     * The issue resource for this dashboard.
+     *
+     * @var string
+     */
+    protected static $issue = \App\Nova\Resources\Issue::class;
+
+    /**
+     * Creates and returns a new issue resource.
+     *
+     * @return \App\Nova\Resources\Resource
+     */
+    public static function issue()
+    {
+        $class = static::$issue;
+
+        return new $class($class::newModel());
+    }
+
+    /**
      * Returns the kickback value metric for this dashboard.
      *
      * @return \Laravel\Nova\Metrics\Metric
@@ -73,9 +92,9 @@ trait StatusMetrics
      */
     public static function getActualDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)
-            ->whereIn('status_name', static::$statuses)
-            ->setName(static::$label . ' Act. Delinquencies');
+        return static::issue()->getIssueDeliquenciesByDueDateTrend()
+            ->label(static::$label . ' Act. Delinquencies')
+            ->whereIn('status_name', static::$statuses);
     }
 
     /**
@@ -85,9 +104,9 @@ trait StatusMetrics
      */
     public static function getEstimatedDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)
-            ->whereIn('status_name', static::$statuses)
-            ->setName(static::$label . ' Est. Delinquencies');
+        return static::issue()->getIssueDeliquenciesByEstimatedDateTrend()
+            ->label(static::$label . ' Est. Delinquencies')
+            ->whereIn('status_name', static::$statuses);
     }
 
     /**
