@@ -211,6 +211,21 @@ class Issue extends Resource
     }
 
     /**
+     * Creates and returns a new issue created by date value.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getIssueCreatedByDateValue()
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Issues Created Per Day')
+            ->useCount()
+            ->dateColumn('entry_date')
+            ->suffix('issues');
+    }
+
+    /**
      * Creates and returns a new issue created by date trend.
      *
      * @return \Laravel\Nova\Metrics\Metric
@@ -222,6 +237,44 @@ class Issue extends Resource
             ->label('Issues Created Per Day')
             ->useCount()
             ->dateColumn('entry_date')
+            ->suffix('issues');
+    }
+
+    /**
+     * Creates and returns a new issue deliquencies by due date trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getIssueDeliquenciesByDueDateTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Delinquencies')
+            ->useCount()
+            ->dateColumn('due_date')
+            ->whereNotNull('due_date')
+            ->where('due_date', '<', carbon())
+            ->incomplete()
+            ->suffix('issues');
+    }
+
+    /**
+     * Creates and returns a new issue deliquencies by estimated date trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public function getIssueDeliquenciesByEstimatedDateTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Estimated Delinquencies')
+            ->useCount()
+            ->dateColumn('due_date')
+            ->whereNotNull('estimate_date')
+            ->whereNotNull('due_date')
+            ->whereColumn('due_date', '>', 'estimate_date')
+            ->incomplete()
+            ->futuristic()
             ->suffix('issues');
     }
 

@@ -29,7 +29,7 @@ class DefectsDashboard extends Dashboard
             static::getCreatedValueMetric(),
             static::getCountByLabelPartitionMetric(),
             static::getCountByVersionPartitionMetric(),
-
+ 
             static::getInflowTrendMetric(),
             static::getOutflowTrendMetric(),
             static::getEquilibriumTrendMetric(),
@@ -76,9 +76,9 @@ class DefectsDashboard extends Dashboard
      */
     public static function getCreatedValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueCreatedByDateValue)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Created');
+        return static::resource()->getIssueCreatedByDateValue()
+            ->label(static::$label . ' Created')
+            ->scope(static::scope());
     }
 
     /**
@@ -139,9 +139,16 @@ class DefectsDashboard extends Dashboard
      */
     public static function getEquilibriumTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueCountResolutionByDateValue)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Equilibrium');
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label(static::$label . ' Equilibrium')
+            ->trends([
+                static::getOutflowTrendMetric(),
+                static::getInflowTrendMetric()
+            ])
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ]);
     }
 
     /**
@@ -151,9 +158,9 @@ class DefectsDashboard extends Dashboard
      */
     public static function getActualDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Act. Delinquencies');
+        return static::resource()->getIssueDeliquenciesByDueDateTrend()
+            ->label(static::$label . ' Act. Delinquencies')
+            ->scope(static::scope());
     }
 
     /**
@@ -163,9 +170,9 @@ class DefectsDashboard extends Dashboard
      */
     public static function getEstimatedDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Est. Delinquencies');
+        return static::resource()->getIssueDeliquenciesByEstimatedDateTrend()
+            ->label(static::$label . ' Est. Delinquencies')
+            ->scope(static::scope());
     }
 
     /**
