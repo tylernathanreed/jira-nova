@@ -219,7 +219,7 @@ class Issue extends Resource
     {
         return (new \App\Nova\Metrics\FluentValue)
             ->model(static::$model)
-            ->label('Issues Created Per Day')
+            ->label('Issues Created')
             ->useCount()
             ->dateColumn('entry_date')
             ->suffix('issues');
