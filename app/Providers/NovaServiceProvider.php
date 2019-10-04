@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Issue;
 use Laravel\Nova\Nova;
 use App\Models\FocusGroup;
 use Illuminate\Http\Request;
 use Laravel\Nova\Cards\Help;
+use App\Nova\Resources\Issue;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -114,16 +114,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-        $issue = Nova::newResourceFromModel(new Issue);
-
         return [
-            $issue->getTicketEntryValue(),
-            $issue->getIssueCreatedByDateTrend()->width('2/3'),
+            Issue::getTicketEntryValue(),
+            Issue::getIssueCreatedByDateTrend()->width('2/3'),
             (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week'),
             (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week'),
             (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Next Week')->reference('+1 week'),
-            $issue->getIssueDeliquenciesByDueDateTrend(),
-            $issue->getIssueDeliquenciesByEstimatedDateTrend(),
+            Issue::getIssueDeliquenciesByDueDateTrend(),
+            Issue::getIssueDeliquenciesByEstimatedDateTrend(),
             new \App\Nova\Metrics\IssueWeeklySatisfactionTrend,
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByFocus(),

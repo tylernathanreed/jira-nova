@@ -205,8 +205,8 @@ class Issue extends Resource
     public function cards(Request $request)
     {
         return [
-            $this->getTicketEntryValue(),
-            $this->getIssueCreatedByDateTrend()->width('2/3')
+            static::getTicketEntryValue(),
+            static::getIssueCreatedByDateTrend()->width('2/3')
         ];
     }
 
@@ -215,7 +215,7 @@ class Issue extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getIssueCreatedByDateValue()
+    public static function getIssueCreatedByDateValue()
     {
         return (new \App\Nova\Metrics\FluentValue)
             ->model(static::$model)
@@ -230,9 +230,9 @@ class Issue extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getTicketEntryValue()
+    public static function getTicketEntryValue()
     {
-        return $this->getIssueCreatedByDateValue()
+        return static::getIssueCreatedByDateValue()
             ->label('Ticket Entry')
             ->where('focus', '=', 'Ticket');
     }
@@ -242,7 +242,7 @@ class Issue extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getIssueCreatedByDateTrend()
+    public static function getIssueCreatedByDateTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
@@ -257,7 +257,7 @@ class Issue extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getIssueDeliquenciesByDueDateTrend()
+    public static function getIssueDeliquenciesByDueDateTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
@@ -275,7 +275,7 @@ class Issue extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getIssueDeliquenciesByEstimatedDateTrend()
+    public static function getIssueDeliquenciesByEstimatedDateTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)

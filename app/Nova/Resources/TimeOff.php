@@ -102,9 +102,9 @@ class TimeOff extends Resource
     public function cards(Request $request)
     {
         return [
-            $this->newPastTimeOffTrend(),
-            $this->newFutureTimeOffTrend(),
-            $this->newTimeOffYtdPartition()
+            static::newPastTimeOffTrend(),
+            static::newFutureTimeOffTrend(),
+            static::newTimeOffYtdPartition()
         ];
     }
 
@@ -113,7 +113,7 @@ class TimeOff extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function newPastTimeOffTrend()
+    public static function newPastTimeOffTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
@@ -129,7 +129,7 @@ class TimeOff extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function newFutureTimeOffTrend()
+    public static function newFutureTimeOffTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
@@ -146,7 +146,7 @@ class TimeOff extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function newTimeOffYtdPartition()
+    public static function newTimeOffYtdPartition()
     {
         return (new \App\Nova\Metrics\FluentPartition)
             ->model(static::$model)

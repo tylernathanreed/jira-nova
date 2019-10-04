@@ -2,6 +2,8 @@
 
 namespace App\Nova\Dashboards;
 
+use App\Nova\Resources\Issue;
+
 class DefectsDashboard extends Dashboard
 {
     /**
@@ -10,13 +12,6 @@ class DefectsDashboard extends Dashboard
      * @var string
      */
     protected static $label = 'Defects';
-
-    /**
-     * The primary resource for this dashboard.
-     *
-     * @var string
-     */
-    protected static $resource = \App\Nova\Resources\Issue::class;
 
     /**
      * Get the cards for the dashboard.
@@ -57,25 +52,13 @@ class DefectsDashboard extends Dashboard
     }
 
     /**
-     * Creates and returns a new primary resource.
-     *
-     * @return \App\Nova\Resources\Resource
-     */
-    public static function resource()
-    {
-        $class = static::$resource;
-
-        return new $class($class::newModel());
-    }
-
-    /**
      * Returns the created value metric for this dashboard.
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
     public static function getCreatedValueMetric()
     {
-        return static::resource()->getIssueCreatedByDateValue()
+        return Issue::getIssueCreatedByDateValue()
             ->label(static::$label . ' Created')
             ->scope(static::scope());
     }
@@ -113,7 +96,7 @@ class DefectsDashboard extends Dashboard
      */
     public static function getInflowTrendMetric()
     {
-        return static::resource()->getIssueCreatedByDateTrend()
+        return Issue::getIssueCreatedByDateTrend()
             ->label(static::$label . ' Inflow')
             ->scope(static::scope());
     }
@@ -125,7 +108,7 @@ class DefectsDashboard extends Dashboard
      */
     public static function getOutflowTrendMetric()
     {
-        return static::resource()->getIssueCreatedByDateTrend()
+        return Issue::getIssueCreatedByDateTrend()
             ->label(static::$label . ' Outflow')
             ->dateColumn('resolution_date')
             ->scope(static::scope());
@@ -157,7 +140,7 @@ class DefectsDashboard extends Dashboard
      */
     public static function getActualDelinquenciesTrendMetric()
     {
-        return static::resource()->getIssueDeliquenciesByDueDateTrend()
+        return Issue::getIssueDeliquenciesByDueDateTrend()
             ->label(static::$label . ' Act. Delinquencies')
             ->scope(static::scope());
     }
@@ -169,7 +152,7 @@ class DefectsDashboard extends Dashboard
      */
     public static function getEstimatedDelinquenciesTrendMetric()
     {
-        return static::resource()->getIssueDeliquenciesByEstimatedDateTrend()
+        return Issue::getIssueDeliquenciesByEstimatedDateTrend()
             ->label(static::$label . ' Est. Delinquencies')
             ->scope(static::scope());
     }
