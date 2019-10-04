@@ -164,7 +164,7 @@ class Epic extends Resource
             $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),
+            $scope(Issue::getIssueDeliquenciesByDueDateTrend())->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()->onlyOnDetail(),
         ];

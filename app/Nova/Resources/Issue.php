@@ -331,7 +331,7 @@ class Issue extends Resource
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Delinquencies')->scope(function($query) { $query->delinquent(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueDelinquentByDueDateTrend,
+                static::getIssueDeliquenciesByDueDateTrend(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),
