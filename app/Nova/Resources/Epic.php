@@ -161,7 +161,7 @@ class Epic extends Resource
                 ->whereNotNull('epic_name'),
 
             // Detail metrics
-            $scope(new \App\Nova\Metrics\IssueCreatedByDateValue)->onlyOnDetail(),
+            $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),

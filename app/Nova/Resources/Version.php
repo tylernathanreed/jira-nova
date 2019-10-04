@@ -144,7 +144,7 @@ class Version extends Resource
                 ->where('fix_versions', '!=', '[]'),
 
             // Detail metrics
-            $scope(new \App\Nova\Metrics\IssueCreatedByDateValue)->onlyOnDetail(),
+            $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),
