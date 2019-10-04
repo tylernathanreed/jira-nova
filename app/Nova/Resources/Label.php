@@ -133,13 +133,14 @@ class Label extends Resource
             // Index metrics
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByLabel(),
             (new \App\Nova\Metrics\IssueCountPartition)->groupByLabel(),
-            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
-                $query->where('labels', '!=', '[]');
-            })->setName('Issues (for Labels) Created Per Day'),
+
+            Issue::getIssueCreatedByDateTrend()
+                ->label('Issues (for Labels) Created Per Day')
+                ->where('labels', '!=', '[]'),
 
             // Detail metrics
             $scope(new \App\Nova\Metrics\IssueCreatedByDateValue)->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueCreatedByDateTrend)->onlyOnDetail(),
+            $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->onlyOnDetail(),
