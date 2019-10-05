@@ -100,6 +100,48 @@ class IssueChangelogItem extends Resource
     }
 
     /**
+     * Creates and returns a new issue status transition by date trend.
+     *
+     * @param  array  $options
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueStatusTransitionByDateTrend($options)
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Status Transitions')
+            ->query(function() use ($options) {
+                return static::newModel()->newStatusTransitionQuery($options);
+            })
+            ->joinRelation('changelog')
+            ->useCount()
+            ->dateColumn('created_at')
+            ->suffix('transitions');
+    }
+
+    /**
+     * Creates and returns a new issue status transition by date value.
+     *
+     * @param  array  $options
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueStatusTransitionByDateValue($options)
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Status Transitions')
+            ->query(function() use ($options) {
+                return static::newModel()->newStatusTransitionQuery($options);
+            })
+            ->joinRelation('changelog')
+            ->useCount()
+            ->dateColumn('created_at')
+            ->suffix('transitions');
+    }
+
+    /**
      * Get the filters available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request

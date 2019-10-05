@@ -3,6 +3,7 @@
 namespace App\Nova\Dashboards\Concerns;
 
 use App\Nova\Resources\Issue;
+use App\Nova\Resources\IssueChangelogItem;
 
 trait StatusMetrics
 {
@@ -26,10 +27,10 @@ trait StatusMetrics
      */
     public static function getKickbacksTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
-            ->onlyTo(static::$statuses)
-            ->exceptFrom(array_merge(static::$priorStatuses, static::$statuses))
-            ->setName(static::$label . ' Kickbacks');
+        return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
+            'only_to' => static::$statuses,
+            'except_from' => array_merge(static::$priorStatuses, static::$statuses)
+        ])->label(static::$label . ' Kickbacks by Day');
     }
 
     /**
@@ -39,9 +40,9 @@ trait StatusMetrics
      */
     public static function getInflowTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
-            ->onlyTo(static::$statuses)
-            ->setName(static::$label . ' Inflow');
+        return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
+            'only_to' => static::$statuses
+        ])->label(static::$label . ' Inflow');
     }
 
     /**
@@ -51,9 +52,9 @@ trait StatusMetrics
      */
     public static function getOutflowTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
-            ->onlyFrom(static::$statuses)
-            ->setName(static::$label . ' Outflow');
+        return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
+            'only_from' => static::$statuses
+        ])->label(static::$label . ' Outflow');
     }
 
     /**
