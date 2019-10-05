@@ -14,10 +14,10 @@ trait StatusMetrics
      */
     public static function getKickbacksValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateValue)
-            ->onlyTo(static::$statuses)
-            ->exceptFrom(array_merge(static::$priorStatuses, static::$statuses))
-            ->setName(static::$label . ' Kickbacks');
+        return IssueChangelogItem::getIssueStatusTransitionByDateValue([
+            'only_to' => static::$statuses,
+            'except_from' => array_merge(static::$priorStatuses, static::$statuses)
+        ])->label(static::$label . ' Kickbacks');
     }
 
     /**

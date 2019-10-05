@@ -106,6 +106,13 @@ class FluentValue extends Value
     public $useCurrentToRange = false;
 
     /**
+     * The resolver to create the base query.
+     *
+     * @var \Closure|null
+     */
+    public $queryResolver;
+
+    /**
      * The query callbacks for this metric.
      *
      * @var array
@@ -149,11 +156,8 @@ class FluentValue extends Value
      */
     public function calculate(Request $request)
     {
-        // Determine the model
-        $model = $this->model;
-
         // Create a new query
-        $query = (new $model)->newQuery();
+        $query = $this->newQuery($request);
 
         // Apply the query callbacks
         $this->applyQueryCallbacks($query);
@@ -413,6 +417,41 @@ class FluentValue extends Value
         $this->useCurrentToRange = $useCurrentToRange;
 
         return $this;
+    }
+
+    /**
+     * Sets the query resolver for this metric.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function query(Closure $callback)
+    {
+        $this->queryResolver = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Creates and returns a new query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newQuery(Request $request)
+    {
+        // If a query resolver exists, use it
+        if(!is_null($resolver = $this->queryResolver)) {
+            return $resolver();
+        }
+
+        // Determine the model
+        $model = $this->model;
+
+        // Create a new query from the model
+        return (new $model)->newQuery();
     }
 
     /**
