@@ -64,9 +64,8 @@ trait StatusMetrics
      */
     public static function getEquilibriumTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusResolutionByDateValue)
-            ->statuses(static::$statuses)
-            ->setName(static::$label . ' Equilibrium');
+        return IssueChangelogItem::getIssueStatusEquilibriumTrend(static::$statuses)
+            ->label(static::$label . ' Equilibrium');
     }
 
     /**

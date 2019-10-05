@@ -142,6 +142,28 @@ class IssueChangelogItem extends Resource
     }
 
     /**
+     * Creates and returns a new issue status equilibrium trend.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueStatusEquilibriumTrend($statuses)
+    {
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label('Status Equilibrium')
+            ->trends([
+                static::getIssueStatusTransitionByDateValue(['only_from' => $statuses]),
+                static::getIssueStatusTransitionByDateValue(['only_to' => $statuses])
+            ])
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ])
+            ->useScalarDelta();
+    }
+
+    /**
      * Get the filters available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request
