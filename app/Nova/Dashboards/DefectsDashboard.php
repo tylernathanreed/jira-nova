@@ -73,7 +73,7 @@ class DefectsDashboard extends Dashboard
     {
         return (new \App\Nova\Metrics\IssueCountPartition)
             ->groupByLabel()
-            ->filter(static::scope())
+            ->scope(static::scope())
             ->setName(static::$label . ' Rem. Count (by Label)');
     }
 
@@ -86,7 +86,7 @@ class DefectsDashboard extends Dashboard
     {
         return (new \App\Nova\Metrics\IssueCountPartition)
             ->groupByVersion()
-            ->filter(static::scope())
+            ->scope(static::scope())
             ->setName(static::$label . ' Rem. Count (by Version)');
     }
 
@@ -196,7 +196,7 @@ class DefectsDashboard extends Dashboard
     {
         return (new \App\Nova\Metrics\IssueCountPartition)
             ->groupByEpic()
-            ->filter(static::scope())
+            ->scope(static::scope())
             ->setName(static::$label . ' Rem. Count (by Epic)');
     }
 
@@ -209,7 +209,7 @@ class DefectsDashboard extends Dashboard
     {
         return (new \App\Nova\Metrics\IssueCountPartition)
             ->groupByPriority()
-            ->filter(static::scope())
+            ->scope(static::scope())
             ->setName(static::$label . ' Rem. Count (by Priority)');
     }
 
@@ -222,7 +222,7 @@ class DefectsDashboard extends Dashboard
     {
         return (new \App\Nova\Metrics\IssueCountPartition)
             ->groupByAssignee()
-            ->filter(static::scope())
+            ->scope(static::scope())
             ->setName(static::$label . ' Rem. Count (by Assignee)');
     }
 }
