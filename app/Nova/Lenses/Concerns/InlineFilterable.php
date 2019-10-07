@@ -139,7 +139,7 @@ trait InlineFilterable
     public function getScopedCards()
     {
         return array_map(function($card) {
-            return $card->filter($this->scope);
+            return $card->scope($this->scope);
         }, $this->scopedCards);
     }
 

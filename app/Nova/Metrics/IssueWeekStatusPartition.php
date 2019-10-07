@@ -17,23 +17,21 @@ class IssueWeekStatusPartition extends IssueStatusPartition
     public $reference;
 
     /**
-     * Filters the query by the week label.
+     * Returns the default query callbacks.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     *
-     * @return void
+     * @return array
      */
-    public function applyFilter($query)
+    public function getDefaultCallbacks()
     {
         // Determine the week label
         $label = $this->getWeekLabel($this->reference ? carbon($this->reference) : carbon());
 
-        // Filter the query
-        $query->where('labels', 'like', "%\"{$label}%");
-
-        if(!is_null($this->filter)) {
-            call_user_func($this->filter, $query);
-        }
+        // Return the default callbacks
+        return [
+            function($query) use ($label) {
+                $query->where('labels', 'like', "%\"{$label}%");
+            }
+        ];
     }
 
     /**

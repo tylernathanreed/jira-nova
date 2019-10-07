@@ -26,7 +26,7 @@ class IssueCountPartition extends Partition
     /**
      * Concerns.
      */
-    use Concerns\InlineFilterable,
+    use Concerns\QueryCallbacks,
         Concerns\Nameable,
         Concerns\PartitionLimits,
         Concerns\QualifiedGroupByPartitionFix;
@@ -75,7 +75,7 @@ class IssueCountPartition extends Partition
         $this->applyGroupingScope($query);
 
         // Apply the filter
-        $this->applyFilter($query);
+        $this->applyQueryCallbacks($query);
 
         // Set the partition result class
         $this->setPartitionResultClass();

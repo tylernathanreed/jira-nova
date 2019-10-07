@@ -9,7 +9,7 @@ use Laravel\Nova\Metrics\Partition;
 class IssueStatusPartition extends Partition
 {
     use Concerns\Nameable;
-    use Concerns\InlineFilterable;
+    use Concerns\QueryCallbacks;
 
     /**
      * The element's component.
@@ -38,7 +38,7 @@ class IssueStatusPartition extends Partition
         $query = (new Issue)->newQuery();
 
         // Apply the filter
-        $this->applyFilter($query);
+        $this->applyQueryCallbacks($query);
 
         // Determine the result
         $result = $this->count($request, $query, 'status_name');
