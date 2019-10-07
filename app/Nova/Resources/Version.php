@@ -138,16 +138,17 @@ class Version extends Resource
             // Index metrics
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByVersion(),
             (new \App\Nova\Metrics\IssueCountPartition)->groupByVersion(),
-            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
-                $query->where('fix_versions', '!=', '[]');
-            })->setName('Issues (for Versions) Created Per Day'),
+            
+            Issue::getIssueCreatedByDateTrend()
+                ->label('Issues (for Versions) Created Per Day')
+                ->where('fix_versions', '!=', '[]'),
 
             // Detail metrics
-            $scope(new \App\Nova\Metrics\IssueCreatedByDateValue)->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueCreatedByDateTrend)->onlyOnDetail(),
+            $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
+            $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->onlyOnDetail(),
+            $scope(Issue::getIssueDeliquenciesByDueDateTrend())->onlyOnDetail(),
+            $scope(Issue::getIssueDeliquenciesByEstimatedDateTrend())->onlyOnDetail(),
             $scope((new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee())->onlyOnDetail(),
 
         ];

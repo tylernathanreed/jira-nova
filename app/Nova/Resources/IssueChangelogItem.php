@@ -100,6 +100,132 @@ class IssueChangelogItem extends Resource
     }
 
     /**
+     * Creates and returns a new issue status transition by date trend.
+     *
+     * @param  array  $options
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueStatusTransitionByDateTrend($options)
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Status Transitions')
+            ->query(function() use ($options) {
+                return static::newModel()->newStatusTransitionQuery($options);
+            })
+            ->joinRelation('changelog')
+            ->useCount()
+            ->dateColumn('created_at')
+            ->suffix('transitions');
+    }
+
+    /**
+     * Creates and returns a new issue status transition by date value.
+     *
+     * @param  array  $options
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueStatusTransitionByDateValue($options)
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Status Transitions')
+            ->query(function() use ($options) {
+                return static::newModel()->newStatusTransitionQuery($options);
+            })
+            ->joinRelation('changelog')
+            ->useCount()
+            ->dateColumn('created_at')
+            ->suffix('transitions');
+    }
+
+    /**
+     * Creates and returns a new issue status equilibrium trend.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueStatusEquilibriumTrend($statuses)
+    {
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label('Status Equilibrium')
+            ->trends([
+                static::getIssueStatusTransitionByDateValue(['only_from' => $statuses]),
+                static::getIssueStatusTransitionByDateValue(['only_to' => $statuses])
+            ])
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ])
+            ->useScalarDelta();
+    }
+
+    /**
+     * Creates and returns a new promises made value.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesMadeValue($statuses)
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->queryWithRange(function($range) use ($statuses) {
+                return static::newModel()->newStatusCommitmentsQuery($statuses, [
+                    'kept' => null,
+                    'range' => $range
+                ]);
+            })
+            ->useCount()
+            ->suffix('promises');
+    }
+
+    /**
+     * Creates and returns a new promises kept value.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesKeptValue($statuses)
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->queryWithRange(function($range) use ($statuses) {
+                return static::newModel()->newStatusCommitmentsQuery($statuses, [
+                    'kept' => true,
+                    'range' => $range
+                ]);
+            })
+            ->useCount()
+            ->suffix('promises');
+    }
+
+    /**
+     * Creates and returns a new promise integrity value.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromiseIntegrityValue($statuses)
+    {
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label('Promise Integrity')
+            ->trends([
+                static::getPromisesKeptValue($statuses),
+                static::getPromisesMadeValue($statuses)
+            ])
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ])
+            ->useScalarDelta();
+    }
+
+    /**
      * Get the filters available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request

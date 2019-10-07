@@ -125,9 +125,9 @@ class IssueWorklog extends Resource
     public function cards(Request $request)
     {
         return [
-            $this->getWorklogTrend(),
-            $this->getWorklogByAuthorPartition(),
-            $this->getEfficiencyValue()
+            static::getWorklogTrend(),
+            static::getWorklogByAuthorPartition(),
+            static::getEfficiencyValue()
         ];
     }
 
@@ -136,7 +136,7 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getWorklogTrend()
+    public static function getWorklogTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
@@ -153,9 +153,9 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getFeatureWorklogTrend()
+    public static function getFeatureWorklogTrend()
     {
-        return $this->getWorklogTrend()
+        return static::getWorklogTrend()
             ->label('Feature Worklog')
             ->joinRelation('issue', function($join) {
                 $join->features();
@@ -167,9 +167,9 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getDefectWorklogTrend()
+    public static function getDefectWorklogTrend()
     {
-        return $this->getWorklogTrend()
+        return static::getWorklogTrend()
             ->label('Defect Worklog')
             ->joinRelation('issue', function($join) {
                 $join->defects();
@@ -181,7 +181,7 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getExpectedWorklogTrend()
+    public static function getExpectedWorklogTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
@@ -230,11 +230,11 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getUpkeepValue()
+    public static function getUpkeepValue()
     {
         return (new \App\Nova\Metrics\TrendComparisonValue)
             ->label('Upkeep')
-            ->trends([$this->getDefectWorklogTrend(), $this->getWorklogTrend()])
+            ->trends([static::getDefectWorklogTrend(), static::getWorklogTrend()])
             ->useScalarDelta()
             ->format([
                 'output' => 'percent',
@@ -247,11 +247,11 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getEfficiencyValue()
+    public static function getEfficiencyValue()
     {
         return (new \App\Nova\Metrics\TrendComparisonValue)
             ->label('Efficiency')
-            ->trends([$this->getWorklogTrend(), $this->getExpectedWorklogTrend()])
+            ->trends([static::getWorklogTrend(), static::getExpectedWorklogTrend()])
             ->useScalarDelta()
             ->format([
                 'output' => 'percent',
@@ -264,7 +264,7 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getWorklogByEpicPartition()
+    public static function getWorklogByEpicPartition()
     {
         return (new \App\Nova\Metrics\FluentPartition)
             ->model(static::$model)
@@ -284,7 +284,7 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getWorklogByPriorityPartition()
+    public static function getWorklogByPriorityPartition()
     {
         return (new \App\Nova\Metrics\FluentPartition)
             ->model(static::$model)
@@ -303,7 +303,7 @@ class IssueWorklog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getWorklogByAuthorPartition()
+    public static function getWorklogByAuthorPartition()
     {
         return (new \App\Nova\Metrics\FluentPartition)
             ->model(static::$model)

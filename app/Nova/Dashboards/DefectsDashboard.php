@@ -2,6 +2,9 @@
 
 namespace App\Nova\Dashboards;
 
+use App\Nova\Resources\Issue;
+use App\Nova\Resources\IssueChangelogItem;
+
 class DefectsDashboard extends Dashboard
 {
     /**
@@ -10,13 +13,6 @@ class DefectsDashboard extends Dashboard
      * @var string
      */
     protected static $label = 'Defects';
-
-    /**
-     * The primary resource for this dashboard.
-     *
-     * @var string
-     */
-    protected static $resource = \App\Nova\Resources\Issue::class;
 
     /**
      * Get the cards for the dashboard.
@@ -29,7 +25,7 @@ class DefectsDashboard extends Dashboard
             static::getCreatedValueMetric(),
             static::getCountByLabelPartitionMetric(),
             static::getCountByVersionPartitionMetric(),
-
+ 
             static::getInflowTrendMetric(),
             static::getOutflowTrendMetric(),
             static::getEquilibriumTrendMetric(),
@@ -56,19 +52,6 @@ class DefectsDashboard extends Dashboard
         };
     }
 
-
-    /**
-     * Creates and returns a new primary resource.
-     *
-     * @return \App\Nova\Resources\Resource
-     */
-    public static function resource()
-    {
-        $class = static::$resource;
-
-        return new $class($class::newModel());
-    }
-
     /**
      * Returns the created value metric for this dashboard.
      *
@@ -76,9 +59,9 @@ class DefectsDashboard extends Dashboard
      */
     public static function getCreatedValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueCreatedByDateValue)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Created');
+        return Issue::getIssueCreatedByDateValue()
+            ->label(static::$label . ' Created')
+            ->scope(static::scope());
     }
 
     /**
@@ -114,7 +97,7 @@ class DefectsDashboard extends Dashboard
      */
     public static function getInflowTrendMetric()
     {
-        return static::resource()->getIssueCreatedByDateTrend()
+        return Issue::getIssueCreatedByDateTrend()
             ->label(static::$label . ' Inflow')
             ->scope(static::scope());
     }
@@ -126,7 +109,7 @@ class DefectsDashboard extends Dashboard
      */
     public static function getOutflowTrendMetric()
     {
-        return static::resource()->getIssueCreatedByDateTrend()
+        return Issue::getIssueCreatedByDateTrend()
             ->label(static::$label . ' Outflow')
             ->dateColumn('resolution_date')
             ->scope(static::scope());
@@ -139,9 +122,16 @@ class DefectsDashboard extends Dashboard
      */
     public static function getEquilibriumTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueCountResolutionByDateValue)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Equilibrium');
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label(static::$label . ' Equilibrium')
+            ->trends([
+                static::getOutflowTrendMetric(),
+                static::getInflowTrendMetric()
+            ])
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ]);
     }
 
     /**
@@ -151,9 +141,9 @@ class DefectsDashboard extends Dashboard
      */
     public static function getActualDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Act. Delinquencies');
+        return Issue::getIssueDeliquenciesByDueDateTrend()
+            ->label(static::$label . ' Act. Delinquencies')
+            ->scope(static::scope());
     }
 
     /**
@@ -163,9 +153,9 @@ class DefectsDashboard extends Dashboard
      */
     public static function getEstimatedDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)
-            ->filter(static::scope())
-            ->setName(static::$label . ' Est. Delinquencies');
+        return Issue::getIssueDeliquenciesByEstimatedDateTrend()
+            ->label(static::$label . ' Est. Delinquencies')
+            ->scope(static::scope());
     }
 
     /**
@@ -175,25 +165,26 @@ class DefectsDashboard extends Dashboard
      */
     public static function getSatisfactionValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusSatisfactionByDateValue)
-            ->filter(static::scope())
-            ->statuses([
-                'New',
-                'In Design',
-                'Need Client Clarification',
-                'Dev Help Needed',
-                'Waiting for approval',
-                'Validating',
-                'Assigned',
-                'Dev Hold',
-                'Dev Complete',
-                'In Development',
-                'Testing Failed',
-                'Ready to Test [Test]',
-                'Ready to test [UAT]',
-                'Test Help Needed'
-            ])
-            ->setName(static::$label . ' Commitments Kept');
+        $statuses = [
+            'New',
+            'In Design',
+            'Need Client Clarification',
+            'Dev Help Needed',
+            'Waiting for approval',
+            'Validating',
+            'Assigned',
+            'Dev Hold',
+            'Dev Complete',
+            'In Development',
+            'Testing Failed',
+            'Ready to Test [Test]',
+            'Ready to test [UAT]',
+            'Test Help Needed'
+        ];
+
+        return IssueChangelogItem::getPromiseIntegrityValue($statuses)
+            ->label(static::$label . ' Commitments Kept')
+            ->scope(static::scope());
     }
 
     /**

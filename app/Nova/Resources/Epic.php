@@ -142,22 +142,31 @@ class Epic extends Resource
      */
     public function cards(Request $request)
     {
+        $scope = function($filter) use ($request) {
+
+            $filter->where('epic_id', '=', $request->resourceId);
+
+            return $filter;
+
+        };
+
         return [
 
             // Index metrics
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
             (new \App\Nova\Metrics\IssueCountPartition)->groupByEpic(),
-            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->filter(function($query) {
-                $query->whereNotNull('epic_name');
-            })->setName('Issues (for Epics) Created Per Day'),
+
+            Issue::getIssueCreatedByDateTrend()
+                ->label('Issues (for Epics) Created Per Day')
+                ->whereNotNull('epic_name'),
 
             // Detail metrics
-            (new \App\Nova\Metrics\IssueCreatedByDateValue)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
-            (new \App\Nova\Metrics\IssueCreatedByDateTrend)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
-            (new \App\Nova\Metrics\IssueStatusPartition)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
-            (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
-            (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()->where('epic_id', '=', $request->resourceId)->onlyOnDetail(),
+            $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
+            $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
+            $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
+            $scope(Issue::getIssueDeliquenciesByDueDateTrend())->onlyOnDetail(),
+            $scope(Issue::getIssueDeliquenciesByEstimatedDateTrend())->onlyOnDetail(),
+            $scope(new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()->onlyOnDetail(),
         ];
     }
 

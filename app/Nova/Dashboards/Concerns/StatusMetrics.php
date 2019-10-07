@@ -2,6 +2,9 @@
 
 namespace App\Nova\Dashboards\Concerns;
 
+use App\Nova\Resources\Issue;
+use App\Nova\Resources\IssueChangelogItem;
+
 trait StatusMetrics
 {
     /**
@@ -11,10 +14,10 @@ trait StatusMetrics
      */
     public static function getKickbacksValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateValue)
-            ->onlyTo(static::$statuses)
-            ->exceptFrom(array_merge(static::$priorStatuses, static::$statuses))
-            ->setName(static::$label . ' Kickbacks');
+        return IssueChangelogItem::getIssueStatusTransitionByDateValue([
+            'only_to' => static::$statuses,
+            'except_from' => array_merge(static::$priorStatuses, static::$statuses)
+        ])->label(static::$label . ' Kickbacks');
     }
 
     /**
@@ -24,10 +27,10 @@ trait StatusMetrics
      */
     public static function getKickbacksTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
-            ->onlyTo(static::$statuses)
-            ->exceptFrom(array_merge(static::$priorStatuses, static::$statuses))
-            ->setName(static::$label . ' Kickbacks');
+        return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
+            'only_to' => static::$statuses,
+            'except_from' => array_merge(static::$priorStatuses, static::$statuses)
+        ])->label(static::$label . ' Kickbacks by Day');
     }
 
     /**
@@ -37,9 +40,9 @@ trait StatusMetrics
      */
     public static function getInflowTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
-            ->onlyTo(static::$statuses)
-            ->setName(static::$label . ' Inflow');
+        return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
+            'only_to' => static::$statuses
+        ])->label(static::$label . ' Inflow');
     }
 
     /**
@@ -49,9 +52,9 @@ trait StatusMetrics
      */
     public static function getOutflowTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusTransitionByDateTrend)
-            ->onlyFrom(static::$statuses)
-            ->setName(static::$label . ' Outflow');
+        return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
+            'only_from' => static::$statuses
+        ])->label(static::$label . ' Outflow');
     }
 
     /**
@@ -61,9 +64,8 @@ trait StatusMetrics
      */
     public static function getEquilibriumTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusResolutionByDateValue)
-            ->statuses(static::$statuses)
-            ->setName(static::$label . ' Equilibrium');
+        return IssueChangelogItem::getIssueStatusEquilibriumTrend(static::$statuses)
+            ->label(static::$label . ' Equilibrium');
     }
 
     /**
@@ -73,9 +75,9 @@ trait StatusMetrics
      */
     public static function getActualDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByDueDateTrend)
-            ->whereIn('status_name', static::$statuses)
-            ->setName(static::$label . ' Act. Delinquencies');
+        return Issue::getIssueDeliquenciesByDueDateTrend()
+            ->label(static::$label . ' Act. Delinquencies')
+            ->whereIn('status_name', static::$statuses);
     }
 
     /**
@@ -85,9 +87,31 @@ trait StatusMetrics
      */
     public static function getEstimatedDelinquenciesTrendMetric()
     {
-        return (new \App\Nova\Metrics\IssueDelinquentByEstimatedDateTrend)
-            ->whereIn('status_name', static::$statuses)
-            ->setName(static::$label . ' Est. Delinquencies');
+        return Issue::getIssueDeliquenciesByEstimatedDateTrend()
+            ->label(static::$label . ' Est. Delinquencies')
+            ->whereIn('status_name', static::$statuses);
+    }
+
+    /**
+     * Returns the promises made value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesMadeValueMetric()
+    {
+        return IssueChangelogItem::getPromisesMadeValue(static::$statuses)
+            ->label(static::$label . ' Promises Made');
+    }
+
+    /**
+     * Returns the promises kept value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesKeptValueMetric()
+    {
+        return IssueChangelogItem::getPromisesKeptValue(static::$statuses)
+            ->label(static::$label . ' Promises Kept');
     }
 
     /**
@@ -97,9 +121,8 @@ trait StatusMetrics
      */
     public static function getSatisfactionValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusSatisfactionByDateValue)
-            ->statuses(static::$statuses)
-            ->setName(static::$label . ' Commitments Kept');
+        return IssueChangelogItem::getPromiseIntegrityValue(static::$statuses)
+            ->label(static::$label . ' Commitments Kept');
     }
 
     /**

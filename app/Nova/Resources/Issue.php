@@ -205,9 +205,36 @@ class Issue extends Resource
     public function cards(Request $request)
     {
         return [
-            (new \App\Nova\Metrics\IssueCreatedByDateValue)->where('focus', 'Ticket')->setName('Ticket Entry'),
-            $this->getIssueCreatedByDateTrend()->width('2/3')
+            static::getTicketEntryValue(),
+            static::getIssueCreatedByDateTrend()->width('2/3')
         ];
+    }
+
+    /**
+     * Creates and returns a new issue created by date value.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueCreatedByDateValue()
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->label('Issues Created')
+            ->useCount()
+            ->dateColumn('entry_date')
+            ->suffix('issues');
+    }
+
+    /**
+     * Creates and returns a new ticket entry value.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getTicketEntryValue()
+    {
+        return static::getIssueCreatedByDateValue()
+            ->label('Ticket Entry')
+            ->where('focus', '=', 'Ticket');
     }
 
     /**
@@ -215,13 +242,51 @@ class Issue extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getIssueCreatedByDateTrend()
+    public static function getIssueCreatedByDateTrend()
     {
         return (new \App\Nova\Metrics\FluentTrend)
             ->model(static::$model)
             ->label('Issues Created Per Day')
             ->useCount()
             ->dateColumn('entry_date')
+            ->suffix('issues');
+    }
+
+    /**
+     * Creates and returns a new issue deliquencies by due date trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueDeliquenciesByDueDateTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Delinquencies')
+            ->useCount()
+            ->dateColumn('due_date')
+            ->whereNotNull('due_date')
+            ->where('due_date', '<', carbon())
+            ->incomplete()
+            ->suffix('issues');
+    }
+
+    /**
+     * Creates and returns a new issue deliquencies by estimated date trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueDeliquenciesByEstimatedDateTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Estimated Delinquencies')
+            ->useCount()
+            ->dateColumn('due_date')
+            ->whereNotNull('estimate_date')
+            ->whereNotNull('due_date')
+            ->whereColumn('due_date', '>', 'estimate_date')
+            ->incomplete()
+            ->futuristic()
             ->suffix('issues');
     }
 
@@ -266,7 +331,7 @@ class Issue extends Resource
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Delinquencies')->scope(function($query) { $query->delinquent(); })->addScopedCards([
-                new \App\Nova\Metrics\IssueDelinquentByDueDateTrend,
+                static::getIssueDeliquenciesByDueDateTrend(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
                 new \App\Nova\Metrics\IssueStatusPartition
             ]),

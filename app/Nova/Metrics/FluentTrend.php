@@ -80,6 +80,13 @@ class FluentTrend extends Trend
     public $dateColumn;
 
     /**
+     * The resolver to create the base query.
+     *
+     * @var \Closure|null
+     */
+    public $queryResolver;
+
+    /**
      * The query callbacks for this metric.
      *
      * @var array
@@ -158,13 +165,8 @@ class FluentTrend extends Trend
      */
     public function calculate(Request $request)
     {
-        // Determine the model
-        $model = $this->model;
-
         // Create a new query
-        $query = $this->useDateRangeQuery
-            ? $this->newDateRangeQuery($request)
-            : (new $model)->newQuery();
+        $query = $this->newQuery($request);
 
         // Apply the filter
         $this->applyQueryCallbacks($query);
@@ -332,6 +334,46 @@ class FluentTrend extends Trend
         $this->dateColumn = $dateColumn;
 
         return $this;
+    }
+
+    /**
+     * Sets the query resolver for this metric.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function query(Closure $callback)
+    {
+        $this->queryResolver = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Creates and returns a new query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newQuery(Request $request)
+    {
+        // If a query resolver exists, use it
+        if(!is_null($resolver = $this->queryResolver)) {
+            return $resolver();
+        }
+
+        // If we're using a date range query, return it
+        if($this->useDateRangeQuery) {
+            return $this->newDateRangeQuery($request);
+        }
+
+        // Determine the model
+        $model = $this->model;
+
+        // Create a new query from the model
+        return (new $model)->newQuery();
     }
 
     /**

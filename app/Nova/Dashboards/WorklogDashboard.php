@@ -2,6 +2,9 @@
 
 namespace App\Nova\Dashboards;
 
+use App\Nova\Resources\IssueWorklog;
+use App\Nova\Resources\IssueChangelog;
+
 class WorklogDashboard extends Dashboard
 {
     /**
@@ -10,20 +13,6 @@ class WorklogDashboard extends Dashboard
      * @var string
      */
     protected static $label = 'Worklog';
-
-    /**
-     * The primary resource for this dashboard.
-     *
-     * @var string
-     */
-    protected static $resource = \App\Nova\Resources\IssueWorklog::class;
-
-    /**
-     * The secondary resource for this dashboard.
-     *
-     * @var string
-     */
-    protected static $changelog = \App\Nova\Resources\IssueChangelog::class;
 
     /**
      * Get the cards for the dashboard.
@@ -52,37 +41,13 @@ class WorklogDashboard extends Dashboard
     }
 
     /**
-     * Creates and returns a new primary resource.
-     *
-     * @return \App\Nova\Resources\Resource
-     */
-    public static function resource()
-    {
-        $class = static::$resource;
-
-        return new $class($class::newModel());
-    }
-
-    /**
-     * Creates and returns a new secondary resource.
-     *
-     * @return \App\Nova\Resources\Resource
-     */
-    public static function changelog()
-    {
-        $class = static::$changelog;
-
-        return new $class($class::newModel());
-    }
-
-    /**
      * Returns the time extensions metric for this dashboard.
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
     public static function getEstimateExtensionsValue()
     {
-        return static::changelog()->getEstimateExtensionsValue();
+        return IssueChangelog::getEstimateExtensionsValue();
     }
 
     /**
@@ -92,7 +57,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getEstimateReductionsValue()
     {
-        return static::changelog()->getEstimateReductionsValue();
+        return IssueChangelog::getEstimateReductionsValue();
     }
 
     /**
@@ -102,7 +67,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getEstimateInflationValue()
     {
-        return static::changelog()->getEstimateInflationValue();
+        return IssueChangelog::getEstimateInflationValue();
     }
 
     /**
@@ -112,7 +77,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getFeatureWorklogTrend()
     {
-        return static::resource()->getFeatureWorklogTrend();
+        return IssueWorklog::getFeatureWorklogTrend();
     }
 
     /**
@@ -122,7 +87,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getDefectWorklogTrend()
     {
-        return static::resource()->getDefectWorklogTrend();
+        return IssueWorklog::getDefectWorklogTrend();
     }
 
     /**
@@ -132,7 +97,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getUpkeepValue()
     {
-        return static::resource()->getUpkeepValue();
+        return IssueWorklog::getUpkeepValue();
     }
 
     /**
@@ -142,7 +107,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getWorklogTrend()
     {
-        return static::resource()->getWorklogTrend();
+        return IssueWorklog::getWorklogTrend();
     }
 
     /**
@@ -152,7 +117,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getExpectedWorklogTrend()
     {
-        return static::resource()->getExpectedWorklogTrend();
+        return IssueWorklog::getExpectedWorklogTrend();
     }
 
     /**
@@ -162,7 +127,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getEfficiencyValue()
     {
-        return static::resource()->getEfficiencyValue();
+        return IssueWorklog::getEfficiencyValue();
     }
 
     /**
@@ -172,7 +137,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getWorklogByEpicPartition()
     {
-        return static::resource()->getWorklogByEpicPartition();
+        return IssueWorklog::getWorklogByEpicPartition();
     }
 
     /**
@@ -182,7 +147,7 @@ class WorklogDashboard extends Dashboard
      */
     public static function getWorklogByPriorityPartition()
     {
-        return static::resource()->getWorklogByPriorityPartition();
+        return IssueWorklog::getWorklogByPriorityPartition();
     }
 
     /**
@@ -192,6 +157,6 @@ class WorklogDashboard extends Dashboard
      */
     public static function getWorklogByAuthorPartition()
     {
-        return static::resource()->getWorklogByAuthorPartition();
+        return IssueWorklog::getWorklogByAuthorPartition();
     }
 }

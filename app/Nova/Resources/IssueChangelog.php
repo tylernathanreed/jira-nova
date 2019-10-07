@@ -103,7 +103,7 @@ class IssueChangelog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getEstimateExtensionsValue()
+    public static function getEstimateExtensionsValue()
     {
         return (new \App\Nova\Metrics\FluentValue)
             ->model(static::$model)
@@ -128,7 +128,7 @@ class IssueChangelog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getEstimateReductionsValue()
+    public static function getEstimateReductionsValue()
     {
         return (new \App\Nova\Metrics\FluentValue)
             ->model(static::$model)
@@ -153,7 +153,7 @@ class IssueChangelog extends Resource
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public function getEstimateInflationValue()
+    public static function getEstimateInflationValue()
     {
         return (new \App\Nova\Metrics\FluentValue)
             ->model(static::$model)
