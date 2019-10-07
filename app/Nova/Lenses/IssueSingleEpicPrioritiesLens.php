@@ -59,9 +59,14 @@ class IssueSingleEpicPrioritiesLens extends Lens
             'issues.entry_date'
         ]);
 
-        // Order by estimate, then by rank
-        $query->orderBy('estimate_date', 'asc');
-        $query->orderBy('rank', 'asc');
+        // Check for default ordering
+        if(!$request->orderBy || !$request->orderByDirection) {
+
+            // Order by estimate, then by rank
+            $query->orderBy('estimate_date', 'asc');
+            $query->orderBy('rank', 'asc');
+
+        }
 
         // Return the query
         return $request->withOrdering($request->withFilters(
@@ -90,7 +95,7 @@ class IssueSingleEpicPrioritiesLens extends Lens
             }),
 
             Field::badgeUrl('Status', 'status_group_name')->backgroundUsing(function($value, $resource) {
-                return $resource->status_group_color;
+                return $resource->status_group_color ?? null;
             })->foregroundUsing(function($value, $resource) {
                 return '#000';
             })->style([
