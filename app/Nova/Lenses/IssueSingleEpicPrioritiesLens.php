@@ -207,9 +207,9 @@ class IssueSingleEpicPrioritiesLens extends Lens
                 ->futuristic()
                 ->scope($scope),
 
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week')->filter($scope),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week')->filter($scope),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Next Week')->reference('+1 week')->filter($scope),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week')->scope($scope),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week')->scope($scope),
+            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Next Week')->reference('+1 week')->scope($scope),
         ];
     }
 
