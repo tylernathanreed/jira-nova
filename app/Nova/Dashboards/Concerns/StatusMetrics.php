@@ -93,15 +93,36 @@ trait StatusMetrics
     }
 
     /**
+     * Returns the promises made value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesMadeValueMetric()
+    {
+        return IssueChangelogItem::getPromisesMadeValue(static::$statuses)
+            ->label(static::$label . ' Promises Made');
+    }
+
+    /**
+     * Returns the promises kept value metric.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesKeptValueMetric()
+    {
+        return IssueChangelogItem::getPromisesKeptValue(static::$statuses)
+            ->label(static::$label . ' Promises Kept');
+    }
+
+    /**
      * Returns the satisfaction value metric for this dashboard.
      *
      * @return \Laravel\Nova\Metrics\Metric
      */
     public static function getSatisfactionValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusSatisfactionByDateValue)
-            ->statuses(static::$statuses)
-            ->setName(static::$label . ' Commitments Kept');
+        return IssueChangelogItem::getPromiseIntegrityValue(static::$statuses)
+            ->label(static::$label . ' Commitments Kept');
     }
 
     /**

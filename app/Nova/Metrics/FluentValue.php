@@ -113,6 +113,13 @@ class FluentValue extends Value
     public $queryResolver;
 
     /**
+     * The resolver to create the base query using a range.
+     *
+     * @var \Closure|null
+     */
+    public $queryWithRangeResolver;
+
+    /**
      * The query callbacks for this metric.
      *
      * @var array
@@ -156,14 +163,8 @@ class FluentValue extends Value
      */
     public function calculate(Request $request)
     {
-        // Create a new query
-        $query = $this->newQuery($request);
-
-        // Apply the query callbacks
-        $this->applyQueryCallbacks($query);
-
         // Determine the result
-        $result = $this->aggregate($request, $query, $this->function, $this->column, $this->dateColumn);
+        $result = $this->aggregate($request, $this->model, $this->function, $this->column, $this->dateColumn);
 
         // Check for a suffix
         if(!is_null($this->suffix)) {
@@ -434,14 +435,40 @@ class FluentValue extends Value
     }
 
     /**
-     * Creates and returns a new query.
+     * Sets the query with range resolver for this metric.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function queryWithRange(Closure $callback)
+    {
+        $this->queryWithRangeResolver = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Creates and returns a new query without applying any callbacks.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  string                    $reference
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function newQuery(Request $request)
+    public function newQueryWithoutCallbacks(Request $request, $reference = 'current')
     {
+        // If a query with range resolver exists, use it
+        if(!is_null($resolver = $this->queryWithRangeResolver)) {
+
+            // Determine the range
+            $range = $this->{$reference . 'Range'}($request->range);
+
+            // Return the query
+            return $resolver($range);
+
+        }
+
         // If a query resolver exists, use it
         if(!is_null($resolver = $this->queryResolver)) {
             return $resolver();
@@ -452,6 +479,83 @@ class FluentValue extends Value
 
         // Create a new query from the model
         return (new $model)->newQuery();
+    }
+
+    /**
+     * Creates and returns a new query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string                    $reference
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newQueryWithoutRange(Request $request, $reference = 'current')
+    {
+        // Create a new query
+        $query = $this->newQueryWithoutCallbacks($request, $reference);
+
+        // Apply the query callbacks
+        $this->applyQueryCallbacks($query);
+
+        // Return the query
+        return $query;
+    }
+
+    /**
+     * Creates and returns a new query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string                    $reference
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newQuery(Request $request, $reference = 'current')
+    {
+        // Create a new query
+        $query = $this->newQueryWithoutRange($request, $reference);
+
+        // Determine the date column
+        $dateColumn = $this->dateColumn ?? $query->getModel()->getCreatedAtColumn();
+
+        // Determine the range
+        $range = $this->{$reference . 'Range'}($request->range);
+
+        // Apply the range to the query
+        if(!$this->noRanges && $dateColumn !== false && is_null($this->queryWithRangeResolver)) {
+            $query->whereBetween($dateColumn, $range);
+        }
+
+        // Apply the range callback
+        if(!$this->noRanges) {
+            $this->applyQueryWithRangeCallbacks($query, $range);
+        }
+
+        // Return the query
+        return $query;
+    }
+
+    /**
+     * Creates and returns a new current query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newCurrentQuery(Request $request)
+    {
+        return $this->newQuery($request, 'current');
+    }
+
+    /**
+     * Creates and returns a new previous query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newPreviousQuery(Request $request)
+    {
+        return $this->newQuery($request, 'previous');
     }
 
     /**
@@ -606,32 +710,12 @@ class FluentValue extends Value
      */
     protected function aggregate($request, $model, $function, $column = null, $dateColumn = null)
     {
-        // Determine the query
-        $query = $model instanceof Builder ? $model : (new $model)->newQuery();
-
-        // Determine the date column
-        $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
-
-        // Determine the ranges
-        $ranges = [
-            $this->currentRange($request->range),
-            $this->previousRange($request->range)
-        ];
-
         // Determine the current and previous queries
-        $currentQuery = ($this->noRanges || $dateColumn === false) ? (clone $query) : with(clone $query)->whereBetween($dateColumn, $ranges[0]);
-        $previousQuery = ($this->noRanges || $dateColumn === false) ? (clone $query) : with(clone $query)->whereBetween($dateColumn, $ranges[1]);
-
-        // If we're using ranges, apply the range callbacks
-        if(!$this->noRanges) {
-
-            $this->applyQueryWithRangeCallbacks($currentQuery, $ranges[0]);
-            $this->applyQueryWithRangeCallbacks($previousQuery, $ranges[1]);
-
-        }
+        $currentQuery = $this->newCurrentQuery($request);
+        $previousQuery = $this->newPreviousQuery($request);
 
         // Determine the aggregate column
-        $column = $column ?? $query->getModel()->getQualifiedKeyName();
+        $column = $column ?? $currentQuery->getModel()->getQualifiedKeyName();
 
         // Determine the select statement
         $select = $this->select ?? "{$function}({$column})";

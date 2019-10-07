@@ -3,6 +3,7 @@
 namespace App\Nova\Dashboards;
 
 use App\Nova\Resources\Issue;
+use App\Nova\Resources\IssueChangelogItem;
 
 class DefectsDashboard extends Dashboard
 {
@@ -164,25 +165,26 @@ class DefectsDashboard extends Dashboard
      */
     public static function getSatisfactionValueMetric()
     {
-        return (new \App\Nova\Metrics\IssueStatusSatisfactionByDateValue)
-            ->filter(static::scope())
-            ->statuses([
-                'New',
-                'In Design',
-                'Need Client Clarification',
-                'Dev Help Needed',
-                'Waiting for approval',
-                'Validating',
-                'Assigned',
-                'Dev Hold',
-                'Dev Complete',
-                'In Development',
-                'Testing Failed',
-                'Ready to Test [Test]',
-                'Ready to test [UAT]',
-                'Test Help Needed'
-            ])
-            ->setName(static::$label . ' Commitments Kept');
+        $statuses = [
+            'New',
+            'In Design',
+            'Need Client Clarification',
+            'Dev Help Needed',
+            'Waiting for approval',
+            'Validating',
+            'Assigned',
+            'Dev Hold',
+            'Dev Complete',
+            'In Development',
+            'Testing Failed',
+            'Ready to Test [Test]',
+            'Ready to test [UAT]',
+            'Test Help Needed'
+        ];
+
+        return IssueChangelogItem::getPromiseIntegrityValue($statuses)
+            ->label(static::$label . ' Commitments Kept')
+            ->scope(static::scope());
     }
 
     /**

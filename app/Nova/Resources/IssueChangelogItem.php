@@ -164,6 +164,68 @@ class IssueChangelogItem extends Resource
     }
 
     /**
+     * Creates and returns a new promises made value.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesMadeValue($statuses)
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->queryWithRange(function($range) use ($statuses) {
+                return static::newModel()->newStatusCommitmentsQuery($statuses, [
+                    'kept' => null,
+                    'range' => $range
+                ]);
+            })
+            ->useCount()
+            ->suffix('promises');
+    }
+
+    /**
+     * Creates and returns a new promises kept value.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromisesKeptValue($statuses)
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->queryWithRange(function($range) use ($statuses) {
+                return static::newModel()->newStatusCommitmentsQuery($statuses, [
+                    'kept' => true,
+                    'range' => $range
+                ]);
+            })
+            ->useCount()
+            ->suffix('promises');
+    }
+
+    /**
+     * Creates and returns a new promise integrity value.
+     *
+     * @param  array  $statuses
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPromiseIntegrityValue($statuses)
+    {
+        return (new \App\Nova\Metrics\TrendComparisonValue)
+            ->label('Promise Integrity')
+            ->trends([
+                static::getPromisesKeptValue($statuses),
+                static::getPromisesMadeValue($statuses)
+            ])
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ])
+            ->useScalarDelta();
+    }
+
+    /**
      * Get the filters available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request

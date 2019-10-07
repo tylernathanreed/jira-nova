@@ -2,6 +2,7 @@
 
 namespace App\Nova\Metrics;
 
+use Closure;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;
 
@@ -57,6 +58,13 @@ class TrendComparisonValue extends Value
     public $useScalarDelta = false;
 
     /**
+     * The query callbacks for this metric.
+     *
+     * @var array
+     */
+    public $queryCallbacks = [];
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -67,7 +75,15 @@ class TrendComparisonValue extends Value
     {
         // Calculate the current result of the trends
         $currentResults = array_map(function($trend) use ($request) {
+
+            // Apply the query callbacks to the trend
+            if(!empty($this->queryCallbacks)) {
+                $trend->queryCallbacks = $this->queryCallbacks;
+            }
+
+            // Return the result of the trend
             return $trend->calculate($request)->value;
+
         }, $this->trends);
 
         // Determine the current value
@@ -222,6 +238,56 @@ class TrendComparisonValue extends Value
     {
         $this->useScalarDelta = $useScalarDelta;
 
+        return $this;
+    }
+
+    /**
+     * Applies the query callbacks to the specified query.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     *
+     * @return void
+     */
+    public function applyQueryCallbacks($query)
+    {
+        foreach($this->queryCallbacks as $callback) {
+            $callback($query);
+        }
+    }
+
+    /**
+     * Adds the specified closure as a query callback.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function scope(Closure $callback)
+    {
+        $this->queryCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Handles dynamic method calls into this metric.
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     *
+     * @return $this
+     */
+    public function __call($method, $parameters = [])
+    {
+        // Create a query callback based on the method call
+        $callback = function($query) use ($method, $parameters) {
+            $query->{$method}(...$parameters);
+        };
+
+        // Add the query callback
+        $this->queryCallbacks[] = $callback;
+
+        // Allow chaining
         return $this;
     }
 }
