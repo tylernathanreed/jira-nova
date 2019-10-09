@@ -22,6 +22,12 @@ class FluentValue extends Value
     const USE_MIN = 'min';
 
     /**
+     * The common concerns.
+     */
+    use Concerns\Nameable,
+        Concerns\QueryCallbacks;
+
+    /**
      * The element's component.
      *
      * @var string
@@ -120,13 +126,6 @@ class FluentValue extends Value
     public $queryWithRangeResolver;
 
     /**
-     * The query callbacks for this metric.
-     *
-     * @var array
-     */
-    public $queryCallbacks = [];
-
-    /**
      * The value accessor for the query.
      *
      * @var \Closure|null
@@ -193,20 +192,6 @@ class FluentValue extends Value
     public function model($model)
     {
         $this->model = $model;
-
-        return $this;
-    }
-
-    /**
-     * Sets the displayable name of the metric.
-     *
-     * @param  string  $name
-     *
-     * @return $this
-     */
-    public function label($name)
-    {
-        $this->name = $name;
 
         return $this;
     }
@@ -559,20 +544,6 @@ class FluentValue extends Value
     }
 
     /**
-     * Applies the query callbacks to the specified query.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     *
-     * @return void
-     */
-    public function applyQueryCallbacks($query)
-    {
-        foreach($this->queryCallbacks as $callback) {
-            $callback($query);
-        }
-    }
-
-    /**
      * Sets the value accessor for this metric.
      *
      * @param  \Closure  $accessor
@@ -626,20 +597,6 @@ class FluentValue extends Value
 
         // Return the value
         return $accessor($query);
-    }
-
-    /**
-     * Adds the specified closure as a query callback.
-     *
-     * @param  \Closure  $callback
-     *
-     * @return $this
-     */
-    public function scope(Closure $callback)
-    {
-        $this->queryCallbacks[] = $callback;
-
-        return $this;
     }
 
     /**
@@ -762,27 +719,5 @@ class FluentValue extends Value
         }
 
         return $previous;
-    }
-
-    /**
-     * Handles dynamic method calls into this metric.
-     *
-     * @param  string  $method
-     * @param  array   $parameters
-     *
-     * @return $this
-     */
-    public function __call($method, $parameters = [])
-    {
-        // Create a query callback based on the method call
-        $callback = function($query) use ($method, $parameters) {
-            $query->{$method}(...$parameters);
-        };
-
-        // Add the query callback
-        $this->queryCallbacks[] = $callback;
-
-        // Allow chaining
-        return $this;
     }
 }
