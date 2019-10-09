@@ -39,6 +39,51 @@ class Label extends Model implements Cacheable
      */
     public $timestamps = false;
 
+    /////////////////////
+    //* Weekly Labels *//
+    /////////////////////
+    /**
+     * Returns the week label name.
+     *
+     * @param  mixed  $when
+     *
+     * @return string
+     */
+    public static function getWeekLabel($when = 'now')
+    {
+        // Convert the diff to a label
+        return 'Week' . static::getWeekLabelIndex($when);
+    }
+
+    /**
+     * Returns the week label epoch date.
+     *
+     * @return \Carbon\Carbon
+     */
+    public static function getWeekLabelEpoch()
+    {
+        return carbon('2019-07-07');
+    }
+
+    /**
+     * Returns the week label index.
+     *
+     * @param  mixed  $when
+     *
+     * @return integer
+     */
+    public static function getWeekLabelIndex($when = 'now')
+    {
+        // Determine the first week reference
+        $start = static::getWeekLabelEpoch();
+
+        // Determine the current reference
+        $when = carbon($when);
+
+        // Return the week diff
+        return $start->diffInWeeks($when);
+    }
+
     /////////////
     //* Cache *//
     /////////////
