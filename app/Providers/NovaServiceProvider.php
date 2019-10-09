@@ -117,9 +117,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             Issue::getTicketEntryValue(),
             Issue::getIssueCreatedByDateTrend()->width('2/3'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Next Week')->reference('+1 week'),
+            Issue::getIssueWeekStatusPartition('-1 week')->label('Last Week'),
+            Issue::getIssueWeekStatusPartition()->label('This Week'),
+            Issue::getIssueWeekStatusPartition('+1 week')->label('Next Week'),
             Issue::getIssueDeliquenciesByDueDateTrend(),
             Issue::getIssueDeliquenciesByEstimatedDateTrend(),
             new \App\Nova\Metrics\IssueWeeklySatisfactionTrend,

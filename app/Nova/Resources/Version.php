@@ -146,7 +146,7 @@ class Version extends Resource
             // Detail metrics
             $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
-            $scope(new \App\Nova\Metrics\IssueStatusPartition)->onlyOnDetail(),
+            $scope(Issue::getIssueStatusPartition())->onlyOnDetail(),
             $scope(Issue::getIssueDeliquenciesByDueDateTrend())->onlyOnDetail(),
             $scope(Issue::getIssueDeliquenciesByEstimatedDateTrend())->onlyOnDetail(),
             $scope((new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee())->onlyOnDetail(),
