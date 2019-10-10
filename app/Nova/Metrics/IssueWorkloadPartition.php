@@ -406,15 +406,15 @@ class IssueWorkloadPartition extends Partition
 
             // Epic
             case static::GROUP_BY_EPIC:
-                return $this->resultClass(EpicPartitionResult::class);
+                return $this->resultClass(Results\EpicPartitionResult::class);
 
             // Focus Group
             case static::GROUP_BY_FOCUS:
-                return $this->resultClass(FocusGroupPartitionResult::class);
+                return $this->resultClass(Results\FocusGroupPartitionResult::class);
 
             // Priority
             case static::GROUP_BY_PRIORITY:
-                return $this->resultClass(PriorityPartitionResult::class);
+                return $this->resultClass(Results\PriorityPartitionResult::class);
 
             // Unknown
             default:

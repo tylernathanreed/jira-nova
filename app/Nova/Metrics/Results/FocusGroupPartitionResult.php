@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Nova\Metrics;
+namespace App\Nova\Metrics\Results;
 
 use Closure;
-use App\Models\Issue;
+use App\Models\FocusGroup;
 use Laravel\Nova\Metrics\PartitionResult;
 
-class PriorityPartitionResult extends PartitionResult
+class FocusGroupPartitionResult extends PartitionResult
 {
+    use Concerns\PreventDuplicatePartitionColors;
+
     /**
      * Create a new partition result instance.
      *
@@ -24,7 +26,10 @@ class PriorityPartitionResult extends PartitionResult
         parent::__construct($value);
 
         // Assign the colors
-        $this->colors(static::getPriorityColors());
+        $this->colors(static::getFocusGroupColors());
+
+        // Assign the labels
+        $this->label(static::getFocusGroupLabelResolver());
     }
 
     /**
@@ -37,7 +42,7 @@ class PriorityPartitionResult extends PartitionResult
     public static function applyOrderValue($value)
     {
         // Detrmine the order
-        $order = static::getPriorityOrder();
+        $order = static::getFocusGroupOrder();
 
         // Initialize the ordered value
         $newValue = [];
@@ -60,22 +65,38 @@ class PriorityPartitionResult extends PartitionResult
     }
 
     /**
-     * Returns the priority order.
+     * Returns the focus group order.
      *
      * @return array
      */
-    public static function getPriorityOrder()
+    public static function getFocusGroupOrder()
     {
-        return array_keys(Issue::getPriorityColors());
+        return FocusGroup::all()->sortBy('display_order')->pluck('system_name')->toArray();
     }
 
     /**
-     * Returns the priority colors.
+     * Returns the focus group colors.
      *
      * @return array
      */
-    public static function getPriorityColors()
+    public static function getFocusGroupColors()
     {
-        return Issue::getPriorityColors();
+        return FocusGroup::all()->pluck('color.primary', 'system_name')->toArray();
+    }
+
+    /**
+     * Returns the focus group label resolver.
+     *
+     * @return \Closure
+     */
+    public static function getFocusGroupLabelResolver()
+    {
+        // Determine the focus groups
+        $groups = FocusGroup::all()->keyBy('system_name');
+
+        // Return the label resolver
+        return function($label) use ($groups) {
+            return isset($groups[$label]) ? $groups[$label]->display_name : $label;
+        };
     }
 }

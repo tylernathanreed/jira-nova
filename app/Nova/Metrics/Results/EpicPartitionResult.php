@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Nova\Metrics;
+namespace App\Nova\Metrics\Results;
 
 use Closure;
 use App\Models\Issue;

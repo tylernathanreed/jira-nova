@@ -276,7 +276,7 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->resultClass(\App\Nova\Metrics\EpicPartitionResult::class);
+            ->resultClass(\App\Nova\Metrics\Results\EpicPartitionResult::class);
     }
 
     /**
@@ -295,7 +295,7 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->resultClass(\App\Nova\Metrics\PriorityPartitionResult::class);
+            ->resultClass(\App\Nova\Metrics\Results\PriorityPartitionResult::class);
     }
 
     /**

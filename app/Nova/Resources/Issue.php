@@ -303,7 +303,7 @@ class Issue extends Resource
             ->label('Issues by Status')
             ->useCount()
             ->groupBy('status_name')
-            ->resultClass(\App\Nova\Metrics\StatusPartitionResult::class);
+            ->resultClass(\App\Nova\Metrics\Results\StatusPartitionResult::class);
     }
 
     /**
