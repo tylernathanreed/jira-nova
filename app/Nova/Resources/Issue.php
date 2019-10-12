@@ -328,6 +328,56 @@ class Issue extends Resource
     }
 
     /**
+     * Creates and returns a new issue weekly satisfaction trend.
+     *
+     * @param  mixed  $reference
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueWeeklySatisfactionTrend()
+    {
+        // Determine the current week label index
+        $index = LabelModel::getWeekLabelIndex();
+
+        // Determine the weekly labels
+        $labels = array_map(function($index) {
+            return 'Week' . $index;
+        }, range(0, $index));
+
+        // Convert the labels to date results
+        $dateResults = array_combine($labels, array_fill(0, $index + 1, 0));
+
+        // Return the trend
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Weekly Satisfaction (Percent)')
+            ->useCount()
+            ->noRanges()
+            ->select('1.0 * sum(case when issues.resolution_date is not null then 1 else 0 end) / count(*)')
+            ->dateResult('labels.name')
+            ->allDateResults($dateResults)
+            ->queryWithRange(function() use ($labels) {
+
+                return static::newModel()->newQuery()
+                    ->where('labels', 'like', '%"Week%')
+                    ->joinRelation('labels', function($join) use ($labels) {
+                        $join->whereIn('labels.name', $labels);
+                    });
+
+            })
+            ->setValueAccessor(function($result) {
+                return $result->aggregate * 100;
+            })
+            ->useForValues(function($trend) {
+                return array_sum($trend) / count($trend) / 100;
+            })
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ]);
+    }
+
+    /**
      * Get the filters available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request

@@ -122,7 +122,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Issue::getIssueWeekStatusPartition('+1 week')->label('Next Week'),
             Issue::getIssueDeliquenciesByDueDateTrend(),
             Issue::getIssueDeliquenciesByEstimatedDateTrend(),
-            new \App\Nova\Metrics\IssueWeeklySatisfactionTrend,
+            Issue::getIssueWeeklySatisfactionTrend(),
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByFocus(),
             (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()
