@@ -23,6 +23,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         // Call the parent method
         parent::boot();
 
+        // Register the nova resources when running in the console
+        if($this->app->runningInConsole()) {
+            $this->resources();
+        }
+
         // Alias the login controller
         $this->aliasLoginController();
 

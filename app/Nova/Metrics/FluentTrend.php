@@ -487,9 +487,6 @@ class FluentTrend extends Trend
         $startingDate = $dateRange[0];
         $endingDate = $dateRange[1];
 
-        // Apply the ranged scopes
-        $this->applyQueryWithRangeCallbacks($query, $dateRange);
-
         // Determine the date column
         $dateColumn = $this->dateColumn ?? $query->getModel()->getCreatedAtColumn();
 
