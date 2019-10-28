@@ -60,10 +60,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Nova::serving(function(ServingNova $event) {
 
+            // Determine the authenticated user
+            $user = optional($event->request->user());
+
+            // Provide the variables to the front-end
             Nova::provideToScript([
                 'name' => Nova::name(),
-                'user' => $event->request->user()->toArray(),
-                'schedule' => $event->request->user()->getSchedule()->toNovaData(),
+                'user' => $user->toArray(),
+                'schedule' => !is_null($schedule = $user->getSchedule()) ? $schedule->toNovaData() : null,
                 'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData(),
                 'colors' => $this->app->make('config')->get('jira.colors')
             ]);
@@ -128,9 +132,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Issue::getIssueDeliquenciesByDueDateTrend(),
             Issue::getIssueDeliquenciesByEstimatedDateTrend(),
             Issue::getIssueWeeklySatisfactionTrend(),
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByFocus(),
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()
+            Issue::getIssueWorkloadPartition()->groupByEpic(),
+            Issue::getIssueWorkloadPartition()->groupByFocus(),
+            Issue::getIssueWorkloadPartition()->groupByAssignee()
         ];
     }
 
