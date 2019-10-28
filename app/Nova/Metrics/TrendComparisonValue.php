@@ -23,13 +23,6 @@ class TrendComparisonValue extends Value
     public $trends = [];
 
     /**
-     * The precision of aggregate values.
-     *
-     * @var integer
-     */
-    public $precision = 0;
-
-    /**
      * Whether or not the date range is futuristic.
      *
      * @var boolean
@@ -146,20 +139,6 @@ class TrendComparisonValue extends Value
     public function label($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Sets the precision for this metric.
-     *
-     * @param  integer  $precision
-     *
-     * @return $this
-     */
-    public function precision($precision)
-    {
-        $this->precision = $precision;
 
         return $this;
     }

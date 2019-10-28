@@ -70,13 +70,6 @@ class FluentValue extends Value
     public $dateColumn;
 
     /**
-     * The precision of aggregate values.
-     *
-     * @var integer
-     */
-    public $precision = 0;
-
-    /**
      * The callback used to format the results.
      *
      * @var \Closure|null
@@ -271,20 +264,6 @@ class FluentValue extends Value
     }
 
     /**
-     * Sets the precision for this metric.
-     *
-     * @param  integer  $precision
-     *
-     * @return $this
-     */
-    public function precision($precision)
-    {
-        $this->precision = $precision;
-
-        return $this;
-    }
-
-    /**
      * Sets the display callback for this metric.
      *
      * @param  callable  $callback
@@ -447,7 +426,7 @@ class FluentValue extends Value
         if(!is_null($resolver = $this->queryWithRangeResolver)) {
 
             // Determine the range
-            $range = $this->{$reference . 'Range'}($request->range);
+            $range = $this->{$reference . 'Range'}($request->range, $request->timezone);
 
             // Return the query
             return $resolver($range);
@@ -503,7 +482,7 @@ class FluentValue extends Value
         $dateColumn = $this->dateColumn ?? $query->getModel()->getCreatedAtColumn();
 
         // Determine the range
-        $range = $this->{$reference . 'Range'}($request->range);
+        $range = $this->{$reference . 'Range'}($request->range, $request->timezone);
 
         // Apply the range to the query
         if(!$this->noRanges && $dateColumn !== false && is_null($this->queryWithRangeResolver)) {
@@ -707,15 +686,16 @@ class FluentValue extends Value
      * Calculate the previous range and calculate any short-cuts.
      *
      * @param  string|int  $range
+     * @param  string      $timezone
      *
      * @return array
      */
-    protected function previousRange($range)
+    protected function previousRange($range, $timezone)
     {
-        $previous = parent::previousRange($range);
+        $previous = parent::previousRange($range, $timezone);
 
         if($this->useCurrentToRange) {
-            $previous[1] = parent::currentRange($range)[1];
+            $previous[1] = parent::currentRange($range, $timezone)[1];
         }
 
         return $previous;

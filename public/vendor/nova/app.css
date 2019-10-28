@@ -1174,23 +1174,6 @@ textarea.form-input:read-only,
 /* Dropdown
 ---------------------------------------------------------------------------- */
 
-.dropdown {
-}
-
-.dropdown-menu-left {
-  top: 2.5rem;
-  left: 0rem;
-}
-
-.dropdown-menu-right {
-  top: 2.5rem;
-  right: 0rem;
-}
-
-.dropdown-right {
-  right: 20px;
-}
-
 .dropdown-alt .dropdown-trigger {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1211,9 +1194,6 @@ textarea.form-input:read-only,
 
 /* Sidebar
 ---------------------------------------------------------------------------- */
-
-.sidebar-link {
-}
 
 .router-link-active {
   font-weight: 800 !important;
@@ -1855,6 +1835,13 @@ trix-editor.disabled {
 
 .key-value-items .key-value-item:last-child > .key-value-fields {
   border-bottom: none;
+}
+
+/* Tooltip
+---------------------------------------------------------------------------- */
+
+.tooltip {
+  z-index: 99999;
 }
 
 /* Tailwind Utilities
@@ -3455,12 +3442,20 @@ trix-editor.disabled {
   height: auto;
 }
 
+.h-\!auto {
+  height: auto !important;
+}
+
 .h-px {
   height: 1px;
 }
 
 .h-editor-icon {
   height: .95rem;
+}
+
+.h-\!8 {
+  height: 2rem !important;
 }
 
 .h-dropdown-trigger {
