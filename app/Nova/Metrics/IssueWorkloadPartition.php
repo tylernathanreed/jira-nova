@@ -377,6 +377,9 @@ class IssueWorkloadPartition extends Partition
         // Set the name of this metric based on the grouping mechaism
         $this->applyGroupingLabel();
 
+        // Apply the help text
+        $this->applyHelp();
+
         // Allow chaining
         return $this;
     }
@@ -451,5 +454,50 @@ class IssueWorkloadPartition extends Partition
 
         // Create and return the result
         return new $class($value);
+    }
+
+    /**
+     * Sets the partition result class based on the grouping mechanism.
+     *
+     * @return $this
+     */
+    public function applyHelp()
+    {
+        // Determine by grouping mechanism
+        switch($this->groupBy) {
+
+            // Assignee
+            case static::GROUP_BY_ASSIGNEE:
+                return $this->help('This metric shows the aggregate remaining hours for the top Assignees.');
+
+            // Epic
+            case static::GROUP_BY_EPIC:
+                return $this->help('This metric shows the aggregate remaining hours for the top Epics.');
+
+            // Focus Group
+            case static::GROUP_BY_FOCUS:
+                return $this->help('This metric shows the aggregate remaining hours by Focus Group.');
+
+            // Label
+            case static::GROUP_BY_LABEL:
+                return $this->help('This metric shows the aggregate remaining hours for the top Labels.');
+
+            // Priority
+            case static::GROUP_BY_PRIORITY:
+                return $this->help('This metric shows the aggregate remaining hours by Priority.');
+
+            // Project
+            case static::GROUP_BY_PROJECT:
+                return $this->help('This metric shows the aggregate remaining hours by Project.');
+
+            // Version
+            case static::GROUP_BY_VERSION:
+                return $this->help('This metric shows the aggregate remaining hours for the top Fix Versions.');
+
+            // Unknown
+            default:
+                return $this;
+
+        }
     }
 }

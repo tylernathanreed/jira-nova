@@ -235,7 +235,8 @@ class Issue extends Resource
     {
         return static::getIssueCreatedByDateValue()
             ->label('Ticket Entry')
-            ->where('focus', '=', 'Ticket');
+            ->where('focus', '=', 'Ticket')
+            ->help('This metric shows the number of Ticket issues recently created.');
     }
 
     /**
@@ -250,7 +251,8 @@ class Issue extends Resource
             ->label('Issues Created Per Day')
             ->useCount()
             ->dateColumn('entry_date')
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the number of issues recently created by day.');
     }
 
     /**
@@ -268,7 +270,8 @@ class Issue extends Resource
             ->whereNotNull('due_date')
             ->where('due_date', '<', carbon())
             ->incomplete()
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the number of issues that have recently become delinquent (i.e. not completed in time).');
     }
 
     /**
@@ -288,7 +291,8 @@ class Issue extends Resource
             ->whereColumn('due_date', '>', 'estimate_date')
             ->incomplete()
             ->futuristic()
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the number of issues that will soon become delinquent (i.e. estimated to not be completed in time).');
     }
 
     /**
@@ -321,10 +325,18 @@ class Issue extends Resource
         // Determine the week index
         $index = LabelModel::getWeekLabelIndex($reference ? carbon($reference) : carbon());
 
+        // Determine the week range
+        $range = LabelModel::getWeekRange($index);
+
         // Return the partition
         return static::getIssueStatusPartition()
             ->where('labels', 'like', "%\"{$label}%")
-            ->labelSuffix(" (#{$index})");
+            ->labelSuffix(" (#{$index})")
+            ->help(sprintf('This metric shows the status group counts for the issues committed to Week #%s (%s - %s)',
+                $index,
+                $range[0]->format('n/j'),
+                $range[1]->format('n/j')
+            ));
     }
 
     /**
@@ -374,7 +386,20 @@ class Issue extends Resource
             ->format([
                 'output' => 'percent',
                 'mantissa' => 0
-            ]);
+            ])
+            ->help('This metric shows the average percent completion for issues committed to past weeks.');
+    }
+
+    /**
+     * Creates and returns a new issue workload partition.
+     *
+     * @param  mixed  $reference
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueWorkloadPartition()
+    {
+        return new \App\Nova\Metrics\IssueWorkloadPartition;
     }
 
     /**

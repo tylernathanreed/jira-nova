@@ -84,6 +84,25 @@ class Label extends Model implements Cacheable
         return $start->diffInWeeks($when);
     }
 
+    /**
+     * Returns the start and end date for the specified week.
+     *
+     * @param  integer  $index
+     *
+     * @return array
+     */
+    public static function getWeekRange($index)
+    {
+        // Determine the start date
+        $start = static::getWeekLabelEpoch()->addWeeks($index)->addDay();
+
+        // Determine the end date
+        $end = $start->copy()->addDays(4);
+
+        // Return the range
+        return [$start, $end];
+    }
+
     /////////////
     //* Cache *//
     /////////////
