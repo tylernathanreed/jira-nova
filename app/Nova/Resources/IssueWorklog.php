@@ -145,7 +145,8 @@ class IssueWorklog extends Resource
             ->dateColumn('started_at')
             ->suffix('hours')
             ->divideBy(3600)
-            ->precision(2);
+            ->precision(2)
+            ->help('This metric shows the number of hours recently logged.');
     }
 
     /**
@@ -159,7 +160,8 @@ class IssueWorklog extends Resource
             ->label('Feature Worklog')
             ->joinRelation('issue', function($join) {
                 $join->features();
-            });
+            })
+            ->help('This metric shows the number of hours recently logged on Features.');
     }
 
     /**
@@ -173,7 +175,8 @@ class IssueWorklog extends Resource
             ->label('Defect Worklog')
             ->joinRelation('issue', function($join) {
                 $join->defects();
-            });
+            })
+            ->help('This metric shows the number of hours recently logged on Defects.');
     }
 
     /**
@@ -222,7 +225,8 @@ class IssueWorklog extends Resource
             })
             ->dateColumn('dates.date')
             ->suffix('hours')
-            ->precision(2);
+            ->precision(2)
+            ->help('This metric shows the number of hours that are expected to be logged for recent days.');
     }
 
     /**
@@ -239,7 +243,8 @@ class IssueWorklog extends Resource
             ->format([
                 'output' => 'percent',
                 'mantissa' => 0
-            ]);
+            ])
+            ->help('This metric shows the percent-comparison between the hours logged on Defects vs. Features, where high numbers indicate significant time spent on Defects.');
     }
 
     /**
@@ -256,7 +261,8 @@ class IssueWorklog extends Resource
             ->format([
                 'output' => 'percent',
                 'mantissa' => 0
-            ]);
+            ])
+            ->help('This metric shows the percent-comparison between the expected log hours against the actual logged hours, where low numbers may indicate failure to log or disruptions in the workplace.');
     }
 
     /**
@@ -276,7 +282,8 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->resultClass(\App\Nova\Metrics\EpicPartitionResult::class);
+            ->resultClass(\App\Nova\Metrics\Results\EpicPartitionResult::class)
+            ->help('This metric shows the aggregate number of hours logged per Epic in the past 30 days.');
     }
 
     /**
@@ -295,7 +302,8 @@ class IssueWorklog extends Resource
             ->range(30)
             ->dateColumn('started_at')
             ->divideBy(3600)
-            ->resultClass(\App\Nova\Metrics\PriorityPartitionResult::class);
+            ->resultClass(\App\Nova\Metrics\Results\PriorityPartitionResult::class)
+            ->help('This metric shows the aggregate number of hours logged per Priority in the past 30 days.');
     }
 
     /**
@@ -314,7 +322,8 @@ class IssueWorklog extends Resource
             ->dateColumn('started_at')
             ->divideBy(3600)
             ->limit(10)
-            ->sortDesc();
+            ->sortDesc()
+            ->help('This metric shows the aggregate number of hours logged per Author in the past 30 days.');
     }
 
     /**

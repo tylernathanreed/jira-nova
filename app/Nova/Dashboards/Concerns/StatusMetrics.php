@@ -17,7 +17,8 @@ trait StatusMetrics
         return IssueChangelogItem::getIssueStatusTransitionByDateValue([
             'only_to' => static::$statuses,
             'except_from' => array_merge(static::$priorStatuses, static::$statuses)
-        ])->label(static::$label . ' Kickbacks');
+        ])->label(static::$label . ' Kickbacks')
+          ->help('This metric shows the total number of recent transition that went backwards in the workflow.');
     }
 
     /**
@@ -30,7 +31,8 @@ trait StatusMetrics
         return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
             'only_to' => static::$statuses,
             'except_from' => array_merge(static::$priorStatuses, static::$statuses)
-        ])->label(static::$label . ' Kickbacks by Day');
+        ])->label(static::$label . ' Kickbacks by Day')
+          ->help('This metric shows the number per day of recent transitions that went backwards in the workflow.');
     }
 
     /**
@@ -42,7 +44,8 @@ trait StatusMetrics
     {
         return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
             'only_to' => static::$statuses
-        ])->label(static::$label . ' Inflow');
+        ])->label(static::$label . ' Inflow')
+          ->help('This metric shows the number per day of recent transitions that entered the ' . static::$label . ' phase.');
     }
 
     /**
@@ -54,7 +57,8 @@ trait StatusMetrics
     {
         return IssueChangelogItem::getIssueStatusTransitionByDateTrend([
             'only_from' => static::$statuses
-        ])->label(static::$label . ' Outflow');
+        ])->label(static::$label . ' Outflow')
+          ->help('This metric shows the number per day of recent transitions that left the ' . static::$label . ' phase.');
     }
 
     /**
@@ -65,7 +69,8 @@ trait StatusMetrics
     public static function getEquilibriumTrendMetric()
     {
         return IssueChangelogItem::getIssueStatusEquilibriumTrend(static::$statuses)
-            ->label(static::$label . ' Equilibrium');
+            ->label(static::$label . ' Equilibrium')
+            ->help('This metric shows the percent-comparison between the inflow and outflow of the ' . static::$label . ' phase, where 100% indicates stagnation.');
     }
 
     /**
@@ -122,7 +127,8 @@ trait StatusMetrics
     public static function getSatisfactionValueMetric()
     {
         return IssueChangelogItem::getPromiseIntegrityValue(static::$statuses)
-            ->label(static::$label . ' Commitments Kept');
+            ->label(static::$label . ' Commitments Kept')
+            ->help('This metric shows the percentage of issues with recent due dates that were transitioned out of the ' . static::$label . ' phase prior to becoming delinquent.');
     }
 
     /**

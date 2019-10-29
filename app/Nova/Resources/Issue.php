@@ -5,6 +5,7 @@ namespace App\Nova\Resources;
 use Field;
 use Illuminate\Http\Request;
 use App\Models\Epic as EpicModel;
+use App\Models\Label as LabelModel;
 
 class Issue extends Resource
 {
@@ -222,7 +223,8 @@ class Issue extends Resource
             ->label('Issues Created')
             ->useCount()
             ->dateColumn('entry_date')
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the total number of issues recently created.');
     }
 
     /**
@@ -234,7 +236,8 @@ class Issue extends Resource
     {
         return static::getIssueCreatedByDateValue()
             ->label('Ticket Entry')
-            ->where('focus', '=', 'Ticket');
+            ->where('focus', '=', 'Ticket')
+            ->help('This metric shows the number of Ticket issues recently created.');
     }
 
     /**
@@ -249,7 +252,8 @@ class Issue extends Resource
             ->label('Issues Created Per Day')
             ->useCount()
             ->dateColumn('entry_date')
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the number of issues recently created by day.');
     }
 
     /**
@@ -267,7 +271,8 @@ class Issue extends Resource
             ->whereNotNull('due_date')
             ->where('due_date', '<', carbon())
             ->incomplete()
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the number of issues that have recently become delinquent (i.e. not completed in time).');
     }
 
     /**
@@ -287,7 +292,116 @@ class Issue extends Resource
             ->whereColumn('due_date', '>', 'estimate_date')
             ->incomplete()
             ->futuristic()
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the number of issues that will soon become delinquent (i.e. estimated to not be completed in time).');
+    }
+
+    /**
+     * Creates and returns a new issue status partition.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueStatusPartition()
+    {
+        return (new \App\Nova\Metrics\FluentPartition)
+            ->model(static::$model)
+            ->label('Issues by Status')
+            ->useCount()
+            ->groupBy('status_name')
+            ->resultClass(\App\Nova\Metrics\Results\StatusPartitionResult::class)
+            ->help('This metric shows the total number of issues in each status group.');
+    }
+
+    /**
+     * Creates and returns a new issue status partition.
+     *
+     * @param  mixed  $reference
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueWeekStatusPartition($reference = 'now')
+    {
+        // Determine the week label
+        $label = LabelModel::getWeekLabel($reference ? carbon($reference) : carbon());
+
+        // Determine the week index
+        $index = LabelModel::getWeekLabelIndex($reference ? carbon($reference) : carbon());
+
+        // Determine the week range
+        $range = LabelModel::getWeekRange($index);
+
+        // Return the partition
+        return static::getIssueStatusPartition()
+            ->where('labels', 'like', "%\"{$label}%")
+            ->labelSuffix(" (#{$index})")
+            ->help(sprintf('This metric shows the status group counts for the issues committed to Week #%s (%s - %s)',
+                $index,
+                $range[0]->format('n/j'),
+                $range[1]->format('n/j')
+            ));
+    }
+
+    /**
+     * Creates and returns a new issue weekly satisfaction trend.
+     *
+     * @param  mixed  $reference
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueWeeklySatisfactionTrend()
+    {
+        // Determine the current week label index
+        $index = LabelModel::getWeekLabelIndex();
+
+        // Determine the weekly labels
+        $labels = array_map(function($index) {
+            return 'Week' . $index;
+        }, range(0, $index));
+
+        // Convert the labels to date results
+        $dateResults = array_combine($labels, array_fill(0, $index + 1, 0));
+
+        // Return the trend
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->label('Weekly Satisfaction (Percent)')
+            ->useCount()
+            ->noRanges()
+            ->select('1.0 * sum(case when issues.resolution_date is not null then 1 else 0 end) / count(*)')
+            ->dateResult('labels.name')
+            ->allDateResults($dateResults)
+            ->queryWithRange(function() use ($labels) {
+
+                return static::newModel()->newQuery()
+                    ->where('labels', 'like', '%"Week%')
+                    ->joinRelation('labels', function($join) use ($labels) {
+                        $join->whereIn('labels.name', $labels);
+                    });
+
+            })
+            ->setValueAccessor(function($result) {
+                return $result->aggregate * 100;
+            })
+            ->useForValues(function($trend) {
+                return array_sum($trend) / count($trend) / 100;
+            })
+            ->format([
+                'output' => 'percent',
+                'mantissa' => 0
+            ])
+            ->help('This metric shows the average percent completion for issues committed to past weeks.');
+    }
+
+    /**
+     * Creates and returns a new issue workload partition.
+     *
+     * @param  mixed  $reference
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueWorkloadPartition()
+    {
+        return new \App\Nova\Metrics\IssueWorkloadPartition;
     }
 
     /**
@@ -316,7 +430,7 @@ class Issue extends Resource
             \App\Nova\Lenses\FilterLens::make($this, 'Backlog')->scope(function($query) { $query->hasLabel('Backlog')->assigned()->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             /**
@@ -327,49 +441,49 @@ class Issue extends Resource
             \App\Nova\Lenses\FilterLens::make($this, 'Defects')->scope(function($query) { $query->defects()->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Delinquencies')->scope(function($query) { $query->delinquent(); })->addScopedCards([
                 static::getIssueDeliquenciesByDueDateTrend(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Estimated Delinquencies')->scope(function($query) { $query->willBeDelinquent(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Stale Issues')->scope(function($query) { $query->hasLabel('Stale')->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Stretch Items')->scope(function($query) { $query->hasLabel('Stretch')->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Tech Debt')->scope(function($query) { $query->hasLabel('Tech-Debt')->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Unassigned')->scope(function($query) { $query->unassigned(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Weekly Commitments')->scope(function($query) { $query->hasLabelLike('Week%')->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
-                new \App\Nova\Metrics\IssueStatusPartition
+                static::getIssueStatusPartition(),
             ]),
         ];
     }

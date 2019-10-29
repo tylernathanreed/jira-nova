@@ -23,6 +23,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         // Call the parent method
         parent::boot();
 
+        // Register the nova resources when running in the console
+        if($this->app->runningInConsole()) {
+            $this->resources();
+        }
+
         // Alias the login controller
         $this->aliasLoginController();
 
@@ -55,10 +60,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Nova::serving(function(ServingNova $event) {
 
+            // Determine the authenticated user
+            $user = optional($event->request->user());
+
+            // Provide the variables to the front-end
             Nova::provideToScript([
                 'name' => Nova::name(),
-                'user' => $event->request->user()->toArray(),
-                'schedule' => $event->request->user()->getSchedule()->toNovaData(),
+                'user' => $user->toArray(),
+                'schedule' => !is_null($schedule = $user->getSchedule()) ? $schedule->toNovaData() : null,
                 'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData(),
                 'colors' => $this->app->make('config')->get('jira.colors')
             ]);
@@ -117,15 +126,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             Issue::getTicketEntryValue(),
             Issue::getIssueCreatedByDateTrend()->width('2/3'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week'),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Next Week')->reference('+1 week'),
+            Issue::getIssueWeekStatusPartition('-1 week')->label('Last Week'),
+            Issue::getIssueWeekStatusPartition()->label('This Week'),
+            Issue::getIssueWeekStatusPartition('+1 week')->label('Next Week'),
             Issue::getIssueDeliquenciesByDueDateTrend(),
             Issue::getIssueDeliquenciesByEstimatedDateTrend(),
-            new \App\Nova\Metrics\IssueWeeklySatisfactionTrend,
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByEpic(),
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByFocus(),
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee()
+            Issue::getIssueWeeklySatisfactionTrend(),
+            Issue::getIssueWorkloadPartition()->groupByEpic(),
+            Issue::getIssueWorkloadPartition()->groupByFocus(),
+            Issue::getIssueWorkloadPartition()->groupByAssignee()
         ];
     }
 

@@ -6,6 +6,7 @@ use Field;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Nova\Resources\Issue;
 use Laravel\Nova\Http\Requests\LensRequest;
 use App\Models\WorkflowStatusGroup as WorkflowStatusGroupModel;
 
@@ -207,9 +208,10 @@ class IssueSingleEpicPrioritiesLens extends Lens
                 ->futuristic()
                 ->scope($scope),
 
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Last Week')->reference('-1 week')->scope($scope),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('This Week')->scope($scope),
-            (new \App\Nova\Metrics\IssueWeekStatusPartition)->setName('Next Week')->reference('+1 week')->scope($scope),
+            Issue::getIssueWeekStatusPartition('-1 week')->label('Last Week')->scope($scope),
+            Issue::getIssueWeekStatusPartition()->label('This Week')->scope($scope),
+            Issue::getIssueWeekStatusPartition('+1 week')->label('Next Week')->scope($scope),
+
         ];
     }
 

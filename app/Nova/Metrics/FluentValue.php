@@ -22,6 +22,12 @@ class FluentValue extends Value
     const USE_MIN = 'min';
 
     /**
+     * The common concerns.
+     */
+    use Concerns\Nameable,
+        Concerns\QueryCallbacks;
+
+    /**
      * The element's component.
      *
      * @var string
@@ -62,13 +68,6 @@ class FluentValue extends Value
      * @var string|null
      */
     public $dateColumn;
-
-    /**
-     * The precision of aggregate values.
-     *
-     * @var integer
-     */
-    public $precision = 0;
 
     /**
      * The callback used to format the results.
@@ -118,13 +117,6 @@ class FluentValue extends Value
      * @var \Closure|null
      */
     public $queryWithRangeResolver;
-
-    /**
-     * The query callbacks for this metric.
-     *
-     * @var array
-     */
-    public $queryCallbacks = [];
 
     /**
      * The value accessor for the query.
@@ -193,20 +185,6 @@ class FluentValue extends Value
     public function model($model)
     {
         $this->model = $model;
-
-        return $this;
-    }
-
-    /**
-     * Sets the displayable name of the metric.
-     *
-     * @param  string  $name
-     *
-     * @return $this
-     */
-    public function label($name)
-    {
-        $this->name = $name;
 
         return $this;
     }
@@ -281,20 +259,6 @@ class FluentValue extends Value
     public function dateColumn($dateColumn)
     {
         $this->dateColumn = $dateColumn;
-
-        return $this;
-    }
-
-    /**
-     * Sets the precision for this metric.
-     *
-     * @param  integer  $precision
-     *
-     * @return $this
-     */
-    public function precision($precision)
-    {
-        $this->precision = $precision;
 
         return $this;
     }
@@ -462,7 +426,7 @@ class FluentValue extends Value
         if(!is_null($resolver = $this->queryWithRangeResolver)) {
 
             // Determine the range
-            $range = $this->{$reference . 'Range'}($request->range);
+            $range = $this->{$reference . 'Range'}($request->range, $request->timezone);
 
             // Return the query
             return $resolver($range);
@@ -518,7 +482,7 @@ class FluentValue extends Value
         $dateColumn = $this->dateColumn ?? $query->getModel()->getCreatedAtColumn();
 
         // Determine the range
-        $range = $this->{$reference . 'Range'}($request->range);
+        $range = $this->{$reference . 'Range'}($request->range, $request->timezone);
 
         // Apply the range to the query
         if(!$this->noRanges && $dateColumn !== false && is_null($this->queryWithRangeResolver)) {
@@ -556,20 +520,6 @@ class FluentValue extends Value
     public function newPreviousQuery(Request $request)
     {
         return $this->newQuery($request, 'previous');
-    }
-
-    /**
-     * Applies the query callbacks to the specified query.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     *
-     * @return void
-     */
-    public function applyQueryCallbacks($query)
-    {
-        foreach($this->queryCallbacks as $callback) {
-            $callback($query);
-        }
     }
 
     /**
@@ -626,20 +576,6 @@ class FluentValue extends Value
 
         // Return the value
         return $accessor($query);
-    }
-
-    /**
-     * Adds the specified closure as a query callback.
-     *
-     * @param  \Closure  $callback
-     *
-     * @return $this
-     */
-    public function scope(Closure $callback)
-    {
-        $this->queryCallbacks[] = $callback;
-
-        return $this;
     }
 
     /**
@@ -749,40 +685,19 @@ class FluentValue extends Value
     /**
      * Calculate the previous range and calculate any short-cuts.
      *
-     * @param  string|int  $range
+     * @param  string|int   $range
+     * @param  string|null  $timezone
      *
      * @return array
      */
-    protected function previousRange($range)
+    protected function previousRange($range, $timezone = null)
     {
-        $previous = parent::previousRange($range);
+        $previous = parent::previousRange($range, $timezone);
 
         if($this->useCurrentToRange) {
-            $previous[1] = parent::currentRange($range)[1];
+            $previous[1] = parent::currentRange($range, $timezone)[1];
         }
 
         return $previous;
-    }
-
-    /**
-     * Handles dynamic method calls into this metric.
-     *
-     * @param  string  $method
-     * @param  array   $parameters
-     *
-     * @return $this
-     */
-    public function __call($method, $parameters = [])
-    {
-        // Create a query callback based on the method call
-        $callback = function($query) use ($method, $parameters) {
-            $query->{$method}(...$parameters);
-        };
-
-        // Add the query callback
-        $this->queryCallbacks[] = $callback;
-
-        // Allow chaining
-        return $this;
     }
 }
