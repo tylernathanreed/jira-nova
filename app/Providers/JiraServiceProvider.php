@@ -166,14 +166,7 @@ class JiraServiceProvider extends ServiceProvider
         $host = rtrim($config->get('jira.host'), '/');
 
         // Determine the custom field mapping
-        $mapping = [
-            'issue_category' => 'customfield_12005',
-            'estimated_completion_date' => 'customfield_12011',
-            'epic_key' => 'customfield_12000',
-            'epic_name' => 'customfield_10002',
-            'epic_color' => 'customfield_10004',
-            'rank' => 'customfield_10119'
-        ];
+        $mapping = config('jira.fields');
 
         Processor::map(function($fields, $issue) use ($host, $mapping) {
 
@@ -217,6 +210,9 @@ class JiraServiceProvider extends ServiceProvider
                 'epic_url' => !is_null($epicKey) ? $host . '/browse/' . $epicKey : null,
                 'epic_name' => data_get($fields, $mapping['epic_name']),
                 'epic_color' => data_get($fields, $mapping['epic_color']),
+
+                'release_notes' => data_get($fields, $mapping['release_notes']),
+                'requires_release_notes' => ($option = data_get($fields, "{$mapping['requires_release_notes']}.0.value")) == 'Yes' ? 1 : ($option == 'No' ? 0 : null),
 
                 'labels' => $fields['labels'] ?? [],
                 'fix_versions' => collect(data_get($fields, 'fixVersions', []))->pluck('name')->toArray(),
