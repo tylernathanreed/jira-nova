@@ -124,7 +124,11 @@ class VersionReleaseNotesLens extends Lens
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            (new \App\Nova\Filters\InlineTextFilter)->label('Fix Version')->handle(function($query, $value) {
+                $query->where('versions.name', 'like', "{$value}%");
+            })
+        ];
     }
     /**
      * Returns the cards available on the entity.
