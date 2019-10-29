@@ -61,7 +61,8 @@ class DefectsDashboard extends Dashboard
     {
         return Issue::getIssueCreatedByDateValue()
             ->label(static::$label . ' Created')
-            ->scope(static::scope());
+            ->scope(static::scope())
+            ->help('This metric shows the number of ' . static::$label . ' that were recently created.');
     }
 
     /**
@@ -131,7 +132,8 @@ class DefectsDashboard extends Dashboard
             ->format([
                 'output' => 'percent',
                 'mantissa' => 0
-            ]);
+            ])
+            ->help('This metric shows the percent-comparison between the inflow and outflow of ' . static::$label . ', where 100% indicates stagnation.');
     }
 
     /**
@@ -184,7 +186,8 @@ class DefectsDashboard extends Dashboard
 
         return IssueChangelogItem::getPromiseIntegrityValue($statuses)
             ->label(static::$label . ' Commitments Kept')
-            ->scope(static::scope());
+            ->scope(static::scope())
+            ->help('This metric shows the percentage of ' . static::$label . ' with recent due dates that were completed prior to becoming delinquent.');
     }
 
     /**

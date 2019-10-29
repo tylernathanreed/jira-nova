@@ -223,7 +223,8 @@ class Issue extends Resource
             ->label('Issues Created')
             ->useCount()
             ->dateColumn('entry_date')
-            ->suffix('issues');
+            ->suffix('issues')
+            ->help('This metric shows the total number of issues recently created.');
     }
 
     /**
@@ -307,7 +308,8 @@ class Issue extends Resource
             ->label('Issues by Status')
             ->useCount()
             ->groupBy('status_name')
-            ->resultClass(\App\Nova\Metrics\Results\StatusPartitionResult::class);
+            ->resultClass(\App\Nova\Metrics\Results\StatusPartitionResult::class)
+            ->help('This metric shows the total number of issues in each status group.');
     }
 
     /**

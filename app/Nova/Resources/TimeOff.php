@@ -121,7 +121,8 @@ class TimeOff extends Resource
             ->sumOf('percent')
             ->dateColumn('date')
             ->precision(2)
-            ->suffix('days');
+            ->suffix('days')
+            ->help('This metric shows the recent time off per day.');
     }
 
     /**
@@ -138,7 +139,8 @@ class TimeOff extends Resource
             ->dateColumn('date')
             ->precision(2)
             ->suffix('days')
-            ->futuristic();
+            ->futuristic()
+            ->help('This metric shows the upcoming time off per day.');
     }
 
     /**
@@ -155,7 +157,8 @@ class TimeOff extends Resource
             ->sumOf('percent')
             ->groupBy('users.display_name')
             ->ytd('date')
-            ->precision(2);
+            ->precision(2)
+            ->help('This metric shows the aggregate total time off per user since the start of the current year.');
     }
 
     /**

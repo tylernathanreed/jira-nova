@@ -120,7 +120,8 @@ class IssueChangelog extends Resource
                 $join->where('item_from', '!=', 0);
                 $join->whereRaw('cast(item_from as decimal) < cast(item_to as decimal)');
 
-            });
+            })
+            ->help('This metric shows the aggregate total of hours recently added to time estimates.');
     }
 
     /**
@@ -145,7 +146,8 @@ class IssueChangelog extends Resource
                 $join->where('item_to', '!=', 0);
                 $join->whereRaw('cast(item_to as decimal) < cast(item_from as decimal)');
 
-            });
+            })
+            ->help('This metric shows the aggregate total of hours recently subtracted from time estimates.');
     }
 
     /**
@@ -181,7 +183,8 @@ class IssueChangelog extends Resource
                 'output' => 'percent',
                 'mantissa' => 0
             ])
-            ->useScalarDelta();
+            ->useScalarDelta()
+            ->help('This metric shows the recent percent-increase between average issue starting time estimates vs. their final time estimate, where a high percentage may indicate poor/low initial estimates.');
     }
 
     /**
