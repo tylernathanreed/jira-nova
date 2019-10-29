@@ -304,7 +304,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _lodash = __webpack_require__("./node_modules/lodash/lodash.js");
@@ -320,40 +320,38 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.InteractsWithResourceInformation, _HandlesActions2.default],
+  mixins: [_laravelNova.InteractsWithResourceInformation, _HandlesActions2.default],
 
-    props: {
-        selectedResources: {
-            type: [Array, String],
-            default: function _default() {
-                return [];
-            }
-        },
-        pivotActions: {},
-        pivotName: String
+  props: {
+    selectedResources: {
+      type: [Array, String],
+      default: function _default() {
+        return [];
+      }
+    },
+    pivotActions: {},
+    pivotName: String
+  },
+
+  watch: {
+    /**
+     * Watch the actions property for changes.
+     */
+    actions: function actions() {
+      this.selectedActionKey = '';
+      this.initializeActionFields();
     },
 
-    watch: {
-        /**
-         * Watch the actions property for changes.
-         */
-        actions: function actions() {
-            this.selectedActionKey = '';
-            this.initializeActionFields();
-        },
 
-
-        /**
-         * Watch the pivot actions property for changes.
-         */
-        pivotActions: function pivotActions() {
-            this.selectedActionKey = '';
-            this.initializeActionFields();
-        }
+    /**
+     * Watch the pivot actions property for changes.
+     */
+    pivotActions: function pivotActions() {
+      this.selectedActionKey = '';
+      this.initializeActionFields();
     }
+  }
 }; //
-//
-//
 //
 //
 //
@@ -439,7 +437,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -452,17 +450,17 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        label: {
-            type: String,
-            required: false
-        },
+  props: {
+    label: {
+      type: String,
+      required: false
+    },
 
-        extraClasses: {
-            type: [Array, String],
-            required: false
-        }
+    extraClasses: {
+      type: [Array, String],
+      required: false
     }
+  }
 };
 
 /***/ }),
@@ -474,7 +472,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
@@ -492,36 +490,36 @@ var _Checkbox2 = _interopRequireDefault(_Checkbox);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: { Checkbox: _Checkbox2.default },
+  components: { Checkbox: _Checkbox2.default },
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        filter: Object,
-        option: Object
+  props: {
+    resourceName: {
+      type: String,
+      required: true
     },
+    filter: Object,
+    option: Object
+  },
 
-    methods: {
-        updateCheckedState: function updateCheckedState(optionKey, event) {
-            var oldValue = this.filter.currentValue;
-            var newValue = (0, _extends4.default)({}, oldValue, (0, _defineProperty3.default)({}, optionKey, event.target.checked));
+  methods: {
+    updateCheckedState: function updateCheckedState(optionKey, checked) {
+      var oldValue = this.filter.currentValue;
+      var newValue = (0, _extends4.default)({}, oldValue, (0, _defineProperty3.default)({}, optionKey, checked));
 
-            this.$store.commit(this.resourceName + '/updateFilterState', {
-                filterClass: this.filter.class,
-                value: newValue
-            });
+      this.$store.commit(this.resourceName + '/updateFilterState', {
+        filterClass: this.filter.class,
+        value: newValue
+      });
 
-            this.$emit('change');
-        }
-    },
-
-    computed: {
-        isChecked: function isChecked() {
-            return this.$store.getters[this.resourceName + '/filterOptionValue'](this.filter.class, this.option.value) == true;
-        }
+      this.$emit('change');
     }
+  },
+
+  computed: {
+    isChecked: function isChecked() {
+      return this.$store.getters[this.resourceName + '/filterOptionValue'](this.filter.class, this.option.value) == true;
+    }
+  }
 }; //
 //
 //
@@ -544,61 +542,61 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    props: {
-        card: {
-            type: Object,
-            required: true
-        },
-
-        size: {
-            type: String,
-            default: ''
-        },
-
-        resource: {
-            type: Object
-        },
-
-        resourceName: {
-            type: String
-        },
-
-        resourceId: {
-            type: [Number, String]
-        },
-
-        lens: {
-            lens: String,
-            default: ''
-        }
+  props: {
+    card: {
+      type: Object,
+      required: true
     },
 
-    computed: {
-        /**
-         * The class given to the card wrappers based on its width
-         */
-        widthClass: function widthClass() {
-            // return 'w-full'
-            // If we're passing in 'large' as the value we want to force the
-            // cards to be given the `w-full` class, otherwise we're letting
-            // the card decide for itself based on its configuration
-            return this.size == 'large' ? 'w-full' : calculateCardWidth(this.card);
-        },
+    size: {
+      type: String,
+      default: ''
+    },
 
+    resource: {
+      type: Object
+    },
 
-        /**
-         * The class given to the card based on its size
-         */
-        cardSizeClass: function cardSizeClass() {
-            return this.size !== 'large' ? 'card-panel' : '';
-        }
+    resourceName: {
+      type: String
+    },
+
+    resourceId: {
+      type: [Number, String]
+    },
+
+    lens: {
+      lens: String,
+      default: ''
     }
+  },
+
+  computed: {
+    /**
+     * The class given to the card wrappers based on its width
+     */
+    widthClass: function widthClass() {
+      // return 'w-full'
+      // If we're passing in 'large' as the value we want to force the
+      // cards to be given the `w-full` class, otherwise we're letting
+      // the card decide for itself based on its configuration
+      return this.size == 'large' ? 'w-full' : calculateCardWidth(this.card);
+    },
+
+
+    /**
+     * The class given to the card based on its size
+     */
+    cardSizeClass: function cardSizeClass() {
+      return this.size !== 'large' ? 'card-panel' : '';
+    }
+  }
 }; //
 //
 //
@@ -619,9 +617,9 @@ exports.default = {
 //
 
 function calculateCardWidth(card) {
-    // If the card's width is found in the accepted sizes return that class,
-    // or return the default 1/3 class
-    return _laravelNova.CardSizes.indexOf(card.width) !== -1 ? 'w-' + card.width : 'w-1/3';
+  // If the card's width is found in the accepted sizes return that class,
+  // or return the default 1/3 class
+  return _laravelNova.CardSizes.indexOf(card.width) !== -1 ? 'w-' + card.width : 'w-1/3';
 }
 
 /***/ }),
@@ -633,7 +631,7 @@ function calculateCardWidth(card) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -652,53 +650,53 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        cards: Array,
+  props: {
+    cards: Array,
 
-        size: {
-            type: String,
-            default: ''
-        },
-
-        resource: {
-            type: Object
-        },
-
-        resourceName: {
-            type: String
-        },
-
-        resourceId: {
-            type: [Number, String]
-        },
-
-        onlyOnDetail: {
-            type: Boolean,
-            default: false
-        },
-
-        lens: {
-            lens: String,
-            default: ''
-        }
+    size: {
+      type: String,
+      default: ''
     },
 
-    computed: {
-        /**
-         * Determine whether to show the cards based on their onlyOnDetail configuration
-         */
-        filteredCards: function filteredCards() {
-            if (this.onlyOnDetail) {
-                return _.filter(this.cards, function (c) {
-                    return c.onlyOnDetail == true;
-                });
-            }
+    resource: {
+      type: Object
+    },
 
-            return _.filter(this.cards, function (c) {
-                return c.onlyOnDetail == false;
-            });
-        }
+    resourceName: {
+      type: String
+    },
+
+    resourceId: {
+      type: [Number, String]
+    },
+
+    onlyOnDetail: {
+      type: Boolean,
+      default: false
+    },
+
+    lens: {
+      lens: String,
+      default: ''
     }
+  },
+
+  computed: {
+    /**
+     * Determine whether to show the cards based on their onlyOnDetail configuration
+     */
+    filteredCards: function filteredCards() {
+      if (this.onlyOnDetail) {
+        return _.filter(this.cards, function (c) {
+          return c.onlyOnDetail == true;
+        });
+      }
+
+      return _.filter(this.cards, function (c) {
+        return c.onlyOnDetail == false;
+      });
+    }
+  }
 };
 
 /***/ }),
@@ -710,54 +708,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -943,36 +895,36 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 function link(path) {
-    return 'https://nova.laravel.com/docs/2.0/' + path;
+  return 'https://nova.laravel.com/docs/2.0/' + path;
 }
 
 exports.default = {
-    name: 'Help',
+  name: 'Help',
 
-    props: {
-        card: Object
+  props: {
+    card: Object
+  },
+
+  computed: {
+    resources: function resources() {
+      return link('resources');
     },
-
-    computed: {
-        resources: function resources() {
-            return link('resources');
-        },
-        actions: function actions() {
-            return link('actions/defining-actions.html');
-        },
-        filters: function filters() {
-            return link('filters/defining-filters.html');
-        },
-        lenses: function lenses() {
-            return link('lenses/defining-lenses.html');
-        },
-        metrics: function metrics() {
-            return link('metrics/defining-metrics.html');
-        },
-        cards: function cards() {
-            return link('customization/cards.html');
-        }
+    actions: function actions() {
+      return link('actions/defining-actions.html');
+    },
+    filters: function filters() {
+      return link('filters/defining-filters.html');
+    },
+    lenses: function lenses() {
+      return link('lenses/defining-lenses.html');
+    },
+    metrics: function metrics() {
+      return link('metrics/defining-metrics.html');
+    },
+    cards: function cards() {
+      return link('customization/cards.html');
     }
+  }
 };
 
 /***/ }),
@@ -984,14 +936,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -1006,13 +952,14 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        checked: Boolean,
-        disabled: {
-            type: Boolean,
-            default: false
-        }
+  props: {
+    checked: Boolean,
+    name: { type: String, required: false },
+    disabled: {
+      type: Boolean,
+      default: false
     }
+  }
 };
 
 /***/ }),
@@ -1024,7 +971,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1046,45 +993,45 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        options: {
-            default: []
-        },
-        selected: {},
-        label: {
-            default: 'label'
-        },
-        value: {}
+  props: {
+    options: {
+      default: []
     },
-
-    computed: {
-        groupedOptions: function groupedOptions() {
-            return _.groupBy(this.options, function (option) {
-                return option.group || '';
-            });
-        },
-        inputListeners: function inputListeners() {
-            var _this = this;
-
-            return _.assign({}, this.$listeners, {
-                change: function change(event) {
-                    _this.$emit('input', event.target.value);
-                    _this.$emit('change', event);
-                },
-                input: function input(event) {
-                    _this.$emit('input', event.target.value);
-                }
-            });
-        }
+    selected: {},
+    label: {
+      default: 'label'
     },
-    methods: {
-        labelFor: function labelFor(option) {
-            return this.label instanceof Function ? this.label(option) : option[this.label];
+    value: {}
+  },
+
+  computed: {
+    groupedOptions: function groupedOptions() {
+      return _.groupBy(this.options, function (option) {
+        return option.group || '';
+      });
+    },
+    inputListeners: function inputListeners() {
+      var _this = this;
+
+      return _.assign({}, this.$listeners, {
+        change: function change(event) {
+          _this.$emit('input', event.target.value);
+          _this.$emit('change', event);
         },
-        attrsFor: function attrsFor(option) {
-            return _.assign({}, option.attrs || {}, { value: option.value }, this.selected !== void 0 ? { selected: this.selected == option.value } : {});
+        input: function input(event) {
+          _this.$emit('input', event.target.value);
         }
+      });
     }
+  },
+  methods: {
+    labelFor: function labelFor(option) {
+      return this.label instanceof Function ? this.label(option) : option[this.label];
+    },
+    attrsFor: function attrsFor(option) {
+      return _.assign({}, option.attrs || {}, { value: option.value }, this.selected !== void 0 ? { selected: this.selected == option.value } : {});
+    }
+  }
 };
 
 /***/ }),
@@ -1096,10 +1043,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
 //
 //
 //
@@ -1147,42 +1092,42 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        classes: { default: 'btn btn-default btn-primary' },
-        singularName: {},
-        resourceName: {},
-        viaResource: {},
-        viaResourceId: {},
-        viaRelationship: {},
-        relationshipType: {},
-        authorizedToCreate: {},
-        authorizedToRelate: {}
+  props: {
+    classes: { default: 'btn btn-default btn-primary' },
+    singularName: {},
+    resourceName: {},
+    viaResource: {},
+    viaResourceId: {},
+    viaRelationship: {},
+    relationshipType: {},
+    authorizedToCreate: {},
+    authorizedToRelate: {}
+  },
+
+  computed: {
+    /**
+     * Determine if any buttons should be displayed.
+     */
+    shouldShowButtons: function shouldShowButtons() {
+      return this.shouldShowAttachButton || this.shouldShowCreateButton;
     },
 
-    computed: {
-        /**
-         * Determine if any buttons should be displayed.
-         */
-        shouldShowButtons: function shouldShowButtons() {
-            return this.shouldShowAttachButton || this.shouldShowCreateButton;
-        },
+
+    /**
+     * Determine if the attach button should be displayed.
+     */
+    shouldShowAttachButton: function shouldShowAttachButton() {
+      return (this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany') && this.authorizedToRelate;
+    },
 
 
-        /**
-         * Determine if the attach button should be displayed.
-         */
-        shouldShowAttachButton: function shouldShowAttachButton() {
-            return (this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany') && this.authorizedToRelate;
-        },
-
-
-        /**
-         * Determine if the create button should be displayed.
-         */
-        shouldShowCreateButton: function shouldShowCreateButton() {
-            return this.authorizedToCreate && this.authorizedToRelate;
-        }
+    /**
+     * Determine if the create button should be displayed.
+     */
+    shouldShowCreateButton: function shouldShowCreateButton() {
+      return this.authorizedToCreate && this.authorizedToRelate;
     }
+  }
 };
 
 /***/ }),
@@ -1194,7 +1139,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1202,7 +1147,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId']
+  props: ['resource', 'resourceName', 'resourceId']
 };
 
 /***/ }),
@@ -1214,7 +1159,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1222,7 +1167,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId']
+  props: ['resource', 'resourceName', 'resourceId']
 };
 
 /***/ }),
@@ -1234,7 +1179,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1242,7 +1187,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName']
+  props: ['resourceName']
 };
 
 /***/ }),
@@ -1254,7 +1199,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1262,7 +1207,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName']
+  props: ['resourceName']
 };
 
 /***/ }),
@@ -1274,7 +1219,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _flatpickr = __webpack_require__("./node_modules/flatpickr/dist/flatpickr.js");
@@ -1298,74 +1243,74 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-    props: {
-        value: {
-            required: false
-        },
-        placeholder: {
-            type: String,
-            default: function _default() {
-                return moment().format('YYYY-MM-DD HH:mm:ss');
-            }
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        dateFormat: {
-            type: String,
-            default: 'Y-m-d H:i:S'
-        },
-        twelveHourTime: {
-            type: Boolean,
-            default: false
-        },
-        enableTime: {
-            type: Boolean,
-            default: true
-        },
-        enableSeconds: {
-            type: Boolean,
-            default: true
-        },
-        firstDayOfWeek: {
-            type: Number,
-            default: 0
-        }
+  props: {
+    value: {
+      required: false
     },
-
-    data: function data() {
-        return { flatpickr: null };
+    placeholder: {
+      type: String,
+      default: function _default() {
+        return moment().format('YYYY-MM-DD HH:mm:ss');
+      }
     },
-
-    mounted: function mounted() {
-        var _this = this;
-
-        this.$nextTick(function () {
-            _this.flatpickr = (0, _flatpickr2.default)(_this.$refs.datePicker, {
-                enableTime: _this.enableTime,
-                enableSeconds: _this.enableSeconds,
-                onClose: _this.onChange,
-                onChange: _this.onChange,
-                dateFormat: _this.dateFormat,
-                allowInput: true,
-                // static: true,
-                time_24hr: !_this.twelveHourTime,
-                locale: { firstDayOfWeek: _this.firstDayOfWeek }
-            });
-        });
+    disabled: {
+      type: Boolean,
+      default: false
     },
-
-
-    methods: {
-        onChange: function onChange(event) {
-            this.$emit('change', this.$refs.datePicker.value);
-        }
+    dateFormat: {
+      type: String,
+      default: 'Y-m-d H:i:S'
     },
-
-    beforeDestroy: function beforeDestroy() {
-        this.flatpickr.destroy();
+    twelveHourTime: {
+      type: Boolean,
+      default: false
+    },
+    enableTime: {
+      type: Boolean,
+      default: true
+    },
+    enableSeconds: {
+      type: Boolean,
+      default: true
+    },
+    firstDayOfWeek: {
+      type: Number,
+      default: 0
     }
+  },
+
+  data: function data() {
+    return { flatpickr: null };
+  },
+
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$nextTick(function () {
+      _this.flatpickr = (0, _flatpickr2.default)(_this.$refs.datePicker, {
+        enableTime: _this.enableTime,
+        enableSeconds: _this.enableSeconds,
+        onClose: _this.onChange,
+        onChange: _this.onChange,
+        dateFormat: _this.dateFormat,
+        allowInput: true,
+        // static: true,
+        time_24hr: !_this.twelveHourTime,
+        locale: { firstDayOfWeek: _this.firstDayOfWeek }
+      });
+    });
+  },
+
+
+  methods: {
+    onChange: function onChange(event) {
+      this.$emit('change', this.$refs.datePicker.value);
+    }
+  },
+
+  beforeDestroy: function beforeDestroy() {
+    this.flatpickr.destroy();
+  }
 };
 
 /***/ }),
@@ -1404,23 +1349,8 @@ exports.default = {};
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -1520,110 +1450,110 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['softDeletes', 'resources', 'selectedResources', 'viaManyToMany', 'allMatchingResourceCount', 'allMatchingSelected', 'authorizedToDeleteSelectedResources', 'authorizedToForceDeleteSelectedResources', 'authorizedToDeleteAnyResources', 'authorizedToForceDeleteAnyResources', 'authorizedToRestoreSelectedResources', 'authorizedToRestoreAnyResources'],
+  props: ['softDeletes', 'resources', 'selectedResources', 'viaManyToMany', 'allMatchingResourceCount', 'allMatchingSelected', 'authorizedToDeleteSelectedResources', 'authorizedToForceDeleteSelectedResources', 'authorizedToDeleteAnyResources', 'authorizedToForceDeleteAnyResources', 'authorizedToRestoreSelectedResources', 'authorizedToRestoreAnyResources'],
 
-    data: function data() {
-        return {
-            deleteSelectedModalOpen: false,
-            forceDeleteSelectedModalOpen: false,
-            restoreModalOpen: false
-        };
+  data: function data() {
+    return {
+      deleteSelectedModalOpen: false,
+      forceDeleteSelectedModalOpen: false,
+      restoreModalOpen: false
+    };
+  },
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    document.addEventListener('keydown', this.handleEscape);
+  },
+
+
+  /**
+   * Prepare the component to tbe destroyed.
+   */
+  destroyed: function destroyed() {
+    document.removeEventListener('keydown', this.handleEscape);
+  },
+
+
+  methods: {
+    confirmDeleteSelectedResources: function confirmDeleteSelectedResources() {
+      this.deleteSelectedModalOpen = true;
     },
+    confirmForceDeleteSelectedResources: function confirmForceDeleteSelectedResources() {
+      this.forceDeleteSelectedModalOpen = true;
+    },
+    confirmRestore: function confirmRestore() {
+      this.restoreModalOpen = true;
+    },
+    closeDeleteSelectedModal: function closeDeleteSelectedModal() {
+      this.deleteSelectedModalOpen = false;
+    },
+    closeForceDeleteSelectedModal: function closeForceDeleteSelectedModal() {
+      this.forceDeleteSelectedModalOpen = false;
+    },
+    closeRestoreModal: function closeRestoreModal() {
+      this.restoreModalOpen = false;
+    },
+
 
     /**
-     * Mount the component.
+     * Delete the selected resources.
      */
-    mounted: function mounted() {
-        document.addEventListener('keydown', this.handleEscape);
+    deleteSelectedResources: function deleteSelectedResources() {
+      this.$emit(this.allMatchingSelected ? 'deleteAllMatching' : 'deleteSelected');
     },
 
 
     /**
-     * Prepare the component to tbe destroyed.
+     * Force delete the selected resources.
      */
-    destroyed: function destroyed() {
-        document.removeEventListener('keydown', this.handleEscape);
+    forceDeleteSelectedResources: function forceDeleteSelectedResources() {
+      this.$emit(this.allMatchingSelected ? 'forceDeleteAllMatching' : 'forceDeleteSelected');
     },
 
 
-    methods: {
-        confirmDeleteSelectedResources: function confirmDeleteSelectedResources() {
-            this.deleteSelectedModalOpen = true;
-        },
-        confirmForceDeleteSelectedResources: function confirmForceDeleteSelectedResources() {
-            this.forceDeleteSelectedModalOpen = true;
-        },
-        confirmRestore: function confirmRestore() {
-            this.restoreModalOpen = true;
-        },
-        closeDeleteSelectedModal: function closeDeleteSelectedModal() {
-            this.deleteSelectedModalOpen = false;
-        },
-        closeForceDeleteSelectedModal: function closeForceDeleteSelectedModal() {
-            this.forceDeleteSelectedModalOpen = false;
-        },
-        closeRestoreModal: function closeRestoreModal() {
-            this.restoreModalOpen = false;
-        },
-
-
-        /**
-         * Delete the selected resources.
-         */
-        deleteSelectedResources: function deleteSelectedResources() {
-            this.$emit(this.allMatchingSelected ? 'deleteAllMatching' : 'deleteSelected');
-        },
-
-
-        /**
-         * Force delete the selected resources.
-         */
-        forceDeleteSelectedResources: function forceDeleteSelectedResources() {
-            this.$emit(this.allMatchingSelected ? 'forceDeleteAllMatching' : 'forceDeleteSelected');
-        },
-
-
-        /**
-         * Restore the selected resources.
-         */
-        restoreSelectedResources: function restoreSelectedResources() {
-            this.$emit(this.allMatchingSelected ? 'restoreAllMatching' : 'restoreSelected');
-        },
-
-
-        /**
-         * Handle the escape key press event.
-         */
-        handleEscape: function handleEscape(e) {
-            if (this.show && e.keyCode == 27) {
-                this.close();
-            }
-        },
-
-
-        /**
-         * Close the modal.
-         */
-        close: function close() {
-            this.$emit('close');
-        }
+    /**
+     * Restore the selected resources.
+     */
+    restoreSelectedResources: function restoreSelectedResources() {
+      this.$emit(this.allMatchingSelected ? 'restoreAllMatching' : 'restoreSelected');
     },
 
-    computed: {
-        selectedResourcesCount: function selectedResourcesCount() {
-            return this.allMatchingSelected ? this.allMatchingResourceCount : this.selectedResources.length;
-        },
+
+    /**
+     * Handle the escape key press event.
+     */
+    handleEscape: function handleEscape(e) {
+      if (this.show && e.keyCode == 27) {
+        this.close();
+      }
+    },
 
 
-        /**
-         * Determine if any soft deleted resources are selected.
-         */
-        softDeletedResourcesSelected: function softDeletedResourcesSelected() {
-            return Boolean(_.find(this.selectedResources, function (resource) {
-                return resource.softDeleted;
-            }));
-        }
+    /**
+     * Close the modal.
+     */
+    close: function close() {
+      this.$emit('close');
     }
+  },
+
+  computed: {
+    selectedResourcesCount: function selectedResourcesCount() {
+      return this.allMatchingSelected ? this.allMatchingResourceCount : this.selectedResources.length;
+    },
+
+
+    /**
+     * Determine if any soft deleted resources are selected.
+     */
+    softDeletedResourcesSelected: function softDeletedResourcesSelected() {
+      return Boolean(_.find(this.selectedResources, function (resource) {
+        return resource.softDeleted;
+      }));
+    }
+  }
 };
 
 /***/ }),
@@ -1635,7 +1565,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _Badge = __webpack_require__("./resources/js/components/Badge.vue");
@@ -1645,11 +1575,11 @@ var _Badge2 = _interopRequireDefault(_Badge);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: {
-        Badge: _Badge2.default
-    },
+  components: {
+    Badge: _Badge2.default
+  },
 
-    props: ['resource', 'resourceName', 'resourceId', 'field']
+  props: ['resource', 'resourceName', 'resourceId', 'field']
 }; //
 //
 //
@@ -1672,7 +1602,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1698,7 +1628,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field']
+  props: ['resource', 'resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -1710,7 +1640,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1728,16 +1658,16 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'resourceId', 'resource', 'field'],
+  props: ['resourceName', 'resourceId', 'resource', 'field'],
 
-    methods: {
-        /**
-         * Handle the actionExecuted event and pass it up the chain.
-         */
-        actionExecuted: function actionExecuted() {
-            this.$emit('actionExecuted');
-        }
+  methods: {
+    /**
+     * Handle the actionExecuted event and pass it up the chain.
+     */
+    actionExecuted: function actionExecuted() {
+      this.$emit('actionExecuted');
     }
+  }
 };
 
 /***/ }),
@@ -1749,7 +1679,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1776,13 +1706,71 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    computed: {
-        label: function label() {
-            return this.field.value == true ? this.__('Yes') : this.__('No');
-        }
+  computed: {
+    label: function label() {
+      return this.field.value == true ? this.__('Yes') : this.__('No');
     }
+  }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Detail/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
+
+  data: function data() {
+    return {
+      value: [],
+      classes: {
+        true: 'bg-success-light text-success-dark',
+        false: 'bg-danger-light text-danger-dark'
+      }
+    };
+  },
+
+  created: function created() {
+    var _this = this;
+
+    this.field.value = this.field.value || {};
+
+    this.value = _(this.field.options).map(function (o) {
+      return {
+        name: o.name,
+        label: o.label,
+        checked: _this.field.value[o.name] || false
+      };
+    }).value();
+  }
 };
 
 /***/ }),
@@ -1794,7 +1782,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
@@ -1906,34 +1894,34 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 _codemirror2.default.defineMode('htmltwig', function (config, parserConfig) {
-    return _codemirror2.default.overlayMode(_codemirror2.default.getMode(config, parserConfig.backdrop || 'text/html'), _codemirror2.default.getMode(config, 'twig'));
+  return _codemirror2.default.overlayMode(_codemirror2.default.getMode(config, parserConfig.backdrop || 'text/html'), _codemirror2.default.getMode(config, 'twig'));
 });
 
 // Modes
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    data: function data() {
-        return { codemirror: null };
-    },
+  data: function data() {
+    return { codemirror: null };
+  },
 
-    /**
-     * Mount the component.
-     */
-    mounted: function mounted() {
-        var config = (0, _extends3.default)({
-            tabSize: 4,
-            indentWithTabs: true,
-            lineWrapping: true,
-            lineNumbers: true,
-            theme: 'dracula',
-            viewportMargin: Infinity
-        }, this.field.options, { readOnly: true });
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    var config = (0, _extends3.default)({
+      tabSize: 4,
+      indentWithTabs: true,
+      lineWrapping: true,
+      lineNumbers: true,
+      theme: 'dracula',
+      viewportMargin: Infinity
+    }, this.field.options, { readOnly: true });
 
-        this.codemirror = _codemirror2.default.fromTextArea(this.$refs.theTextarea, config);
+    this.codemirror = _codemirror2.default.fromTextArea(this.$refs.theTextarea, config);
 
-        this.codemirror.getDoc().setValue(this.field.value);
-    }
+    this.codemirror.getDoc().setValue(this.field.value);
+  }
 };
 
 /***/ }),
@@ -1945,7 +1933,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -1958,17 +1946,17 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    computed: {
-        formattedDate: function formattedDate() {
-            if (this.field.format) {
-                return moment(this.field.value).format(this.field.format);
-            }
+  computed: {
+    formattedDate: function formattedDate() {
+      if (this.field.format) {
+        return moment(this.field.value).format(this.field.format);
+      }
 
-            return this.field.value;
-        }
+      return this.field.value;
     }
+  }
 };
 
 /***/ }),
@@ -1980,24 +1968,24 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.InteractsWithDates],
+  mixins: [_laravelNova.InteractsWithDates],
 
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    computed: {
-        /**
-         * Get the localized date time.
-         */
-        localizedDateTime: function localizedDateTime() {
-            return this.localizeDateTimeField(this.field);
-        }
+  computed: {
+    /**
+     * Get the localized date time.
+     */
+    localizedDateTime: function localizedDateTime() {
+      return this.localizeDateTimeField(this.field);
     }
+  }
 }; //
 //
 //
@@ -2017,7 +2005,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _ImageLoader = __webpack_require__("./resources/js/components/ImageLoader.vue");
@@ -2027,53 +2015,53 @@ var _ImageLoader2 = _interopRequireDefault(_ImageLoader);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    components: { ImageLoader: _ImageLoader2.default },
+  components: { ImageLoader: _ImageLoader2.default },
 
-    data: function data() {
-        return { missing: false };
-    },
+  data: function data() {
+    return { missing: false };
+  },
 
-    methods: {
-        /**
-         * Download the linked file
-         */
-        download: function download() {
-            var resourceName = this.resourceName,
-                resourceId = this.resourceId;
+  methods: {
+    /**
+     * Download the linked file
+     */
+    download: function download() {
+      var resourceName = this.resourceName,
+          resourceId = this.resourceId;
 
-            var attribute = this.field.attribute;
+      var attribute = this.field.attribute;
 
-            var link = document.createElement('a');
-            link.href = '/nova-api/' + resourceName + '/' + resourceId + '/download/' + attribute;
-            link.download = 'download';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    },
-
-    computed: {
-        hasValue: function hasValue() {
-            return Boolean(this.field.value || this.imageUrl) && !Boolean(this.missing);
-        },
-        shouldShowLoader: function shouldShowLoader() {
-            return Boolean(this.imageUrl);
-        },
-        shouldShowToolbar: function shouldShowToolbar() {
-            return Boolean(this.field.downloadable && this.hasValue);
-        },
-        imageUrl: function imageUrl() {
-            return this.field.previewUrl || this.field.thumbnailUrl;
-        },
-        rounded: function rounded() {
-            return this.field.rounded;
-        },
-        maxWidth: function maxWidth() {
-            return this.field.maxWidth || 320;
-        }
+      var link = document.createElement('a');
+      link.href = '/nova-api/' + resourceName + '/' + resourceId + '/download/' + attribute;
+      link.download = 'download';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
+  },
+
+  computed: {
+    hasValue: function hasValue() {
+      return Boolean(this.field.value || this.imageUrl) && !Boolean(this.missing);
+    },
+    shouldShowLoader: function shouldShowLoader() {
+      return Boolean(this.imageUrl);
+    },
+    shouldShowToolbar: function shouldShowToolbar() {
+      return Boolean(this.field.downloadable && this.hasValue);
+    },
+    imageUrl: function imageUrl() {
+      return this.field.previewUrl || this.field.thumbnailUrl;
+    },
+    rounded: function rounded() {
+      return this.field.rounded;
+    },
+    maxWidth: function maxWidth() {
+      return this.field.maxWidth || 320;
+    }
+  }
 }; //
 //
 //
@@ -2125,7 +2113,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2143,16 +2131,16 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'resourceId', 'resource', 'field'],
+  props: ['resourceName', 'resourceId', 'resource', 'field'],
 
-    methods: {
-        /**
-         * Handle the actionExecuted event and pass it up the chain.
-         */
-        actionExecuted: function actionExecuted() {
-            this.$emit('actionExecuted');
-        }
+  methods: {
+    /**
+     * Handle the actionExecuted event and pass it up the chain.
+     */
+    actionExecuted: function actionExecuted() {
+      this.$emit('actionExecuted');
     }
+  }
 };
 
 /***/ }),
@@ -2164,7 +2152,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2181,16 +2169,16 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'resourceId', 'resource', 'field'],
+  props: ['resourceName', 'resourceId', 'resource', 'field'],
 
-    methods: {
-        /**
-         * Handle the actionExecuted event and pass it up the chain.
-         */
-        actionExecuted: function actionExecuted() {
-            this.$emit('actionExecuted');
-        }
+  methods: {
+    /**
+     * Handle the actionExecuted event and pass it up the chain.
+     */
+    actionExecuted: function actionExecuted() {
+      this.$emit('actionExecuted');
     }
+  }
 };
 
 /***/ }),
@@ -2202,7 +2190,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2223,20 +2211,20 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    computed: {
-        fieldValue: function fieldValue() {
-            if (this.field.value === '' || this.field.value === null || this.field.value === undefined) {
-                return false;
-            }
+  computed: {
+    fieldValue: function fieldValue() {
+      if (this.field.value === '' || this.field.value === null || this.field.value === undefined) {
+        return false;
+      }
 
-            return String(this.field.value);
-        },
-        shouldDisplayAsHtml: function shouldDisplayAsHtml() {
-            return this.field.asHtml;
-        }
+      return String(this.field.value);
+    },
+    shouldDisplayAsHtml: function shouldDisplayAsHtml() {
+      return this.field.asHtml;
     }
+  }
 };
 
 /***/ }),
@@ -2248,7 +2236,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _KeyValueItem = __webpack_require__("./resources/js/components/Form/KeyValueField/KeyValueItem.vue");
@@ -2266,22 +2254,22 @@ var _KeyValueTable2 = _interopRequireDefault(_KeyValueTable);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    components: { KeyValueTable: _KeyValueTable2.default, KeyValueHeader: _KeyValueHeader2.default, KeyValueItem: _KeyValueItem2.default },
+  components: { KeyValueTable: _KeyValueTable2.default, KeyValueHeader: _KeyValueHeader2.default, KeyValueItem: _KeyValueItem2.default },
 
-    data: function data() {
-        return { theData: [] };
-    },
+  data: function data() {
+    return { theData: [] };
+  },
 
-    created: function created() {
-        this.theData = _.map(this.field.value || {}, function (value, key) {
-            return {
-                key: key,
-                value: value
-            };
-        });
-    }
+  created: function created() {
+    this.theData = _.map(this.field.value || {}, function (value, key) {
+      return {
+        key: key,
+        value: value
+      };
+    });
+  }
 }; //
 //
 //
@@ -2318,7 +2306,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2332,13 +2320,13 @@ Object.defineProperty(exports, "__esModule", {
 var md = __webpack_require__("./node_modules/markdown-it/index.js")();
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    computed: {
-        excerpt: function excerpt() {
-            return md.render(this.field.value || '');
-        }
+  computed: {
+    excerpt: function excerpt() {
+      return md.render(this.field.value || '');
     }
+  }
 };
 
 /***/ }),
@@ -2350,7 +2338,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2373,7 +2361,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'resourceId', 'field']
+  props: ['resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -2385,7 +2373,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2410,7 +2398,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'resourceId', 'field']
+  props: ['resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -2422,7 +2410,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2440,16 +2428,16 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'resourceId', 'resource', 'field'],
+  props: ['resourceName', 'resourceId', 'resource', 'field'],
 
-    methods: {
-        /**
-         * Handle the actionExecuted event and pass it up the chain.
-         */
-        actionExecuted: function actionExecuted() {
-            this.$emit('actionExecuted');
-        }
+  methods: {
+    /**
+     * Handle the actionExecuted event and pass it up the chain.
+     */
+    actionExecuted: function actionExecuted() {
+      this.$emit('actionExecuted');
     }
+  }
 };
 
 /***/ }),
@@ -2461,51 +2449,51 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.BehavesAsPanel],
+  mixins: [_laravelNova.BehavesAsPanel],
 
-    methods: {
-        /**
-         * Resolve the component name.
-         */
-        resolveComponentName: function resolveComponentName(field) {
-            return field.prefixComponent ? 'detail-' + field.component : field.component;
-        },
-
-
-        /**
-         * Show all of the Panel's fields.
-         */
-        showAllFields: function showAllFields() {
-            return this.panel.limit = 0;
-        }
+  methods: {
+    /**
+     * Resolve the component name.
+     */
+    resolveComponentName: function resolveComponentName(field) {
+      return field.prefixComponent ? 'detail-' + field.component : field.component;
     },
 
-    computed: {
-        /**
-         * Limits the visible fields.
-         */
-        fields: function fields() {
-            if (this.panel.limit > 0) {
-                return this.panel.fields.slice(0, this.panel.limit);
-            }
 
-            return this.panel.fields;
-        },
-
-
-        /**
-         * Determines if should display the 'Show all fields' button.
-         */
-        shouldShowShowAllFieldsButton: function shouldShowShowAllFieldsButton() {
-            return this.panel.limit > 0;
-        }
+    /**
+     * Show all of the Panel's fields.
+     */
+    showAllFields: function showAllFields() {
+      return this.panel.limit = 0;
     }
+  },
+
+  computed: {
+    /**
+     * Limits the visible fields.
+     */
+    fields: function fields() {
+      if (this.panel.limit > 0) {
+        return this.panel.fields.slice(0, this.panel.limit);
+      }
+
+      return this.panel.fields;
+    },
+
+
+    /**
+     * Determines if should display the 'Show all fields' button.
+     */
+    shouldShowShowAllFieldsButton: function shouldShowShowAllFieldsButton() {
+      return this.panel.limit > 0;
+    }
+  }
 }; //
 //
 //
@@ -2552,7 +2540,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2564,7 +2552,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field']
+  props: ['resource', 'resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -2576,13 +2564,13 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.BehavesAsPanel]
+  mixins: [_laravelNova.BehavesAsPanel]
 }; //
 //
 //
@@ -2610,10 +2598,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
 //
 //
 //
@@ -2649,7 +2635,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field']
+  props: ['resource', 'resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -2661,7 +2647,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2669,7 +2655,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field']
+  props: ['resource', 'resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -2681,7 +2667,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2697,7 +2683,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field']
+  props: ['resource', 'resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -2709,7 +2695,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2721,7 +2707,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resource', 'resourceName', 'resourceId', 'field']
+  props: ['resource', 'resourceName', 'resourceId', 'field']
 };
 
 /***/ }),
@@ -2733,117 +2719,66 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-
-var _popper = __webpack_require__("./node_modules/popper.js/dist/esm/popper.js");
-
-var _popper2 = _interopRequireDefault(_popper);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 exports.default = {
-    props: {
-        placement: {
-            type: String,
-            default: 'bottom-end'
-        },
-
-        boundary: {
-            type: String,
-            default: 'viewPort'
-        }
+  props: {
+    offset: {
+      type: [Number, String],
+      default: 3
     },
 
-    data: function data() {
-        return { visible: false, popper: null };
+    trigger: {
+      default: 'click',
+      validator: function validator(val) {
+        return ['click', 'hover'].includes(val);
+      }
     },
 
-    watch: {
-        visible: function visible(showing) {
-            var _this = this;
-
-            if (showing) {
-                this.$nextTick(function () {
-                    if (_this.popper) {
-                        _this.popper.destroy();
-                    }
-
-                    _this.popper = new _popper2.default(_this.$el, _this.$refs.menu, {
-                        placement: _this.placement,
-                        modifiers: {
-                            preventOverflow: {
-                                boundariesElement: _this.boundary
-                            },
-                            offset: '10'
-                        }
-                    });
-                });
-            }
-        }
+    placement: {
+      type: String,
+      default: 'bottom-start'
     },
 
-    mounted: function mounted() {
-        var _this2 = this;
-
-        document.addEventListener('keydown', function (e) {
-            if (e.keyCode === 27) {
-                _this2.close();
-            }
-        });
-
-        Nova.$on('close-dropdowns', function () {
-            _this2.close();
-        });
-    },
-    destroyed: function destroyed() {
-        Nova.$off('close-dropdowns');
-    },
-
-
-    methods: {
-        /**
-         * Toggle the visible state of the dropdown.
-         */
-        toggle: function toggle() {
-            this.visible = !this.visible;
-        },
-
-
-        /**
-         * Close the dropdown menu.
-         */
-        close: function close(event) {
-            this.visible = false;
-        }
+    boundary: {
+      type: String,
+      default: 'viewPort'
     }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+  },
+
+  render: function render(h) {
+    return h(
+      'v-popover',
+      {
+        attrs: {
+          trigger: this.trigger,
+          offset: this.offset,
+          placement: this.placement,
+          boundariesElement: this.boundary,
+          popoverClass: 'tooltip',
+          popoverBaseClass: '',
+          popoverWrapperClass: '',
+          popoverArrowClass: '',
+          popoverInnerClass: ''
+        }
+      },
+      [h(
+        'button',
+        {
+          attrs: {
+            type: 'button'
+          },
+          staticClass: 'rounded active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline'
+        },
+        [this.$slots.default]
+      ), h(
+        'template',
+        { slot: 'popover' },
+        [this.$slots.menu]
+      )]
+    );
+  }
+};
 
 /***/ }),
 
@@ -2854,7 +2789,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2868,29 +2803,29 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        width: {
-            default: 120
-        }
-    },
-
-    mounted: function mounted() {
-        // If we recieve a click event from an anchor or button element, let's make sure
-        // and close the dropdown's menu so it doesn't stay visible if we toggle a modal.
-        this.$refs.menu.addEventListener('click', function (event) {
-            if (event.target.tagName != 'A' && event.target.tagName != 'BUTTON') return;
-            Nova.$emit('close-dropdowns');
-        });
-    },
-
-
-    computed: {
-        styles: function styles() {
-            return {
-                width: this.width + 'px'
-            };
-        }
+  props: {
+    width: {
+      default: 120
     }
+  },
+
+  mounted: function mounted() {
+    // If we recieve a click event from an anchor or button element, let's make sure
+    // and close the dropdown's menu so it doesn't stay visible if we toggle a modal.
+    this.$refs.menu.addEventListener('click', function (event) {
+      if (event.target.tagName != 'A' && event.target.tagName != 'BUTTON') return;
+      Nova.$emit('close-dropdowns');
+    });
+  },
+
+
+  computed: {
+    styles: function styles() {
+      return {
+        width: this.width + 'px'
+      };
+    }
+  }
 };
 
 /***/ }),
@@ -2902,7 +2837,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2928,22 +2863,22 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        active: {
-            type: Boolean,
-            default: false
-        },
-        showArrow: {
-            type: Boolean,
-            default: true
-        }
+  props: {
+    active: {
+      type: Boolean,
+      default: false
     },
-
-    computed: {
-        activeIconColor: function activeIconColor() {
-            return this.active ? 'var(--white)' : 'var(--90)';
-        }
+    showArrow: {
+      type: Boolean,
+      default: true
     }
+  },
+
+  computed: {
+    activeIconColor: function activeIconColor() {
+      return this.active ? 'var(--white)' : 'var(--90)';
+    }
+  }
 };
 
 /***/ }),
@@ -2955,7 +2890,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -2988,38 +2923,38 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        plainText: {
-            type: Boolean,
-            default: false
-        },
-        shouldShow: {
-            type: Boolean,
-            default: false
-        },
-        content: {
-            type: String
-        }
+  props: {
+    plainText: {
+      type: Boolean,
+      default: false
     },
-
-    data: function data() {
-        return { expanded: false };
+    shouldShow: {
+      type: Boolean,
+      default: false
     },
-
-    methods: {
-        toggle: function toggle() {
-            this.expanded = !this.expanded;
-        }
-    },
-
-    computed: {
-        hasContent: function hasContent() {
-            return this.content !== '' && this.content !== null;
-        },
-        showHideLabel: function showHideLabel() {
-            return !this.expanded ? this.__('Show Content') : this.__('Hide Content');
-        }
+    content: {
+      type: String
     }
+  },
+
+  data: function data() {
+    return { expanded: false };
+  },
+
+  methods: {
+    toggle: function toggle() {
+      this.expanded = !this.expanded;
+    }
+  },
+
+  computed: {
+    hasContent: function hasContent() {
+      return this.content !== '' && this.content !== null;
+    },
+    showHideLabel: function showHideLabel() {
+      return !this.expanded ? this.__('Show Content') : this.__('Hide Content');
+    }
+  }
 };
 
 /***/ }),
@@ -3031,7 +2966,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
@@ -3137,70 +3072,60 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
-    props: (_props = {
-        resourceName: String,
-        lens: {
-            type: String,
-            default: ''
-        },
-        softDeletes: Boolean,
-        viaResource: String,
-        viaHasOne: Boolean
-    }, (0, _defineProperty3.default)(_props, 'softDeletes', Boolean), (0, _defineProperty3.default)(_props, 'trashed', {
-        type: String,
-        validator: function validator(value) {
-            return ['', 'with', 'only'].indexOf(value) != -1;
-        }
-    }), (0, _defineProperty3.default)(_props, 'perPage', [String, Number]), (0, _defineProperty3.default)(_props, 'perPageOptions', Array), (0, _defineProperty3.default)(_props, 'showTrashedOption', {
-        type: Boolean,
-        default: true
-    }), _props),
+  props: (_props = {
+    resourceName: String,
+    lens: {
+      type: String,
+      default: ''
+    },
+    softDeletes: Boolean,
+    viaResource: String,
+    viaHasOne: Boolean
+  }, (0, _defineProperty3.default)(_props, 'softDeletes', Boolean), (0, _defineProperty3.default)(_props, 'trashed', {
+    type: String,
+    validator: function validator(value) {
+      return ['', 'with', 'only'].indexOf(value) != -1;
+    }
+  }), (0, _defineProperty3.default)(_props, 'perPage', [String, Number]), (0, _defineProperty3.default)(_props, 'perPageOptions', Array), (0, _defineProperty3.default)(_props, 'showTrashedOption', {
+    type: Boolean,
+    default: true
+  }), _props),
 
-    methods: {
-        trashedChanged: function trashedChanged(event) {
-            this.$emit('trashed-changed', event.target.value);
-        },
-        perPageChanged: function perPageChanged(event) {
-            this.$emit('per-page-changed', event.target.value);
-        }
+  methods: {
+    trashedChanged: function trashedChanged(event) {
+      this.$emit('trashed-changed', event.target.value);
+    },
+    perPageChanged: function perPageChanged(event) {
+      this.$emit('per-page-changed', event.target.value);
+    }
+  },
+
+  computed: {
+    /**
+     * Return the filters from state
+     */
+    filters: function filters() {
+      return this.$store.getters[this.resourceName + '/filters'];
     },
 
-    computed: {
-        /**
-         * Return the filters from state
-         */
-        filters: function filters() {
-            return this.$store.getters[this.resourceName + '/filters'];
-        },
+
+    /**
+     * Determine via state whether filters are applied
+     */
+    filtersAreApplied: function filtersAreApplied() {
+      return this.$store.getters[this.resourceName + '/filtersAreApplied'];
+    },
 
 
-        /**
-         * Determine via state whether filters are applied
-         */
-        filtersAreApplied: function filtersAreApplied() {
-            return this.$store.getters[this.resourceName + '/filtersAreApplied'];
-        },
-
-
-        /**
-         * Return the number of active filters
-         */
-        activeFilterCount: function activeFilterCount() {
-            return this.$store.getters[this.resourceName + '/activeFilterCount'];
-        }
+    /**
+     * Return the number of active filters
+     */
+    activeFilterCount: function activeFilterCount() {
+      return this.$store.getters[this.resourceName + '/activeFilterCount'];
     }
+  }
 };
 
 /***/ }),
@@ -3212,7 +3137,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _BooleanOption = __webpack_require__("./resources/js/components/BooleanOption.vue");
@@ -3222,34 +3147,34 @@ var _BooleanOption2 = _interopRequireDefault(_BooleanOption);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: { BooleanOption: _BooleanOption2.default },
+  components: { BooleanOption: _BooleanOption2.default },
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        filterKey: {
-            type: String,
-            required: true
-        },
-        lens: String
+  props: {
+    resourceName: {
+      type: String,
+      required: true
     },
-
-    methods: {
-        handleChange: function handleChange() {
-            this.$emit('change');
-        }
+    filterKey: {
+      type: String,
+      required: true
     },
+    lens: String
+  },
 
-    computed: {
-        filter: function filter() {
-            return this.$store.getters[this.resourceName + '/getFilter'](this.filterKey);
-        },
-        options: function options() {
-            return this.$store.getters[this.resourceName + '/getOptionsForFilter'](this.filterKey);
-        }
+  methods: {
+    handleChange: function handleChange() {
+      this.$emit('change');
     }
+  },
+
+  computed: {
+    filter: function filter() {
+      return this.$store.getters[this.resourceName + '/getFilter'](this.filterKey);
+    },
+    options: function options() {
+      return this.$store.getters[this.resourceName + '/getOptionsForFilter'](this.filterKey);
+    }
+  }
 }; //
 //
 //
@@ -3277,7 +3202,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -3306,45 +3231,45 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        filterKey: {
-            type: String,
-            required: true
-        },
-        lens: String
+  props: {
+    resourceName: {
+      type: String,
+      required: true
     },
-
-    methods: {
-        handleChange: function handleChange(value) {
-            this.$store.commit(this.resourceName + '/updateFilterState', {
-                filterClass: this.filterKey,
-                value: value
-            });
-            this.$emit('change');
-        }
+    filterKey: {
+      type: String,
+      required: true
     },
+    lens: String
+  },
 
-    computed: {
-        placeholder: function placeholder() {
-            return this.filter.placeholder || this.__('Choose date');
-        },
-        value: function value() {
-            return this.filter.currentValue;
-        },
-        filter: function filter() {
-            return this.$store.getters[this.resourceName + '/getFilter'](this.filterKey);
-        },
-        options: function options() {
-            return this.$store.getters[this.resourceName + '/getOptionsForFilter'](this.filterKey);
-        },
-        firstDayOfWeek: function firstDayOfWeek() {
-            return this.filter.firstDayOfWeek || 0;
-        }
+  methods: {
+    handleChange: function handleChange(value) {
+      this.$store.commit(this.resourceName + '/updateFilterState', {
+        filterClass: this.filterKey,
+        value: value
+      });
+      this.$emit('change');
     }
+  },
+
+  computed: {
+    placeholder: function placeholder() {
+      return this.filter.placeholder || this.__('Choose date');
+    },
+    value: function value() {
+      return this.filter.currentValue;
+    },
+    filter: function filter() {
+      return this.$store.getters[this.resourceName + '/getFilter'](this.filterKey);
+    },
+    options: function options() {
+      return this.$store.getters[this.resourceName + '/getOptionsForFilter'](this.filterKey);
+    },
+    firstDayOfWeek: function firstDayOfWeek() {
+      return this.filter.firstDayOfWeek || 0;
+    }
+  }
 };
 
 /***/ }),
@@ -3356,7 +3281,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -3381,37 +3306,37 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        filterKey: {
-            type: String,
-            required: true
-        },
-        lens: String
+  props: {
+    resourceName: {
+      type: String,
+      required: true
     },
-
-    methods: {
-        handleChange: function handleChange(event) {
-            this.$store.commit(this.resourceName + '/updateFilterState', {
-                filterClass: this.filterKey,
-                value: event.target.value
-            });
-
-            this.$emit('change');
-        }
+    filterKey: {
+      type: String,
+      required: true
     },
+    lens: String
+  },
 
-    computed: {
-        filter: function filter() {
-            return this.$store.getters[this.resourceName + '/getFilter'](this.filterKey);
-        },
-        value: function value() {
-            return this.filter.currentValue;
-        }
+  methods: {
+    handleChange: function handleChange(event) {
+      this.$store.commit(this.resourceName + '/updateFilterState', {
+        filterClass: this.filterKey,
+        value: event.target.value
+      });
+
+      this.$emit('change');
     }
+  },
+
+  computed: {
+    filter: function filter() {
+      return this.$store.getters[this.resourceName + '/getFilter'](this.filterKey);
+    },
+    value: function value() {
+      return this.filter.currentValue;
+    }
+  }
 };
 
 /***/ }),
@@ -3423,7 +3348,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _lodash = __webpack_require__("./node_modules/lodash/lodash.js");
@@ -3439,241 +3364,232 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.TogglesTrashed, _laravelNova.PerformsSearches, _laravelNova.HandlesValidationErrors],
-    props: {
-        resourceName: String,
-        resourceId: {},
-        field: Object,
-        viaResource: {},
-        viaResourceId: {},
-        viaRelationship: {}
+  mixins: [_laravelNova.TogglesTrashed, _laravelNova.PerformsSearches, _laravelNova.HandlesValidationErrors],
+  props: {
+    resourceName: String,
+    resourceId: {},
+    field: Object,
+    viaResource: {},
+    viaResourceId: {},
+    viaRelationship: {}
+  },
+
+  data: function data() {
+    return {
+      availableResources: [],
+      initializingWithExistingResource: false,
+      selectedResource: null,
+      selectedResourceId: null,
+      softDeletes: false,
+      withTrashed: false,
+      search: ''
+    };
+  },
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    this.initializeComponent();
+  },
+
+
+  methods: {
+    initializeComponent: function initializeComponent() {
+      var _this = this;
+
+      this.withTrashed = false;
+
+      // If a user is editing an existing resource with this relation
+      // we'll have a belongsToId on the field, and we should prefill
+      // that resource in this field
+      if (this.editingExistingResource) {
+        this.initializingWithExistingResource = true;
+        this.selectedResourceId = this.field.belongsToId;
+      }
+
+      // If the user is creating this resource via a related resource's index
+      // page we'll have a viaResource and viaResourceId in the params and
+      // should prefill the resource in this field with that information
+      if (this.creatingViaRelatedResource) {
+        this.initializingWithExistingResource = true;
+        this.selectedResourceId = this.viaResourceId;
+      }
+
+      if (this.shouldSelectInitialResource && !this.isSearchable) {
+        // If we should select the initial resource but the field is not
+        // searchable we should load all of the available resources into the
+        // field first and select the initial option
+        this.initializingWithExistingResource = false;
+        this.getAvailableResources().then(function () {
+          return _this.selectInitialResource();
+        });
+      } else if (this.shouldSelectInitialResource && this.isSearchable) {
+        // If we should select the initial resource and the field is
+        // searchable, we won't load all the resources but we will select
+        // the initial option
+        this.getAvailableResources().then(function () {
+          return _this.selectInitialResource();
+        });
+      } else if (!this.shouldSelectInitialResource && !this.isSearchable) {
+        // If we don't need to select an initial resource because the user
+        // came to create a resource directly and there's no parent resource,
+        // and the field is searchable we'll just load all of the resources
+        this.getAvailableResources();
+      }
+
+      this.determineIfSoftDeletes();
+
+      this.field.fill = this.fill;
     },
 
-    data: function data() {
-        return {
-            availableResources: [],
-            initializingWithExistingResource: false,
-            selectedResource: null,
-            selectedResourceId: null,
-            softDeletes: false,
-            withTrashed: false,
-            search: ''
-        };
-    },
 
     /**
-     * Mount the component.
+     * Select a resource using the <select> control
      */
-    mounted: function mounted() {
-        this.initializeComponent();
+    selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
+      this.selectedResourceId = e.target.value;
+      this.selectInitialResource();
     },
 
 
-    methods: {
-        initializeComponent: function initializeComponent() {
-            var _this = this;
+    /**
+     * Fill the forms formData with details from this field
+     */
+    fill: function fill(formData) {
+      formData.append(this.field.attribute, this.selectedResource ? this.selectedResource.value : '');
 
-            this.withTrashed = false;
-
-            // If a user is editing an existing resource with this relation
-            // we'll have a belongsToId on the field, and we should prefill
-            // that resource in this field
-            if (this.editingExistingResource) {
-                this.initializingWithExistingResource = true;
-                this.selectedResourceId = this.field.belongsToId;
-            }
-
-            // If the user is creating this resource via a related resource's index
-            // page we'll have a viaResource and viaResourceId in the params and
-            // should prefill the resource in this field with that information
-            if (this.creatingViaRelatedResource) {
-                this.initializingWithExistingResource = true;
-                this.selectedResourceId = this.viaResourceId;
-            }
-
-            if (this.shouldSelectInitialResource && !this.isSearchable) {
-                // If we should select the initial resource but the field is not
-                // searchable we should load all of the available resources into the
-                // field first and select the initial option
-                this.initializingWithExistingResource = false;
-                this.getAvailableResources().then(function () {
-                    return _this.selectInitialResource();
-                });
-            } else if (this.shouldSelectInitialResource && this.isSearchable) {
-                // If we should select the initial resource and the field is
-                // searchable, we won't load all the resources but we will select
-                // the initial option
-                this.getAvailableResources().then(function () {
-                    return _this.selectInitialResource();
-                });
-            } else if (!this.shouldSelectInitialResource && !this.isSearchable) {
-                // If we don't need to select an initial resource because the user
-                // came to create a resource directly and there's no parent resource,
-                // and the field is searchable we'll just load all of the resources
-                this.getAvailableResources();
-            }
-
-            this.determineIfSoftDeletes();
-
-            this.field.fill = this.fill;
-        },
-
-
-        /**
-         * Select a resource using the <select> control
-         */
-        selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
-            this.selectedResourceId = e.target.value;
-            this.selectInitialResource();
-        },
-
-
-        /**
-         * Fill the forms formData with details from this field
-         */
-        fill: function fill(formData) {
-            formData.append(this.field.attribute, this.selectedResource ? this.selectedResource.value : '');
-
-            formData.append(this.field.attribute + '_trashed', this.withTrashed);
-        },
-
-
-        /**
-         * Get the resources that may be related to this resource.
-         */
-        getAvailableResources: function getAvailableResources() {
-            var _this2 = this;
-
-            return _BelongsToFieldStorage2.default.fetchAvailableResources(this.resourceName, this.field.attribute, this.queryParams).then(function (_ref) {
-                var _ref$data = _ref.data,
-                    resources = _ref$data.resources,
-                    softDeletes = _ref$data.softDeletes,
-                    withTrashed = _ref$data.withTrashed;
-
-                if (_this2.initializingWithExistingResource || !_this2.isSearchable) {
-                    _this2.withTrashed = withTrashed;
-                }
-
-                // Turn off initializing the existing resource after the first time
-                _this2.initializingWithExistingResource = false;
-                _this2.availableResources = resources;
-                _this2.softDeletes = softDeletes;
-            });
-        },
-
-
-        /**
-         * Determine if the relatd resource is soft deleting.
-         */
-        determineIfSoftDeletes: function determineIfSoftDeletes() {
-            var _this3 = this;
-
-            return _BelongsToFieldStorage2.default.determineIfSoftDeletes(this.field.resourceName).then(function (response) {
-                _this3.softDeletes = response.data.softDeletes;
-            });
-        },
-
-
-        /**
-         * Determine if the given value is numeric.
-         */
-        isNumeric: function isNumeric(value) {
-            return !isNaN(parseFloat(value)) && isFinite(value);
-        },
-
-
-        /**
-         * Select the initial selected resource
-         */
-        selectInitialResource: function selectInitialResource() {
-            var _this4 = this;
-
-            this.selectedResource = _lodash2.default.find(this.availableResources, function (r) {
-                return r.value == _this4.selectedResourceId;
-            });
-        },
-
-
-        /**
-         * Toggle the trashed state of the search
-         */
-        toggleWithTrashed: function toggleWithTrashed() {
-            this.withTrashed = !this.withTrashed;
-
-            // Reload the data if the component doesn't support searching
-            if (!this.isSearchable) {
-                this.getAvailableResources();
-            }
-        }
+      formData.append(this.field.attribute + '_trashed', this.withTrashed);
     },
 
-    computed: {
-        /**
-         * Determine if we are editing and existing resource
-         */
-        editingExistingResource: function editingExistingResource() {
-            return Boolean(this.field.belongsToId);
-        },
 
+    /**
+     * Get the resources that may be related to this resource.
+     */
+    getAvailableResources: function getAvailableResources() {
+      var _this2 = this;
 
-        /**
-         * Determine if we are creating a new resource via a parent relation
-         */
-        creatingViaRelatedResource: function creatingViaRelatedResource() {
-            return this.viaResource == this.field.resourceName && this.field.reverse && this.viaResourceId;
-        },
+      return _BelongsToFieldStorage2.default.fetchAvailableResources(this.resourceName, this.field.attribute, this.queryParams).then(function (_ref) {
+        var _ref$data = _ref.data,
+            resources = _ref$data.resources,
+            softDeletes = _ref$data.softDeletes,
+            withTrashed = _ref$data.withTrashed;
 
-
-        /**
-         * Determine if we should select an initial resource when mounting this field
-         */
-        shouldSelectInitialResource: function shouldSelectInitialResource() {
-            return Boolean(this.editingExistingResource || this.creatingViaRelatedResource);
-        },
-
-
-        /**
-         * Determine if the related resources is searchable
-         */
-        isSearchable: function isSearchable() {
-            return this.field.searchable;
-        },
-
-
-        /**
-         * Get the query params for getting available resources
-         */
-        queryParams: function queryParams() {
-            return {
-                params: {
-                    current: this.selectedResourceId,
-                    first: this.initializingWithExistingResource,
-                    search: this.search,
-                    withTrashed: this.withTrashed,
-                    resourceId: this.resourceId,
-                    viaResource: this.viaResource,
-                    viaResourceId: this.viaResourceId,
-                    viaRelationship: this.viaRelationship
-                }
-            };
-        },
-        isLocked: function isLocked() {
-            return this.viaResource == this.field.resourceName && this.field.reverse;
-        },
-        isReadonly: function isReadonly() {
-            return this.field.readonly || _lodash2.default.get(this.field, 'extraAttributes.readonly');
+        if (_this2.initializingWithExistingResource || !_this2.isSearchable) {
+          _this2.withTrashed = withTrashed;
         }
+
+        // Turn off initializing the existing resource after the first time
+        _this2.initializingWithExistingResource = false;
+        _this2.availableResources = resources;
+        _this2.softDeletes = softDeletes;
+      });
+    },
+
+
+    /**
+     * Determine if the relatd resource is soft deleting.
+     */
+    determineIfSoftDeletes: function determineIfSoftDeletes() {
+      var _this3 = this;
+
+      return _BelongsToFieldStorage2.default.determineIfSoftDeletes(this.field.resourceName).then(function (response) {
+        _this3.softDeletes = response.data.softDeletes;
+      });
+    },
+
+
+    /**
+     * Determine if the given value is numeric.
+     */
+    isNumeric: function isNumeric(value) {
+      return !isNaN(parseFloat(value)) && isFinite(value);
+    },
+
+
+    /**
+     * Select the initial selected resource
+     */
+    selectInitialResource: function selectInitialResource() {
+      var _this4 = this;
+
+      this.selectedResource = _lodash2.default.find(this.availableResources, function (r) {
+        return r.value == _this4.selectedResourceId;
+      });
+    },
+
+
+    /**
+     * Toggle the trashed state of the search
+     */
+    toggleWithTrashed: function toggleWithTrashed() {
+      this.withTrashed = !this.withTrashed;
+
+      // Reload the data if the component doesn't support searching
+      if (!this.isSearchable) {
+        this.getAvailableResources();
+      }
     }
+  },
+
+  computed: {
+    /**
+     * Determine if we are editing and existing resource
+     */
+    editingExistingResource: function editingExistingResource() {
+      return Boolean(this.field.belongsToId);
+    },
+
+
+    /**
+     * Determine if we are creating a new resource via a parent relation
+     */
+    creatingViaRelatedResource: function creatingViaRelatedResource() {
+      return this.viaResource == this.field.resourceName && this.field.reverse && this.viaResourceId;
+    },
+
+
+    /**
+     * Determine if we should select an initial resource when mounting this field
+     */
+    shouldSelectInitialResource: function shouldSelectInitialResource() {
+      return Boolean(this.editingExistingResource || this.creatingViaRelatedResource);
+    },
+
+
+    /**
+     * Determine if the related resources is searchable
+     */
+    isSearchable: function isSearchable() {
+      return this.field.searchable;
+    },
+
+
+    /**
+     * Get the query params for getting available resources
+     */
+    queryParams: function queryParams() {
+      return {
+        params: {
+          current: this.selectedResourceId,
+          first: this.initializingWithExistingResource,
+          search: this.search,
+          withTrashed: this.withTrashed,
+          resourceId: this.resourceId,
+          viaResource: this.viaResource,
+          viaResourceId: this.viaResourceId,
+          viaRelationship: this.viaRelationship
+        }
+      };
+    },
+    isLocked: function isLocked() {
+      return this.viaResource == this.field.resourceName && this.field.reverse;
+    },
+    isReadonly: function isReadonly() {
+      return this.field.readonly || _lodash2.default.get(this.field, 'extraAttributes.readonly');
+    }
+  }
 }; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3754,46 +3670,143 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    data: function data() {
-        return {
-            value: false
-        };
-    },
+  data: function data() {
+    return {
+      value: false
+    };
+  },
 
-    mounted: function mounted() {
-        var _this = this;
+  mounted: function mounted() {
+    var _this = this;
 
-        this.value = this.field.value || false;
+    this.value = this.field.value || false;
 
-        this.field.fill = function (formData) {
-            formData.append(_this.field.attribute, _this.trueValue);
-        };
-    },
+    this.field.fill = function (formData) {
+      formData.append(_this.field.attribute, _this.trueValue);
+    };
+  },
 
 
-    methods: {
-        toggle: function toggle() {
-            this.value = !this.value;
-        }
-    },
-
-    computed: {
-        checked: function checked() {
-            return Boolean(this.value);
-        },
-        trueValue: function trueValue() {
-            return +this.checked;
-        }
+  methods: {
+    toggle: function toggle() {
+      this.value = !this.value;
     }
+  },
+
+  computed: {
+    checked: function checked() {
+      return Boolean(this.value);
+    },
+    trueValue: function trueValue() {
+      return +this.checked;
+    }
+  }
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Form/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _stringify = __webpack_require__("./node_modules/babel-runtime/core-js/json/stringify.js");
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+
+  data: function data() {
+    return {
+      value: []
+    };
+  },
+
+  methods: {
+    /*
+     * Set the initial value for the field
+     */
+    setInitialValue: function setInitialValue() {
+      var _this = this;
+
+      this.field.value = this.field.value || {};
+
+      this.value = _(this.field.options).map(function (o) {
+        return {
+          name: o.name,
+          label: o.label,
+          checked: _this.field.value[o.name] || false
+        };
+      }).value();
+    },
+
+
+    /**
+     * Provide a function that fills a passed FormData object with the
+     * field's internal value attribute.
+     */
+    fill: function fill(formData) {
+      formData.append(this.field.attribute, (0, _stringify2.default)(this.finalPayload));
+    },
+
+
+    /**
+     * Toggle the option's value.
+     */
+    toggle: function toggle(event, option) {
+      var firstOption = _(this.value).find(function (o) {
+        return o.name == option.name;
+      });
+      firstOption.checked = event.target.checked;
+    }
+  },
+
+  computed: {
+    /**
+     * Return the final filtered json object
+     */
+    finalPayload: function finalPayload() {
+      return _(this.value).map(function (o) {
+        return [o.name, o.checked];
+      }).fromPairs().value();
+    }
+  }
+}; //
+//
+//
+//
 //
 //
 //
@@ -3818,7 +3831,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -3832,7 +3845,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    //
+  //
 };
 
 /***/ }),
@@ -3844,7 +3857,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
@@ -3893,7 +3906,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Modes
 _codemirror2.default.defineMode('htmltwig', function (config, parserConfig) {
-    return _codemirror2.default.overlayMode(_codemirror2.default.getMode(config, parserConfig.backdrop || 'text/html'), _codemirror2.default.getMode(config, 'twig'));
+  return _codemirror2.default.overlayMode(_codemirror2.default.getMode(config, parserConfig.backdrop || 'text/html'), _codemirror2.default.getMode(config, 'twig'));
 }); //
 //
 //
@@ -3964,42 +3977,42 @@ _codemirror2.default.defineMode('htmltwig', function (config, parserConfig) {
 //
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    data: function data() {
-        return { codemirror: null };
-    },
+  data: function data() {
+    return { codemirror: null };
+  },
 
-    /**
-     * Mount the component.
-     */
-    mounted: function mounted() {
-        var _this = this;
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    var _this = this;
 
-        var config = (0, _extends3.default)((0, _extends3.default)({
-            tabSize: 4,
-            indentWithTabs: true,
-            lineWrapping: true,
-            lineNumbers: true,
-            theme: 'dracula',
-            viewportMargin: Infinity
-        }, { readOnly: this.isReadonly }), this.field.options);
+    var config = (0, _extends3.default)((0, _extends3.default)({
+      tabSize: 4,
+      indentWithTabs: true,
+      lineWrapping: true,
+      lineNumbers: true,
+      theme: 'dracula',
+      viewportMargin: Infinity
+    }, { readOnly: this.isReadonly }), this.field.options);
 
-        this.codemirror = _codemirror2.default.fromTextArea(this.$refs.theTextarea, config);
+    this.codemirror = _codemirror2.default.fromTextArea(this.$refs.theTextarea, config);
 
-        this.doc.on('change', function (cm, changeObj) {
-            _this.value = cm.getValue();
-        });
+    this.doc.on('change', function (cm, changeObj) {
+      _this.value = cm.getValue();
+    });
 
-        this.doc.setValue(this.field.value);
-    },
+    this.doc.setValue(this.field.value);
+  },
 
 
-    computed: {
-        doc: function doc() {
-            return this.codemirror.getDoc();
-        }
+  computed: {
+    doc: function doc() {
+      return this.codemirror.getDoc();
     }
+  }
 };
 
 /***/ }),
@@ -4011,28 +4024,28 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField, _laravelNova.InteractsWithDates],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField, _laravelNova.InteractsWithDates],
 
-    computed: {
-        firstDayOfWeek: function firstDayOfWeek() {
-            return this.field.firstDayOfWeek || 0;
-        },
-        placeholder: function placeholder() {
-            return this.field.placeholder || moment().format(this.format);
-        },
-        format: function format() {
-            return this.field.format || 'YYYY-MM-DD';
-        },
-        pickerFormat: function pickerFormat() {
-            return this.field.pickerFormat || 'Y-m-d';
-        }
+  computed: {
+    firstDayOfWeek: function firstDayOfWeek() {
+      return this.field.firstDayOfWeek || 0;
+    },
+    placeholder: function placeholder() {
+      return this.field.placeholder || moment().format(this.format);
+    },
+    format: function format() {
+      return this.field.format || 'YYYY-MM-DD';
+    },
+    pickerFormat: function pickerFormat() {
+      return this.field.pickerFormat || 'Y-m-d';
     }
+  }
 }; //
 //
 //
@@ -4064,56 +4077,56 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField, _laravelNova.InteractsWithDates],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField, _laravelNova.InteractsWithDates],
 
-    data: function data() {
-        return { localizedValue: '' };
+  data: function data() {
+    return { localizedValue: '' };
+  },
+
+  methods: {
+    /*
+     * Set the initial value for the field
+     */
+    setInitialValue: function setInitialValue() {
+      // Set the initial value of the field
+      this.value = this.field.value || '';
+
+      // If the field has a value let's convert it from the app's timezone
+      // into the user's local time to display in the field
+      if (this.value !== '') {
+        this.localizedValue = this.fromAppTimezone(this.value);
+      }
     },
 
-    methods: {
-        /*
-         * Set the initial value for the field
-         */
-        setInitialValue: function setInitialValue() {
-            // Set the initial value of the field
-            this.value = this.field.value || '';
 
-            // If the field has a value let's convert it from the app's timezone
-            // into the user's local time to display in the field
-            if (this.value !== '') {
-                this.localizedValue = this.fromAppTimezone(this.value);
-            }
-        },
-
-
-        /**
-         * Update the field's internal value when it's value changes
-         */
-        handleChange: function handleChange(value) {
-            this.value = this.toAppTimezone(value);
-        }
-    },
-
-    computed: {
-        firstDayOfWeek: function firstDayOfWeek() {
-            return this.field.firstDayOfWeek || 0;
-        },
-        format: function format() {
-            return this.field.format || 'YYYY-MM-DD HH:mm:ss';
-        },
-        placeholder: function placeholder() {
-            return this.field.placeholder || moment().format(this.format);
-        },
-        pickerFormat: function pickerFormat() {
-            return this.field.pickerFormat || 'Y-m-d H:i:S';
-        }
+    /**
+     * Update the field's internal value when it's value changes
+     */
+    handleChange: function handleChange(value) {
+      this.value = this.toAppTimezone(value);
     }
+  },
+
+  computed: {
+    firstDayOfWeek: function firstDayOfWeek() {
+      return this.field.firstDayOfWeek || 0;
+    },
+    format: function format() {
+      return this.field.format || 'YYYY-MM-DD HH:mm:ss';
+    },
+    placeholder: function placeholder() {
+      return this.field.placeholder || moment().format(this.format);
+    },
+    pickerFormat: function pickerFormat() {
+      return this.field.pickerFormat || 'Y-m-d H:i:S';
+    }
+  }
 }; //
 //
 //
@@ -4148,43 +4161,43 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors],
+  mixins: [_laravelNova.HandlesValidationErrors],
 
-    props: {
-        field: { type: Object, required: true },
-        fieldName: { type: String },
-        showHelpText: { type: Boolean, default: true },
-        showErrors: { type: Boolean, default: true },
-        fullWidthContent: { type: Boolean, default: false }
+  props: {
+    field: { type: Object, required: true },
+    fieldName: { type: String },
+    showHelpText: { type: Boolean, default: true },
+    showErrors: { type: Boolean, default: true },
+    fullWidthContent: { type: Boolean, default: false }
+  },
+
+  computed: {
+    /**
+     * Return the label that should be used for the field.
+     */
+    fieldLabel: function fieldLabel() {
+      // If the field name is purposefully an empty string, then let's show it as such
+      if (this.fieldName === '') {
+        return '';
+      }
+
+      return this.fieldName || this.field.singularLabel || this.field.name;
     },
 
-    computed: {
-        /**
-         * Return the label that should be used for the field.
-         */
-        fieldLabel: function fieldLabel() {
-            // If the field name is purposefully an empty string, then let's show it as such
-            if (this.fieldName === '') {
-                return '';
-            }
 
-            return this.fieldName || this.field.singularLabel || this.field.name;
-        },
-
-
-        /**
-         * Return the classes that should be used for the field content.
-         */
-        fieldClasses: function fieldClasses() {
-            return this.fullWidthContent ? this.field.stacked ? 'w-full' : 'w-4/5' : 'w-1/2';
-        }
+    /**
+     * Return the classes that should be used for the field content.
+     */
+    fieldClasses: function fieldClasses() {
+      return this.fullWidthContent ? this.field.stacked ? 'w-full' : 'w-4/5' : 'w-1/2';
     }
+  }
 }; //
 //
 //
@@ -4228,7 +4241,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -4237,9 +4250,9 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        stacked: { type: Boolean, default: false }
-    }
+  props: {
+    stacked: { type: Boolean, default: false }
+  }
 };
 
 /***/ }),
@@ -4251,7 +4264,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -4275,196 +4288,196 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: ['resourceId', 'relatedResourceName', 'relatedResourceId', 'viaRelationship'],
+  props: ['resourceId', 'relatedResourceName', 'relatedResourceId', 'viaRelationship'],
 
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    components: { DeleteButton: _DeleteButton2.default, ImageLoader: _ImageLoader2.default },
+  components: { DeleteButton: _DeleteButton2.default, ImageLoader: _ImageLoader2.default },
 
-    data: function data() {
-        return {
-            file: null,
-            fileName: '',
-            removeModalOpen: false,
-            missing: false,
-            deleted: false,
-            uploadErrors: new _laravelNova.Errors()
-        };
+  data: function data() {
+    return {
+      file: null,
+      fileName: '',
+      removeModalOpen: false,
+      missing: false,
+      deleted: false,
+      uploadErrors: new _laravelNova.Errors()
+    };
+  },
+
+  mounted: function mounted() {
+    var _this = this;
+
+    this.field.fill = function (formData) {
+      if (_this.file) {
+        formData.append(_this.field.attribute, _this.file, _this.fileName);
+      }
+    };
+  },
+
+
+  methods: {
+    /**
+     * Respond to the file change
+     */
+    fileChange: function fileChange(event) {
+      var path = event.target.value;
+      var fileName = path.match(/[^\\/]*$/)[0];
+      this.fileName = fileName;
+      this.file = this.$refs.fileField.files[0];
     },
 
-    mounted: function mounted() {
-        var _this = this;
 
-        this.field.fill = function (formData) {
-            if (_this.file) {
-                formData.append(_this.field.attribute, _this.file, _this.fileName);
-            }
-        };
+    /**
+     * Confirm removal of the linked file
+     */
+    confirmRemoval: function confirmRemoval() {
+      this.removeModalOpen = true;
     },
 
 
-    methods: {
-        /**
-         * Respond to the file change
-         */
-        fileChange: function fileChange(event) {
-            var path = event.target.value;
-            var fileName = path.match(/[^\\/]*$/)[0];
-            this.fileName = fileName;
-            this.file = this.$refs.fileField.files[0];
-        },
-
-
-        /**
-         * Confirm removal of the linked file
-         */
-        confirmRemoval: function confirmRemoval() {
-            this.removeModalOpen = true;
-        },
-
-
-        /**
-         * Close the upload removal modal
-         */
-        closeRemoveModal: function closeRemoveModal() {
-            this.removeModalOpen = false;
-        },
-
-
-        /**
-         * Remove the linked file from storage
-         */
-        removeFile: function () {
-            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-                var resourceName, resourceId, relatedResourceName, relatedResourceId, viaRelationship, attribute, uri;
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                this.uploadErrors = new _laravelNova.Errors();
-
-                                resourceName = this.resourceName, resourceId = this.resourceId, relatedResourceName = this.relatedResourceName, relatedResourceId = this.relatedResourceId, viaRelationship = this.viaRelationship;
-                                attribute = this.field.attribute;
-                                uri = this.viaRelationship ? '/nova-api/' + resourceName + '/' + resourceId + '/' + relatedResourceName + '/' + relatedResourceId + '/field/' + attribute + '?viaRelationship=' + viaRelationship : '/nova-api/' + resourceName + '/' + resourceId + '/field/' + attribute;
-                                _context.prev = 4;
-                                _context.next = 7;
-                                return Nova.request().delete(uri);
-
-                            case 7:
-                                this.closeRemoveModal();
-                                this.deleted = true;
-                                this.$emit('file-deleted');
-                                _context.next = 16;
-                                break;
-
-                            case 12:
-                                _context.prev = 12;
-                                _context.t0 = _context['catch'](4);
-
-                                this.closeRemoveModal();
-
-                                if (_context.t0.response.status == 422) {
-                                    this.uploadErrors = new _laravelNova.Errors(_context.t0.response.data.errors);
-                                }
-
-                            case 16:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this, [[4, 12]]);
-            }));
-
-            function removeFile() {
-                return _ref.apply(this, arguments);
-            }
-
-            return removeFile;
-        }()
+    /**
+     * Close the upload removal modal
+     */
+    closeRemoveModal: function closeRemoveModal() {
+      this.removeModalOpen = false;
     },
 
-    computed: {
-        /**
-         * Determine if the field has an upload error.
-         */
-        hasError: function hasError() {
-            return this.uploadErrors.has(this.fieldAttribute);
-        },
 
+    /**
+     * Remove the linked file from storage
+     */
+    removeFile: function () {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        var resourceName, resourceId, relatedResourceName, relatedResourceId, viaRelationship, attribute, uri;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.uploadErrors = new _laravelNova.Errors();
 
-        /**
-         * Return the first error for the field.
-         */
-        firstError: function firstError() {
-            if (this.hasError) {
-                return this.uploadErrors.first(this.fieldAttribute);
+                resourceName = this.resourceName, resourceId = this.resourceId, relatedResourceName = this.relatedResourceName, relatedResourceId = this.relatedResourceId, viaRelationship = this.viaRelationship;
+                attribute = this.field.attribute;
+                uri = this.viaRelationship ? '/nova-api/' + resourceName + '/' + resourceId + '/' + relatedResourceName + '/' + relatedResourceId + '/field/' + attribute + '?viaRelationship=' + viaRelationship : '/nova-api/' + resourceName + '/' + resourceId + '/field/' + attribute;
+                _context.prev = 4;
+                _context.next = 7;
+                return Nova.request().delete(uri);
+
+              case 7:
+                this.closeRemoveModal();
+                this.deleted = true;
+                this.$emit('file-deleted');
+                _context.next = 16;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context['catch'](4);
+
+                this.closeRemoveModal();
+
+                if (_context.t0.response.status == 422) {
+                  this.uploadErrors = new _laravelNova.Errors(_context.t0.response.data.errors);
+                }
+
+              case 16:
+              case 'end':
+                return _context.stop();
             }
-        },
+          }
+        }, _callee, this, [[4, 12]]);
+      }));
+
+      function removeFile() {
+        return _ref.apply(this, arguments);
+      }
+
+      return removeFile;
+    }()
+  },
+
+  computed: {
+    /**
+     * Determine if the field has an upload error.
+     */
+    hasError: function hasError() {
+      return this.uploadErrors.has(this.fieldAttribute);
+    },
 
 
-        /**
-         * The current label of the file field.
-         */
-        currentLabel: function currentLabel() {
-            return this.fileName || this.__('no file selected');
-        },
+    /**
+     * Return the first error for the field.
+     */
+    firstError: function firstError() {
+      if (this.hasError) {
+        return this.uploadErrors.first(this.fieldAttribute);
+      }
+    },
 
 
-        /**
-         * The ID attribute to use for the file field.
-         */
-        idAttr: function idAttr() {
-            return this.labelFor;
-        },
+    /**
+     * The current label of the file field.
+     */
+    currentLabel: function currentLabel() {
+      return this.fileName || this.__('no file selected');
+    },
 
 
-        /**
-         * The label attribute to use for the file field.
-         */
-        labelFor: function labelFor() {
-            return 'file-' + this.field.attribute;
-        },
+    /**
+     * The ID attribute to use for the file field.
+     */
+    idAttr: function idAttr() {
+      return this.labelFor;
+    },
 
 
-        /**
-         * Determine whether the field has a value.
-         */
-        hasValue: function hasValue() {
-            return Boolean(this.field.value || this.imageUrl) && !Boolean(this.deleted) && !Boolean(this.missing);
-        },
+    /**
+     * The label attribute to use for the file field.
+     */
+    labelFor: function labelFor() {
+      return 'file-' + this.field.attribute;
+    },
 
 
-        /**
-         * Determine whether the field should show the loader component.
-         */
-        shouldShowLoader: function shouldShowLoader() {
-            return !Boolean(this.deleted) && Boolean(this.imageUrl);
-        },
+    /**
+     * Determine whether the field has a value.
+     */
+    hasValue: function hasValue() {
+      return Boolean(this.field.value || this.imageUrl) && !Boolean(this.deleted) && !Boolean(this.missing);
+    },
 
 
-        /**
-         * Determine whether the field should show the remove button.
-         */
-        shouldShowRemoveButton: function shouldShowRemoveButton() {
-            return Boolean(this.field.deletable);
-        },
+    /**
+     * Determine whether the field should show the loader component.
+     */
+    shouldShowLoader: function shouldShowLoader() {
+      return !Boolean(this.deleted) && Boolean(this.imageUrl);
+    },
 
 
-        /**
-         * Return the preview or thumbnail URL for the field.
-         */
-        imageUrl: function imageUrl() {
-            return this.field.previewUrl || this.field.thumbnailUrl;
-        },
+    /**
+     * Determine whether the field should show the remove button.
+     */
+    shouldShowRemoveButton: function shouldShowRemoveButton() {
+      return Boolean(this.field.deletable);
+    },
 
 
-        /**
-         * Determine the maximum width of the field.
-         */
-        maxWidth: function maxWidth() {
-            return this.field.maxWidth || 320;
-        }
+    /**
+     * Return the preview or thumbnail URL for the field.
+     */
+    imageUrl: function imageUrl() {
+      return this.field.previewUrl || this.field.thumbnailUrl;
+    },
+
+
+    /**
+     * Determine the maximum width of the field.
+     */
+    maxWidth: function maxWidth() {
+      return this.field.maxWidth || 320;
     }
+  }
 }; //
 //
 //
@@ -4551,7 +4564,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -4563,31 +4576,31 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        resourceName: {
-            type: String,
-            require: true
-        },
-        field: {
-            type: Object,
-            require: true
-        }
+  props: {
+    resourceName: {
+      type: String,
+      require: true
     },
-
-    created: function created() {
-        this.field.fill = function () {};
-    },
-
-
-    computed: {
-        classes: function classes() {
-            return ['bg-20', 'remove-last-margin-bottom', 'leading-normal', 'w-full', 'py-4', 'px-8'];
-        },
-
-        shouldDisplayAsHtml: function shouldDisplayAsHtml() {
-            return this.field.asHtml || false;
-        }
+    field: {
+      type: Object,
+      require: true
     }
+  },
+
+  created: function created() {
+    this.field.fill = function () {};
+  },
+
+
+  computed: {
+    classes: function classes() {
+      return ['bg-20', 'remove-last-margin-bottom', 'leading-normal', 'w-full', 'py-4', 'px-8'];
+    },
+
+    shouldDisplayAsHtml: function shouldDisplayAsHtml() {
+      return this.field.asHtml || false;
+    }
+  }
 };
 
 /***/ }),
@@ -4617,7 +4630,7 @@ exports.default = {};
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
@@ -4679,112 +4692,107 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
 
 function guid() {
-    var S4 = function S4() {
-        return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-    };
-    return S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4();
+  var S4 = function S4() {
+    return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+  };
+  return S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4();
 }
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    components: { KeyValueTable: _KeyValueTable2.default, KeyValueHeader: _KeyValueHeader2.default, KeyValueItem: _KeyValueItem2.default },
+  components: { KeyValueTable: _KeyValueTable2.default, KeyValueHeader: _KeyValueHeader2.default, KeyValueItem: _KeyValueItem2.default },
 
-    data: function data() {
-        return { theData: [] };
-    },
+  data: function data() {
+    return { theData: [] };
+  },
 
-    mounted: function mounted() {
-        this.theData = _.map(this.value || {}, function (value, key) {
-            return {
-                id: guid(),
-                key: key,
-                value: value
-            };
-        });
+  mounted: function mounted() {
+    this.theData = _.map(this.value || {}, function (value, key) {
+      return {
+        id: guid(),
+        key: key,
+        value: value
+      };
+    });
 
-        if (this.theData.length == 0) {
-            this.addRow();
-        }
-    },
-
-
-    methods: {
-        /**
-         * Provide a function that fills a passed FormData object with the
-         * field's internal value attribute.
-         */
-        fill: function fill(formData) {
-            formData.append(this.field.attribute, (0, _stringify2.default)(this.finalPayload));
-        },
-
-
-        /**
-         * Add a row to the table.
-         */
-        addRow: function addRow() {
-            var _this = this;
-
-            return _.tap(guid(), function (id) {
-                _this.theData = [].concat((0, _toConsumableArray3.default)(_this.theData), [{ id: id, key: '', value: '' }]);
-                return id;
-            });
-        },
-
-
-        /**
-         * Add a row to the table and select its first field.
-         */
-        addRowAndSelect: function addRowAndSelect() {
-            return this.selectRow(this.addRow());
-        },
-
-
-        /**
-         * Remove the row from the table.
-         */
-        removeRow: function removeRow(id) {
-            var _this2 = this;
-
-            return _.tap(_.findIndex(this.theData, function (row) {
-                return row.id == id;
-            }), function (index) {
-                return _this2.theData.splice(index, 1);
-            });
-        },
-
-
-        /**
-         * Select the first field in a row with the given ref ID.
-         */
-        selectRow: function selectRow(refId) {
-            var _this3 = this;
-
-            return this.$nextTick(function () {
-                _this3.$refs[refId][0].$refs.keyField.select();
-            });
-        }
-    },
-
-    computed: {
-        /**
-         * Return the final filtered json object
-         */
-        finalPayload: function finalPayload() {
-            return _(this.theData).map(function (row) {
-                return row && row.key ? [row.key, row.value] : undefined;
-            }).reject(function (row) {
-                return row === undefined;
-            }).fromPairs().value();
-        }
+    if (this.theData.length == 0) {
+      this.addRow();
     }
+  },
+
+
+  methods: {
+    /**
+     * Provide a function that fills a passed FormData object with the
+     * field's internal value attribute.
+     */
+    fill: function fill(formData) {
+      formData.append(this.field.attribute, (0, _stringify2.default)(this.finalPayload));
+    },
+
+
+    /**
+     * Add a row to the table.
+     */
+    addRow: function addRow() {
+      var _this = this;
+
+      return _.tap(guid(), function (id) {
+        _this.theData = [].concat((0, _toConsumableArray3.default)(_this.theData), [{ id: id, key: '', value: '' }]);
+        return id;
+      });
+    },
+
+
+    /**
+     * Add a row to the table and select its first field.
+     */
+    addRowAndSelect: function addRowAndSelect() {
+      return this.selectRow(this.addRow());
+    },
+
+
+    /**
+     * Remove the row from the table.
+     */
+    removeRow: function removeRow(id) {
+      var _this2 = this;
+
+      return _.tap(_.findIndex(this.theData, function (row) {
+        return row.id == id;
+      }), function (index) {
+        return _this2.theData.splice(index, 1);
+      });
+    },
+
+
+    /**
+     * Select the first field in a row with the given ref ID.
+     */
+    selectRow: function selectRow(refId) {
+      var _this3 = this;
+
+      return this.$nextTick(function () {
+        _this3.$refs[refId][0].$refs.keyField.select();
+      });
+    }
+  },
+
+  computed: {
+    /**
+     * Return the final filtered json object
+     */
+    finalPayload: function finalPayload() {
+      return _(this.theData).map(function (row) {
+        return row && row.key ? [row.key, row.value] : undefined;
+      }).reject(function (row) {
+        return row === undefined;
+      }).fromPairs().value();
+    }
+  }
 };
 
 /***/ }),
@@ -4796,7 +4804,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -4816,14 +4824,14 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        keyLabel: {
-            type: String
-        },
-        valueLabel: {
-            type: String
-        }
+  props: {
+    keyLabel: {
+      type: String
+    },
+    valueLabel: {
+      type: String
     }
+  }
 };
 
 /***/ }),
@@ -4835,7 +4843,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _autosize = __webpack_require__("./node_modules/autosize/dist/autosize.js");
@@ -4845,39 +4853,36 @@ var _autosize2 = _interopRequireDefault(_autosize);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: {
-        index: Number,
-        item: Object,
-        disabled: {
-            type: Boolean,
-            default: false
-        }
-    },
-
-    mounted: function mounted() {
-        (0, _autosize2.default)(this.$refs.keyField);
-        (0, _autosize2.default)(this.$refs.valueField);
-    },
-
-
-    methods: {
-        handleKeyFieldFocus: function handleKeyFieldFocus() {
-            this.$refs.keyField.select();
-        },
-        handleValueFieldFocus: function handleValueFieldFocus() {
-            this.$refs.valueField.select();
-        }
-    },
-
-    computed: {
-        isNotObject: function isNotObject() {
-            return !(this.item.value instanceof Object);
-        }
+  props: {
+    index: Number,
+    item: Object,
+    disabled: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  mounted: function mounted() {
+    (0, _autosize2.default)(this.$refs.keyField);
+    (0, _autosize2.default)(this.$refs.valueField);
+  },
+
+
+  methods: {
+    handleKeyFieldFocus: function handleKeyFieldFocus() {
+      this.$refs.keyField.select();
+    },
+    handleValueFieldFocus: function handleValueFieldFocus() {
+      this.$refs.valueField.select();
+    }
+  },
+
+  computed: {
+    isNotObject: function isNotObject() {
+      return !(this.item.value instanceof Object);
+    }
+  }
 }; //
-//
-//
-//
 //
 //
 //
@@ -4942,7 +4947,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -4955,12 +4960,12 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        editMode: {
-            type: Boolean,
-            default: true
-        }
+  props: {
+    editMode: {
+      type: Boolean,
+      default: true
     }
+  }
 };
 
 /***/ }),
@@ -4972,7 +4977,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -4982,11 +4987,11 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        labelFor: {
-            type: String
-        }
+  props: {
+    labelFor: {
+      type: String
     }
+  }
 };
 
 /***/ }),
@@ -4998,7 +5003,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
@@ -5024,39 +5029,33 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var actions = {
-    bold: function bold() {
-        this.insertAround('**', '**');
-    },
-    italicize: function italicize() {
-        this.insertAround('*', '*');
-    },
-    image: function image() {
-        this.insertBefore('![](http://)', 2);
-    },
-    link: function link() {
-        this.insertAround('[', '](http://)');
-    },
-    toggleFullScreen: function toggleFullScreen() {
-        var _this = this;
+  bold: function bold() {
+    this.insertAround('**', '**');
+  },
+  italicize: function italicize() {
+    this.insertAround('*', '*');
+  },
+  image: function image() {
+    this.insertBefore('![](http://)', 2);
+  },
+  link: function link() {
+    this.insertAround('[', '](http://)');
+  },
+  toggleFullScreen: function toggleFullScreen() {
+    var _this = this;
 
-        this.fullScreen = !this.fullScreen;
-        this.$nextTick(function () {
-            return _this.codemirror.refresh();
-        });
-    },
-    fullScreen: function fullScreen() {
-        this.fullScreen = true;
-    },
-    exitFullScreen: function exitFullScreen() {
-        this.fullScreen = false;
-    }
+    this.fullScreen = !this.fullScreen;
+    this.$nextTick(function () {
+      return _this.codemirror.refresh();
+    });
+  },
+  fullScreen: function fullScreen() {
+    this.fullScreen = true;
+  },
+  exitFullScreen: function exitFullScreen() {
+    this.fullScreen = false;
+  }
 }; //
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -5128,180 +5127,180 @@ var actions = {
 //
 
 var keyMaps = {
-    'Cmd-B': 'bold',
-    'Cmd-I': 'italicize',
-    'Cmd-Alt-I': 'image',
-    'Cmd-K': 'link',
-    F11: 'fullScreen',
-    Esc: 'exitFullScreen'
+  'Cmd-B': 'bold',
+  'Cmd-I': 'italicize',
+  'Cmd-Alt-I': 'image',
+  'Cmd-K': 'link',
+  F11: 'fullScreen',
+  Esc: 'exitFullScreen'
 };
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    data: function data() {
-        return {
-            fullScreen: false,
-            isFocused: false,
-            codemirror: null,
-            mode: 'write',
-            tools: [{
-                name: 'bold',
-                action: 'bold',
-                className: 'fa fa-bold',
-                icon: 'editor-bold'
-            }, {
-                name: 'italicize',
-                action: 'italicize',
-                className: 'fa fa-italic',
-                icon: 'editor-italic'
-            }, {
-                name: 'link',
-                action: 'link',
-                className: 'fa fa-link',
-                icon: 'editor-link'
-            }, {
-                name: 'image',
-                action: 'image',
-                className: 'fa fa-image',
-                icon: 'editor-image'
-            }, {
-                name: 'fullScreen',
-                action: 'toggleFullScreen',
-                className: 'fa fa-expand',
-                icon: 'editor-fullscreen'
-            }]
-        };
-    },
+  data: function data() {
+    return {
+      fullScreen: false,
+      isFocused: false,
+      codemirror: null,
+      mode: 'write',
+      tools: [{
+        name: 'bold',
+        action: 'bold',
+        className: 'fa fa-bold',
+        icon: 'editor-bold'
+      }, {
+        name: 'italicize',
+        action: 'italicize',
+        className: 'fa fa-italic',
+        icon: 'editor-italic'
+      }, {
+        name: 'link',
+        action: 'link',
+        className: 'fa fa-link',
+        icon: 'editor-link'
+      }, {
+        name: 'image',
+        action: 'image',
+        className: 'fa fa-image',
+        icon: 'editor-image'
+      }, {
+        name: 'fullScreen',
+        action: 'toggleFullScreen',
+        className: 'fa fa-expand',
+        icon: 'editor-fullscreen'
+      }]
+    };
+  },
 
-    mounted: function mounted() {
-        var _this2 = this;
+  mounted: function mounted() {
+    var _this2 = this;
 
-        this.codemirror = _codemirror2.default.fromTextArea(this.$refs.theTextarea, (0, _extends3.default)({
-            tabSize: 4,
-            indentWithTabs: true,
-            lineWrapping: true,
-            mode: 'markdown',
-            viewportMargin: Infinity,
-            extraKeys: (0, _extends3.default)({
-                Enter: 'newlineAndIndentContinueMarkdownList'
-            }, _lodash2.default.map(this.tools, function (tool) {
-                return tool.action;
-            }))
-        }, { readOnly: this.isReadonly }));
+    this.codemirror = _codemirror2.default.fromTextArea(this.$refs.theTextarea, (0, _extends3.default)({
+      tabSize: 4,
+      indentWithTabs: true,
+      lineWrapping: true,
+      mode: 'markdown',
+      viewportMargin: Infinity,
+      extraKeys: (0, _extends3.default)({
+        Enter: 'newlineAndIndentContinueMarkdownList'
+      }, _lodash2.default.map(this.tools, function (tool) {
+        return tool.action;
+      }))
+    }, { readOnly: this.isReadonly }));
 
-        _lodash2.default.each(keyMaps, function (action, map) {
-            var realMap = map.replace('Cmd-', _codemirror2.default.keyMap['default'] == _codemirror2.default.keyMap.macDefault ? 'Cmd-' : 'Ctrl-');
-            _this2.codemirror.options.extraKeys[realMap] = actions[keyMaps[map]].bind(_this2);
-        });
+    _lodash2.default.each(keyMaps, function (action, map) {
+      var realMap = map.replace('Cmd-', _codemirror2.default.keyMap['default'] == _codemirror2.default.keyMap.macDefault ? 'Cmd-' : 'Ctrl-');
+      _this2.codemirror.options.extraKeys[realMap] = actions[keyMaps[map]].bind(_this2);
+    });
 
-        this.doc.on('change', function (cm, changeObj) {
-            _this2.value = cm.getValue();
-        });
+    this.doc.on('change', function (cm, changeObj) {
+      _this2.value = cm.getValue();
+    });
 
-        this.codemirror.on('focus', function () {
-            return _this2.isFocused = true;
-        });
-        this.codemirror.on('blur', function () {
-            return _this2.isFocused = false;
-        });
+    this.codemirror.on('focus', function () {
+      return _this2.isFocused = true;
+    });
+    this.codemirror.on('blur', function () {
+      return _this2.isFocused = false;
+    });
 
-        if (this.field.value) {
-            this.doc.setValue(this.field.value);
-        }
-
-        this.$nextTick(function () {
-            return _this2.codemirror.refresh();
-        });
-    },
-
-
-    methods: {
-        focus: function focus() {
-            this.codemirror.focus();
-        },
-        write: function write() {
-            var _this3 = this;
-
-            this.mode = 'write';
-            this.$nextTick(function () {
-                _this3.codemirror.refresh();
-            });
-        },
-        preview: function preview() {
-            this.mode = 'preview';
-        },
-        insert: function insert(insertion) {
-            this.doc.replaceRange(insertion, {
-                line: this.cursor.line,
-                ch: this.cursor.ch
-            });
-        },
-        insertAround: function insertAround(start, end) {
-            if (this.doc.somethingSelected()) {
-                var selection = this.doc.getSelection();
-                this.doc.replaceSelection(start + selection + end);
-            } else {
-                this.doc.replaceRange(start + end, {
-                    line: this.cursor.line,
-                    ch: this.cursor.ch
-                });
-                this.doc.setCursor({
-                    line: this.cursor.line,
-                    ch: this.cursor.ch - end.length
-                });
-            }
-        },
-        insertBefore: function insertBefore(insertion, cursorOffset) {
-            var _this4 = this;
-
-            if (this.doc.somethingSelected()) {
-                var selects = this.doc.listSelections();
-                selects.forEach(function (selection) {
-                    var pos = [selection.head.line, selection.anchor.line].sort();
-
-                    for (var i = pos[0]; i <= pos[1]; i++) {
-                        _this4.doc.replaceRange(insertion, { line: i, ch: 0 });
-                    }
-
-                    _this4.doc.setCursor({ line: pos[0], ch: cursorOffset || 0 });
-                });
-            } else {
-                this.doc.replaceRange(insertion, {
-                    line: this.cursor.line,
-                    ch: 0
-                });
-                this.doc.setCursor({
-                    line: this.cursor.line,
-                    ch: cursorOffset || 0
-                });
-            }
-        },
-        callAction: function callAction(action) {
-            if (!this.isReadonly) {
-                this.focus();
-                actions[action].call(this);
-            }
-        }
-    },
-
-    computed: {
-        doc: function doc() {
-            return this.codemirror.getDoc();
-        },
-        isFullScreen: function isFullScreen() {
-            return this.fullScreen == true;
-        },
-        cursor: function cursor() {
-            return this.doc.getCursor();
-        },
-        rawContent: function rawContent() {
-            return this.codemirror.getValue();
-        },
-        previewContent: function previewContent() {
-            return (0, _marked2.default)(this.rawContent);
-        }
+    if (this.field.value) {
+      this.doc.setValue(this.field.value);
     }
+
+    this.$nextTick(function () {
+      return _this2.codemirror.refresh();
+    });
+  },
+
+
+  methods: {
+    focus: function focus() {
+      this.codemirror.focus();
+    },
+    write: function write() {
+      var _this3 = this;
+
+      this.mode = 'write';
+      this.$nextTick(function () {
+        _this3.codemirror.refresh();
+      });
+    },
+    preview: function preview() {
+      this.mode = 'preview';
+    },
+    insert: function insert(insertion) {
+      this.doc.replaceRange(insertion, {
+        line: this.cursor.line,
+        ch: this.cursor.ch
+      });
+    },
+    insertAround: function insertAround(start, end) {
+      if (this.doc.somethingSelected()) {
+        var selection = this.doc.getSelection();
+        this.doc.replaceSelection(start + selection + end);
+      } else {
+        this.doc.replaceRange(start + end, {
+          line: this.cursor.line,
+          ch: this.cursor.ch
+        });
+        this.doc.setCursor({
+          line: this.cursor.line,
+          ch: this.cursor.ch - end.length
+        });
+      }
+    },
+    insertBefore: function insertBefore(insertion, cursorOffset) {
+      var _this4 = this;
+
+      if (this.doc.somethingSelected()) {
+        var selects = this.doc.listSelections();
+        selects.forEach(function (selection) {
+          var pos = [selection.head.line, selection.anchor.line].sort();
+
+          for (var i = pos[0]; i <= pos[1]; i++) {
+            _this4.doc.replaceRange(insertion, { line: i, ch: 0 });
+          }
+
+          _this4.doc.setCursor({ line: pos[0], ch: cursorOffset || 0 });
+        });
+      } else {
+        this.doc.replaceRange(insertion, {
+          line: this.cursor.line,
+          ch: 0
+        });
+        this.doc.setCursor({
+          line: this.cursor.line,
+          ch: cursorOffset || 0
+        });
+      }
+    },
+    callAction: function callAction(action) {
+      if (!this.isReadonly) {
+        this.focus();
+        actions[action].call(this);
+      }
+    }
+  },
+
+  computed: {
+    doc: function doc() {
+      return this.codemirror.getDoc();
+    },
+    isFullScreen: function isFullScreen() {
+      return this.fullScreen == true;
+    },
+    cursor: function cursor() {
+      return this.doc.getCursor();
+    },
+    rawContent: function rawContent() {
+      return this.codemirror.getValue();
+    },
+    previewContent: function previewContent() {
+      return (0, _marked2.default)(this.rawContent);
+    }
+  }
 };
 
 /***/ }),
@@ -5313,7 +5312,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -5337,304 +5336,289 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.PerformsSearches, _laravelNova.TogglesTrashed, _laravelNova.HandlesValidationErrors],
-    props: ['resourceName', 'field', 'viaResource', 'viaResourceId', 'viaRelationship'],
+  mixins: [_laravelNova.PerformsSearches, _laravelNova.TogglesTrashed, _laravelNova.HandlesValidationErrors],
+  props: ['resourceName', 'field', 'viaResource', 'viaResourceId', 'viaRelationship'],
 
-    data: function data() {
-        return {
-            resourceType: '',
-            initializingWithExistingResource: false,
-            softDeletes: false,
-            selectedResourceId: null,
-            selectedResource: null,
-            search: ''
-        };
+  data: function data() {
+    return {
+      resourceType: '',
+      initializingWithExistingResource: false,
+      softDeletes: false,
+      selectedResourceId: null,
+      selectedResource: null,
+      search: ''
+    };
+  },
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    var _this = this;
+
+    if (this.editingExistingResource) {
+      this.initializingWithExistingResource = true;
+      this.resourceType = this.field.morphToType;
+      this.selectedResourceId = this.field.morphToId;
+    }
+
+    if (this.creatingViaRelatedResource) {
+      this.initializingWithExistingResource = true;
+      this.resourceType = this.viaResource;
+      this.selectedResourceId = this.viaResourceId;
+    }
+
+    if (this.shouldSelectInitialResource && !this.isSearchable) {
+      this.getAvailableResources().then(function () {
+        return _this.selectInitialResource();
+      });
+    } else if (this.shouldSelectInitialResource && this.isSearchable) {
+      this.getAvailableResources().then(function () {
+        return _this.selectInitialResource();
+      });
+    }
+
+    if (this.resourceType) {
+      this.determineIfSoftDeletes();
+    }
+
+    this.field.fill = this.fill;
+  },
+
+
+  methods: {
+    /**
+     * Select a resource using the <select> control
+     */
+    selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
+      this.selectedResourceId = e.target.value;
+      this.selectInitialResource();
     },
+
 
     /**
-     * Mount the component.
+     * Fill the forms formData with details from this field
      */
-    mounted: function mounted() {
-        var _this = this;
+    fill: function fill(formData) {
+      if (this.selectedResource && this.resourceType) {
+        formData.append(this.field.attribute, this.selectedResource.value);
+        formData.append(this.field.attribute + '_type', this.resourceType);
+      } else {
+        formData.append(this.field.attribute, '');
+        formData.append(this.field.attribute + '_type', '');
+      }
 
-        if (this.editingExistingResource) {
-            this.initializingWithExistingResource = true;
-            this.resourceType = this.field.morphToType;
-            this.selectedResourceId = this.field.morphToId;
-        }
-
-        if (this.creatingViaRelatedResource) {
-            this.initializingWithExistingResource = true;
-            this.resourceType = this.viaResource;
-            this.selectedResourceId = this.viaResourceId;
-        }
-
-        if (this.shouldSelectInitialResource && !this.isSearchable) {
-            this.getAvailableResources().then(function () {
-                return _this.selectInitialResource();
-            });
-        } else if (this.shouldSelectInitialResource && this.isSearchable) {
-            this.getAvailableResources().then(function () {
-                return _this.selectInitialResource();
-            });
-        }
-
-        if (this.resourceType) {
-            this.determineIfSoftDeletes();
-        }
-
-        this.field.fill = this.fill;
+      formData.append(this.field.attribute + '_trashed', this.withTrashed);
     },
 
 
-    methods: {
-        /**
-         * Select a resource using the <select> control
-         */
-        selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
-            this.selectedResourceId = e.target.value;
-            this.selectInitialResource();
-        },
+    /**
+     * Get the resources that may be related to this resource.
+     */
+    getAvailableResources: function getAvailableResources() {
+      var _this2 = this;
 
+      var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-        /**
-         * Fill the forms formData with details from this field
-         */
-        fill: function fill(formData) {
-            if (this.selectedResource && this.resourceType) {
-                formData.append(this.field.attribute, this.selectedResource.value);
-                formData.append(this.field.attribute + '_type', this.resourceType);
-            } else {
-                formData.append(this.field.attribute, '');
-                formData.append(this.field.attribute + '_type', '');
-            }
+      return _MorphToFieldStorage2.default.fetchAvailableResources(this.resourceName, this.field.attribute, this.queryParams).then(function (_ref) {
+        var _ref$data = _ref.data,
+            resources = _ref$data.resources,
+            softDeletes = _ref$data.softDeletes,
+            withTrashed = _ref$data.withTrashed;
 
-            formData.append(this.field.attribute + '_trashed', this.withTrashed);
-        },
-
-
-        /**
-         * Get the resources that may be related to this resource.
-         */
-        getAvailableResources: function getAvailableResources() {
-            var _this2 = this;
-
-            var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-            return _MorphToFieldStorage2.default.fetchAvailableResources(this.resourceName, this.field.attribute, this.queryParams).then(function (_ref) {
-                var _ref$data = _ref.data,
-                    resources = _ref$data.resources,
-                    softDeletes = _ref$data.softDeletes,
-                    withTrashed = _ref$data.withTrashed;
-
-                if (_this2.initializingWithExistingResource || !_this2.isSearchable) {
-                    _this2.withTrashed = withTrashed;
-                }
-
-                _this2.initializingWithExistingResource = false;
-                _this2.availableResources = resources;
-                _this2.softDeletes = softDeletes;
-            });
-        },
-
-
-        /**
-         * Select the initial selected resource
-         */
-        selectInitialResource: function selectInitialResource() {
-            var _this3 = this;
-
-            this.selectedResource = _lodash2.default.find(this.availableResources, function (r) {
-                return r.value == _this3.selectedResourceId;
-            });
-        },
-
-
-        /**
-         * Determine if the selected resource type is soft deleting.
-         */
-        determineIfSoftDeletes: function determineIfSoftDeletes() {
-            var _this4 = this;
-
-            return _MorphToFieldStorage2.default.determineIfSoftDeletes(this.resourceType).then(function (_ref2) {
-                var softDeletes = _ref2.data.softDeletes;
-                return _this4.softDeletes = softDeletes;
-            });
-        },
-
-
-        /**
-         * Handle the changing of the resource type.
-         */
-        refreshResourcesForTypeChange: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                this.resourceType = event.target.value;
-                                this.availableResources = [];
-                                this.selectedResource = '';
-                                this.selectedResourceId = '';
-                                this.withTrashed = false;
-
-                                // if (this.resourceType == '') {
-                                this.softDeletes = false;
-                                // } else if (this.field.searchable) {
-                                this.determineIfSoftDeletes();
-                                // }
-
-                                if (!this.isSearchable && this.resourceType) {
-                                    this.getAvailableResources();
-                                }
-
-                            case 8:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function refreshResourcesForTypeChange(_x2) {
-                return _ref3.apply(this, arguments);
-            }
-
-            return refreshResourcesForTypeChange;
-        }(),
-
-
-        /**
-         * Toggle the trashed state of the search
-         */
-        toggleWithTrashed: function toggleWithTrashed() {
-            this.withTrashed = !this.withTrashed;
-
-            // Reload the data if the component doesn't support searching
-            if (!this.isSearchable) {
-                this.getAvailableResources();
-            }
+        if (_this2.initializingWithExistingResource || !_this2.isSearchable) {
+          _this2.withTrashed = withTrashed;
         }
+
+        _this2.initializingWithExistingResource = false;
+        _this2.availableResources = resources;
+        _this2.softDeletes = softDeletes;
+      });
     },
 
-    computed: {
-        /**
-         * Determine if an existing resource is being updated.
-         */
-        editingExistingResource: function editingExistingResource() {
-            return Boolean(this.field.morphToId && this.field.morphToType);
-        },
+
+    /**
+     * Select the initial selected resource
+     */
+    selectInitialResource: function selectInitialResource() {
+      var _this3 = this;
+
+      this.selectedResource = _lodash2.default.find(this.availableResources, function (r) {
+        return r.value == _this3.selectedResourceId;
+      });
+    },
 
 
-        /**
-         * Determine if we are creating a new resource via a parent relation
-         */
-        creatingViaRelatedResource: function creatingViaRelatedResource() {
-            return Boolean(this.viaResource && this.viaResourceId);
-        },
+    /**
+     * Determine if the selected resource type is soft deleting.
+     */
+    determineIfSoftDeletes: function determineIfSoftDeletes() {
+      var _this4 = this;
+
+      return _MorphToFieldStorage2.default.determineIfSoftDeletes(this.resourceType).then(function (_ref2) {
+        var softDeletes = _ref2.data.softDeletes;
+        return _this4.softDeletes = softDeletes;
+      });
+    },
 
 
-        /**
-         * Determine if we should select an initial resource when mounting this field
-         */
-        shouldSelectInitialResource: function shouldSelectInitialResource() {
-            return Boolean(this.editingExistingResource || this.creatingViaRelatedResource);
-        },
+    /**
+     * Handle the changing of the resource type.
+     */
+    refreshResourcesForTypeChange: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.resourceType = event.target.value;
+                this.availableResources = [];
+                this.selectedResource = '';
+                this.selectedResourceId = '';
+                this.withTrashed = false;
 
+                // if (this.resourceType == '') {
+                this.softDeletes = false;
+                // } else if (this.field.searchable) {
+                this.determineIfSoftDeletes();
+                // }
 
-        /**
-         * Determine if the related resources is searchable
-         */
-        isSearchable: function isSearchable() {
-            return Boolean(this.field.searchable);
-        },
-        shouldLoadFirstResource: function shouldLoadFirstResource() {
-            return this.isSearchable && this.shouldSelectInitialResource && this.initializingWithExistingResource;
-        },
-
-
-        /**
-         * Get the query params for getting available resources
-         */
-        queryParams: function queryParams() {
-            return {
-                params: {
-                    type: this.resourceType,
-                    current: this.selectedResourceId,
-                    first: this.shouldLoadFirstResource,
-                    search: this.search,
-                    withTrashed: this.withTrashed,
-                    viaResource: this.viaResource,
-                    viaResourceId: this.viaResourceId,
-                    viaRelationship: this.viaRelationship
+                if (!this.isSearchable && this.resourceType) {
+                  this.getAvailableResources();
                 }
-            };
-        },
 
-
-        /**
-         * Determine if the field is locked
-         */
-        isLocked: function isLocked() {
-            return Boolean(this.viaResource && this.field.reverse);
-        },
-
-
-        /**
-         * Return the morphable type label for the field
-         */
-        fieldName: function fieldName() {
-            return this.field.name;
-        },
-
-
-        /**
-         * Return the selected morphable type's label
-         */
-        fieldTypeName: function fieldTypeName() {
-            var _this5 = this;
-
-            if (this.resourceType) {
-                return _lodash2.default.find(this.field.morphToTypes, function (type) {
-                    return type.value == _this5.resourceType;
-                }).singularLabel;
+              case 8:
+              case 'end':
+                return _context.stop();
             }
+          }
+        }, _callee, this);
+      }));
 
-            return '';
-        },
+      function refreshResourcesForTypeChange(_x2) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return refreshResourcesForTypeChange;
+    }(),
 
 
-        /**
-         * Determine if the field is set to readonly.
-         */
-        isReadonly: function isReadonly() {
-            return this.field.readonly || _lodash2.default.get(this.field, 'extraAttributes.readonly');
-        },
+    /**
+     * Toggle the trashed state of the search
+     */
+    toggleWithTrashed: function toggleWithTrashed() {
+      this.withTrashed = !this.withTrashed;
 
-
-        /**
-         * Determine whether there are any morph to types.
-         */
-        hasMorphToTypes: function hasMorphToTypes() {
-            return this.field.morphToTypes.length > 0;
-        }
+      // Reload the data if the component doesn't support searching
+      if (!this.isSearchable) {
+        this.getAvailableResources();
+      }
     }
+  },
+
+  computed: {
+    /**
+     * Determine if an existing resource is being updated.
+     */
+    editingExistingResource: function editingExistingResource() {
+      return Boolean(this.field.morphToId && this.field.morphToType);
+    },
+
+
+    /**
+     * Determine if we are creating a new resource via a parent relation
+     */
+    creatingViaRelatedResource: function creatingViaRelatedResource() {
+      return Boolean(this.viaResource && this.viaResourceId);
+    },
+
+
+    /**
+     * Determine if we should select an initial resource when mounting this field
+     */
+    shouldSelectInitialResource: function shouldSelectInitialResource() {
+      return Boolean(this.editingExistingResource || this.creatingViaRelatedResource);
+    },
+
+
+    /**
+     * Determine if the related resources is searchable
+     */
+    isSearchable: function isSearchable() {
+      return Boolean(this.field.searchable);
+    },
+    shouldLoadFirstResource: function shouldLoadFirstResource() {
+      return this.isSearchable && this.shouldSelectInitialResource && this.initializingWithExistingResource;
+    },
+
+
+    /**
+     * Get the query params for getting available resources
+     */
+    queryParams: function queryParams() {
+      return {
+        params: {
+          type: this.resourceType,
+          current: this.selectedResourceId,
+          first: this.shouldLoadFirstResource,
+          search: this.search,
+          withTrashed: this.withTrashed,
+          viaResource: this.viaResource,
+          viaResourceId: this.viaResourceId,
+          viaRelationship: this.viaRelationship
+        }
+      };
+    },
+
+
+    /**
+     * Determine if the field is locked
+     */
+    isLocked: function isLocked() {
+      return Boolean(this.viaResource && this.field.reverse);
+    },
+
+
+    /**
+     * Return the morphable type label for the field
+     */
+    fieldName: function fieldName() {
+      return this.field.name;
+    },
+
+
+    /**
+     * Return the selected morphable type's label
+     */
+    fieldTypeName: function fieldTypeName() {
+      var _this5 = this;
+
+      if (this.resourceType) {
+        return _lodash2.default.find(this.field.morphToTypes, function (type) {
+          return type.value == _this5.resourceType;
+        }).singularLabel;
+      }
+
+      return '';
+    },
+
+
+    /**
+     * Determine if the field is set to readonly.
+     */
+    isReadonly: function isReadonly() {
+      return this.field.readonly || _lodash2.default.get(this.field, 'extraAttributes.readonly');
+    },
+
+
+    /**
+     * Determine whether there are any morph to types.
+     */
+    hasMorphToTypes: function hasMorphToTypes() {
+      return this.field.morphToTypes.length > 0;
+    }
+  }
 }; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -5757,7 +5741,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -5786,54 +5770,54 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    name: 'FormPanel',
+  name: 'FormPanel',
 
-    props: {
-        panel: {
-            type: Object,
-            required: true
-        },
+  props: {
+    panel: {
+      type: Object,
+      required: true
+    },
 
-        name: {
-            default: 'Panel'
-        },
+    name: {
+      default: 'Panel'
+    },
 
-        mode: {
-            type: String,
-            default: 'form'
-        },
+    mode: {
+      type: String,
+      default: 'form'
+    },
 
-        fields: {
-            type: Array,
-            default: []
-        },
+    fields: {
+      type: Array,
+      default: []
+    },
 
-        validationErrors: {
-            type: Object,
-            required: true
-        },
+    validationErrors: {
+      type: Object,
+      required: true
+    },
 
-        resourceName: {
-            type: String,
-            required: true
-        },
+    resourceName: {
+      type: String,
+      required: true
+    },
 
-        resourceId: {
-            type: [Number, String]
-        },
+    resourceId: {
+      type: [Number, String]
+    },
 
-        viaResource: {
-            type: String
-        },
+    viaResource: {
+      type: String
+    },
 
-        viaResourceId: {
-            type: [Number, String]
-        },
+    viaResourceId: {
+      type: [Number, String]
+    },
 
-        viaRelationship: {
-            type: String
-        }
+    viaRelationship: {
+      type: String
     }
+  }
 };
 
 /***/ }),
@@ -5845,13 +5829,13 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField]
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField]
 }; //
 //
 //
@@ -5880,375 +5864,375 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    var _this = this;
+
+    this.setInitialValue();
+
+    this.field.fill = this.fill;
+
+    Nova.$on(this.field.attribute + '-value', function (value) {
+      _this.value = value;
+    });
+
+    this.initializePlaces();
+  },
+
+
+  methods: {
+    /**
+     * Initialize Algolia places library.
+     */
+    initializePlaces: function initializePlaces() {
+      var _this2 = this;
+
+      var places = __webpack_require__("./node_modules/places.js/index.js");
+
+      var placeType = this.field.placeType;
+
+      var config = {
+        appId: Nova.config.algoliaAppId,
+        apiKey: Nova.config.algoliaApiKey,
+        container: document.querySelector('#' + this.field.attribute),
+        type: this.field.placeType ? this.field.placeType : 'address',
+        templates: {
+          value: function value(suggestion) {
+            return suggestion.name;
+          }
+        }
+      };
+
+      if (this.field.countries) {
+        config.countries = this.field.countries;
+      }
+
+      var placesAutocomplete = places(config);
+
+      placesAutocomplete.on('change', function (e) {
+        _this2.$nextTick(function () {
+          _this2.value = e.suggestion.name;
+
+          Nova.$emit(_this2.field.secondAddressLine + '-value', '');
+          Nova.$emit(_this2.field.city + '-value', e.suggestion.city);
+
+          Nova.$emit(_this2.field.state + '-value', _this2.parseState(e.suggestion.administrative, e.suggestion.countryCode));
+
+          Nova.$emit(_this2.field.postalCode + '-value', e.suggestion.postcode);
+          Nova.$emit(_this2.field.suburb + '-value', e.suggestion.suburb);
+
+          Nova.$emit(_this2.field.country + '-value', e.suggestion.countryCode.toUpperCase());
+
+          Nova.$emit(_this2.field.latitude + '-value', e.suggestion.latlng.lat);
+          Nova.$emit(_this2.field.longitude + '-value', e.suggestion.latlng.lng);
+        });
+      });
+
+      placesAutocomplete.on('clear', function () {
+        _this2.$nextTick(function () {
+          _this2.value = '';
+
+          Nova.$emit(_this2.field.secondAddressLine + '-value', '');
+          Nova.$emit(_this2.field.city + '-value', '');
+          Nova.$emit(_this2.field.state + '-value', '');
+          Nova.$emit(_this2.field.postalCode + '-value', '');
+          Nova.$emit(_this2.field.suburb + '-value', '');
+          Nova.$emit(_this2.field.country + '-value', '');
+          Nova.$emit(_this2.field.latitude + '-value', '');
+          Nova.$emit(_this2.field.longitude + '-value', '');
+        });
+      });
+    },
+
 
     /**
-     * Mount the component.
+     * Parse the selected state into an abbreviation if possible.
      */
-    mounted: function mounted() {
-        var _this = this;
+    parseState: function parseState(state, countryCode) {
+      if (countryCode != 'us') {
+        return state;
+      }
 
-        this.setInitialValue();
-
-        this.field.fill = this.fill;
-
-        Nova.$on(this.field.attribute + '-value', function (value) {
-            _this.value = value;
-        });
-
-        this.initializePlaces();
-    },
-
-
-    methods: {
-        /**
-         * Initialize Algolia places library.
-         */
-        initializePlaces: function initializePlaces() {
-            var _this2 = this;
-
-            var places = __webpack_require__("./node_modules/places.js/index.js");
-
-            var placeType = this.field.placeType;
-
-            var config = {
-                appId: Nova.config.algoliaAppId,
-                apiKey: Nova.config.algoliaApiKey,
-                container: document.querySelector('#' + this.field.attribute),
-                type: this.field.placeType ? this.field.placeType : 'address',
-                templates: {
-                    value: function value(suggestion) {
-                        return suggestion.name;
-                    }
-                }
-            };
-
-            if (this.field.countries) {
-                config.countries = this.field.countries;
-            }
-
-            var placesAutocomplete = places(config);
-
-            placesAutocomplete.on('change', function (e) {
-                _this2.$nextTick(function () {
-                    _this2.value = e.suggestion.name;
-
-                    Nova.$emit(_this2.field.secondAddressLine + '-value', '');
-                    Nova.$emit(_this2.field.city + '-value', e.suggestion.city);
-
-                    Nova.$emit(_this2.field.state + '-value', _this2.parseState(e.suggestion.administrative, e.suggestion.countryCode));
-
-                    Nova.$emit(_this2.field.postalCode + '-value', e.suggestion.postcode);
-                    Nova.$emit(_this2.field.suburb + '-value', e.suggestion.suburb);
-
-                    Nova.$emit(_this2.field.country + '-value', e.suggestion.countryCode.toUpperCase());
-
-                    Nova.$emit(_this2.field.latitude + '-value', e.suggestion.latlng.lat);
-                    Nova.$emit(_this2.field.longitude + '-value', e.suggestion.latlng.lng);
-                });
-            });
-
-            placesAutocomplete.on('clear', function () {
-                _this2.$nextTick(function () {
-                    _this2.value = '';
-
-                    Nova.$emit(_this2.field.secondAddressLine + '-value', '');
-                    Nova.$emit(_this2.field.city + '-value', '');
-                    Nova.$emit(_this2.field.state + '-value', '');
-                    Nova.$emit(_this2.field.postalCode + '-value', '');
-                    Nova.$emit(_this2.field.suburb + '-value', '');
-                    Nova.$emit(_this2.field.country + '-value', '');
-                    Nova.$emit(_this2.field.latitude + '-value', '');
-                    Nova.$emit(_this2.field.longitude + '-value', '');
-                });
-            });
-        },
-
-
-        /**
-         * Parse the selected state into an abbreviation if possible.
-         */
-        parseState: function parseState(state, countryCode) {
-            if (countryCode != 'us') {
-                return state;
-            }
-
-            return _.find(this.states, function (s) {
-                return s.name == state;
-            }).abbr;
-        }
-    },
-
-    computed: {
-        /**
-         * Get the list of United States.
-         */
-        states: function states() {
-            return {
-                AL: {
-                    count: '0',
-                    name: 'Alabama',
-                    abbr: 'AL'
-                },
-                AK: {
-                    count: '1',
-                    name: 'Alaska',
-                    abbr: 'AK'
-                },
-                AZ: {
-                    count: '2',
-                    name: 'Arizona',
-                    abbr: 'AZ'
-                },
-                AR: {
-                    count: '3',
-                    name: 'Arkansas',
-                    abbr: 'AR'
-                },
-                CA: {
-                    count: '4',
-                    name: 'California',
-                    abbr: 'CA'
-                },
-                CO: {
-                    count: '5',
-                    name: 'Colorado',
-                    abbr: 'CO'
-                },
-                CT: {
-                    count: '6',
-                    name: 'Connecticut',
-                    abbr: 'CT'
-                },
-                DE: {
-                    count: '7',
-                    name: 'Delaware',
-                    abbr: 'DE'
-                },
-                DC: {
-                    count: '8',
-                    name: 'District Of Columbia',
-                    abbr: 'DC'
-                },
-                FL: {
-                    count: '9',
-                    name: 'Florida',
-                    abbr: 'FL'
-                },
-                GA: {
-                    count: '10',
-                    name: 'Georgia',
-                    abbr: 'GA'
-                },
-                HI: {
-                    count: '11',
-                    name: 'Hawaii',
-                    abbr: 'HI'
-                },
-                ID: {
-                    count: '12',
-                    name: 'Idaho',
-                    abbr: 'ID'
-                },
-                IL: {
-                    count: '13',
-                    name: 'Illinois',
-                    abbr: 'IL'
-                },
-                IN: {
-                    count: '14',
-                    name: 'Indiana',
-                    abbr: 'IN'
-                },
-                IA: {
-                    count: '15',
-                    name: 'Iowa',
-                    abbr: 'IA'
-                },
-                KS: {
-                    count: '16',
-                    name: 'Kansas',
-                    abbr: 'KS'
-                },
-                KY: {
-                    count: '17',
-                    name: 'Kentucky',
-                    abbr: 'KY'
-                },
-                LA: {
-                    count: '18',
-                    name: 'Louisiana',
-                    abbr: 'LA'
-                },
-                ME: {
-                    count: '19',
-                    name: 'Maine',
-                    abbr: 'ME'
-                },
-                MD: {
-                    count: '20',
-                    name: 'Maryland',
-                    abbr: 'MD'
-                },
-                MA: {
-                    count: '21',
-                    name: 'Massachusetts',
-                    abbr: 'MA'
-                },
-                MI: {
-                    count: '22',
-                    name: 'Michigan',
-                    abbr: 'MI'
-                },
-                MN: {
-                    count: '23',
-                    name: 'Minnesota',
-                    abbr: 'MN'
-                },
-                MS: {
-                    count: '24',
-                    name: 'Mississippi',
-                    abbr: 'MS'
-                },
-                MO: {
-                    count: '25',
-                    name: 'Missouri',
-                    abbr: 'MO'
-                },
-                MT: {
-                    count: '26',
-                    name: 'Montana',
-                    abbr: 'MT'
-                },
-                NE: {
-                    count: '27',
-                    name: 'Nebraska',
-                    abbr: 'NE'
-                },
-                NV: {
-                    count: '28',
-                    name: 'Nevada',
-                    abbr: 'NV'
-                },
-                NH: {
-                    count: '29',
-                    name: 'New Hampshire',
-                    abbr: 'NH'
-                },
-                NJ: {
-                    count: '30',
-                    name: 'New Jersey',
-                    abbr: 'NJ'
-                },
-                NM: {
-                    count: '31',
-                    name: 'New Mexico',
-                    abbr: 'NM'
-                },
-                NY: {
-                    count: '32',
-                    name: 'New York',
-                    abbr: 'NY'
-                },
-                NC: {
-                    count: '33',
-                    name: 'North Carolina',
-                    abbr: 'NC'
-                },
-                ND: {
-                    count: '34',
-                    name: 'North Dakota',
-                    abbr: 'ND'
-                },
-                OH: {
-                    count: '35',
-                    name: 'Ohio',
-                    abbr: 'OH'
-                },
-                OK: {
-                    count: '36',
-                    name: 'Oklahoma',
-                    abbr: 'OK'
-                },
-                OR: {
-                    count: '37',
-                    name: 'Oregon',
-                    abbr: 'OR'
-                },
-                PA: {
-                    count: '38',
-                    name: 'Pennsylvania',
-                    abbr: 'PA'
-                },
-                RI: {
-                    count: '39',
-                    name: 'Rhode Island',
-                    abbr: 'RI'
-                },
-                SC: {
-                    count: '40',
-                    name: 'South Carolina',
-                    abbr: 'SC'
-                },
-                SD: {
-                    count: '41',
-                    name: 'South Dakota',
-                    abbr: 'SD'
-                },
-                TN: {
-                    count: '42',
-                    name: 'Tennessee',
-                    abbr: 'TN'
-                },
-                TX: {
-                    count: '43',
-                    name: 'Texas',
-                    abbr: 'TX'
-                },
-                UT: {
-                    count: '44',
-                    name: 'Utah',
-                    abbr: 'UT'
-                },
-                VT: {
-                    count: '45',
-                    name: 'Vermont',
-                    abbr: 'VT'
-                },
-                VA: {
-                    count: '46',
-                    name: 'Virginia',
-                    abbr: 'VA'
-                },
-                WA: {
-                    count: '47',
-                    name: 'Washington',
-                    abbr: 'WA'
-                },
-                WV: {
-                    count: '48',
-                    name: 'West Virginia',
-                    abbr: 'WV'
-                },
-                WI: {
-                    count: '49',
-                    name: 'Wisconsin',
-                    abbr: 'WI'
-                },
-                WY: {
-                    count: '50',
-                    name: 'Wyoming',
-                    abbr: 'WY'
-                }
-            };
-        }
+      return _.find(this.states, function (s) {
+        return s.name == state;
+      }).abbr;
     }
+  },
+
+  computed: {
+    /**
+     * Get the list of United States.
+     */
+    states: function states() {
+      return {
+        AL: {
+          count: '0',
+          name: 'Alabama',
+          abbr: 'AL'
+        },
+        AK: {
+          count: '1',
+          name: 'Alaska',
+          abbr: 'AK'
+        },
+        AZ: {
+          count: '2',
+          name: 'Arizona',
+          abbr: 'AZ'
+        },
+        AR: {
+          count: '3',
+          name: 'Arkansas',
+          abbr: 'AR'
+        },
+        CA: {
+          count: '4',
+          name: 'California',
+          abbr: 'CA'
+        },
+        CO: {
+          count: '5',
+          name: 'Colorado',
+          abbr: 'CO'
+        },
+        CT: {
+          count: '6',
+          name: 'Connecticut',
+          abbr: 'CT'
+        },
+        DE: {
+          count: '7',
+          name: 'Delaware',
+          abbr: 'DE'
+        },
+        DC: {
+          count: '8',
+          name: 'District Of Columbia',
+          abbr: 'DC'
+        },
+        FL: {
+          count: '9',
+          name: 'Florida',
+          abbr: 'FL'
+        },
+        GA: {
+          count: '10',
+          name: 'Georgia',
+          abbr: 'GA'
+        },
+        HI: {
+          count: '11',
+          name: 'Hawaii',
+          abbr: 'HI'
+        },
+        ID: {
+          count: '12',
+          name: 'Idaho',
+          abbr: 'ID'
+        },
+        IL: {
+          count: '13',
+          name: 'Illinois',
+          abbr: 'IL'
+        },
+        IN: {
+          count: '14',
+          name: 'Indiana',
+          abbr: 'IN'
+        },
+        IA: {
+          count: '15',
+          name: 'Iowa',
+          abbr: 'IA'
+        },
+        KS: {
+          count: '16',
+          name: 'Kansas',
+          abbr: 'KS'
+        },
+        KY: {
+          count: '17',
+          name: 'Kentucky',
+          abbr: 'KY'
+        },
+        LA: {
+          count: '18',
+          name: 'Louisiana',
+          abbr: 'LA'
+        },
+        ME: {
+          count: '19',
+          name: 'Maine',
+          abbr: 'ME'
+        },
+        MD: {
+          count: '20',
+          name: 'Maryland',
+          abbr: 'MD'
+        },
+        MA: {
+          count: '21',
+          name: 'Massachusetts',
+          abbr: 'MA'
+        },
+        MI: {
+          count: '22',
+          name: 'Michigan',
+          abbr: 'MI'
+        },
+        MN: {
+          count: '23',
+          name: 'Minnesota',
+          abbr: 'MN'
+        },
+        MS: {
+          count: '24',
+          name: 'Mississippi',
+          abbr: 'MS'
+        },
+        MO: {
+          count: '25',
+          name: 'Missouri',
+          abbr: 'MO'
+        },
+        MT: {
+          count: '26',
+          name: 'Montana',
+          abbr: 'MT'
+        },
+        NE: {
+          count: '27',
+          name: 'Nebraska',
+          abbr: 'NE'
+        },
+        NV: {
+          count: '28',
+          name: 'Nevada',
+          abbr: 'NV'
+        },
+        NH: {
+          count: '29',
+          name: 'New Hampshire',
+          abbr: 'NH'
+        },
+        NJ: {
+          count: '30',
+          name: 'New Jersey',
+          abbr: 'NJ'
+        },
+        NM: {
+          count: '31',
+          name: 'New Mexico',
+          abbr: 'NM'
+        },
+        NY: {
+          count: '32',
+          name: 'New York',
+          abbr: 'NY'
+        },
+        NC: {
+          count: '33',
+          name: 'North Carolina',
+          abbr: 'NC'
+        },
+        ND: {
+          count: '34',
+          name: 'North Dakota',
+          abbr: 'ND'
+        },
+        OH: {
+          count: '35',
+          name: 'Ohio',
+          abbr: 'OH'
+        },
+        OK: {
+          count: '36',
+          name: 'Oklahoma',
+          abbr: 'OK'
+        },
+        OR: {
+          count: '37',
+          name: 'Oregon',
+          abbr: 'OR'
+        },
+        PA: {
+          count: '38',
+          name: 'Pennsylvania',
+          abbr: 'PA'
+        },
+        RI: {
+          count: '39',
+          name: 'Rhode Island',
+          abbr: 'RI'
+        },
+        SC: {
+          count: '40',
+          name: 'South Carolina',
+          abbr: 'SC'
+        },
+        SD: {
+          count: '41',
+          name: 'South Dakota',
+          abbr: 'SD'
+        },
+        TN: {
+          count: '42',
+          name: 'Tennessee',
+          abbr: 'TN'
+        },
+        TX: {
+          count: '43',
+          name: 'Texas',
+          abbr: 'TX'
+        },
+        UT: {
+          count: '44',
+          name: 'Utah',
+          abbr: 'UT'
+        },
+        VT: {
+          count: '45',
+          name: 'Vermont',
+          abbr: 'VT'
+        },
+        VA: {
+          count: '46',
+          name: 'Virginia',
+          abbr: 'VA'
+        },
+        WA: {
+          count: '47',
+          name: 'Washington',
+          abbr: 'WA'
+        },
+        WV: {
+          count: '48',
+          name: 'West Virginia',
+          abbr: 'WV'
+        },
+        WI: {
+          count: '49',
+          name: 'Wisconsin',
+          abbr: 'WI'
+        },
+        WY: {
+          count: '50',
+          name: 'Wyoming',
+          abbr: 'WY'
+        }
+      };
+    }
+  }
 }; //
 //
 //
@@ -6276,35 +6260,35 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    methods: {
-        /**
-         * Provide a function that fills a passed FormData object with the
-         * field's internal value attribute. Here we are forcing there to be a
-         * value sent to the server instead of the default behavior of
-         * `this.value || ''` to avoid loose-comparison issues if the keys
-         * are truthy or falsey
-         */
-        fill: function fill(formData) {
-            formData.append(this.field.attribute, this.value);
-        }
-    },
-
-    computed: {
-        /**
-         * Return the placeholder text for the field.
-         */
-        placeholder: function placeholder() {
-            return this.field.placeholder || this.__('Choose an option');
-        }
+  methods: {
+    /**
+     * Provide a function that fills a passed FormData object with the
+     * field's internal value attribute. Here we are forcing there to be a
+     * value sent to the server instead of the default behavior of
+     * `this.value || ''` to avoid loose-comparison issues if the keys
+     * are truthy or falsey
+     */
+    fill: function fill(formData) {
+      formData.append(this.field.attribute, this.value);
     }
+  },
+
+  computed: {
+    /**
+     * Return the placeholder text for the field.
+     */
+    placeholder: function placeholder() {
+      return this.field.placeholder || this.__('Choose an option');
+    }
+  }
 }; //
 //
 //
@@ -6335,28 +6319,28 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    computed: {
-        inputType: function inputType() {
-            return this.field.type || 'text';
-        },
-        inputStep: function inputStep() {
-            return this.field.step;
-        },
-        inputMin: function inputMin() {
-            return this.field.min;
-        },
-        inputMax: function inputMax() {
-            return this.field.max;
-        }
+  computed: {
+    inputType: function inputType() {
+      return this.field.type || 'text';
+    },
+    inputStep: function inputStep() {
+      return this.field.step;
+    },
+    inputMin: function inputMin() {
+      return this.field.min;
+    },
+    inputMax: function inputMax() {
+      return this.field.max;
     }
+  }
 }; //
 //
 //
@@ -6385,7 +6369,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
@@ -6397,26 +6381,26 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
 
-    computed: {
-        defaultAttributes: function defaultAttributes() {
-            return {
-                type: this.field.type || 'text',
-                min: this.field.min,
-                max: this.field.max,
-                step: this.field.step,
-                pattern: this.field.pattern,
-                placeholder: this.field.placeholder || this.field.name,
-                class: this.errorClasses
-            };
-        },
-        extraAttributes: function extraAttributes() {
-            var attrs = this.field.extraAttributes;
+  computed: {
+    defaultAttributes: function defaultAttributes() {
+      return {
+        type: this.field.type || 'text',
+        min: this.field.min,
+        max: this.field.max,
+        step: this.field.step,
+        pattern: this.field.pattern,
+        placeholder: this.field.placeholder || this.field.name,
+        class: this.errorClasses
+      };
+    },
+    extraAttributes: function extraAttributes() {
+      var attrs = this.field.extraAttributes;
 
-            return (0, _extends3.default)({}, this.defaultAttributes, attrs);
-        }
+      return (0, _extends3.default)({}, this.defaultAttributes, attrs);
     }
+  }
 }; //
 //
 //
@@ -6442,7 +6426,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
@@ -6454,30 +6438,30 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.FormField, _laravelNova.HandlesValidationErrors],
+  mixins: [_laravelNova.FormField, _laravelNova.HandlesValidationErrors],
 
-    props: {
-        resourceName: { type: String },
-        field: {
-            type: Object,
-            required: true
-        }
-    },
-
-    computed: {
-        defaultAttributes: function defaultAttributes() {
-            return {
-                rows: this.field.rows,
-                class: this.errorClasses,
-                placeholder: this.field.name
-            };
-        },
-        extraAttributes: function extraAttributes() {
-            var attrs = this.field.extraAttributes;
-
-            return (0, _extends3.default)({}, this.defaultAttributes, attrs);
-        }
+  props: {
+    resourceName: { type: String },
+    field: {
+      type: Object,
+      required: true
     }
+  },
+
+  computed: {
+    defaultAttributes: function defaultAttributes() {
+      return {
+        rows: this.field.rows,
+        class: this.errorClasses,
+        placeholder: this.field.name
+      };
+    },
+    extraAttributes: function extraAttributes() {
+      var attrs = this.field.extraAttributes;
+
+      return (0, _extends3.default)({}, this.defaultAttributes, attrs);
+    }
+  }
 }; //
 //
 //
@@ -6502,7 +6486,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
@@ -6540,106 +6524,106 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-    mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
-    components: { Trix: _Trix2.default },
+  mixins: [_laravelNova.HandlesValidationErrors, _laravelNova.FormField],
+  components: { Trix: _Trix2.default },
 
-    data: function data() {
-        return { draftId: uuidv4() };
+  data: function data() {
+    return { draftId: uuidv4() };
+  },
+
+  beforeDestroy: function beforeDestroy() {
+    this.cleanUp();
+  },
+
+
+  methods: {
+    fill: function fill(formData) {
+      formData.append(this.field.attribute, this.value || '');
+      formData.append(this.field.attribute + 'DraftId', this.draftId);
     },
 
-    beforeDestroy: function beforeDestroy() {
-        this.cleanUp();
+
+    /**
+     * Initiate an attachement upload
+     */
+    handleFileAdd: function handleFileAdd(_ref) {
+      var attachment = _ref.attachment;
+
+      if (attachment.file) {
+        this.uploadAttachment(attachment);
+      }
     },
 
 
-    methods: {
-        fill: function fill(formData) {
-            formData.append(this.field.attribute, this.value || '');
-            formData.append(this.field.attribute + 'DraftId', this.draftId);
-        },
+    /**
+     * Upload an attachment
+     */
+    uploadAttachment: function uploadAttachment(attachment) {
+      var data = new FormData();
+      data.append('Content-Type', attachment.file.type);
+      data.append('attachment', attachment.file);
+      data.append('draftId', this.draftId);
 
-
-        /**
-         * Initiate an attachement upload
-         */
-        handleFileAdd: function handleFileAdd(_ref) {
-            var attachment = _ref.attachment;
-
-            if (attachment.file) {
-                this.uploadAttachment(attachment);
-            }
-        },
-
-
-        /**
-         * Upload an attachment
-         */
-        uploadAttachment: function uploadAttachment(attachment) {
-            var data = new FormData();
-            data.append('Content-Type', attachment.file.type);
-            data.append('attachment', attachment.file);
-            data.append('draftId', this.draftId);
-
-            Nova.request().post('/nova-api/' + this.resourceName + '/trix-attachment/' + this.field.attribute, data, {
-                onUploadProgress: function onUploadProgress(progressEvent) {
-                    attachment.setUploadProgress(Math.round(progressEvent.loaded * 100 / progressEvent.total));
-                }
-            }).then(function (_ref2) {
-                var url = _ref2.data.url;
-
-                return attachment.setAttributes({
-                    url: url,
-                    href: url
-                });
-            });
-        },
-
-
-        /**
-         * Remove an attachment from the server
-         */
-        handleFileRemove: function handleFileRemove(_ref3) {
-            var attachment = _ref3.attachment.attachment;
-
-            Nova.request().delete('/nova-api/' + this.resourceName + '/trix-attachment/' + this.field.attribute, {
-                params: {
-                    attachmentUrl: attachment.attributes.values.url
-                }
-            }).then(function (response) {}).catch(function (error) {});
-        },
-
-
-        /**
-         * Purge pending attachments for the draft
-         */
-        cleanUp: function cleanUp() {
-            if (this.field.withFiles) {
-                Nova.request().delete('/nova-api/' + this.resourceName + '/trix-attachment/' + this.field.attribute + '/' + this.draftId).then(function (response) {
-                    return console.log(response);
-                }).catch(function (error) {});
-            }
+      Nova.request().post('/nova-api/' + this.resourceName + '/trix-attachment/' + this.field.attribute, data, {
+        onUploadProgress: function onUploadProgress(progressEvent) {
+          attachment.setUploadProgress(Math.round(progressEvent.loaded * 100 / progressEvent.total));
         }
+      }).then(function (_ref2) {
+        var url = _ref2.data.url;
+
+        return attachment.setAttributes({
+          url: url,
+          href: url
+        });
+      });
     },
 
-    computed: {
-        defaultAttributes: function defaultAttributes() {
-            return {
-                placeholder: this.field.placeholder || this.field.name
-            };
-        },
-        extraAttributes: function extraAttributes() {
-            var attrs = this.field.extraAttributes;
 
-            return (0, _extends3.default)({}, this.defaultAttributes, attrs);
+    /**
+     * Remove an attachment from the server
+     */
+    handleFileRemove: function handleFileRemove(_ref3) {
+      var attachment = _ref3.attachment.attachment;
+
+      Nova.request().delete('/nova-api/' + this.resourceName + '/trix-attachment/' + this.field.attribute, {
+        params: {
+          attachmentUrl: attachment.attributes.values.url
         }
+      }).then(function (response) {}).catch(function (error) {});
+    },
+
+
+    /**
+     * Purge pending attachments for the draft
+     */
+    cleanUp: function cleanUp() {
+      if (this.field.withFiles) {
+        Nova.request().delete('/nova-api/' + this.resourceName + '/trix-attachment/' + this.field.attribute + '/' + this.draftId).then(function (response) {
+          return console.log(response);
+        }).catch(function (error) {});
+      }
     }
+  },
+
+  computed: {
+    defaultAttributes: function defaultAttributes() {
+      return {
+        placeholder: this.field.placeholder || this.field.name
+      };
+    },
+    extraAttributes: function extraAttributes() {
+      var attrs = this.field.extraAttributes;
+
+      return (0, _extends3.default)({}, this.defaultAttributes, attrs);
+    }
+  }
 };
 
 
 function uuidv4() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
-        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-    });
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
+    return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+  });
 }
 
 /***/ }),
@@ -6651,7 +6635,7 @@ function uuidv4() {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
@@ -6765,256 +6749,240 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
-    mixins: [_vueClickaway.mixin],
+  mixins: [_vueClickaway.mixin],
 
-    data: function data() {
-        return {
-            loading: false,
-            currentlySearching: false,
-            searchTerm: '',
-            results: [],
-            highlightedResultIndex: 0
-        };
-    },
+  data: function data() {
+    return {
+      loading: false,
+      currentlySearching: false,
+      searchTerm: '',
+      results: [],
+      highlightedResultIndex: 0
+    };
+  },
 
-    watch: {
-        $route: function $route() {
-            this.closeSearch();
-        }
-    },
-
-    mounted: function mounted() {
-        // Open search menu if the user types '/'
-        document.addEventListener('keydown', this.handleKeydown);
-    },
-    destroyed: function destroyed() {
-        document.removeEventListener('keydown', this.handleKeydown);
-    },
-
-
-    methods: {
-        isNotInputElement: function isNotInputElement(event) {
-            var tagName = event.target.tagName;
-            return Boolean(tagName !== 'INPUT' && tagName !== 'TEXTAREA');
-        },
-        handleKeydown: function handleKeydown(event) {
-            if (this.isNotInputElement(event) && event.keyCode == 191) {
-                event.preventDefault();
-                event.stopPropagation();
-                this.openSearch();
-            }
-        },
-        openSearch: function openSearch() {
-            this.clearSearch();
-            this.$refs.input.focus();
-            this.currentlySearching = true;
-            this.clearResults();
-        },
-        closeSearch: function closeSearch() {
-            this.clearSearch();
-            this.clearResults();
-            this.$refs.input.blur();
-            this.currentlySearching = false;
-            this.loading = false;
-        },
-        clearSearch: function clearSearch() {
-            this.searchTerm = '';
-        },
-        clearResults: function clearResults() {
-            this.results = [];
-        },
-        search: function search(event) {
-            var _this = this;
-
-            this.highlightedResultIndex = 0;
-            this.loading = true;
-
-            if (this.searchTerm == '') {
-                this.loading = false;
-                this.results = [];
-            } else {
-                this.debouncer(function () {
-                    _this.fetchResults(event.target.value);
-                }, 500);
-            }
-        },
-        fetchResults: function () {
-            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(search) {
-                var _ref2, results;
-
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                this.results = [];
-
-                                if (!(search !== '')) {
-                                    _context.next = 15;
-                                    break;
-                                }
-
-                                _context.prev = 2;
-                                _context.next = 5;
-                                return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/search', {
-                                    params: { search: search }
-                                }));
-
-                            case 5:
-                                _ref2 = _context.sent;
-                                results = _ref2.data;
-
-
-                                this.results = results;
-
-                                this.loading = false;
-                                _context.next = 15;
-                                break;
-
-                            case 11:
-                                _context.prev = 11;
-                                _context.t0 = _context['catch'](2);
-
-                                this.loading = false;
-                                throw _context.t0;
-
-                            case 15:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this, [[2, 11]]);
-            }));
-
-            function fetchResults(_x) {
-                return _ref.apply(this, arguments);
-            }
-
-            return fetchResults;
-        }(),
-
-
-        /**
-         * Debounce function for the search handler
-         */
-        debouncer: _.debounce(function (callback) {
-            return callback();
-        }, 500),
-
-        /**
-         * Move the highlighted results
-         */
-        move: function move(offset) {
-            if (this.results.length) {
-                var newIndex = this.highlightedResultIndex + offset;
-
-                if (newIndex < 0) {
-                    this.highlightedResultIndex = this.results.length - 1;
-                    this.updateScrollPosition();
-                } else if (newIndex > this.results.length - 1) {
-                    this.highlightedResultIndex = 0;
-                    this.updateScrollPosition();
-                } else if (newIndex >= 0 && newIndex < this.results.length) {
-                    this.highlightedResultIndex = newIndex;
-                    this.updateScrollPosition();
-                }
-            }
-        },
-        updateScrollPosition: function updateScrollPosition() {
-            var selection = this.$refs.selected;
-            var container = this.$refs.container;
-
-            this.$nextTick(function () {
-                if (selection) {
-                    if (selection[0].offsetTop > container.scrollTop + container.clientHeight - selection[0].clientHeight) {
-                        container.scrollTop = selection[0].offsetTop + selection[0].clientHeight - container.clientHeight;
-                    }
-                    if (selection[0].offsetTop < container.scrollTop) {
-                        container.scrollTop = selection[0].offsetTop;
-                    }
-                }
-            });
-        },
-        navigate: function navigate(index) {
-            this.highlightedResultIndex = index;
-            this.goToCurrentlySelectedResource();
-        },
-        goToCurrentlySelectedResource: function goToCurrentlySelectedResource() {
-            var _this2 = this;
-
-            var resource = _.find(this.indexedResults, function (res) {
-                return res.index == _this2.highlightedResultIndex;
-            });
-
-            this.$router.push({
-                name: 'detail',
-                params: {
-                    resourceName: resource.resourceName,
-                    resourceId: resource.resourceId
-                }
-            });
-
-            this.closeSearch();
-        }
-    },
-
-    computed: {
-        hasResults: function hasResults() {
-            return this.results.length > 0;
-        },
-        hasSearchTerm: function hasSearchTerm() {
-            return this.searchTerm !== '';
-        },
-        shouldShowNoResults: function shouldShowNoResults() {
-            return this.currentlySearching && !this.loading && !this.hasResults && this.hasSearchTerm;
-        },
-        shouldShowResults: function shouldShowResults() {
-            return this.currentlySearching && this.hasResults && !this.loading;
-        },
-        indexedResults: function indexedResults() {
-            return _.map(this.results, function (item, index) {
-                return (0, _extends3.default)({ index: index }, item);
-            });
-        },
-        formattedGroups: function formattedGroups() {
-            return _.chain(this.indexedResults).map(function (item) {
-                return {
-                    resourceName: item.resourceName,
-                    resourceTitle: item.resourceTitle
-                };
-            }).uniqBy('resourceName').value();
-        },
-        formattedResults: function formattedResults() {
-            var _this3 = this;
-
-            return _.map(this.formattedGroups, function (group) {
-                return {
-                    resourceName: group.resourceName,
-                    resourceTitle: group.resourceTitle,
-                    items: _.filter(_this3.indexedResults, function (item) {
-                        return item.resourceName == group.resourceName;
-                    })
-                };
-            });
-        }
+  watch: {
+    $route: function $route() {
+      this.closeSearch();
     }
+  },
+
+  mounted: function mounted() {
+    // Open search menu if the user types '/'
+    document.addEventListener('keydown', this.handleKeydown);
+  },
+  destroyed: function destroyed() {
+    document.removeEventListener('keydown', this.handleKeydown);
+  },
+
+
+  methods: {
+    isNotInputElement: function isNotInputElement(event) {
+      var tagName = event.target.tagName;
+      return Boolean(tagName !== 'INPUT' && tagName !== 'TEXTAREA');
+    },
+    handleKeydown: function handleKeydown(event) {
+      if (this.isNotInputElement(event) && event.keyCode == 191) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.openSearch();
+      }
+    },
+    openSearch: function openSearch() {
+      this.clearSearch();
+      this.$refs.input.focus();
+      this.currentlySearching = true;
+      this.clearResults();
+    },
+    closeSearch: function closeSearch() {
+      this.clearSearch();
+      this.clearResults();
+      this.$refs.input.blur();
+      this.currentlySearching = false;
+      this.loading = false;
+    },
+    clearSearch: function clearSearch() {
+      this.searchTerm = '';
+    },
+    clearResults: function clearResults() {
+      this.results = [];
+    },
+    search: function search(event) {
+      var _this = this;
+
+      this.highlightedResultIndex = 0;
+      this.loading = true;
+
+      if (this.searchTerm == '') {
+        this.loading = false;
+        this.results = [];
+      } else {
+        this.debouncer(function () {
+          _this.fetchResults(event.target.value);
+        }, 500);
+      }
+    },
+    fetchResults: function () {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(search) {
+        var _ref2, results;
+
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.results = [];
+
+                if (!(search !== '')) {
+                  _context.next = 15;
+                  break;
+                }
+
+                _context.prev = 2;
+                _context.next = 5;
+                return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/search', {
+                  params: { search: search }
+                }));
+
+              case 5:
+                _ref2 = _context.sent;
+                results = _ref2.data;
+
+
+                this.results = results;
+
+                this.loading = false;
+                _context.next = 15;
+                break;
+
+              case 11:
+                _context.prev = 11;
+                _context.t0 = _context['catch'](2);
+
+                this.loading = false;
+                throw _context.t0;
+
+              case 15:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[2, 11]]);
+      }));
+
+      function fetchResults(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return fetchResults;
+    }(),
+
+
+    /**
+     * Debounce function for the search handler
+     */
+    debouncer: _.debounce(function (callback) {
+      return callback();
+    }, 500),
+
+    /**
+     * Move the highlighted results
+     */
+    move: function move(offset) {
+      if (this.results.length) {
+        var newIndex = this.highlightedResultIndex + offset;
+
+        if (newIndex < 0) {
+          this.highlightedResultIndex = this.results.length - 1;
+          this.updateScrollPosition();
+        } else if (newIndex > this.results.length - 1) {
+          this.highlightedResultIndex = 0;
+          this.updateScrollPosition();
+        } else if (newIndex >= 0 && newIndex < this.results.length) {
+          this.highlightedResultIndex = newIndex;
+          this.updateScrollPosition();
+        }
+      }
+    },
+    updateScrollPosition: function updateScrollPosition() {
+      var selection = this.$refs.selected;
+      var container = this.$refs.container;
+
+      this.$nextTick(function () {
+        if (selection) {
+          if (selection[0].offsetTop > container.scrollTop + container.clientHeight - selection[0].clientHeight) {
+            container.scrollTop = selection[0].offsetTop + selection[0].clientHeight - container.clientHeight;
+          }
+          if (selection[0].offsetTop < container.scrollTop) {
+            container.scrollTop = selection[0].offsetTop;
+          }
+        }
+      });
+    },
+    navigate: function navigate(index) {
+      this.highlightedResultIndex = index;
+      this.goToCurrentlySelectedResource();
+    },
+    goToCurrentlySelectedResource: function goToCurrentlySelectedResource() {
+      var _this2 = this;
+
+      var resource = _.find(this.indexedResults, function (res) {
+        return res.index == _this2.highlightedResultIndex;
+      });
+
+      this.$router.push({
+        name: 'detail',
+        params: {
+          resourceName: resource.resourceName,
+          resourceId: resource.resourceId
+        }
+      });
+
+      this.closeSearch();
+    }
+  },
+
+  computed: {
+    hasResults: function hasResults() {
+      return this.results.length > 0;
+    },
+    hasSearchTerm: function hasSearchTerm() {
+      return this.searchTerm !== '';
+    },
+    shouldShowNoResults: function shouldShowNoResults() {
+      return this.currentlySearching && !this.loading && !this.hasResults && this.hasSearchTerm;
+    },
+    shouldShowResults: function shouldShowResults() {
+      return this.currentlySearching && this.hasResults && !this.loading;
+    },
+    indexedResults: function indexedResults() {
+      return _.map(this.results, function (item, index) {
+        return (0, _extends3.default)({ index: index }, item);
+      });
+    },
+    formattedGroups: function formattedGroups() {
+      return _.chain(this.indexedResults).map(function (item) {
+        return {
+          resourceName: item.resourceName,
+          resourceTitle: item.resourceTitle
+        };
+      }).uniqBy('resourceName').value();
+    },
+    formattedResults: function formattedResults() {
+      var _this3 = this;
+
+      return _.map(this.formattedGroups, function (group) {
+        return {
+          resourceName: group.resourceName,
+          resourceTitle: group.resourceTitle,
+          items: _.filter(_this3.indexedResults, function (item) {
+            return item.resourceName == group.resourceName;
+          })
+        };
+      });
+    }
+  }
 };
 
 /***/ }),
@@ -7026,26 +6994,78 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var classes = {
-    '1': 'text-90 font-normal text-2xl',
-    '2': 'text-90 font-normal text-xl',
-    '3': 'text-90 uppercase tracking-wide font-bold text-sm'
+  '1': 'text-90 font-normal text-2xl',
+  '2': 'text-90 font-normal text-xl',
+  '3': 'text-90 uppercase tracking-wide font-bold text-sm'
 };
 
 exports.default = {
-    props: {
-        level: {
-            default: 1,
-            type: Number
-        }
+  props: {
+    level: {
+      default: 1,
+      type: Number
+    }
+  },
+
+  render: function render(h) {
+    return h('h' + this.level, { class: classes[this.level] }, this.$slots.default);
+  }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Icons/BooleanIcon.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+  props: {
+    value: {
+      type: Boolean,
+      default: false
     },
 
-    render: function render(h) {
-        return h('h' + this.level, { class: classes[this.level] }, this.$slots.default);
+    viewBox: {
+      default: '0 0 24 24'
+    },
+
+    height: {
+      default: 24
+    },
+
+    width: {
+      default: 24
     }
+  }
 };
 
 /***/ }),
@@ -7057,7 +7077,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -7075,30 +7095,30 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        type: {
-            type: String,
-            default: 'delete'
-        },
-        viewBox: {
-            type: String,
-            default: '0 0 20 20'
-        },
-        width: {
-            type: [Number, String],
-            default: 20
-        },
-        height: {
-            type: [Number, String],
-            default: 20
-        }
+  props: {
+    type: {
+      type: String,
+      default: 'delete'
     },
-
-    computed: {
-        iconName: function iconName() {
-            return 'icon-' + this.type;
-        }
+    viewBox: {
+      type: String,
+      default: '0 0 20 20'
+    },
+    width: {
+      type: [Number, String],
+      default: 20
+    },
+    height: {
+      type: [Number, String],
+      default: 20
     }
+  },
+
+  computed: {
+    iconName: function iconName() {
+      return 'icon-' + this.type;
+    }
+  }
 };
 
 /***/ }),
@@ -7110,120 +7130,120 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.default = {
-    name: 'Loader',
-    props: {
-        width: {
-            type: [Number, String],
-            required: false,
-            default: 50
-        },
-        fillColor: {
-            type: String,
-            required: false,
-            default: 'currentColor'
-        }
+  name: 'Loader',
+  props: {
+    width: {
+      type: [Number, String],
+      required: false,
+      default: 50
     },
-    render: function render(h) {
-        return h(
-            'svg',
-            {
-                'class': 'mx-auto block',
-                style: { width: this.width + 'px' },
-                attrs: { viewBox: '0 0 120 30',
-                    xmlns: 'http://www.w3.org/2000/svg',
-                    fill: this.fillColor
-                }
-            },
-            [h(
-                'circle',
-                {
-                    attrs: { cx: '15', cy: '15', r: '15' }
-                },
-                [h('animate', {
-                    attrs: {
-                        attributeName: 'r',
-                        from: '15',
-                        to: '15',
-                        begin: '0s',
-                        dur: '0.8s',
-                        values: '15;9;15',
-                        calcMode: 'linear',
-                        repeatCount: 'indefinite'
-                    }
-                }), h('animate', {
-                    attrs: {
-                        attributeName: 'fill-opacity',
-                        from: '1',
-                        to: '1',
-                        begin: '0s',
-                        dur: '0.8s',
-                        values: '1;.5;1',
-                        calcMode: 'linear',
-                        repeatCount: 'indefinite'
-                    }
-                })]
-            ), h(
-                'circle',
-                {
-                    attrs: { cx: '60', cy: '15', r: '9', 'fill-opacity': '0.3' }
-                },
-                [h('animate', {
-                    attrs: {
-                        attributeName: 'r',
-                        from: '9',
-                        to: '9',
-                        begin: '0s',
-                        dur: '0.8s',
-                        values: '9;15;9',
-                        calcMode: 'linear',
-                        repeatCount: 'indefinite'
-                    }
-                }), h('animate', {
-                    attrs: {
-                        attributeName: 'fill-opacity',
-                        from: '0.5',
-                        to: '0.5',
-                        begin: '0s',
-                        dur: '0.8s',
-                        values: '.5;1;.5',
-                        calcMode: 'linear',
-                        repeatCount: 'indefinite'
-                    }
-                })]
-            ), h(
-                'circle',
-                {
-                    attrs: { cx: '105', cy: '15', r: '15' }
-                },
-                [h('animate', {
-                    attrs: {
-                        attributeName: 'r',
-                        from: '15',
-                        to: '15',
-                        begin: '0s',
-                        dur: '0.8s',
-                        values: '15;9;15',
-                        calcMode: 'linear',
-                        repeatCount: 'indefinite'
-                    }
-                }), h('animate', {
-                    attrs: {
-                        attributeName: 'fill-opacity',
-                        from: '1',
-                        to: '1',
-                        begin: '0s',
-                        dur: '0.8s',
-                        values: '1;.5;1',
-                        calcMode: 'linear',
-                        repeatCount: 'indefinite'
-                    }
-                })]
-            )]
-        );
+    fillColor: {
+      type: String,
+      required: false,
+      default: 'currentColor'
     }
+  },
+  render: function render(h) {
+    return h(
+      'svg',
+      {
+        'class': 'mx-auto block',
+        style: { width: this.width + 'px' },
+        attrs: { viewBox: '0 0 120 30',
+          xmlns: 'http://www.w3.org/2000/svg',
+          fill: this.fillColor
+        }
+      },
+      [h(
+        'circle',
+        {
+          attrs: { cx: '15', cy: '15', r: '15' }
+        },
+        [h('animate', {
+          attrs: {
+            attributeName: 'r',
+            from: '15',
+            to: '15',
+            begin: '0s',
+            dur: '0.8s',
+            values: '15;9;15',
+            calcMode: 'linear',
+            repeatCount: 'indefinite'
+          }
+        }), h('animate', {
+          attrs: {
+            attributeName: 'fill-opacity',
+            from: '1',
+            to: '1',
+            begin: '0s',
+            dur: '0.8s',
+            values: '1;.5;1',
+            calcMode: 'linear',
+            repeatCount: 'indefinite'
+          }
+        })]
+      ), h(
+        'circle',
+        {
+          attrs: { cx: '60', cy: '15', r: '9', 'fill-opacity': '0.3' }
+        },
+        [h('animate', {
+          attrs: {
+            attributeName: 'r',
+            from: '9',
+            to: '9',
+            begin: '0s',
+            dur: '0.8s',
+            values: '9;15;9',
+            calcMode: 'linear',
+            repeatCount: 'indefinite'
+          }
+        }), h('animate', {
+          attrs: {
+            attributeName: 'fill-opacity',
+            from: '0.5',
+            to: '0.5',
+            begin: '0s',
+            dur: '0.8s',
+            values: '.5;1;.5',
+            calcMode: 'linear',
+            repeatCount: 'indefinite'
+          }
+        })]
+      ), h(
+        'circle',
+        {
+          attrs: { cx: '105', cy: '15', r: '15' }
+        },
+        [h('animate', {
+          attrs: {
+            attributeName: 'r',
+            from: '15',
+            to: '15',
+            begin: '0s',
+            dur: '0.8s',
+            values: '15;9;15',
+            calcMode: 'linear',
+            repeatCount: 'indefinite'
+          }
+        }), h('animate', {
+          attrs: {
+            attributeName: 'fill-opacity',
+            from: '1',
+            to: '1',
+            begin: '0s',
+            dur: '0.8s',
+            values: '1;.5;1',
+            calcMode: 'linear',
+            repeatCount: 'indefinite'
+          }
+        })]
+      )]
+    );
+  }
 };
 
 /***/ }),
@@ -7235,7 +7255,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _promise = __webpack_require__("./node_modules/babel-runtime/core-js/promise.js");
@@ -7247,70 +7267,70 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: {
-        src: String,
+  props: {
+    src: String,
 
-        maxWidth: {
-            type: Number,
-            default: 320
-        },
-
-        rounded: {
-            type: Boolean,
-            default: false
-        }
+    maxWidth: {
+      type: Number,
+      default: 320
     },
 
-    data: function data() {
-        return {
-            loading: true,
-            missing: false
-        };
-    },
-
-    computed: {
-        cardClasses: function cardClasses() {
-            return {
-                'max-w-xs': !this.maxWidth || this.loading || this.missing,
-                'rounded-full': this.rounded
-            };
-        },
-        cardStyles: function cardStyles() {
-            return this.loading ? { height: this.maxWidth + 'px', width: this.maxWidth + 'px' } : null;
-        }
-    },
-
-    mounted: function mounted() {
-        var _this = this;
-
-        (0, _laravelNova.Minimum)(new _promise2.default(function (resolve, reject) {
-            var image = new Image();
-
-            image.addEventListener('load', function () {
-                return resolve(image);
-            });
-            image.addEventListener('error', function () {
-                return reject();
-            });
-
-            image.src = _this.src;
-        })).then(function (image) {
-            image.className = 'block w-full';
-            image.draggable = false;
-
-            if (_this.maxWidth) {
-                _this.$refs.card.$el.style.maxWidth = _this.maxWidth + 'px';
-            }
-
-            _this.$refs.card.$el.appendChild(image);
-        }).catch(function () {
-            _this.missing = true;
-
-            _this.$emit('missing', true);
-        }).finally(function () {
-            _this.loading = false;
-        });
+    rounded: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  data: function data() {
+    return {
+      loading: true,
+      missing: false
+    };
+  },
+
+  computed: {
+    cardClasses: function cardClasses() {
+      return {
+        'max-w-xs': !this.maxWidth || this.loading || this.missing,
+        'rounded-full': this.rounded
+      };
+    },
+    cardStyles: function cardStyles() {
+      return this.loading ? { height: this.maxWidth + 'px', width: this.maxWidth + 'px' } : null;
+    }
+  },
+
+  mounted: function mounted() {
+    var _this = this;
+
+    (0, _laravelNova.Minimum)(new _promise2.default(function (resolve, reject) {
+      var image = new Image();
+
+      image.addEventListener('load', function () {
+        return resolve(image);
+      });
+      image.addEventListener('error', function () {
+        return reject();
+      });
+
+      image.src = _this.src;
+    })).then(function (image) {
+      image.className = 'block w-full';
+      image.draggable = false;
+
+      if (_this.maxWidth) {
+        _this.$refs.card.$el.style.maxWidth = _this.maxWidth + 'px';
+      }
+
+      _this.$refs.card.$el.appendChild(image);
+    }).catch(function () {
+      _this.missing = true;
+
+      _this.$emit('missing', true);
+    }).finally(function () {
+      _this.loading = false;
+    });
+  }
 }; //
 //
 //
@@ -7340,7 +7360,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _Badge = __webpack_require__("./resources/js/components/Badge.vue");
@@ -7350,11 +7370,11 @@ var _Badge2 = _interopRequireDefault(_Badge);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: {
-        Badge: _Badge2.default
-    },
+  components: {
+    Badge: _Badge2.default
+  },
 
-    props: ['resourceName', 'viaResource', 'viaResourceId', 'field']
+  props: ['resourceName', 'viaResource', 'viaResourceId', 'field']
 }; //
 //
 //
@@ -7369,7 +7389,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -7396,7 +7416,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'field']
+  props: ['resourceName', 'field']
 };
 
 /***/ }),
@@ -7408,8 +7428,33 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+  props: ['resourceName', 'field']
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Index/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//
+//
+//
 //
 //
 //
@@ -7433,7 +7478,31 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'field']
+  props: ['resourceName', 'field'],
+
+  data: function data() {
+    return {
+      value: [],
+      classes: {
+        true: 'bg-success-light text-success-dark',
+        false: 'bg-danger-light text-danger-dark'
+      }
+    };
+  },
+
+  created: function created() {
+    var _this = this;
+
+    this.field.value = this.field.value || {};
+
+    this.value = _(this.field.options).map(function (o) {
+      return {
+        name: o.name,
+        label: o.label,
+        checked: _this.field.value[o.name] || false
+      };
+    }).value();
+  }
 };
 
 /***/ }),
@@ -7445,58 +7514,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -7509,24 +7528,16 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        checked: {
-            // type: Boolean,
-            default: false
-        }
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
     },
 
-    methods: {
-        toggle: function toggle(event) {
-            if (!this.disabled) {
-                this.$emit('input', !this.checked);
-            }
-        }
+    checked: {
+      default: false
     }
+  }
 };
 
 /***/ }),
@@ -7538,7 +7549,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -7551,17 +7562,17 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'field'],
+  props: ['resourceName', 'field'],
 
-    computed: {
-        formattedDate: function formattedDate() {
-            if (this.field.format) {
-                return moment(this.field.value).format(this.field.format);
-            }
+  computed: {
+    formattedDate: function formattedDate() {
+      if (this.field.format) {
+        return moment(this.field.value).format(this.field.format);
+      }
 
-            return this.field.value;
-        }
+      return this.field.value;
     }
+  }
 };
 
 /***/ }),
@@ -7573,24 +7584,24 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.InteractsWithDates],
+  mixins: [_laravelNova.InteractsWithDates],
 
-    props: ['resourceName', 'field'],
+  props: ['resourceName', 'field'],
 
-    computed: {
-        /**
-         * Get the localized date time.
-         */
-        localizedDateTime: function localizedDateTime() {
-            return this.localizeDateTimeField(this.field);
-        }
+  computed: {
+    /**
+     * Get the localized date time.
+     */
+    localizedDateTime: function localizedDateTime() {
+      return this.localizeDateTimeField(this.field);
     }
+  }
 }; //
 //
 //
@@ -7610,53 +7621,19 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
 //
 
 exports.default = {
-    props: {
-        checked: {
-            default: false
-        }
+  props: {
+    checked: {
+      default: false
     }
+  }
 };
 
 /***/ }),
@@ -7668,7 +7645,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -7685,7 +7662,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['viaResource', 'viaResourceId', 'resourceName', 'field']
+  props: ['viaResource', 'viaResourceId', 'resourceName', 'field']
 };
 
 /***/ }),
@@ -7697,7 +7674,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -7705,7 +7682,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['field', 'viaResource', 'viaResourceId', 'resourceName']
+  props: ['field', 'viaResource', 'viaResourceId', 'resourceName']
 };
 
 /***/ }),
@@ -7717,7 +7694,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _HandlesActions = __webpack_require__("./resources/js/mixins/HandlesActions.js");
@@ -7727,25 +7704,25 @@ var _HandlesActions2 = _interopRequireDefault(_HandlesActions);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_HandlesActions2.default],
+  mixins: [_HandlesActions2.default],
 
-    props: {
-        resource: {},
-        actions: {}
-    },
+  props: {
+    resource: {},
+    actions: {}
+  },
 
-    methods: {
-        selectAndExecuteAction: function selectAndExecuteAction(action) {
-            this.selectedActionKey = action.uriKey;
-            this.determineActionStrategy();
-        }
-    },
-
-    computed: {
-        selectedResources: function selectedResources() {
-            return [this.resource.id.value];
-        }
+  methods: {
+    selectAndExecuteAction: function selectAndExecuteAction(action) {
+      this.selectedActionKey = action.uriKey;
+      this.determineActionStrategy();
     }
+  },
+
+  computed: {
+    selectedResources: function selectedResources() {
+      return [this.resource.id.value];
+    }
+  }
 }; //
 //
 //
@@ -7800,7 +7777,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -7823,16 +7800,16 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'viaResource', 'viaResourceId', 'field'],
+  props: ['resourceName', 'viaResource', 'viaResourceId', 'field'],
 
-    computed: {
-        /**
-         * Determine if the resource being viewed matches the field's value.
-         */
-        isResourceBeingViewed: function isResourceBeingViewed() {
-            return this.field.morphToType == this.viaResource && this.field.morphToId == this.viaResourceId;
-        }
+  computed: {
+    /**
+     * Determine if the resource being viewed matches the field's value.
+     */
+    isResourceBeingViewed: function isResourceBeingViewed() {
+      return this.field.morphToType == this.viaResource && this.field.morphToId == this.viaResourceId;
     }
+  }
 };
 
 /***/ }),
@@ -7844,7 +7821,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -7867,7 +7844,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'field']
+  props: ['resourceName', 'field']
 };
 
 /***/ }),
@@ -7879,9 +7856,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
 //
 //
 //
@@ -7892,7 +7868,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'field']
+  props: ['resourceName', 'field']
 };
 
 /***/ }),
@@ -7904,25 +7880,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -8102,51 +8061,51 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['testId', 'deleteResource', 'restoreResource', 'resource', 'resourcesSelected', 'resourceName', 'relationshipType', 'viaRelationship', 'viaResource', 'viaResourceId', 'viaManyToMany', 'checked', 'actionsAreAvailable', 'shouldShowCheckboxes', 'updateSelectionStatus', 'queryString'],
+  props: ['testId', 'deleteResource', 'restoreResource', 'resource', 'resourcesSelected', 'resourceName', 'relationshipType', 'viaRelationship', 'viaResource', 'viaResourceId', 'viaManyToMany', 'checked', 'actionsAreAvailable', 'shouldShowCheckboxes', 'updateSelectionStatus', 'queryString'],
 
-    data: function data() {
-        return {
-            deleteModalOpen: false,
-            restoreModalOpen: false
-        };
+  data: function data() {
+    return {
+      deleteModalOpen: false,
+      restoreModalOpen: false
+    };
+  },
+
+  methods: {
+    /**
+     * Select the resource in the parent component
+     */
+    toggleSelection: function toggleSelection() {
+      this.updateSelectionStatus(this.resource);
     },
-
-    methods: {
-        /**
-         * Select the resource in the parent component
-         */
-        toggleSelection: function toggleSelection() {
-            this.updateSelectionStatus(this.resource);
-        },
-        openDeleteModal: function openDeleteModal() {
-            this.deleteModalOpen = true;
-        },
-        confirmDelete: function confirmDelete() {
-            this.deleteResource(this.resource);
-            this.closeDeleteModal();
-        },
-        closeDeleteModal: function closeDeleteModal() {
-            this.deleteModalOpen = false;
-        },
-        openRestoreModal: function openRestoreModal() {
-            this.restoreModalOpen = true;
-        },
-        confirmRestore: function confirmRestore() {
-            this.restoreResource(this.resource);
-            this.closeRestoreModal();
-        },
-        closeRestoreModal: function closeRestoreModal() {
-            this.restoreModalOpen = false;
-        }
+    openDeleteModal: function openDeleteModal() {
+      this.deleteModalOpen = true;
     },
-
-    computed: {
-        availableActions: function availableActions() {
-            return _.filter(this.resource.actions, function (a) {
-                return a.showOnTableRow;
-            });
-        }
+    confirmDelete: function confirmDelete() {
+      this.deleteResource(this.resource);
+      this.closeDeleteModal();
+    },
+    closeDeleteModal: function closeDeleteModal() {
+      this.deleteModalOpen = false;
+    },
+    openRestoreModal: function openRestoreModal() {
+      this.restoreModalOpen = true;
+    },
+    confirmRestore: function confirmRestore() {
+      this.restoreResource(this.resource);
+      this.closeRestoreModal();
+    },
+    closeRestoreModal: function closeRestoreModal() {
+      this.restoreModalOpen = false;
     }
+  },
+
+  computed: {
+    availableActions: function availableActions() {
+      return _.filter(this.resource.actions, function (a) {
+        return a.showOnTableRow;
+      });
+    }
+  }
 };
 
 /***/ }),
@@ -8158,7 +8117,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -8189,84 +8148,84 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        resourceName: String,
-        uriKey: String
-    },
+  props: {
+    resourceName: String,
+    uriKey: String
+  },
 
-    methods: {
-        handleClick: function handleClick() {
-            this.$emit('sort', {
-                key: this.uriKey,
-                direction: this.direction
-            });
-        }
-    },
-
-    computed: {
-        /**
-         * The CSS class to apply to the ascending arrow icon
-         */
-        ascClass: function ascClass() {
-            if (this.isSorted && this.direction == 'desc') {
-                return 'fill-80';
-            }
-
-            return 'fill-60';
-        },
-
-
-        /**
-         * The CSS class to apply to the descending arrow icon
-         */
-        descClass: function descClass() {
-            if (this.isSorted && this.direction == 'asc') {
-                return 'fill-80';
-            }
-
-            return 'fill-60';
-        },
-
-
-        /**
-         * Determine whether this column is being sorted
-         */
-        isSorted: function isSorted() {
-            return this.sortColumn == this.uriKey;
-        },
-
-
-        /**
-         * The current order query parameter for this resource
-         */
-        sortKey: function sortKey() {
-            return this.resourceName + '_order';
-        },
-
-
-        /**
-         * The current order query parameter value
-         */
-        sortColumn: function sortColumn() {
-            return this.$route.query[this.sortKey];
-        },
-
-
-        /**
-         * The current direction query parameter for this resource
-         */
-        directionKey: function directionKey() {
-            return this.resourceName + '_direction';
-        },
-
-
-        /**
-         * The current direction query parameter value
-         */
-        direction: function direction() {
-            return this.$route.query[this.directionKey];
-        }
+  methods: {
+    handleClick: function handleClick() {
+      this.$emit('sort', {
+        key: this.uriKey,
+        direction: this.direction
+      });
     }
+  },
+
+  computed: {
+    /**
+     * The CSS class to apply to the ascending arrow icon
+     */
+    ascClass: function ascClass() {
+      if (this.isSorted && this.direction == 'desc') {
+        return 'fill-80';
+      }
+
+      return 'fill-60';
+    },
+
+
+    /**
+     * The CSS class to apply to the descending arrow icon
+     */
+    descClass: function descClass() {
+      if (this.isSorted && this.direction == 'asc') {
+        return 'fill-80';
+      }
+
+      return 'fill-60';
+    },
+
+
+    /**
+     * Determine whether this column is being sorted
+     */
+    isSorted: function isSorted() {
+      return this.sortColumn == this.uriKey;
+    },
+
+
+    /**
+     * The current order query parameter for this resource
+     */
+    sortKey: function sortKey() {
+      return this.resourceName + '_order';
+    },
+
+
+    /**
+     * The current order query parameter value
+     */
+    sortColumn: function sortColumn() {
+      return this.$route.query[this.sortKey];
+    },
+
+
+    /**
+     * The current direction query parameter for this resource
+     */
+    directionKey: function directionKey() {
+      return this.resourceName + '_direction';
+    },
+
+
+    /**
+     * The current direction query parameter value
+     */
+    direction: function direction() {
+      return this.$route.query[this.directionKey];
+    }
+  }
 };
 
 /***/ }),
@@ -8278,13 +8237,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
-//
 //
 //
 //
@@ -8299,7 +8253,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'field']
+  props: ['resourceName', 'field']
 };
 
 /***/ }),
@@ -8311,7 +8265,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -8325,16 +8279,16 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'field'],
+  props: ['resourceName', 'field'],
 
-    computed: {
-        /**
-         * Determine if the field has a value other than null.
-         */
-        hasValue: function hasValue() {
-            return this.field.value !== null;
-        }
+  computed: {
+    /**
+     * Determine if the field has a value other than null.
+     */
+    hasValue: function hasValue() {
+      return this.field.value !== null;
     }
+  }
 };
 
 /***/ }),
@@ -8346,7 +8300,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -8367,7 +8321,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['resourceName', 'lenses']
+  props: ['resourceName', 'lenses']
 };
 
 /***/ }),
@@ -8379,7 +8333,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -8396,83 +8350,83 @@ Object.defineProperty(exports, "__esModule", {
 
 // https://github.com/nuxt/nuxt.js/blob/master/lib/app/components/nuxt-loading.vue
 exports.default = {
-    data: function data() {
-        return {
-            percent: 0,
-            show: false,
-            canSuccess: true,
-            duration: 3000,
-            height: '3px',
-            color: 'var(--primary)',
-            failedColor: 'red'
-        };
-    },
+  data: function data() {
+    return {
+      percent: 0,
+      show: false,
+      canSuccess: true,
+      duration: 3000,
+      height: '3px',
+      color: 'var(--primary)',
+      failedColor: 'red'
+    };
+  },
 
-    methods: {
-        start: function start() {
-            var _this = this;
+  methods: {
+    start: function start() {
+      var _this = this;
 
-            this.show = true;
-            this.canSuccess = true;
-            if (this._timer) {
-                clearInterval(this._timer);
-                this.percent = 0;
-            }
-            this._cut = 10000 / Math.floor(this.duration);
-            this._timer = setInterval(function () {
-                _this.increase(_this._cut * Math.random());
-                if (_this.percent > 95) {
-                    _this.finish();
-                }
-            }, 100);
-            return this;
-        },
-        set: function set(num) {
-            this.show = true;
-            this.canSuccess = true;
-            this.percent = Math.floor(num);
-            return this;
-        },
-        get: function get() {
-            return Math.floor(this.percent);
-        },
-        increase: function increase(num) {
-            this.percent = this.percent + Math.floor(num);
-            return this;
-        },
-        decrease: function decrease(num) {
-            this.percent = this.percent - Math.floor(num);
-            return this;
-        },
-        finish: function finish() {
-            this.percent = 100;
-            this.hide();
-            return this;
-        },
-        pause: function pause() {
-            clearInterval(this._timer);
-            return this;
-        },
-        hide: function hide() {
-            var _this2 = this;
-
-            clearInterval(this._timer);
-            this._timer = null;
-            setTimeout(function () {
-                _this2.show = false;
-                _this2.$nextTick(function () {
-                    setTimeout(function () {
-                        _this2.percent = 0;
-                    }, 200);
-                });
-            }, 500);
-            return this;
-        },
-        fail: function fail() {
-            this.canSuccess = false;
-            return this;
+      this.show = true;
+      this.canSuccess = true;
+      if (this._timer) {
+        clearInterval(this._timer);
+        this.percent = 0;
+      }
+      this._cut = 10000 / Math.floor(this.duration);
+      this._timer = setInterval(function () {
+        _this.increase(_this._cut * Math.random());
+        if (_this.percent > 95) {
+          _this.finish();
         }
+      }, 100);
+      return this;
+    },
+    set: function set(num) {
+      this.show = true;
+      this.canSuccess = true;
+      this.percent = Math.floor(num);
+      return this;
+    },
+    get: function get() {
+      return Math.floor(this.percent);
+    },
+    increase: function increase(num) {
+      this.percent = this.percent + Math.floor(num);
+      return this;
+    },
+    decrease: function decrease(num) {
+      this.percent = this.percent - Math.floor(num);
+      return this;
+    },
+    finish: function finish() {
+      this.percent = 100;
+      this.hide();
+      return this;
+    },
+    pause: function pause() {
+      clearInterval(this._timer);
+      return this;
+    },
+    hide: function hide() {
+      var _this2 = this;
+
+      clearInterval(this._timer);
+      this._timer = null;
+      setTimeout(function () {
+        _this2.show = false;
+        _this2.$nextTick(function () {
+          setTimeout(function () {
+            _this2.percent = 0;
+          }, 200);
+        });
+      }, 500);
+      return this;
+    },
+    fail: function fail() {
+      this.canSuccess = false;
+      return this;
     }
+  }
 };
 
 /***/ }),
@@ -8484,7 +8438,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -8502,26 +8456,26 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        loading: {
-            type: Boolean,
-            default: true
-        },
-
-        mode: {
-            type: String,
-            default: 'light',
-            validator: function validator(value) {
-                return ['light', 'dark'].indexOf(value) !== -1;
-            }
-        }
+  props: {
+    loading: {
+      type: Boolean,
+      default: true
     },
 
-    computed: {
-        modeClass: function modeClass() {
-            return this.mode == 'light' ? 'bg-white' : 'bg-90';
-        }
+    mode: {
+      type: String,
+      default: 'light',
+      validator: function validator(value) {
+        return ['light', 'dark'].indexOf(value) !== -1;
+      }
     }
+  },
+
+  computed: {
+    modeClass: function modeClass() {
+      return this.mode == 'light' ? 'bg-white' : 'bg-90';
+    }
+  }
 };
 
 /***/ }),
@@ -8533,7 +8487,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -8551,12 +8505,12 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        loading: {
-            type: Boolean,
-            default: true
-        }
+  props: {
+    loading: {
+      type: Boolean,
+      default: true
     }
+  }
 };
 
 /***/ }),
@@ -8568,7 +8522,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _chartist = __webpack_require__("./node_modules/chartist/dist/chartist.js");
@@ -8631,99 +8585,98 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
 
 var colorForIndex = function colorForIndex(index) {
-    return ['#F5573B', '#F99037', '#F2CB22', '#8FC15D', '#098F56', '#47C1BF', '#1693EB', '#6474D7', '#9C6ADE', '#E471DE'][index];
+  return ['#F5573B', '#F99037', '#F2CB22', '#8FC15D', '#098F56', '#47C1BF', '#1693EB', '#6474D7', '#9C6ADE', '#E471DE'][index];
 };
 
 exports.default = {
-    name: 'PartitionMetric',
+  name: 'PartitionMetric',
 
-    props: {
-        loading: Boolean,
-        title: String,
-        helpText: {},
-        helpWidth: {},
-        chartData: Array
-    },
+  props: {
+    loading: Boolean,
+    title: String,
+    helpText: {},
+    helpWidth: {},
+    chartData: Array
+  },
 
-    data: function data() {
-        return { chartist: null };
-    },
+  data: function data() {
+    return { chartist: null };
+  },
 
-    watch: {
-        chartData: function chartData(newData, oldData) {
-            this.renderChart();
-        }
-    },
-
-    mounted: function mounted() {
-        this.chartist = new _chartist2.default.Pie(this.$refs.chart, this.formattedChartData, {
-            donut: true,
-            donutWidth: 10,
-            donutSolid: true,
-            startAngle: 270,
-            showLabel: false
-        });
-
-        this.chartist.on('draw', function (context) {
-            if (context.type === 'slice') {
-                context.element.attr({
-                    style: 'fill: ' + context.meta.color + ' !important'
-                });
-            }
-        });
-    },
-
-
-    methods: {
-        renderChart: function renderChart() {
-            this.chartist.update(this.formattedChartData);
-        },
-        getItemColor: function getItemColor(item, index) {
-            return typeof item.color === 'string' ? item.color : colorForIndex(index);
-        }
-    },
-
-    computed: {
-        chartClasses: function chartClasses() {
-            return ['vertical-center', 'rounded-b-lg', 'ct-chart', 'mr-4', this.formattedTotal <= 0 ? 'invisible' : ''];
-        },
-        formattedChartData: function formattedChartData() {
-            return { labels: this.formattedLabels, series: this.formattedData };
-        },
-        formattedItems: function formattedItems() {
-            var _this = this;
-
-            return _(this.chartData).map(function (item, index) {
-                return {
-                    label: item.label,
-                    value: item.value,
-                    color: _this.getItemColor(item, index),
-                    percentage: _this.formattedTotal > 0 ? (item.value * 100 / _this.formattedTotal).toFixed(2) : '0'
-                };
-            }).value();
-        },
-        formattedLabels: function formattedLabels() {
-            return _(this.chartData).map(function (item) {
-                return item.label;
-            }).value();
-        },
-        formattedData: function formattedData() {
-            var _this2 = this;
-
-            return _(this.chartData).map(function (item, index) {
-                return {
-                    value: item.value,
-                    meta: { color: _this2.getItemColor(item, index) }
-                };
-            }).value();
-        },
-        formattedTotal: function formattedTotal() {
-            return _.sumBy(this.chartData, 'value');
-        }
+  watch: {
+    chartData: function chartData(newData, oldData) {
+      this.renderChart();
     }
+  },
+
+  mounted: function mounted() {
+    this.chartist = new _chartist2.default.Pie(this.$refs.chart, this.formattedChartData, {
+      donut: true,
+      donutWidth: 10,
+      donutSolid: true,
+      startAngle: 270,
+      showLabel: false
+    });
+
+    this.chartist.on('draw', function (context) {
+      if (context.type === 'slice') {
+        context.element.attr({
+          style: 'fill: ' + context.meta.color + ' !important'
+        });
+      }
+    });
+  },
+
+
+  methods: {
+    renderChart: function renderChart() {
+      this.chartist.update(this.formattedChartData);
+    },
+    getItemColor: function getItemColor(item, index) {
+      return typeof item.color === 'string' ? item.color : colorForIndex(index);
+    }
+  },
+
+  computed: {
+    chartClasses: function chartClasses() {
+      return ['vertical-center', 'rounded-b-lg', 'ct-chart', 'mr-4', this.formattedTotal <= 0 ? 'invisible' : ''];
+    },
+    formattedChartData: function formattedChartData() {
+      return { labels: this.formattedLabels, series: this.formattedData };
+    },
+    formattedItems: function formattedItems() {
+      var _this = this;
+
+      return _(this.chartData).map(function (item, index) {
+        return {
+          label: item.label,
+          value: item.value,
+          color: _this.getItemColor(item, index),
+          percentage: _this.formattedTotal > 0 ? (item.value * 100 / _this.formattedTotal).toFixed(2) : '0'
+        };
+      }).value();
+    },
+    formattedLabels: function formattedLabels() {
+      return _(this.chartData).map(function (item) {
+        return item.label;
+      }).value();
+    },
+    formattedData: function formattedData() {
+      var _this2 = this;
+
+      return _(this.chartData).map(function (item, index) {
+        return {
+          value: item.value,
+          meta: { color: _this2.getItemColor(item, index) }
+        };
+      }).value();
+    },
+    formattedTotal: function formattedTotal() {
+      return _.sumBy(this.chartData, 'value');
+    }
+  }
 };
 
 /***/ }),
@@ -8735,7 +8688,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
@@ -8828,137 +8781,137 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 (0, _values2.default)(_languages2.default).forEach(function (l) {
-    return _numbro2.default.registerLanguage(l);
+  return _numbro2.default.registerLanguage(l);
 });
 exports.default = {
-    name: 'BaseTrendMetric',
+  name: 'BaseTrendMetric',
 
-    props: {
-        loading: Boolean,
-        title: {},
-        helpText: {},
-        helpWidth: {},
-        value: {},
-        chartData: {},
-        maxWidth: {},
-        prefix: '',
-        suffix: '',
-        suffixInflection: true,
-        ranges: { type: Array, default: function _default() {
-                return [];
-            } },
-        selectedRangeKey: [String, Number],
-        format: {
-            type: String,
-            default: '0[.]00a'
-        }
-    },
-
-    data: function data() {
-        return { chartist: null };
-    },
-
-    watch: {
-        selectedRangeKey: function selectedRangeKey(newRange, oldRange) {
-            this.renderChart();
-        },
-
-        chartData: function chartData(newData, oldData) {
-            this.renderChart();
-        }
-    },
-
-    mounted: function mounted() {
-        var _this = this;
-
-        if (Nova.config.locale) {
-            _numbro2.default.setLanguage(Nova.config.locale.replace('_', '-'));
-        }
-
-        var low = Math.min.apply(Math, (0, _toConsumableArray3.default)(this.chartData));
-        var high = Math.max.apply(Math, (0, _toConsumableArray3.default)(this.chartData));
-
-        // Use zero as the graph base if the lowest value is greater than or equal to zero.
-        // This avoids the awkward situation where the chart doesn't appear filled in.
-        var areaBase = low >= 0 ? 0 : low;
-
-        this.chartist = new _chartist2.default.Line(this.$refs.chart, this.chartData, {
-            lineSmooth: _chartist2.default.Interpolation.none(),
-            fullWidth: true,
-            showPoint: true,
-            showLine: true,
-            showArea: true,
-            chartPadding: {
-                top: 10,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-            low: low,
-            high: high,
-            areaBase: areaBase,
-            axisX: {
-                showGrid: false,
-                showLabel: true,
-                offset: 0
-            },
-            axisY: {
-                showGrid: false,
-                showLabel: true,
-                offset: 0
-            },
-            plugins: [_chartist2.default.plugins.tooltip({
-                anchorToPoint: true,
-                transformTooltipTextFnc: function transformTooltipTextFnc(value) {
-                    var formattedValue = (0, _numbro2.default)(new String(value)).format(_this.format);
-
-                    if (_this.prefix) {
-                        return '' + _this.prefix + formattedValue;
-                    }
-
-                    if (_this.suffix) {
-                        var suffix = (0, _laravelNova.SingularOrPlural)(value, _this.suffix);
-
-                        return formattedValue + ' ' + suffix;
-                    }
-
-                    return '' + formattedValue;
-                }
-            })]
-        });
-    },
-
-
-    methods: {
-        renderChart: function renderChart() {
-            this.chartist.update(this.chartData);
-        },
-        handleChange: function handleChange(event) {
-            this.$emit('selected', event.target.value);
-        }
-    },
-
-    computed: {
-        isNullValue: function isNullValue() {
-            return this.value == null;
-        },
-        formattedValue: function formattedValue() {
-            if (!this.isNullValue) {
-                var value = (0, _numbro2.default)(new String(this.value)).format(this.format);
-
-                return '' + this.prefix + value;
-            }
-
-            return '';
-        },
-        formattedSuffix: function formattedSuffix() {
-            if (this.suffixInflection === false) {
-                return this.suffix;
-            }
-
-            return (0, _laravelNova.SingularOrPlural)(this.value, this.suffix);
-        }
+  props: {
+    loading: Boolean,
+    title: {},
+    helpText: {},
+    helpWidth: {},
+    value: {},
+    chartData: {},
+    maxWidth: {},
+    prefix: '',
+    suffix: '',
+    suffixInflection: true,
+    ranges: { type: Array, default: function _default() {
+        return [];
+      } },
+    selectedRangeKey: [String, Number],
+    format: {
+      type: String,
+      default: '0[.]00a'
     }
+  },
+
+  data: function data() {
+    return { chartist: null };
+  },
+
+  watch: {
+    selectedRangeKey: function selectedRangeKey(newRange, oldRange) {
+      this.renderChart();
+    },
+
+    chartData: function chartData(newData, oldData) {
+      this.renderChart();
+    }
+  },
+
+  mounted: function mounted() {
+    var _this = this;
+
+    if (Nova.config.locale) {
+      _numbro2.default.setLanguage(Nova.config.locale.replace('_', '-'));
+    }
+
+    var low = Math.min.apply(Math, (0, _toConsumableArray3.default)(this.chartData));
+    var high = Math.max.apply(Math, (0, _toConsumableArray3.default)(this.chartData));
+
+    // Use zero as the graph base if the lowest value is greater than or equal to zero.
+    // This avoids the awkward situation where the chart doesn't appear filled in.
+    var areaBase = low >= 0 ? 0 : low;
+
+    this.chartist = new _chartist2.default.Line(this.$refs.chart, this.chartData, {
+      lineSmooth: _chartist2.default.Interpolation.none(),
+      fullWidth: true,
+      showPoint: true,
+      showLine: true,
+      showArea: true,
+      chartPadding: {
+        top: 10,
+        right: 0,
+        bottom: 0,
+        left: 0
+      },
+      low: low,
+      high: high,
+      areaBase: areaBase,
+      axisX: {
+        showGrid: false,
+        showLabel: true,
+        offset: 0
+      },
+      axisY: {
+        showGrid: false,
+        showLabel: true,
+        offset: 0
+      },
+      plugins: [_chartist2.default.plugins.tooltip({
+        anchorToPoint: true,
+        transformTooltipTextFnc: function transformTooltipTextFnc(value) {
+          var formattedValue = (0, _numbro2.default)(new String(value)).format(_this.format);
+
+          if (_this.prefix) {
+            return '' + _this.prefix + formattedValue;
+          }
+
+          if (_this.suffix) {
+            var suffix = (0, _laravelNova.SingularOrPlural)(value, _this.suffix);
+
+            return formattedValue + ' ' + suffix;
+          }
+
+          return '' + formattedValue;
+        }
+      })]
+    });
+  },
+
+
+  methods: {
+    renderChart: function renderChart() {
+      this.chartist.update(this.chartData);
+    },
+    handleChange: function handleChange(event) {
+      this.$emit('selected', event.target.value);
+    }
+  },
+
+  computed: {
+    isNullValue: function isNullValue() {
+      return this.value == null;
+    },
+    formattedValue: function formattedValue() {
+      if (!this.isNullValue) {
+        var value = (0, _numbro2.default)(new String(this.value)).format(this.format);
+
+        return '' + this.prefix + value;
+      }
+
+      return '';
+    },
+    formattedSuffix: function formattedSuffix() {
+      if (this.suffixInflection === false) {
+        return this.suffix;
+      }
+
+      return (0, _laravelNova.SingularOrPlural)(this.value, this.suffix);
+    }
+  }
 };
 
 /***/ }),
@@ -8970,7 +8923,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _sign = __webpack_require__("./node_modules/babel-runtime/core-js/math/sign.js");
@@ -9091,93 +9044,93 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 (0, _values2.default)(_languages2.default).forEach(function (l) {
-    return _numbro2.default.registerLanguage(l);
+  return _numbro2.default.registerLanguage(l);
 });
 exports.default = {
-    name: 'BaseValueMetric',
-    props: {
-        loading: { default: true },
-        title: {},
-        helpText: {},
-        helpWidth: {},
-        maxWidth: {},
-        previous: {},
-        value: {},
-        prefix: '',
-        suffix: '',
-        suffixInflection: {
-            default: true
-        },
-        selectedRangeKey: [String, Number],
-        ranges: { type: Array, default: function _default() {
-                return [];
-            } },
-        format: {
-            type: String,
-            default: '(0[.]00a)'
-        }
+  name: 'BaseValueMetric',
+  props: {
+    loading: { default: true },
+    title: {},
+    helpText: {},
+    helpWidth: {},
+    maxWidth: {},
+    previous: {},
+    value: {},
+    prefix: '',
+    suffix: '',
+    suffixInflection: {
+      default: true
     },
-
-    mounted: function mounted() {
-        if (Nova.config.locale) {
-            _numbro2.default.setLanguage(Nova.config.locale.replace('_', '-'));
-        }
-    },
-
-
-    methods: {
-        handleChange: function handleChange(event) {
-            this.$emit('selected', event.target.value);
-        }
-    },
-
-    computed: {
-        growthPercentage: function growthPercentage() {
-            return Math.abs(this.increaseOrDecrease);
-        },
-        increaseOrDecrease: function increaseOrDecrease() {
-            if (this.previous == 0 || this.previous == null || this.value == 0) return 0;
-
-            return ((this.value - this.previous) / this.previous * 100).toFixed(2);
-        },
-        increaseOrDecreaseLabel: function increaseOrDecreaseLabel() {
-            switch ((0, _sign2.default)(this.increaseOrDecrease)) {
-                case 1:
-                    return 'Increase';
-                case 0:
-                    return 'Constant';
-                case -1:
-                    return 'Decrease';
-            }
-        },
-        sign: function sign() {
-            switch ((0, _sign2.default)(this.increaseOrDecrease)) {
-                case 1:
-                    return '+';
-                case 0:
-                    return '';
-                case -1:
-                    return '-';
-            }
-        },
-        isNullValue: function isNullValue() {
-            return this.value == null;
-        },
-        formattedValue: function formattedValue() {
-            if (!this.isNullValue) {
-                return this.prefix + (0, _numbro2.default)(new String(this.value)).format(this.format);
-            }
-
-            return '';
-        },
-        formattedSuffix: function formattedSuffix() {
-            if (this.suffixInflection === false) {
-                return this.suffix;
-            }
-
-            return (0, _laravelNova.SingularOrPlural)(this.value, this.suffix);
-        }
+    selectedRangeKey: [String, Number],
+    ranges: { type: Array, default: function _default() {
+        return [];
+      } },
+    format: {
+      type: String,
+      default: '(0[.]00a)'
     }
+  },
+
+  mounted: function mounted() {
+    if (Nova.config.locale) {
+      _numbro2.default.setLanguage(Nova.config.locale.replace('_', '-'));
+    }
+  },
+
+
+  methods: {
+    handleChange: function handleChange(event) {
+      this.$emit('selected', event.target.value);
+    }
+  },
+
+  computed: {
+    growthPercentage: function growthPercentage() {
+      return Math.abs(this.increaseOrDecrease);
+    },
+    increaseOrDecrease: function increaseOrDecrease() {
+      if (this.previous == 0 || this.previous == null || this.value == 0) return 0;
+
+      return ((this.value - this.previous) / this.previous * 100).toFixed(2);
+    },
+    increaseOrDecreaseLabel: function increaseOrDecreaseLabel() {
+      switch ((0, _sign2.default)(this.increaseOrDecrease)) {
+        case 1:
+          return 'Increase';
+        case 0:
+          return 'Constant';
+        case -1:
+          return 'Decrease';
+      }
+    },
+    sign: function sign() {
+      switch ((0, _sign2.default)(this.increaseOrDecrease)) {
+        case 1:
+          return '+';
+        case 0:
+          return '';
+        case -1:
+          return '-';
+      }
+    },
+    isNullValue: function isNullValue() {
+      return this.value == null;
+    },
+    formattedValue: function formattedValue() {
+      if (!this.isNullValue) {
+        return this.prefix + (0, _numbro2.default)(new String(this.value)).format(this.format);
+      }
+
+      return '';
+    },
+    formattedSuffix: function formattedSuffix() {
+      if (this.suffixInflection === false) {
+        return this.suffix;
+      }
+
+      return (0, _laravelNova.SingularOrPlural)(this.value, this.suffix);
+    }
+  }
 };
 
 /***/ }),
@@ -9189,7 +9142,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
@@ -9212,84 +9165,84 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-    components: {
-        BasePartitionMetric: _PartitionMetric2.default
+  components: {
+    BasePartitionMetric: _PartitionMetric2.default
+  },
+
+  props: {
+    card: {
+      type: Object,
+      required: true
     },
 
-    props: {
-        card: {
-            type: Object,
-            required: true
-        },
-
-        resourceName: {
-            type: String,
-            default: ''
-        },
-
-        resourceId: {
-            type: [Number, String],
-            default: ''
-        },
-
-        lens: {
-            type: String,
-            default: ''
-        }
+    resourceName: {
+      type: String,
+      default: ''
     },
 
-    data: function data() {
-        return {
-            loading: true,
-            chartData: []
-        };
+    resourceId: {
+      type: [Number, String],
+      default: ''
     },
 
-    watch: {
-        resourceId: function resourceId() {
-            this.fetch();
-        }
-    },
-
-    created: function created() {
-        var _this = this;
-
-        this.fetch();
-
-        if (this.card.refreshWhenActionRuns) {
-            Nova.$on('action-executed', function () {
-                return _this.fetch();
-            });
-        }
-    },
-
-
-    methods: {
-        fetch: function fetch() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            (0, _laravelNova.Minimum)(Nova.request(this.metricEndpoint)).then(function (_ref) {
-                var value = _ref.data.value.value;
-
-                _this2.chartData = value;
-                _this2.loading = false;
-            });
-        }
-    },
-    computed: {
-        metricEndpoint: function metricEndpoint() {
-            var lens = this.lens !== '' ? '/lens/' + this.lens : '';
-            if (this.resourceName && this.resourceId) {
-                return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
-            } else if (this.resourceName) {
-                return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
-            } else {
-                return '/nova-api/metrics/' + this.card.uriKey;
-            }
-        }
+    lens: {
+      type: String,
+      default: ''
     }
+  },
+
+  data: function data() {
+    return {
+      loading: true,
+      chartData: []
+    };
+  },
+
+  watch: {
+    resourceId: function resourceId() {
+      this.fetch();
+    }
+  },
+
+  created: function created() {
+    var _this = this;
+
+    this.fetch();
+
+    if (this.card.refreshWhenActionRuns) {
+      Nova.$on('action-executed', function () {
+        return _this.fetch();
+      });
+    }
+  },
+
+
+  methods: {
+    fetch: function fetch() {
+      var _this2 = this;
+
+      this.loading = true;
+
+      (0, _laravelNova.Minimum)(Nova.request(this.metricEndpoint)).then(function (_ref) {
+        var value = _ref.data.value.value;
+
+        _this2.chartData = value;
+        _this2.loading = false;
+      });
+    }
+  },
+  computed: {
+    metricEndpoint: function metricEndpoint() {
+      var lens = this.lens !== '' ? '/lens/' + this.lens : '';
+      if (this.resourceName && this.resourceId) {
+        return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
+      } else if (this.resourceName) {
+        return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
+      } else {
+        return '/nova-api/metrics/' + this.card.uriKey;
+      }
+    }
+  }
 };
 
 /***/ }),
@@ -9301,7 +9254,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _keys = __webpack_require__("./node_modules/babel-runtime/core-js/object/keys.js");
@@ -9321,142 +9274,142 @@ var _TrendMetric2 = _interopRequireDefault(_TrendMetric);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    name: 'TrendMetric',
+  name: 'TrendMetric',
 
-    mixins: [_laravelNova.InteractsWithDates],
+  mixins: [_laravelNova.InteractsWithDates],
 
-    components: {
-        BaseTrendMetric: _TrendMetric2.default
+  components: {
+    BaseTrendMetric: _TrendMetric2.default
+  },
+
+  props: {
+    card: {
+      type: Object,
+      required: true
     },
 
-    props: {
-        card: {
-            type: Object,
-            required: true
-        },
-
-        resourceName: {
-            type: String,
-            default: ''
-        },
-
-        resourceId: {
-            type: [Number, String],
-            default: ''
-        },
-
-        lens: {
-            type: String,
-            default: ''
-        }
+    resourceName: {
+      type: String,
+      default: ''
     },
 
-    data: function data() {
-        return {
-            loading: true,
-            value: '',
-            data: [],
-            format: '(0[.]00a)',
-            prefix: '',
-            suffix: '',
-            suffixInflection: true,
-            selectedRangeKey: null
-        };
+    resourceId: {
+      type: [Number, String],
+      default: ''
     },
 
-    watch: {
-        resourceId: function resourceId() {
-            this.fetch();
-        }
-    },
-
-    created: function created() {
-        var _this = this;
-
-        if (this.hasRanges) {
-            this.selectedRangeKey = this.card.ranges[0].value;
-        }
-
-        if (this.card.refreshWhenActionRuns) {
-            Nova.$on('action-executed', function () {
-                return _this.fetch();
-            });
-        }
-    },
-    mounted: function mounted() {
-        this.fetch();
-    },
-
-
-    methods: {
-        handleRangeSelected: function handleRangeSelected(key) {
-            this.selectedRangeKey = key;
-            this.fetch();
-        },
-        fetch: function fetch() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            (0, _laravelNova.Minimum)(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(function (_ref) {
-                var _ref$data$value = _ref.data.value,
-                    labels = _ref$data$value.labels,
-                    trend = _ref$data$value.trend,
-                    value = _ref$data$value.value,
-                    prefix = _ref$data$value.prefix,
-                    suffix = _ref$data$value.suffix,
-                    suffixInflection = _ref$data$value.suffixInflection,
-                    format = _ref$data$value.format;
-
-                _this2.value = value;
-                _this2.labels = (0, _keys2.default)(trend);
-                _this2.data = {
-                    labels: (0, _keys2.default)(trend),
-                    series: [_lodash2.default.map(trend, function (value, label) {
-                        return {
-                            meta: label,
-                            value: value
-                        };
-                    })]
-                };
-                _this2.format = format || _this2.format;
-                _this2.prefix = prefix || _this2.prefix;
-                _this2.suffix = suffix || _this2.suffix;
-                _this2.suffixInflection = suffixInflection;
-                _this2.loading = false;
-            });
-        }
-    },
-
-    computed: {
-        hasRanges: function hasRanges() {
-            return this.card.ranges.length > 0;
-        },
-        metricPayload: function metricPayload() {
-            var payload = {
-                params: {
-                    timezone: this.userTimezone,
-                    twelveHourTime: this.usesTwelveHourTime
-                }
-            };
-
-            if (this.hasRanges) {
-                payload.params.range = this.selectedRangeKey;
-            }
-
-            return payload;
-        },
-        metricEndpoint: function metricEndpoint() {
-            var lens = this.lens !== '' ? '/lens/' + this.lens : '';
-            if (this.resourceName && this.resourceId) {
-                return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
-            } else if (this.resourceName) {
-                return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
-            } else {
-                return '/nova-api/metrics/' + this.card.uriKey;
-            }
-        }
+    lens: {
+      type: String,
+      default: ''
     }
+  },
+
+  data: function data() {
+    return {
+      loading: true,
+      value: '',
+      data: [],
+      format: '(0[.]00a)',
+      prefix: '',
+      suffix: '',
+      suffixInflection: true,
+      selectedRangeKey: null
+    };
+  },
+
+  watch: {
+    resourceId: function resourceId() {
+      this.fetch();
+    }
+  },
+
+  created: function created() {
+    var _this = this;
+
+    if (this.hasRanges) {
+      this.selectedRangeKey = this.card.ranges[0].value;
+    }
+
+    if (this.card.refreshWhenActionRuns) {
+      Nova.$on('action-executed', function () {
+        return _this.fetch();
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.fetch();
+  },
+
+
+  methods: {
+    handleRangeSelected: function handleRangeSelected(key) {
+      this.selectedRangeKey = key;
+      this.fetch();
+    },
+    fetch: function fetch() {
+      var _this2 = this;
+
+      this.loading = true;
+
+      (0, _laravelNova.Minimum)(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(function (_ref) {
+        var _ref$data$value = _ref.data.value,
+            labels = _ref$data$value.labels,
+            trend = _ref$data$value.trend,
+            value = _ref$data$value.value,
+            prefix = _ref$data$value.prefix,
+            suffix = _ref$data$value.suffix,
+            suffixInflection = _ref$data$value.suffixInflection,
+            format = _ref$data$value.format;
+
+        _this2.value = value;
+        _this2.labels = (0, _keys2.default)(trend);
+        _this2.data = {
+          labels: (0, _keys2.default)(trend),
+          series: [_lodash2.default.map(trend, function (value, label) {
+            return {
+              meta: label,
+              value: value
+            };
+          })]
+        };
+        _this2.format = format || _this2.format;
+        _this2.prefix = prefix || _this2.prefix;
+        _this2.suffix = suffix || _this2.suffix;
+        _this2.suffixInflection = suffixInflection;
+        _this2.loading = false;
+      });
+    }
+  },
+
+  computed: {
+    hasRanges: function hasRanges() {
+      return this.card.ranges.length > 0;
+    },
+    metricPayload: function metricPayload() {
+      var payload = {
+        params: {
+          timezone: this.userTimezone,
+          twelveHourTime: this.usesTwelveHourTime
+        }
+      };
+
+      if (this.hasRanges) {
+        payload.params.range = this.selectedRangeKey;
+      }
+
+      return payload;
+    },
+    metricEndpoint: function metricEndpoint() {
+      var lens = this.lens !== '' ? '/lens/' + this.lens : '';
+      if (this.resourceName && this.resourceId) {
+        return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
+      } else if (this.resourceName) {
+        return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
+      } else {
+        return '/nova-api/metrics/' + this.card.uriKey;
+      }
+    }
+  }
 }; //
 //
 //
@@ -9485,7 +9438,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
@@ -9516,131 +9469,131 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-    name: 'ValueMetric',
+  name: 'ValueMetric',
 
-    mixins: [_laravelNova.InteractsWithDates],
+  mixins: [_laravelNova.InteractsWithDates],
 
-    components: {
-        BaseValueMetric: _ValueMetric2.default
+  components: {
+    BaseValueMetric: _ValueMetric2.default
+  },
+
+  props: {
+    card: {
+      type: Object,
+      required: true
     },
 
-    props: {
-        card: {
-            type: Object,
-            required: true
-        },
-
-        resourceName: {
-            type: String,
-            default: ''
-        },
-
-        resourceId: {
-            type: [Number, String],
-            default: ''
-        },
-
-        lens: {
-            type: String,
-            default: ''
-        }
+    resourceName: {
+      type: String,
+      default: ''
     },
 
-    data: function data() {
-        return {
-            loading: true,
-            format: '(0[.]00a)',
-            value: 0,
-            previous: 0,
-            prefix: '',
-            suffix: '',
-            suffixInflection: true,
-            selectedRangeKey: null
-        };
+    resourceId: {
+      type: [Number, String],
+      default: ''
     },
 
-    watch: {
-        resourceId: function resourceId() {
-            this.fetch();
-        }
-    },
-
-    created: function created() {
-        var _this = this;
-
-        if (this.hasRanges) {
-            this.selectedRangeKey = this.card.ranges[0].value;
-        }
-
-        if (this.card.refreshWhenActionRuns) {
-            Nova.$on('action-executed', function () {
-                return _this.fetch();
-            });
-        }
-    },
-    mounted: function mounted() {
-        this.fetch(this.selectedRangeKey);
-    },
-
-
-    methods: {
-        handleRangeSelected: function handleRangeSelected(key) {
-            this.selectedRangeKey = key;
-            this.fetch();
-        },
-        fetch: function fetch() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            (0, _laravelNova.Minimum)(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(function (_ref) {
-                var _ref$data$value = _ref.data.value,
-                    value = _ref$data$value.value,
-                    previous = _ref$data$value.previous,
-                    prefix = _ref$data$value.prefix,
-                    suffix = _ref$data$value.suffix,
-                    suffixInflection = _ref$data$value.suffixInflection,
-                    format = _ref$data$value.format;
-
-                _this2.value = value;
-                _this2.format = format || _this2.format;
-                _this2.prefix = prefix || _this2.prefix;
-                _this2.suffix = suffix || _this2.suffix;
-                _this2.suffixInflection = suffixInflection;
-                _this2.previous = previous;
-                _this2.loading = false;
-            });
-        }
-    },
-
-    computed: {
-        hasRanges: function hasRanges() {
-            return this.card.ranges.length > 0;
-        },
-        metricPayload: function metricPayload() {
-            var payload = {
-                params: {
-                    timezone: this.userTimezone
-                }
-            };
-
-            if (this.hasRanges) {
-                payload.params.range = this.selectedRangeKey;
-            }
-
-            return payload;
-        },
-        metricEndpoint: function metricEndpoint() {
-            var lens = this.lens !== '' ? '/lens/' + this.lens : '';
-            if (this.resourceName && this.resourceId) {
-                return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
-            } else if (this.resourceName) {
-                return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
-            } else {
-                return '/nova-api/metrics/' + this.card.uriKey;
-            }
-        }
+    lens: {
+      type: String,
+      default: ''
     }
+  },
+
+  data: function data() {
+    return {
+      loading: true,
+      format: '(0[.]00a)',
+      value: 0,
+      previous: 0,
+      prefix: '',
+      suffix: '',
+      suffixInflection: true,
+      selectedRangeKey: null
+    };
+  },
+
+  watch: {
+    resourceId: function resourceId() {
+      this.fetch();
+    }
+  },
+
+  created: function created() {
+    var _this = this;
+
+    if (this.hasRanges) {
+      this.selectedRangeKey = this.card.ranges[0].value;
+    }
+
+    if (this.card.refreshWhenActionRuns) {
+      Nova.$on('action-executed', function () {
+        return _this.fetch();
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.fetch(this.selectedRangeKey);
+  },
+
+
+  methods: {
+    handleRangeSelected: function handleRangeSelected(key) {
+      this.selectedRangeKey = key;
+      this.fetch();
+    },
+    fetch: function fetch() {
+      var _this2 = this;
+
+      this.loading = true;
+
+      (0, _laravelNova.Minimum)(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(function (_ref) {
+        var _ref$data$value = _ref.data.value,
+            value = _ref$data$value.value,
+            previous = _ref$data$value.previous,
+            prefix = _ref$data$value.prefix,
+            suffix = _ref$data$value.suffix,
+            suffixInflection = _ref$data$value.suffixInflection,
+            format = _ref$data$value.format;
+
+        _this2.value = value;
+        _this2.format = format || _this2.format;
+        _this2.prefix = prefix || _this2.prefix;
+        _this2.suffix = suffix || _this2.suffix;
+        _this2.suffixInflection = suffixInflection;
+        _this2.previous = previous;
+        _this2.loading = false;
+      });
+    }
+  },
+
+  computed: {
+    hasRanges: function hasRanges() {
+      return this.card.ranges.length > 0;
+    },
+    metricPayload: function metricPayload() {
+      var payload = {
+        params: {
+          timezone: this.userTimezone
+        }
+      };
+
+      if (this.hasRanges) {
+        payload.params.range = this.selectedRangeKey;
+      }
+
+      return payload;
+    },
+    metricEndpoint: function metricEndpoint() {
+      var lens = this.lens !== '' ? '/lens/' + this.lens : '';
+      if (this.resourceName && this.resourceId) {
+        return '/nova-api/' + this.resourceName + lens + '/' + this.resourceId + '/metrics/' + this.card.uriKey;
+      } else if (this.resourceName) {
+        return '/nova-api/' + this.resourceName + lens + '/metrics/' + this.card.uriKey;
+      } else {
+        return '/nova-api/metrics/' + this.card.uriKey;
+      }
+    }
+  }
 };
 
 /***/ }),
@@ -9652,7 +9605,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
@@ -9679,63 +9632,63 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-    mixins: [_vueClickaway.mixin],
+  mixins: [_vueClickaway.mixin],
 
-    props: {
-        classWhitelist: [Array, String]
+  props: {
+    classWhitelist: [Array, String]
+  },
+
+  created: function created() {
+    document.addEventListener('keydown', this.handleEscape);
+    document.body.classList.add('overflow-hidden');
+
+    var modalBg = document.createElement('div');
+    modalBg.classList = 'fixed pin bg-80 z-20 opacity-75';
+
+    this.modalBg = modalBg;
+
+    document.body.appendChild(this.modalBg);
+  },
+  destroyed: function destroyed() {
+    document.removeEventListener('keydown', this.handleEscape);
+    document.body.classList.remove('overflow-hidden');
+    document.body.removeChild(this.modalBg);
+  },
+
+
+  data: function data() {
+    return { modalBg: null };
+  },
+
+  methods: {
+    handleEscape: function handleEscape(e) {
+      e.stopPropagation();
+
+      if (e.keyCode == 27) {
+        this.close(e);
+      }
     },
+    close: function close(e) {
+      var classArray = Array.isArray(this.classWhitelist) ? this.classWhitelist : [this.classWhitelist];
 
-    created: function created() {
-        document.addEventListener('keydown', this.handleEscape);
-        document.body.classList.add('overflow-hidden');
+      if (_.filter(classArray, function (className) {
+        return pathIncludesClass(e, className);
+      }).length > 0) {
+        return;
+      }
 
-        var modalBg = document.createElement('div');
-        modalBg.classList = 'fixed pin bg-80 z-20 opacity-75';
-
-        this.modalBg = modalBg;
-
-        document.body.appendChild(this.modalBg);
-    },
-    destroyed: function destroyed() {
-        document.removeEventListener('keydown', this.handleEscape);
-        document.body.classList.remove('overflow-hidden');
-        document.body.removeChild(this.modalBg);
-    },
-
-
-    data: function data() {
-        return { modalBg: null };
-    },
-
-    methods: {
-        handleEscape: function handleEscape(e) {
-            e.stopPropagation();
-
-            if (e.keyCode == 27) {
-                this.close(e);
-            }
-        },
-        close: function close(e) {
-            var classArray = Array.isArray(this.classWhitelist) ? this.classWhitelist : [this.classWhitelist];
-
-            if (_.filter(classArray, function (className) {
-                return pathIncludesClass(e, className);
-            }).length > 0) {
-                return;
-            }
-
-            this.$emit('modal-close', e);
-        }
+      this.$emit('modal-close', e);
     }
+  }
 };
 
 
 function pathIncludesClass(event, className) {
-    return (0, _composedPath2.default)(event).filter(function (el) {
-        return el !== document && el !== window;
-    }).reduce(function (acc, e) {
-        return acc.concat([].concat((0, _toConsumableArray3.default)(e.classList)));
-    }, []).includes(className);
+  return (0, _composedPath2.default)(event).filter(function (el) {
+    return el !== document && el !== window;
+  }).reduce(function (acc, e) {
+    return acc.concat([].concat((0, _toConsumableArray3.default)(e.classList)));
+  }, []).includes(className);
 }
 
 /***/ }),
@@ -9747,7 +9700,7 @@ function pathIncludesClass(event, className) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -9836,56 +9789,56 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        working: Boolean,
-        resourceName: { type: String, required: true },
-        action: { type: Object, required: true },
-        selectedResources: { type: [Array, String], required: true },
-        errors: { type: Object, required: true }
+  props: {
+    working: Boolean,
+    resourceName: { type: String, required: true },
+    action: { type: Object, required: true },
+    selectedResources: { type: [Array, String], required: true },
+    errors: { type: Object, required: true }
+  },
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    // If the modal has inputs, let's highlight the first one, otherwise
+    // let's highlight the submit button
+    if (document.querySelectorAll('.modal input').length) {
+      document.querySelectorAll('.modal input')[0].focus();
+    } else {
+      this.$refs.runButton.focus();
+    }
+  },
+
+
+  methods: {
+    /**
+     * Stop propogation of input events unless it's for an escape or enter keypress
+     */
+    handleKeydown: function handleKeydown(e) {
+      if (['Escape', 'Enter'].indexOf(e.key) !== -1) {
+        return;
+      }
+
+      e.stopPropagation();
     },
+
 
     /**
-     * Mount the component.
+     * Execute the selected action.
      */
-    mounted: function mounted() {
-        // If the modal has inputs, let's highlight the first one, otherwise
-        // let's highlight the submit button
-        if (document.querySelectorAll('.modal input').length) {
-            document.querySelectorAll('.modal input')[0].focus();
-        } else {
-            this.$refs.runButton.focus();
-        }
+    handleConfirm: function handleConfirm() {
+      this.$emit('confirm');
     },
 
 
-    methods: {
-        /**
-         * Stop propogation of input events unless it's for an escape or enter keypress
-         */
-        handleKeydown: function handleKeydown(e) {
-            if (['Escape', 'Enter'].indexOf(e.key) !== -1) {
-                return;
-            }
-
-            e.stopPropagation();
-        },
-
-
-        /**
-         * Execute the selected action.
-         */
-        handleConfirm: function handleConfirm() {
-            this.$emit('confirm');
-        },
-
-
-        /**
-         * Close the modal.
-         */
-        handleClose: function handleClose() {
-            this.$emit('close');
-        }
+    /**
+     * Close the modal.
+     */
+    handleClose: function handleClose() {
+      this.$emit('close');
     }
+  }
 };
 
 /***/ }),
@@ -9897,10 +9850,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
 //
 //
 //
@@ -9943,22 +9894,22 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    /**
-     * Mount the component.
-     */
-    mounted: function mounted() {
-        this.$refs.confirmButton.focus();
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    this.$refs.confirmButton.focus();
+  },
+
+
+  methods: {
+    handleClose: function handleClose() {
+      this.$emit('close');
     },
-
-
-    methods: {
-        handleClose: function handleClose() {
-            this.$emit('close');
-        },
-        handleConfirm: function handleConfirm() {
-            this.$emit('confirm');
-        }
+    handleConfirm: function handleConfirm() {
+      this.$emit('confirm');
     }
+  }
 };
 
 /***/ }),
@@ -9970,10 +9921,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
 //
 //
 //
@@ -10026,38 +9975,38 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        mode: {
-            type: String,
-            default: 'delete',
-            validator: function validator(value) {
-                return ['force delete', 'delete', 'detach'].indexOf(value) !== -1;
-            }
-        }
-    },
-
-    methods: {
-        handleClose: function handleClose() {
-            this.$emit('close');
-        },
-        handleConfirm: function handleConfirm() {
-            this.$emit('confirm');
-        }
-    },
-
-    /**
-     * Mount the component.
-     */
-    mounted: function mounted() {
-        this.$refs.confirmButton.focus();
-    },
-
-
-    computed: {
-        uppercaseMode: function uppercaseMode() {
-            return _.startCase(this.mode);
-        }
+  props: {
+    mode: {
+      type: String,
+      default: 'delete',
+      validator: function validator(value) {
+        return ['force delete', 'delete', 'detach'].indexOf(value) !== -1;
+      }
     }
+  },
+
+  methods: {
+    handleClose: function handleClose() {
+      this.$emit('close');
+    },
+    handleConfirm: function handleConfirm() {
+      this.$emit('confirm');
+    }
+  },
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    this.$refs.confirmButton.focus();
+  },
+
+
+  computed: {
+    uppercaseMode: function uppercaseMode() {
+      return _.startCase(this.mode);
+    }
+  }
 };
 
 /***/ }),
@@ -10069,12 +10018,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
-//
-//
 //
 //
 //
@@ -10122,21 +10067,21 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    methods: {
-        handleClose: function handleClose() {
-            this.$emit('close');
-        },
-        handleConfirm: function handleConfirm() {
-            this.$emit('confirm');
-        }
+  methods: {
+    handleClose: function handleClose() {
+      this.$emit('close');
     },
-
-    /**
-     * Mount the component.
-     */
-    mounted: function mounted() {
-        this.$refs.confirmButton.focus();
+    handleConfirm: function handleConfirm() {
+      this.$emit('confirm');
     }
+  },
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    this.$refs.confirmButton.focus();
+  }
 };
 
 /***/ }),
@@ -10148,10 +10093,8 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//
-//
 //
 //
 //
@@ -10240,98 +10183,98 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        page: {
-            type: Number,
-            required: true
-        },
-        pages: {
-            type: Number,
-            default: 0
-        },
-        next: {
-            type: Boolean,
-            default: false
-        },
-        previous: {
-            type: Boolean,
-            default: false
-        }
+  props: {
+    page: {
+      type: Number,
+      required: true
     },
-
-    data: function data() {
-        return { linksDisabled: false };
+    pages: {
+      type: Number,
+      default: 0
     },
-
-    mounted: function mounted() {
-        var _this = this;
-
-        Nova.$on('resources-loaded', function () {
-            _this.linksDisabled = false;
-        });
+    next: {
+      type: Boolean,
+      default: false
     },
-
-
-    methods: {
-        /**
-         * Select the page.
-         */
-        selectPage: function selectPage(page) {
-            if (this.page != page) {
-                this.linksDisabled = true;
-                this.$emit('page', page);
-            }
-        },
-
-
-        /**
-         * Select the previous page.
-         */
-        selectPreviousPage: function selectPreviousPage() {
-            this.selectPage(this.page - 1);
-        },
-
-
-        /**
-         * Select the next page.
-         */
-        selectNextPage: function selectNextPage() {
-            this.selectPage(this.page + 1);
-        }
-    },
-
-    computed: {
-        /**
-         * Determine if prior pages are available.
-         */
-        hasPreviousPages: function hasPreviousPages() {
-            return this.page > 1;
-        },
-
-        /**
-         * Determine if more pages are available.
-         */
-        hasMorePages: function hasMorePages() {
-            return this.page < this.pages;
-        },
-
-        /**
-         * Get printable pages.
-         */
-        printPages: function printPages() {
-            var middlePage = Math.min(Math.max(3, this.page), this.pages - 2),
-                fromPage = Math.max(middlePage - 2, 1),
-                toPage = Math.min(middlePage + 2, this.pages);
-
-            var pages = [];
-
-            for (var n = fromPage; n <= toPage; ++n) {
-                if (n > 0) pages.push(n);
-            }
-
-            return pages;
-        }
+    previous: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  data: function data() {
+    return { linksDisabled: false };
+  },
+
+  mounted: function mounted() {
+    var _this = this;
+
+    Nova.$on('resources-loaded', function () {
+      _this.linksDisabled = false;
+    });
+  },
+
+
+  methods: {
+    /**
+     * Select the page.
+     */
+    selectPage: function selectPage(page) {
+      if (this.page != page) {
+        this.linksDisabled = true;
+        this.$emit('page', page);
+      }
+    },
+
+
+    /**
+     * Select the previous page.
+     */
+    selectPreviousPage: function selectPreviousPage() {
+      this.selectPage(this.page - 1);
+    },
+
+
+    /**
+     * Select the next page.
+     */
+    selectNextPage: function selectNextPage() {
+      this.selectPage(this.page + 1);
+    }
+  },
+
+  computed: {
+    /**
+     * Determine if prior pages are available.
+     */
+    hasPreviousPages: function hasPreviousPages() {
+      return this.page > 1;
+    },
+
+    /**
+     * Determine if more pages are available.
+     */
+    hasMorePages: function hasMorePages() {
+      return this.page < this.pages;
+    },
+
+    /**
+     * Get printable pages.
+     */
+    printPages: function printPages() {
+      var middlePage = Math.min(Math.max(3, this.page), this.pages - 2),
+          fromPage = Math.max(middlePage - 2, 1),
+          toPage = Math.min(middlePage + 2, this.pages);
+
+      var pages = [];
+
+      for (var n = fromPage; n <= toPage; ++n) {
+        if (n > 0) pages.push(n);
+      }
+
+      return pages;
+    }
+  }
 };
 
 /***/ }),
@@ -10343,7 +10286,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -10369,55 +10312,55 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        currentResourceCount: {
-            type: Number,
-            required: true
-        },
-        allMatchingResourceCount: {
-            type: Number,
-            required: true
-        },
-        resourceCountLabel: {
-            type: String,
-            required: true
-        },
-        perPage: {
-            type: [Number, String],
-            required: true
-        },
-        page: {
-            type: Number,
-            required: true
-        },
-        pages: {
-            type: Number,
-            default: 0
-        },
-        next: {
-            type: Boolean,
-            default: false
-        },
-        previous: {
-            type: Boolean,
-            default: false
-        }
+  props: {
+    currentResourceCount: {
+      type: Number,
+      required: true
     },
-
-    methods: {
-        loadMore: function loadMore() {
-            this.$emit('load-more');
-        }
+    allMatchingResourceCount: {
+      type: Number,
+      required: true
     },
-
-    computed: {
-        buttonLabel: function buttonLabel() {
-            return this.__('Load :perPage More', { perPage: this.perPage });
-        },
-        allResourcesLoaded: function allResourcesLoaded() {
-            return this.currentResourceCount == this.allMatchingResourceCount;
-        }
+    resourceCountLabel: {
+      type: String,
+      required: true
+    },
+    perPage: {
+      type: [Number, String],
+      required: true
+    },
+    page: {
+      type: Number,
+      required: true
+    },
+    pages: {
+      type: Number,
+      default: 0
+    },
+    next: {
+      type: Boolean,
+      default: false
+    },
+    previous: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  methods: {
+    loadMore: function loadMore() {
+      this.$emit('load-more');
+    }
+  },
+
+  computed: {
+    buttonLabel: function buttonLabel() {
+      return this.__('Load :perPage More', { perPage: this.perPage });
+    },
+    allResourcesLoaded: function allResourcesLoaded() {
+      return this.currentResourceCount == this.allMatchingResourceCount;
+    }
+  }
 };
 
 /***/ }),
@@ -10429,7 +10372,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -10471,79 +10414,79 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        page: {
-            type: Number,
-            required: true
-        },
-        pages: {
-            type: Number,
-            default: 0
-        },
-        next: {
-            type: Boolean,
-            default: false
-        },
-        previous: {
-            type: Boolean,
-            default: false
-        }
+  props: {
+    page: {
+      type: Number,
+      required: true
     },
-
-    data: function data() {
-        return { linksDisabled: false };
+    pages: {
+      type: Number,
+      default: 0
     },
-
-    mounted: function mounted() {
-        var _this = this;
-
-        Nova.$on('resources-loaded', function () {
-            _this.linksDisabled = false;
-        });
+    next: {
+      type: Boolean,
+      default: false
     },
-
-
-    methods: {
-        /**
-         * Select the previous page.
-         */
-        selectPreviousPage: function selectPreviousPage() {
-            this.selectPage(this.page - 1);
-        },
-
-
-        /**
-         * Select the next page.
-         */
-        selectNextPage: function selectNextPage() {
-            this.selectPage(this.page + 1);
-        },
-
-
-        /**
-         * Select the page.
-         */
-        selectPage: function selectPage(page) {
-            this.linksDisabled = true;
-            this.$emit('page', page);
-        }
-    },
-
-    computed: {
-        /**
-         * Determine if prior pages are available.
-         */
-        hasPreviousPages: function hasPreviousPages() {
-            return this.previous;
-        },
-
-        /**
-         * Determine if more pages are available.
-         */
-        hasMorePages: function hasMorePages() {
-            return this.next;
-        }
+    previous: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  data: function data() {
+    return { linksDisabled: false };
+  },
+
+  mounted: function mounted() {
+    var _this = this;
+
+    Nova.$on('resources-loaded', function () {
+      _this.linksDisabled = false;
+    });
+  },
+
+
+  methods: {
+    /**
+     * Select the previous page.
+     */
+    selectPreviousPage: function selectPreviousPage() {
+      this.selectPage(this.page - 1);
+    },
+
+
+    /**
+     * Select the next page.
+     */
+    selectNextPage: function selectNextPage() {
+      this.selectPage(this.page + 1);
+    },
+
+
+    /**
+     * Select the page.
+     */
+    selectPage: function selectPage(page) {
+      this.linksDisabled = true;
+      this.$emit('page', page);
+    }
+  },
+
+  computed: {
+    /**
+     * Determine if prior pages are available.
+     */
+    hasPreviousPages: function hasPreviousPages() {
+      return this.previous;
+    },
+
+    /**
+     * Determine if more pages are available.
+     */
+    hasMorePages: function hasMorePages() {
+      return this.next;
+    }
+  }
 };
 
 /***/ }),
@@ -10555,7 +10498,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -10581,31 +10524,31 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        field: {
-            type: Object,
-            required: true
-        },
-        fieldName: {
-            type: String,
-            default: ''
-        }
+  props: {
+    field: {
+      type: Object,
+      required: true
     },
-    computed: {
-        label: function label() {
-            return this.fieldName || this.field.name;
-        },
-        fieldValue: function fieldValue() {
-            if (this.field.value === '' || this.field.value === null || this.field.value === undefined) {
-                return false;
-            }
-
-            return String(this.field.value);
-        },
-        shouldDisplayAsHtml: function shouldDisplayAsHtml() {
-            return this.field.asHtml;
-        }
+    fieldName: {
+      type: String,
+      default: ''
     }
+  },
+  computed: {
+    label: function label() {
+      return this.fieldName || this.field.name;
+    },
+    fieldValue: function fieldValue() {
+      if (this.field.value === '' || this.field.value === null || this.field.value === undefined) {
+        return false;
+      }
+
+      return String(this.field.value);
+    },
+    shouldDisplayAsHtml: function shouldDisplayAsHtml() {
+      return this.field.asHtml;
+    }
+  }
 };
 
 /***/ }),
@@ -10617,7 +10560,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -10638,12 +10581,12 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        processing: {
-            type: Boolean,
-            default: false
-        }
+  props: {
+    processing: {
+      type: Boolean,
+      default: false
     }
+  }
 };
 
 /***/ }),
@@ -10655,117 +10598,117 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.InteractsWithResourceInformation],
+  mixins: [_laravelNova.InteractsWithResourceInformation],
 
-    props: {
-        authorizedToRelate: {
-            type: Boolean,
-            required: true
-        },
-        resourceName: {
-            default: null
-        },
-        resources: {
-            default: []
-        },
-        singularName: {
-            type: String,
-            required: true
-        },
-        selectedResources: {
-            default: []
-        },
-        selectedResourceIds: {},
-        shouldShowCheckboxes: {
-            type: Boolean,
-            default: false
-        },
-        actionsAreAvailable: {
-            type: Boolean,
-            default: false
-        },
-        viaResource: {
-            default: null
-        },
-        viaResourceId: {
-            default: null
-        },
-        viaRelationship: {
-            default: null
-        },
-        relationshipType: {
-            default: null
-        },
-        updateSelectionStatus: {
-            type: Function
-        }
+  props: {
+    authorizedToRelate: {
+      type: Boolean,
+      required: true
     },
-
-    data: function data() {
-        return {
-            selectAllResources: false,
-            selectAllMatching: false,
-            resourceCount: null
-        };
+    resourceName: {
+      default: null
     },
-
-    methods: {
-        /**
-         * Delete the given resource.
-         */
-        deleteResource: function deleteResource(resource) {
-            this.$emit('delete', [resource]);
-        },
-
-
-        /**
-         * Restore the given resource.
-         */
-        restoreResource: function restoreResource(resource) {
-            this.$emit('restore', [resource]);
-        },
-
-
-        /**
-         * Broadcast that the ordering should be updated.
-         */
-        requestOrderByChange: function requestOrderByChange(field) {
-            this.$emit('order', field);
-        }
+    resources: {
+      default: []
     },
-
-    computed: {
-        /**
-         * Get all of the available fields for the resources.
-         */
-        fields: function fields() {
-            if (this.resources) {
-                return this.resources[0].fields;
-            }
-        },
-
-
-        /**
-         * Determine if the current resource listing is via a many-to-many relationship.
-         */
-        viaManyToMany: function viaManyToMany() {
-            return this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany';
-        },
-
-
-        /**
-         * Determine if the current resource listing is via a has-one relationship.
-         */
-        viaHasOne: function viaHasOne() {
-            return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne';
-        }
+    singularName: {
+      type: String,
+      required: true
+    },
+    selectedResources: {
+      default: []
+    },
+    selectedResourceIds: {},
+    shouldShowCheckboxes: {
+      type: Boolean,
+      default: false
+    },
+    actionsAreAvailable: {
+      type: Boolean,
+      default: false
+    },
+    viaResource: {
+      default: null
+    },
+    viaResourceId: {
+      default: null
+    },
+    viaRelationship: {
+      default: null
+    },
+    relationshipType: {
+      default: null
+    },
+    updateSelectionStatus: {
+      type: Function
     }
+  },
+
+  data: function data() {
+    return {
+      selectAllResources: false,
+      selectAllMatching: false,
+      resourceCount: null
+    };
+  },
+
+  methods: {
+    /**
+     * Delete the given resource.
+     */
+    deleteResource: function deleteResource(resource) {
+      this.$emit('delete', [resource]);
+    },
+
+
+    /**
+     * Restore the given resource.
+     */
+    restoreResource: function restoreResource(resource) {
+      this.$emit('restore', [resource]);
+    },
+
+
+    /**
+     * Broadcast that the ordering should be updated.
+     */
+    requestOrderByChange: function requestOrderByChange(field) {
+      this.$emit('order', field);
+    }
+  },
+
+  computed: {
+    /**
+     * Get all of the available fields for the resources.
+     */
+    fields: function fields() {
+      if (this.resources) {
+        return this.resources[0].fields;
+      }
+    },
+
+
+    /**
+     * Determine if the current resource listing is via a many-to-many relationship.
+     */
+    viaManyToMany: function viaManyToMany() {
+      return this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany';
+    },
+
+
+    /**
+     * Determine if the current resource listing is via a has-one relationship.
+     */
+    viaHasOne: function viaHasOne() {
+      return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne';
+    }
+  }
 }; //
 //
 //
@@ -10839,7 +10782,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -10849,20 +10792,20 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        height: {
-            type: Number,
-            default: 288
-        }
-    },
-
-    computed: {
-        style: function style() {
-            return {
-                maxHeight: this.height + "px"
-            };
-        }
+  props: {
+    height: {
+      type: Number,
+      default: 288
     }
+  },
+
+  computed: {
+    style: function style() {
+      return {
+        maxHeight: this.height + "px"
+      };
+    }
+  }
 };
 
 /***/ }),
@@ -10874,7 +10817,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _lodash = __webpack_require__("./node_modules/lodash/lodash.js");
@@ -11001,179 +10944,179 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-    mixins: [_vueClickaway.mixin],
-    inheritAttrs: false,
-    props: {
-        dataTestid: {},
-        disabled: { default: false },
-        value: {},
-        data: {},
-        trackBy: {},
-        searchBy: {},
-        error: {
-            type: Boolean,
-            default: false
-        },
-        boundary: {},
-        debounce: {
-            type: Number,
-            default: 500
-        },
-        clearable: {
-            type: Boolean,
-            default: true
-        }
+  mixins: [_vueClickaway.mixin],
+  inheritAttrs: false,
+  props: {
+    dataTestid: {},
+    disabled: { default: false },
+    value: {},
+    data: {},
+    trackBy: {},
+    searchBy: {},
+    error: {
+      type: Boolean,
+      default: false
     },
-
-    data: function data() {
-        return {
-            show: false,
-            search: '',
-            selected: 0,
-            popper: null,
-            inputWidth: null
-        };
+    boundary: {},
+    debounce: {
+      type: Number,
+      default: 500
     },
-
-    watch: {
-        search: function search(_search) {
-            this.selected = 0;
-            this.$refs.container.scrollTop = 0;
-        },
-        show: function show(_show) {
-            var _this = this;
-
-            if (_show) {
-                var selected = _lodash2.default.findIndex(this.data, [this.trackBy, _lodash2.default.get(this.value, this.trackBy)]);
-                if (selected !== -1) this.selected = selected;
-                this.inputWidth = this.$refs.input.offsetWidth;
-
-                _vue2.default.nextTick(function () {
-                    var vm = _this;
-
-                    _this.popper = new _popper2.default(_this.$refs.input, _this.$refs.dropdown, {
-                        placement: 'bottom-start',
-                        onCreate: function onCreate() {
-                            vm.$refs.container.scrollTop = vm.$refs.container.scrollHeight;
-                            vm.updateScrollPosition();
-                            vm.$refs.search.focus();
-                        },
-
-                        modifiers: {
-                            preventOverflow: {
-                                boundariesElement: _this.boundary ? _this.boundary : 'scrollParent'
-                            }
-                        }
-                    });
-                });
-            } else {
-                if (this.popper) this.popper.destroy();
-            }
-        }
-    },
-    mounted: function mounted() {
-        var _this2 = this;
-
-        document.addEventListener('keydown', function (e) {
-            if (_this2.show && (e.keyCode == 9 || e.keyCode == 27)) {
-                setTimeout(function () {
-                    return _this2.close();
-                }, 50);
-            }
-        });
-    },
-
-
-    methods: {
-        getTrackedByKey: function getTrackedByKey(option) {
-            return _lodash2.default.get(option, this.trackBy);
-        },
-        open: function open() {
-            if (!this.disabled) {
-                this.show = true;
-                this.search = '';
-            }
-        },
-        close: function close() {
-            this.show = false;
-        },
-        clear: function clear() {
-            if (!this.disabled) {
-                this.selected = null;
-                this.$emit('clear', null);
-            }
-        },
-        move: function move(offset) {
-            var newIndex = this.selected + offset;
-
-            if (newIndex >= 0 && newIndex < this.data.length) {
-                this.selected = newIndex;
-                this.updateScrollPosition();
-            }
-        },
-        updateScrollPosition: function updateScrollPosition() {
-            var _this3 = this;
-
-            _vue2.default.nextTick(function () {
-                if (_this3.$refs.selected) {
-                    if (_this3.$refs.selected[0].offsetTop > _this3.$refs.container.scrollTop + _this3.$refs.container.clientHeight - _this3.$refs.selected[0].clientHeight) {
-                        _this3.$refs.container.scrollTop = _this3.$refs.selected[0].offsetTop + _this3.$refs.selected[0].clientHeight - _this3.$refs.container.clientHeight;
-                    }
-
-                    if (_this3.$refs.selected[0].offsetTop < _this3.$refs.container.scrollTop) {
-                        _this3.$refs.container.scrollTop = _this3.$refs.selected[0].offsetTop;
-                    }
-                }
-            });
-        },
-        chooseSelected: function chooseSelected() {
-            var _this4 = this;
-
-            if (this.data[this.selected] !== undefined) {
-                this.$emit('selected', this.data[this.selected]);
-                this.$refs.input.focus();
-                _vue2.default.nextTick(function () {
-                    return _this4.close();
-                });
-            }
-        },
-        choose: function choose(option) {
-            var _this5 = this;
-
-            this.selected = _lodash2.default.findIndex(this.data, [this.trackBy, _lodash2.default.get(option, this.trackBy)]);
-            this.$emit('selected', option);
-            this.$refs.input.focus();
-            _vue2.default.nextTick(function () {
-                return _this5.close();
-            });
-        },
-
-
-        /**
-         * Handle the input event of the search box
-         */
-        handleInput: function handleInput(e) {
-            var _this6 = this;
-
-            this.debouncer(function () {
-                _this6.$emit('input', e.target.value);
-            });
-        },
-
-
-        /**
-         * Debounce function for the input handler
-         */
-        debouncer: _lodash2.default.debounce(function (callback) {
-            return callback();
-        }, 500)
-    },
-
-    computed: {
-        shouldShowDropdownArrow: function shouldShowDropdownArrow() {
-            return this.value == '' || this.value == null || !this.clearable;
-        }
+    clearable: {
+      type: Boolean,
+      default: true
     }
+  },
+
+  data: function data() {
+    return {
+      show: false,
+      search: '',
+      selected: 0,
+      popper: null,
+      inputWidth: null
+    };
+  },
+
+  watch: {
+    search: function search(_search) {
+      this.selected = 0;
+      this.$refs.container.scrollTop = 0;
+    },
+    show: function show(_show) {
+      var _this = this;
+
+      if (_show) {
+        var selected = _lodash2.default.findIndex(this.data, [this.trackBy, _lodash2.default.get(this.value, this.trackBy)]);
+        if (selected !== -1) this.selected = selected;
+        this.inputWidth = this.$refs.input.offsetWidth;
+
+        _vue2.default.nextTick(function () {
+          var vm = _this;
+
+          _this.popper = new _popper2.default(_this.$refs.input, _this.$refs.dropdown, {
+            placement: 'bottom-start',
+            onCreate: function onCreate() {
+              vm.$refs.container.scrollTop = vm.$refs.container.scrollHeight;
+              vm.updateScrollPosition();
+              vm.$refs.search.focus();
+            },
+
+            modifiers: {
+              preventOverflow: {
+                boundariesElement: _this.boundary ? _this.boundary : 'scrollParent'
+              }
+            }
+          });
+        });
+      } else {
+        if (this.popper) this.popper.destroy();
+      }
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    document.addEventListener('keydown', function (e) {
+      if (_this2.show && (e.keyCode == 9 || e.keyCode == 27)) {
+        setTimeout(function () {
+          return _this2.close();
+        }, 50);
+      }
+    });
+  },
+
+
+  methods: {
+    getTrackedByKey: function getTrackedByKey(option) {
+      return _lodash2.default.get(option, this.trackBy);
+    },
+    open: function open() {
+      if (!this.disabled) {
+        this.show = true;
+        this.search = '';
+      }
+    },
+    close: function close() {
+      this.show = false;
+    },
+    clear: function clear() {
+      if (!this.disabled) {
+        this.selected = null;
+        this.$emit('clear', null);
+      }
+    },
+    move: function move(offset) {
+      var newIndex = this.selected + offset;
+
+      if (newIndex >= 0 && newIndex < this.data.length) {
+        this.selected = newIndex;
+        this.updateScrollPosition();
+      }
+    },
+    updateScrollPosition: function updateScrollPosition() {
+      var _this3 = this;
+
+      _vue2.default.nextTick(function () {
+        if (_this3.$refs.selected) {
+          if (_this3.$refs.selected[0].offsetTop > _this3.$refs.container.scrollTop + _this3.$refs.container.clientHeight - _this3.$refs.selected[0].clientHeight) {
+            _this3.$refs.container.scrollTop = _this3.$refs.selected[0].offsetTop + _this3.$refs.selected[0].clientHeight - _this3.$refs.container.clientHeight;
+          }
+
+          if (_this3.$refs.selected[0].offsetTop < _this3.$refs.container.scrollTop) {
+            _this3.$refs.container.scrollTop = _this3.$refs.selected[0].offsetTop;
+          }
+        }
+      });
+    },
+    chooseSelected: function chooseSelected() {
+      var _this4 = this;
+
+      if (this.data[this.selected] !== undefined) {
+        this.$emit('selected', this.data[this.selected]);
+        this.$refs.input.focus();
+        _vue2.default.nextTick(function () {
+          return _this4.close();
+        });
+      }
+    },
+    choose: function choose(option) {
+      var _this5 = this;
+
+      this.selected = _lodash2.default.findIndex(this.data, [this.trackBy, _lodash2.default.get(option, this.trackBy)]);
+      this.$emit('selected', option);
+      this.$refs.input.focus();
+      _vue2.default.nextTick(function () {
+        return _this5.close();
+      });
+    },
+
+
+    /**
+     * Handle the input event of the search box
+     */
+    handleInput: function handleInput(e) {
+      var _this6 = this;
+
+      this.debouncer(function () {
+        _this6.$emit('input', e.target.value);
+      });
+    },
+
+
+    /**
+     * Debounce function for the input handler
+     */
+    debouncer: _lodash2.default.debounce(function (callback) {
+      return callback();
+    }, 500)
+  },
+
+  computed: {
+    shouldShowDropdownArrow: function shouldShowDropdownArrow() {
+      return this.value == '' || this.value == null || !this.clearable;
+    }
+  }
 };
 
 /***/ }),
@@ -11185,133 +11128,56 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-
-var _popper = __webpack_require__("./node_modules/popper.js/dist/esm/popper.js");
-
-var _popper2 = _interopRequireDefault(_popper);
-
-var _vueClickaway = __webpack_require__("./node_modules/vue-clickaway/dist/vue-clickaway.common.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 exports.default = {
-    directives: {
-        onClickaway: _vueClickaway.directive
+  props: {
+    offset: {
+      type: [Number, String],
+      default: 3
     },
 
-    props: {
-        trigger: {
-            default: 'hover',
-            validator: function validator(val) {
-                return ['click', 'hover'].includes(val);
-            }
-        },
-
-        placement: {
-            default: 'top'
-        },
-
-        boundary: {
-            type: String,
-            default: 'window'
-        }
+    trigger: {
+      default: 'hover',
+      validator: function validator(val) {
+        return ['click', 'hover'].includes(val);
+      }
     },
 
-    data: function data() {
-        return {
-            visible: false,
-            popper: null,
-            clickawayEvent: null,
-            stopPropagation: function stopPropagation() {
-                (function (e) {
-                    return e.stopPropagation();
-                });
-            }
-        };
+    placement: {
+      type: String,
+      default: 'top'
     },
 
-    watch: {
-        visible: function visible(showing) {
-            var _this = this;
-
-            if (showing) {
-                this.$nextTick(function () {
-                    if (_this.popper) {
-                        _this.popper.destroy();
-                    }
-
-                    _this.popper = new _popper2.default(_this.$el, _this.$refs.content, {
-                        placement: _this.placement,
-                        modifiers: {
-                            preventOverflow: {
-                                boundariesElement: _this.boundary
-                            },
-                            offset: '10'
-                        }
-                    });
-                });
-            }
-        }
-    },
-
-    methods: {
-        toggle: function toggle() {
-            this.visible = !this.visible;
-        },
-        show: function show() {
-            this.visible = true;
-        },
-        hide: function hide() {
-            this.visible = false;
-        }
-    },
-
-    computed: {
-        triggerListeners: function triggerListeners() {
-            return {
-                on: {
-                    click: { click: this.toggle },
-                    hover: { mouseenter: this.show, mouseleave: this.hide }
-                }[this.trigger]
-            };
-        }
-    },
-
-    render: function render(h) {
-        return h(
-            'span',
-            { 'class': 'select-none' },
-            [h(
-                'span',
-                this.triggerListeners,
-                [this.$slots.default]
-            ), this.visible && h(
-                'portal',
-                {
-                    attrs: { to: 'dropdowns' }
-                },
-                [h(
-                    'div',
-                    {
-                        ref: 'content',
-                        style: 'position: absolute; z-index: 99999',
-                        on: {
-                            'click': function click(e) {
-                                return e.stopPropagation();
-                            }
-                        },
-                        directives: [{
-                            name: 'on-clickaway',
-                            value: this.hide
-                        }]
-                    },
-                    [this.$slots.content]
-                )]
-            )]
-        );
+    boundary: {
+      type: String,
+      default: 'window'
     }
+  },
+
+  render: function render(h) {
+    return h(
+      'v-popover',
+      {
+        attrs: {
+          trigger: this.trigger,
+          offset: this.offset,
+          placement: this.placement,
+          boundariesElement: this.boundary,
+          popoverClass: 'tooltip',
+          popoverBaseClass: '',
+          popoverWrapperClass: '',
+          popoverArrowClass: '',
+          popoverInnerClass: ''
+        }
+      },
+      [h('span', [this.$slots.default]), h(
+        'template',
+        { slot: 'popover' },
+        [this.$slots.content]
+      )]
+    );
+  }
 };
 
 /***/ }),
@@ -11323,28 +11189,28 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var defaultClasses = 'bg-white px-3 py-2 rounded border border-50 shadow text-sm leading-normal';
 
 exports.default = {
-    props: {
-        maxWidth: {
-            default: 'auto'
-        }
-    },
-
-    render: function render(h) {
-        return h(
-            'div',
-            {
-                'class': this.$props.class || defaultClasses,
-                style: 'max-width: ' + this.maxWidth + 'px'
-            },
-            [this.$slots.default]
-        );
+  props: {
+    maxWidth: {
+      default: 'auto'
     }
+  },
+
+  render: function render(h) {
+    return h(
+      'div',
+      {
+        'class': this.$props.class || defaultClasses,
+        style: 'max-width: ' + this.maxWidth + 'px'
+      },
+      [this.$slots.default]
+    );
+  }
 };
 
 /***/ }),
@@ -11356,7 +11222,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _trix = __webpack_require__("./node_modules/trix/dist/trix.js");
@@ -11384,39 +11250,39 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-    name: 'trix-vue',
+  name: 'trix-vue',
 
-    props: {
-        name: { type: String },
-        value: { type: String },
-        placeholder: { type: String },
-        withFiles: { type: Boolean, default: true },
-        disabled: { type: Boolean, default: false }
+  props: {
+    name: { type: String },
+    value: { type: String },
+    placeholder: { type: String },
+    withFiles: { type: Boolean, default: true },
+    disabled: { type: Boolean, default: false }
+  },
+
+  methods: {
+    initialize: function initialize() {
+      this.$refs.theEditor.editor.insertHTML(this.value);
+
+      if (this.disabled) {
+        this.$refs.theEditor.setAttribute('contenteditable', false);
+      }
     },
-
-    methods: {
-        initialize: function initialize() {
-            this.$refs.theEditor.editor.insertHTML(this.value);
-
-            if (this.disabled) {
-                this.$refs.theEditor.setAttribute('contenteditable', false);
-            }
-        },
-        handleChange: function handleChange() {
-            this.$emit('change', this.$refs.theEditor.value);
-        },
-        handleFileAccept: function handleFileAccept(e) {
-            if (!this.withFiles) {
-                e.preventDefault();
-            }
-        },
-        handleAddFile: function handleAddFile(event) {
-            this.$emit('file-add', event);
-        },
-        handleRemoveFile: function handleRemoveFile(event) {
-            this.$emit('file-remove', event);
-        }
+    handleChange: function handleChange() {
+      this.$emit('change', this.$refs.theEditor.value);
+    },
+    handleFileAccept: function handleFileAccept(e) {
+      if (!this.withFiles) {
+        e.preventDefault();
+      }
+    },
+    handleAddFile: function handleAddFile(event) {
+      this.$emit('file-add', event);
+    },
+    handleRemoveFile: function handleRemoveFile(event) {
+      this.$emit('file-remove', event);
     }
+  }
 };
 
 /***/ }),
@@ -11428,7 +11294,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 //
 //
@@ -11451,7 +11317,7 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: ['errors']
+  props: ['errors']
 };
 
 /***/ }),
@@ -11463,7 +11329,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -11479,377 +11345,369 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.PerformsSearches, _laravelNova.TogglesTrashed],
+  mixins: [_laravelNova.PerformsSearches, _laravelNova.TogglesTrashed],
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        resourceId: {
-            required: true
-        },
-        relatedResourceName: {
-            type: String,
-            required: true
-        },
-        viaResource: {
-            default: ''
-        },
-        viaResourceId: {
-            default: ''
-        },
-        viaRelationship: {
-            default: ''
-        },
-        polymorphic: {
-            default: false
-        }
+  props: {
+    resourceName: {
+      type: String,
+      required: true
     },
-
-    data: function data() {
-        return {
-            loading: true,
-            submittedViaAttachAndAttachAnother: false,
-            submittedViaAttachResource: false,
-            field: null,
-            softDeletes: false,
-            fields: [],
-            validationErrors: new _laravelNova.Errors(),
-            selectedResource: null,
-            selectedResourceId: null
-        };
+    resourceId: {
+      required: true
     },
+    relatedResourceName: {
+      type: String,
+      required: true
+    },
+    viaResource: {
+      default: ''
+    },
+    viaResourceId: {
+      default: ''
+    },
+    viaRelationship: {
+      default: ''
+    },
+    polymorphic: {
+      default: false
+    }
+  },
 
-    created: function created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' });
+  data: function data() {
+    return {
+      loading: true,
+      submittedViaAttachAndAttachAnother: false,
+      submittedViaAttachResource: false,
+      field: null,
+      softDeletes: false,
+      fields: [],
+      validationErrors: new _laravelNova.Errors(),
+      selectedResource: null,
+      selectedResourceId: null
+    };
+  },
+
+  created: function created() {
+    if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' });
+  },
+
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    this.initializeComponent();
+  },
+
+
+  methods: {
+    /**
+     * Initialize the component's data.
+     */
+    initializeComponent: function initializeComponent() {
+      this.softDeletes = false;
+      this.disableWithTrashed();
+      this.clearSelection();
+      this.getField();
+      this.getPivotFields();
+      this.resetErrors();
     },
 
 
     /**
-     * Mount the component.
+     * Get the many-to-many relationship field.
      */
-    mounted: function mounted() {
-        this.initializeComponent();
+    getField: function getField() {
+      var _this = this;
+
+      this.field = null;
+
+      Nova.request().get('/nova-api/' + this.resourceName + '/field/' + this.viaRelationship).then(function (_ref) {
+        var data = _ref.data;
+
+        _this.field = data;
+        _this.field.searchable ? _this.determineIfSoftDeletes() : _this.getAvailableResources();
+        _this.loading = false;
+      });
     },
 
 
-    methods: {
-        /**
-         * Initialize the component's data.
-         */
-        initializeComponent: function initializeComponent() {
-            this.softDeletes = false;
-            this.disableWithTrashed();
-            this.clearSelection();
-            this.getField();
-            this.getPivotFields();
-            this.resetErrors();
-        },
+    /**
+     * Get all of the available pivot fields for the relationship.
+     */
+    getPivotFields: function getPivotFields() {
+      var _this2 = this;
 
+      this.fields = [];
 
-        /**
-         * Get the many-to-many relationship field.
-         */
-        getField: function getField() {
-            var _this = this;
-
-            this.field = null;
-
-            Nova.request().get('/nova-api/' + this.resourceName + '/field/' + this.viaRelationship).then(function (_ref) {
-                var data = _ref.data;
-
-                _this.field = data;
-                _this.field.searchable ? _this.determineIfSoftDeletes() : _this.getAvailableResources();
-                _this.loading = false;
-            });
-        },
-
-
-        /**
-         * Get all of the available pivot fields for the relationship.
-         */
-        getPivotFields: function getPivotFields() {
-            var _this2 = this;
-
-            this.fields = [];
-
-            Nova.request().get('/nova-api/' + this.resourceName + '/creation-pivot-fields/' + this.relatedResourceName, {
-                params: {
-                    editing: true,
-                    editMode: 'attach'
-                }
-            }).then(function (_ref2) {
-                var data = _ref2.data;
-
-                _this2.fields = data;
-
-                _.each(_this2.fields, function (field) {
-                    field.fill = function () {
-                        return '';
-                    };
-                });
-            });
-        },
-        resetErrors: function resetErrors() {
-            this.validationErrors = new _laravelNova.Errors();
-        },
-
-
-        /**
-         * Get all of the available resources for the current search / trashed state.
-         */
-        getAvailableResources: function getAvailableResources() {
-            var _this3 = this;
-
-            var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-            Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/attachable/' + this.relatedResourceName, {
-                params: {
-                    search: search,
-                    current: this.selectedResourceId,
-                    withTrashed: this.withTrashed
-                }
-            }).then(function (response) {
-                _this3.availableResources = response.data.resources;
-                _this3.withTrashed = response.data.withTrashed;
-                _this3.softDeletes = response.data.softDeletes;
-            });
-        },
-
-
-        /**
-         * Determine if the related resource is soft deleting.
-         */
-        determineIfSoftDeletes: function determineIfSoftDeletes() {
-            var _this4 = this;
-
-            Nova.request().get('/nova-api/' + this.relatedResourceName + '/soft-deletes').then(function (response) {
-                _this4.softDeletes = response.data.softDeletes;
-            });
-        },
-
-
-        /**
-         * Attach the selected resource.
-         */
-        attachResource: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                this.submittedViaAttachResource = true;
-
-                                _context.prev = 1;
-                                _context.next = 4;
-                                return this.attachRequest();
-
-                            case 4:
-
-                                this.submittedViaAttachResource = false;
-
-                                this.$router.push({
-                                    name: 'detail',
-                                    params: {
-                                        resourceName: this.resourceName,
-                                        resourceId: this.resourceId
-                                    }
-                                });
-                                _context.next = 12;
-                                break;
-
-                            case 8:
-                                _context.prev = 8;
-                                _context.t0 = _context['catch'](1);
-
-                                this.submittedViaAttachResource = false;
-
-                                if (_context.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context.t0.response.data.errors);
-                                    Nova.error(this.__('There was a problem submitting the form.'));
-                                }
-
-                            case 12:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this, [[1, 8]]);
-            }));
-
-            function attachResource() {
-                return _ref3.apply(this, arguments);
-            }
-
-            return attachResource;
-        }(),
-
-
-        /**
-         * Attach a new resource and reset the form
-         */
-        attachAndAttachAnother: function () {
-            var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                this.submittedViaAttachAndAttachAnother = true;
-
-                                _context2.prev = 1;
-                                _context2.next = 4;
-                                return this.attachRequest();
-
-                            case 4:
-
-                                this.submittedViaAttachAndAttachAnother = false;
-
-                                // Reset the form by refetching the fields
-                                this.initializeComponent();
-                                _context2.next = 12;
-                                break;
-
-                            case 8:
-                                _context2.prev = 8;
-                                _context2.t0 = _context2['catch'](1);
-
-                                this.submittedViaAttachAndAttachAnother = false;
-
-                                if (_context2.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context2.t0.response.data.errors);
-                                    Nova.error(this.__('There was a problem submitting the form.'));
-                                }
-
-                            case 12:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this, [[1, 8]]);
-            }));
-
-            function attachAndAttachAnother() {
-                return _ref4.apply(this, arguments);
-            }
-
-            return attachAndAttachAnother;
-        }(),
-
-
-        /**
-         * Send an attach request for this resource
-         */
-        attachRequest: function attachRequest() {
-            return Nova.request().post(this.attachmentEndpoint, this.attachmentFormData, {
-                params: {
-                    editing: true,
-                    editMode: 'attach'
-                }
-            });
-        },
-
-
-        /**
-         * Select a resource using the <select> control
-         */
-        selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
-            this.selectedResourceId = e.target.value;
-            this.selectInitialResource();
-        },
-
-
-        /**
-         * Select the initial selected resource
-         */
-        selectInitialResource: function selectInitialResource() {
-            var _this5 = this;
-
-            this.selectedResource = _.find(this.availableResources, function (r) {
-                return r.value == _this5.selectedResourceId;
-            });
-        },
-
-
-        /**
-         * Toggle the trashed state of the search
-         */
-        toggleWithTrashed: function toggleWithTrashed() {
-            this.withTrashed = !this.withTrashed;
-
-            // Reload the data if the component doesn't support searching
-            if (!this.isSearchable) {
-                this.getAvailableResources();
-            }
+      Nova.request().get('/nova-api/' + this.resourceName + '/creation-pivot-fields/' + this.relatedResourceName, {
+        params: {
+          editing: true,
+          editMode: 'attach'
         }
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this2.fields = data;
+
+        _.each(_this2.fields, function (field) {
+          field.fill = function () {
+            return '';
+          };
+        });
+      });
+    },
+    resetErrors: function resetErrors() {
+      this.validationErrors = new _laravelNova.Errors();
     },
 
-    computed: {
-        /**
-         * Get the attachment endpoint for the relationship type.
-         */
-        attachmentEndpoint: function attachmentEndpoint() {
-            return this.polymorphic ? '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach-morphed/' + this.relatedResourceName : '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach/' + this.relatedResourceName;
-        },
+
+    /**
+     * Get all of the available resources for the current search / trashed state.
+     */
+    getAvailableResources: function getAvailableResources() {
+      var _this3 = this;
+
+      var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+      Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/attachable/' + this.relatedResourceName, {
+        params: {
+          search: search,
+          current: this.selectedResourceId,
+          withTrashed: this.withTrashed
+        }
+      }).then(function (response) {
+        _this3.availableResources = response.data.resources;
+        _this3.withTrashed = response.data.withTrashed;
+        _this3.softDeletes = response.data.softDeletes;
+      });
+    },
 
 
-        /**
-         * Get the form data for the resource attachment.
-         */
-        attachmentFormData: function attachmentFormData() {
-            var _this6 = this;
+    /**
+     * Determine if the related resource is soft deleting.
+     */
+    determineIfSoftDeletes: function determineIfSoftDeletes() {
+      var _this4 = this;
 
-            return _.tap(new FormData(), function (formData) {
-                _.each(_this6.fields, function (field) {
-                    field.fill(formData);
+      Nova.request().get('/nova-api/' + this.relatedResourceName + '/soft-deletes').then(function (response) {
+        _this4.softDeletes = response.data.softDeletes;
+      });
+    },
+
+
+    /**
+     * Attach the selected resource.
+     */
+    attachResource: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.submittedViaAttachResource = true;
+
+                _context.prev = 1;
+                _context.next = 4;
+                return this.attachRequest();
+
+              case 4:
+
+                this.submittedViaAttachResource = false;
+
+                this.$router.push({
+                  name: 'detail',
+                  params: {
+                    resourceName: this.resourceName,
+                    resourceId: this.resourceId
+                  }
                 });
+                _context.next = 12;
+                break;
 
-                if (!_this6.selectedResource) {
-                    formData.append(_this6.relatedResourceName, '');
-                } else {
-                    formData.append(_this6.relatedResourceName, _this6.selectedResource.value);
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context['catch'](1);
+
+                this.submittedViaAttachResource = false;
+
+                if (_context.t0.response.status == 422) {
+                  this.validationErrors = new _laravelNova.Errors(_context.t0.response.data.errors);
+                  Nova.error(this.__('There was a problem submitting the form.'));
                 }
 
-                formData.append(_this6.relatedResourceName + '_trashed', _this6.withTrashed);
-                formData.append('viaRelationship', _this6.viaRelationship);
-            });
-        },
-
-
-        /**
-         * Get the label for the related resource.
-         */
-        relatedResourceLabel: function relatedResourceLabel() {
-            if (this.field) {
-                return this.field.singularLabel;
+              case 12:
+              case 'end':
+                return _context.stop();
             }
-        },
+          }
+        }, _callee, this, [[1, 8]]);
+      }));
+
+      function attachResource() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return attachResource;
+    }(),
 
 
-        /**
-         * Determine if the related resources is searchable
-         */
-        isSearchable: function isSearchable() {
-            return this.field.searchable;
-        },
+    /**
+     * Attach a new resource and reset the form
+     */
+    attachAndAttachAnother: function () {
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.submittedViaAttachAndAttachAnother = true;
+
+                _context2.prev = 1;
+                _context2.next = 4;
+                return this.attachRequest();
+
+              case 4:
+
+                this.submittedViaAttachAndAttachAnother = false;
+
+                // Reset the form by refetching the fields
+                this.initializeComponent();
+                _context2.next = 12;
+                break;
+
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2['catch'](1);
+
+                this.submittedViaAttachAndAttachAnother = false;
+
+                if (_context2.t0.response.status == 422) {
+                  this.validationErrors = new _laravelNova.Errors(_context2.t0.response.data.errors);
+                  Nova.error(this.__('There was a problem submitting the form.'));
+                }
+
+              case 12:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[1, 8]]);
+      }));
+
+      function attachAndAttachAnother() {
+        return _ref4.apply(this, arguments);
+      }
+
+      return attachAndAttachAnother;
+    }(),
 
 
-        /**
-         * Determine if the form is being processed
-         */
-        isWorking: function isWorking() {
-            return this.submittedViaAttachResource || this.submittedViaAttachAndAttachAnother;
+    /**
+     * Send an attach request for this resource
+     */
+    attachRequest: function attachRequest() {
+      return Nova.request().post(this.attachmentEndpoint, this.attachmentFormData, {
+        params: {
+          editing: true,
+          editMode: 'attach'
         }
+      });
+    },
+
+
+    /**
+     * Select a resource using the <select> control
+     */
+    selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
+      this.selectedResourceId = e.target.value;
+      this.selectInitialResource();
+    },
+
+
+    /**
+     * Select the initial selected resource
+     */
+    selectInitialResource: function selectInitialResource() {
+      var _this5 = this;
+
+      this.selectedResource = _.find(this.availableResources, function (r) {
+        return r.value == _this5.selectedResourceId;
+      });
+    },
+
+
+    /**
+     * Toggle the trashed state of the search
+     */
+    toggleWithTrashed: function toggleWithTrashed() {
+      this.withTrashed = !this.withTrashed;
+
+      // Reload the data if the component doesn't support searching
+      if (!this.isSearchable) {
+        this.getAvailableResources();
+      }
     }
+  },
+
+  computed: {
+    /**
+     * Get the attachment endpoint for the relationship type.
+     */
+    attachmentEndpoint: function attachmentEndpoint() {
+      return this.polymorphic ? '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach-morphed/' + this.relatedResourceName : '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach/' + this.relatedResourceName;
+    },
+
+
+    /**
+     * Get the form data for the resource attachment.
+     */
+    attachmentFormData: function attachmentFormData() {
+      var _this6 = this;
+
+      return _.tap(new FormData(), function (formData) {
+        _.each(_this6.fields, function (field) {
+          field.fill(formData);
+        });
+
+        if (!_this6.selectedResource) {
+          formData.append(_this6.relatedResourceName, '');
+        } else {
+          formData.append(_this6.relatedResourceName, _this6.selectedResource.value);
+        }
+
+        formData.append(_this6.relatedResourceName + '_trashed', _this6.withTrashed);
+        formData.append('viaRelationship', _this6.viaRelationship);
+      });
+    },
+
+
+    /**
+     * Get the label for the related resource.
+     */
+    relatedResourceLabel: function relatedResourceLabel() {
+      if (this.field) {
+        return this.field.singularLabel;
+      }
+    },
+
+
+    /**
+     * Determine if the related resources is searchable
+     */
+    isSearchable: function isSearchable() {
+      return this.field.searchable;
+    },
+
+
+    /**
+     * Determine if the form is being processed
+     */
+    isWorking: function isWorking() {
+      return this.submittedViaAttachResource || this.submittedViaAttachAndAttachAnother;
+    }
+  }
 }; //
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -11991,7 +11849,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -12007,341 +11865,341 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.InteractsWithResourceInformation],
+  mixins: [_laravelNova.InteractsWithResourceInformation],
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        viaResource: {
-            default: ''
-        },
-        viaResourceId: {
-            default: ''
-        },
-        viaRelationship: {
-            default: ''
-        }
+  props: {
+    resourceName: {
+      type: String,
+      required: true
     },
-
-    data: function data() {
-        return {
-            relationResponse: null,
-            loading: true,
-            submittedViaCreateResourceAndAddAnother: false,
-            submittedViaCreateResource: false,
-            fields: [],
-            panels: [],
-            validationErrors: new _laravelNova.Errors(),
-            isWorking: false
-        };
+    viaResource: {
+      default: ''
     },
+    viaResourceId: {
+      default: ''
+    },
+    viaRelationship: {
+      default: ''
+    }
+  },
 
-    created: function () {
-        var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-            var _ref2, data;
+  data: function data() {
+    return {
+      relationResponse: null,
+      loading: true,
+      submittedViaCreateResourceAndAddAnother: false,
+      submittedViaCreateResource: false,
+      fields: [],
+      panels: [],
+      validationErrors: new _laravelNova.Errors(),
+      isWorking: false
+    };
+  },
 
-            return _regenerator2.default.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            if (!Nova.missingResource(this.resourceName)) {
-                                _context.next = 2;
-                                break;
-                            }
+  created: function () {
+    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+      var _ref2, data;
 
-                            return _context.abrupt('return', this.$router.push({ name: '404' }));
+      return _regenerator2.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!Nova.missingResource(this.resourceName)) {
+                _context.next = 2;
+                break;
+              }
 
-                        case 2:
-                            if (!this.isRelation) {
-                                _context.next = 8;
-                                break;
-                            }
+              return _context.abrupt('return', this.$router.push({ name: '404' }));
 
-                            _context.next = 5;
-                            return Nova.request('/nova-api/' + this.viaResource + '/field/' + this.viaRelationship);
+            case 2:
+              if (!this.isRelation) {
+                _context.next = 8;
+                break;
+              }
 
-                        case 5:
-                            _ref2 = _context.sent;
-                            data = _ref2.data;
+              _context.next = 5;
+              return Nova.request('/nova-api/' + this.viaResource + '/field/' + this.viaRelationship);
 
-                            this.relationResponse = data;
+            case 5:
+              _ref2 = _context.sent;
+              data = _ref2.data;
 
-                        case 8:
+              this.relationResponse = data;
 
-                            this.getFields();
+            case 8:
 
-                        case 9:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, this);
-        }));
+              this.getFields();
 
-        function created() {
-            return _ref.apply(this, arguments);
+            case 9:
+            case 'end':
+              return _context.stop();
+          }
         }
+      }, _callee, this);
+    }));
 
-        return created;
+    function created() {
+      return _ref.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+
+
+  methods: {
+    /**
+     * Get the available fields for the resource.
+     */
+    getFields: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+        var _ref4, _ref4$data, panels, fields;
+
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.panels = [];
+                this.fields = [];
+
+                _context2.next = 4;
+                return Nova.request().get('/nova-api/' + this.resourceName + '/creation-fields', {
+                  params: {
+                    editing: true,
+                    editMode: 'create',
+                    viaResource: this.viaResource,
+                    viaResourceId: this.viaResourceId,
+                    viaRelationship: this.viaRelationship
+                  }
+                });
+
+              case 4:
+                _ref4 = _context2.sent;
+                _ref4$data = _ref4.data;
+                panels = _ref4$data.panels;
+                fields = _ref4$data.fields;
+
+
+                this.panels = panels;
+                this.fields = fields;
+                this.loading = false;
+
+              case 11:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getFields() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return getFields;
+    }(),
+    submitViaCreateResource: function () {
+      var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(e) {
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                e.preventDefault();
+                this.submittedViaCreateResource = true;
+                this.submittedViaCreateResourceAndAddAnother = false;
+                _context3.next = 5;
+                return this.createResource();
+
+              case 5:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function submitViaCreateResource(_x) {
+        return _ref5.apply(this, arguments);
+      }
+
+      return submitViaCreateResource;
+    }(),
+    submitViaCreateResourceAndAddAnother: function () {
+      var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.submittedViaCreateResourceAndAddAnother = true;
+                this.submittedViaCreateResource = false;
+                _context4.next = 4;
+                return this.createResource();
+
+              case 4:
+              case 'end':
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function submitViaCreateResourceAndAddAnother() {
+        return _ref6.apply(this, arguments);
+      }
+
+      return submitViaCreateResourceAndAddAnother;
     }(),
 
 
-    methods: {
-        /**
-         * Get the available fields for the resource.
-         */
-        getFields: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-                var _ref4, _ref4$data, panels, fields;
+    /**
+     * Create a new resource instance using the provided data.
+     */
+    createResource: function () {
+      var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+        var _ref8, redirect;
 
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                this.panels = [];
-                                this.fields = [];
+        return _regenerator2.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                this.isWorking = true;
 
-                                _context2.next = 4;
-                                return Nova.request().get('/nova-api/' + this.resourceName + '/creation-fields', {
-                                    params: {
-                                        editing: true,
-                                        editMode: 'create',
-                                        viaResource: this.viaResource,
-                                        viaResourceId: this.viaResourceId,
-                                        viaRelationship: this.viaRelationship
-                                    }
-                                });
-
-                            case 4:
-                                _ref4 = _context2.sent;
-                                _ref4$data = _ref4.data;
-                                panels = _ref4$data.panels;
-                                fields = _ref4$data.fields;
-
-
-                                this.panels = panels;
-                                this.fields = fields;
-                                this.loading = false;
-
-                            case 11:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function getFields() {
-                return _ref3.apply(this, arguments);
-            }
-
-            return getFields;
-        }(),
-        submitViaCreateResource: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(e) {
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                e.preventDefault();
-                                this.submittedViaCreateResource = true;
-                                this.submittedViaCreateResourceAndAddAnother = false;
-                                _context3.next = 5;
-                                return this.createResource();
-
-                            case 5:
-                            case 'end':
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this);
-            }));
-
-            function submitViaCreateResource(_x) {
-                return _ref5.apply(this, arguments);
-            }
-
-            return submitViaCreateResource;
-        }(),
-        submitViaCreateResourceAndAddAnother: function () {
-            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-                return _regenerator2.default.wrap(function _callee4$(_context4) {
-                    while (1) {
-                        switch (_context4.prev = _context4.next) {
-                            case 0:
-                                this.submittedViaCreateResourceAndAddAnother = true;
-                                this.submittedViaCreateResource = false;
-                                _context4.next = 4;
-                                return this.createResource();
-
-                            case 4:
-                            case 'end':
-                                return _context4.stop();
-                        }
-                    }
-                }, _callee4, this);
-            }));
-
-            function submitViaCreateResourceAndAddAnother() {
-                return _ref6.apply(this, arguments);
-            }
-
-            return submitViaCreateResourceAndAddAnother;
-        }(),
-
-
-        /**
-         * Create a new resource instance using the provided data.
-         */
-        createResource: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-                var _ref8, redirect;
-
-                return _regenerator2.default.wrap(function _callee5$(_context5) {
-                    while (1) {
-                        switch (_context5.prev = _context5.next) {
-                            case 0:
-                                this.isWorking = true;
-
-                                if (!this.$refs.form.reportValidity()) {
-                                    _context5.next = 26;
-                                    break;
-                                }
-
-                                _context5.prev = 2;
-                                _context5.next = 5;
-                                return this.createRequest();
-
-                            case 5:
-                                _ref8 = _context5.sent;
-                                redirect = _ref8.data.redirect;
-
-
-                                Nova.success(this.__('The :resource was created!', {
-                                    resource: this.resourceInformation.singularLabel.toLowerCase()
-                                }));
-
-                                if (!this.submittedViaCreateResource) {
-                                    _context5.next = 12;
-                                    break;
-                                }
-
-                                this.$router.push({ path: redirect });
-                                _context5.next = 18;
-                                break;
-
-                            case 12:
-                                // Reset the form by refetching the fields
-                                this.getFields();
-                                this.validationErrors = new _laravelNova.Errors();
-                                this.submittedViaCreateAndAddAnother = false;
-                                this.submittedViaCreateResource = false;
-                                this.isWorking = false;
-
-                                return _context5.abrupt('return');
-
-                            case 18:
-                                _context5.next = 26;
-                                break;
-
-                            case 20:
-                                _context5.prev = 20;
-                                _context5.t0 = _context5['catch'](2);
-
-                                this.submittedViaCreateAndAddAnother = false;
-                                this.submittedViaCreateResource = true;
-                                this.isWorking = false;
-
-                                if (_context5.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
-                                    Nova.error(this.__('There was a problem submitting the form.'));
-                                }
-
-                            case 26:
-
-                                this.submittedViaCreateAndAddAnother = false;
-                                this.submittedViaCreateResource = true;
-                                this.isWorking = false;
-
-                            case 29:
-                            case 'end':
-                                return _context5.stop();
-                        }
-                    }
-                }, _callee5, this, [[2, 20]]);
-            }));
-
-            function createResource() {
-                return _ref7.apply(this, arguments);
-            }
-
-            return createResource;
-        }(),
-
-
-        /**
-         * Send a create request for this resource
-         */
-        createRequest: function createRequest() {
-            return Nova.request().post('/nova-api/' + this.resourceName, this.createResourceFormData(), {
-                params: {
-                    editing: true,
-                    editMode: 'create'
+                if (!this.$refs.form.reportValidity()) {
+                  _context5.next = 26;
+                  break;
                 }
-            });
-        },
+
+                _context5.prev = 2;
+                _context5.next = 5;
+                return this.createRequest();
+
+              case 5:
+                _ref8 = _context5.sent;
+                redirect = _ref8.data.redirect;
 
 
-        /**
-         * Create the form data for creating the resource.
-         */
-        createResourceFormData: function createResourceFormData() {
-            var _this = this;
+                Nova.success(this.__('The :resource was created!', {
+                  resource: this.resourceInformation.singularLabel.toLowerCase()
+                }));
 
-            return _.tap(new FormData(), function (formData) {
-                _.each(_this.fields, function (field) {
-                    field.fill(formData);
-                });
+                if (!this.submittedViaCreateResource) {
+                  _context5.next = 12;
+                  break;
+                }
 
-                formData.append('viaResource', _this.viaResource);
-                formData.append('viaResourceId', _this.viaResourceId);
-                formData.append('viaRelationship', _this.viaRelationship);
-            });
+                this.$router.push({ path: redirect });
+                _context5.next = 18;
+                break;
+
+              case 12:
+                // Reset the form by refetching the fields
+                this.getFields();
+                this.validationErrors = new _laravelNova.Errors();
+                this.submittedViaCreateAndAddAnother = false;
+                this.submittedViaCreateResource = false;
+                this.isWorking = false;
+
+                return _context5.abrupt('return');
+
+              case 18:
+                _context5.next = 26;
+                break;
+
+              case 20:
+                _context5.prev = 20;
+                _context5.t0 = _context5['catch'](2);
+
+                this.submittedViaCreateAndAddAnother = false;
+                this.submittedViaCreateResource = true;
+                this.isWorking = false;
+
+                if (_context5.t0.response.status == 422) {
+                  this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
+                  Nova.error(this.__('There was a problem submitting the form.'));
+                }
+
+              case 26:
+
+                this.submittedViaCreateAndAddAnother = false;
+                this.submittedViaCreateResource = true;
+                this.isWorking = false;
+
+              case 29:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this, [[2, 20]]);
+      }));
+
+      function createResource() {
+        return _ref7.apply(this, arguments);
+      }
+
+      return createResource;
+    }(),
+
+
+    /**
+     * Send a create request for this resource
+     */
+    createRequest: function createRequest() {
+      return Nova.request().post('/nova-api/' + this.resourceName, this.createResourceFormData(), {
+        params: {
+          editing: true,
+          editMode: 'create'
         }
+      });
     },
 
-    computed: {
-        wasSubmittedViaCreateResource: function wasSubmittedViaCreateResource() {
-            return this.isWorking && this.submittedViaCreateResource;
-        },
-        wasSubmittedViaCreateResourceAndAddAnother: function wasSubmittedViaCreateResourceAndAddAnother() {
-            return this.isWorking && this.submittedViaCreateResourceAndAddAnother;
-        },
-        panelsWithFields: function panelsWithFields() {
-            var _this2 = this;
 
-            return _.map(this.panels, function (panel) {
-                return {
-                    name: panel.name,
-                    fields: _.filter(_this2.fields, function (field) {
-                        return field.panel == panel.name;
-                    })
-                };
-            });
-        },
-        singularName: function singularName() {
-            if (this.relationResponse) {
-                return this.relationResponse.singularLabel;
-            }
+    /**
+     * Create the form data for creating the resource.
+     */
+    createResourceFormData: function createResourceFormData() {
+      var _this = this;
 
-            return this.resourceInformation.singularLabel;
-        },
-        isRelation: function isRelation() {
-            return Boolean(this.viaResourceId && this.viaRelationship);
-        }
+      return _.tap(new FormData(), function (formData) {
+        _.each(_this.fields, function (field) {
+          field.fill(formData);
+        });
+
+        formData.append('viaResource', _this.viaResource);
+        formData.append('viaResourceId', _this.viaResourceId);
+        formData.append('viaRelationship', _this.viaRelationship);
+      });
     }
+  },
+
+  computed: {
+    wasSubmittedViaCreateResource: function wasSubmittedViaCreateResource() {
+      return this.isWorking && this.submittedViaCreateResource;
+    },
+    wasSubmittedViaCreateResourceAndAddAnother: function wasSubmittedViaCreateResourceAndAddAnother() {
+      return this.isWorking && this.submittedViaCreateResourceAndAddAnother;
+    },
+    panelsWithFields: function panelsWithFields() {
+      var _this2 = this;
+
+      return _.map(this.panels, function (panel) {
+        return {
+          name: panel.name,
+          fields: _.filter(_this2.fields, function (field) {
+            return field.panel == panel.name;
+          })
+        };
+      });
+    },
+    singularName: function singularName() {
+      if (this.relationResponse) {
+        return this.relationResponse.singularLabel;
+      }
+
+      return this.resourceInformation.singularLabel;
+    },
+    isRelation: function isRelation() {
+      return Boolean(this.viaResourceId && this.viaRelationship);
+    }
+  }
 }; //
 //
 //
@@ -12402,39 +12260,31 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    mixins: [_laravelNova.HasCards],
+  mixins: [_laravelNova.HasCards],
 
-    props: {
-        name: {
-            type: String,
-            required: false,
-            default: 'main'
-        }
-    },
-
-    computed: {
-        /**
-         * Get the endpoint for this dashboard's cards.
-         */
-        cardsEndpoint: function cardsEndpoint() {
-            return '/nova-api/dashboards/' + this.name;
-        }
+  props: {
+    name: {
+      type: String,
+      required: false,
+      default: 'main'
     }
+  },
+
+  computed: {
+    /**
+     * Get the endpoint for this dashboard's cards.
+     */
+    cardsEndpoint: function cardsEndpoint() {
+      return '/nova-api/dashboards/' + this.name;
+    }
+  }
 }; //
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -12457,7 +12307,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _stringify = __webpack_require__("./node_modules/babel-runtime/core-js/json/stringify.js");
@@ -12477,485 +12327,473 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: ['resourceName', 'resourceId'],
+  props: ['resourceName', 'resourceId'],
 
-    mixins: [_laravelNova.Deletable, _laravelNova.HasCards, _laravelNova.InteractsWithResourceInformation],
+  mixins: [_laravelNova.Deletable, _laravelNova.HasCards, _laravelNova.InteractsWithResourceInformation],
 
-    data: function data() {
-        return {
-            initialLoading: true,
-            loading: true,
+  data: function data() {
+    return {
+      initialLoading: true,
+      loading: true,
 
-            resource: null,
-            panels: [],
-            actions: [],
-            actionValidationErrors: new _laravelNova.Errors(),
-            deleteModalOpen: false,
-            restoreModalOpen: false,
-            forceDeleteModalOpen: false
-        };
-    },
+      resource: null,
+      panels: [],
+      actions: [],
+      actionValidationErrors: new _laravelNova.Errors(),
+      deleteModalOpen: false,
+      restoreModalOpen: false,
+      forceDeleteModalOpen: false
+    };
+  },
 
-    watch: {
-        resourceId: function resourceId(newResourceId, oldResourceId) {
-            if (newResourceId != oldResourceId) {
-                this.initializeComponent();
-            }
-        }
-    },
-
-    /**
-     * Bind the keydown even listener when the component is created
-     */
-    created: function created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' });
-
-        document.addEventListener('keydown', this.handleKeydown);
-    },
-
-
-    /**
-     * Unbind the keydown even listener when the component is destroyed
-     */
-    destroyed: function destroyed() {
-        document.removeEventListener('keydown', this.handleKeydown);
-    },
-
-
-    /**
-     * Mount the component.
-     */
-    mounted: function mounted() {
+  watch: {
+    resourceId: function resourceId(newResourceId, oldResourceId) {
+      if (newResourceId != oldResourceId) {
         this.initializeComponent();
-    },
-
-
-    methods: {
-        /**
-         * Handle the keydown event
-         */
-        handleKeydown: function handleKeydown(e) {
-            if (this.resource.authorizedToUpdate && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && e.keyCode == 69 && e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA') {
-                this.$router.push({
-                    name: 'edit',
-                    params: { id: this.resource.id }
-                });
-            }
-        },
-
-
-        /**
-         * Initialize the compnent's data.
-         */
-        initializeComponent: function () {
-            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.next = 2;
-                                return this.getResource();
-
-                            case 2:
-                                _context.next = 4;
-                                return this.getActions();
-
-                            case 4:
-
-                                this.initialLoading = false;
-
-                            case 5:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function initializeComponent() {
-                return _ref.apply(this, arguments);
-            }
-
-            return initializeComponent;
-        }(),
-
-
-        /**
-         * Get the resource information.
-         */
-        getResource: function getResource() {
-            var _this = this;
-
-            this.resource = null;
-
-            return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId)).then(function (_ref2) {
-                var _ref2$data = _ref2.data,
-                    panels = _ref2$data.panels,
-                    resource = _ref2$data.resource;
-
-                _this.panels = panels;
-                _this.resource = resource;
-                _this.loading = false;
-            }).catch(function (error) {
-                if (error.response.status >= 500) {
-                    Nova.$emit('error', error.response.data.message);
-                    return;
-                }
-
-                if (error.response.status === 404 && _this.initialLoading) {
-                    _this.$router.push({ name: '404' });
-                    return;
-                }
-
-                if (error.response.status === 403) {
-                    _this.$router.push({ name: '403' });
-                    return;
-                }
-
-                Nova.error(_this.__('This resource no longer exists'));
-
-                _this.$router.push({
-                    name: 'index',
-                    params: { resourceName: _this.resourceName }
-                });
-            });
-        },
-
-
-        /**
-         * Get the available actions for the resource.
-         */
-        getActions: function getActions() {
-            var _this2 = this;
-
-            this.actions = [];
-
-            return Nova.request().get('/nova-api/' + this.resourceName + '/actions', {
-                params: {
-                    resourceId: this.resourceId
-                }
-            }).then(function (response) {
-                _this2.actions = _.filter(response.data.actions, function (a) {
-                    return a.showOnDetail;
-                });
-            });
-        },
-
-
-        /**
-         * Handle an action executed event.
-         */
-        actionExecuted: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                _context2.next = 2;
-                                return this.getResource();
-
-                            case 2:
-                                _context2.next = 4;
-                                return this.getActions();
-
-                            case 4:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function actionExecuted() {
-                return _ref3.apply(this, arguments);
-            }
-
-            return actionExecuted;
-        }(),
-
-
-        /**
-         * Create a new panel for the given field.
-         */
-        createPanelForField: function createPanelForField(field) {
-            return _.tap(_.find(this.panels, function (panel) {
-                return panel.name == field.panel;
-            }), function (panel) {
-                panel.fields = [field];
-            });
-        },
-
-
-        /**
-         * Create a new panel for the given relationship field.
-         */
-        createPanelForRelationship: function createPanelForRelationship(field) {
-            return {
-                component: 'relationship-panel',
-                prefixComponent: true,
-                name: field.name,
-                fields: [field]
-            };
-        },
-
-
-        /**
-         * Show the confirmation modal for deleting or detaching a resource
-         */
-        confirmDelete: function () {
-            var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-                var _this3 = this;
-
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                this.deleteResources([this.resource], function () {
-                                    Nova.success(_this3.__('The :resource was deleted!', {
-                                        resource: _this3.resourceInformation.singularLabel.toLowerCase()
-                                    }));
-
-                                    if (!_this3.resource.softDeletes) {
-                                        _this3.$router.push({
-                                            name: 'index',
-                                            params: { resourceName: _this3.resourceName }
-                                        });
-                                        return;
-                                    }
-
-                                    _this3.closeDeleteModal();
-                                    _this3.getResource();
-                                });
-
-                            case 1:
-                            case 'end':
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this);
-            }));
-
-            function confirmDelete() {
-                return _ref4.apply(this, arguments);
-            }
-
-            return confirmDelete;
-        }(),
-
-
-        /**
-         * Open the delete modal
-         */
-        openDeleteModal: function openDeleteModal() {
-            this.deleteModalOpen = true;
-        },
-
-
-        /**
-         * Close the delete modal
-         */
-        closeDeleteModal: function closeDeleteModal() {
-            this.deleteModalOpen = false;
-        },
-
-
-        /**
-         * Show the confirmation modal for restoring a resource
-         */
-        confirmRestore: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-                var _this4 = this;
-
-                return _regenerator2.default.wrap(function _callee4$(_context4) {
-                    while (1) {
-                        switch (_context4.prev = _context4.next) {
-                            case 0:
-                                this.restoreResources([this.resource], function () {
-                                    Nova.success(_this4.__('The :resource was restored!', {
-                                        resource: _this4.resourceInformation.singularLabel.toLowerCase()
-                                    }));
-
-                                    _this4.closeRestoreModal();
-                                    _this4.getResource();
-                                });
-
-                            case 1:
-                            case 'end':
-                                return _context4.stop();
-                        }
-                    }
-                }, _callee4, this);
-            }));
-
-            function confirmRestore() {
-                return _ref5.apply(this, arguments);
-            }
-
-            return confirmRestore;
-        }(),
-
-
-        /**
-         * Open the restore modal
-         */
-        openRestoreModal: function openRestoreModal() {
-            this.restoreModalOpen = true;
-        },
-
-
-        /**
-         * Close the restore modal
-         */
-        closeRestoreModal: function closeRestoreModal() {
-            this.restoreModalOpen = false;
-        },
-
-
-        /**
-         * Show the confirmation modal for force deleting
-         */
-        confirmForceDelete: function () {
-            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-                var _this5 = this;
-
-                return _regenerator2.default.wrap(function _callee5$(_context5) {
-                    while (1) {
-                        switch (_context5.prev = _context5.next) {
-                            case 0:
-                                this.forceDeleteResources([this.resource], function () {
-                                    Nova.success(_this5.__('The :resource was deleted!', {
-                                        resource: _this5.resourceInformation.singularLabel.toLowerCase()
-                                    }));
-
-                                    _this5.$router.push({
-                                        name: 'index',
-                                        params: { resourceName: _this5.resourceName }
-                                    });
-                                });
-
-                            case 1:
-                            case 'end':
-                                return _context5.stop();
-                        }
-                    }
-                }, _callee5, this);
-            }));
-
-            function confirmForceDelete() {
-                return _ref6.apply(this, arguments);
-            }
-
-            return confirmForceDelete;
-        }(),
-
-
-        /**
-         * Open the force delete modal
-         */
-        openForceDeleteModal: function openForceDeleteModal() {
-            this.forceDeleteModalOpen = true;
-        },
-
-
-        /**
-         * Close the force delete modal
-         */
-        closeForceDeleteModal: function closeForceDeleteModal() {
-            this.forceDeleteModalOpen = false;
-        }
-    },
-
-    computed: {
-        /**
-         * Get the available field panels.
-         */
-        availablePanels: function availablePanels() {
-            var _this6 = this;
-
-            if (this.resource) {
-                var panels = {};
-
-                var fields = _.toArray(JSON.parse((0, _stringify2.default)(this.resource.fields)));
-
-                fields.forEach(function (field) {
-                    if (field.listable) {
-                        return panels[field.name] = _this6.createPanelForRelationship(field);
-                    } else if (panels[field.panel]) {
-                        return panels[field.panel].fields.push(field);
-                    }
-
-                    panels[field.panel] = _this6.createPanelForField(field);
-                });
-
-                return _.toArray(panels);
-            }
-        },
-
-
-        /**
-         * These are here to satisfy the parameter requirements for deleting the resource
-         */
-        currentSearch: function currentSearch() {
-            return '';
-        },
-        encodedFilters: function encodedFilters() {
-            return [];
-        },
-        currentTrashed: function currentTrashed() {
-            return '';
-        },
-        viaResource: function viaResource() {
-            return '';
-        },
-        viaResourceId: function viaResourceId() {
-            return '';
-        },
-        viaRelationship: function viaRelationship() {
-            return '';
-        },
-        selectedResources: function selectedResources() {
-            return [this.resourceId];
-        },
-
-
-        /**
-         * Determine whether this is a detail view for an Action Event
-         */
-        isActionDetail: function isActionDetail() {
-            return this.resourceName == 'action-events';
-        },
-
-
-        /**
-         * Get the endpoint for this resource's metrics.
-         */
-        cardsEndpoint: function cardsEndpoint() {
-            return '/nova-api/' + this.resourceName + '/cards';
-        },
-
-
-        /**
-         * Get the extra card params to pass to the endpoint.
-         */
-        extraCardParams: function extraCardParams() {
-            return {
-                resourceId: this.resourceId
-            };
-        }
+      }
     }
+  },
+
+  /**
+   * Bind the keydown even listener when the component is created
+   */
+  created: function created() {
+    if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' });
+
+    document.addEventListener('keydown', this.handleKeydown);
+  },
+
+
+  /**
+   * Unbind the keydown even listener when the component is destroyed
+   */
+  destroyed: function destroyed() {
+    document.removeEventListener('keydown', this.handleKeydown);
+  },
+
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    this.initializeComponent();
+  },
+
+
+  methods: {
+    /**
+     * Handle the keydown event
+     */
+    handleKeydown: function handleKeydown(e) {
+      if (this.resource.authorizedToUpdate && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && e.keyCode == 69 && e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA') {
+        this.$router.push({
+          name: 'edit',
+          params: { id: this.resource.id }
+        });
+      }
+    },
+
+
+    /**
+     * Initialize the compnent's data.
+     */
+    initializeComponent: function () {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.getResource();
+
+              case 2:
+                _context.next = 4;
+                return this.getActions();
+
+              case 4:
+
+                this.initialLoading = false;
+
+              case 5:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function initializeComponent() {
+        return _ref.apply(this, arguments);
+      }
+
+      return initializeComponent;
+    }(),
+
+
+    /**
+     * Get the resource information.
+     */
+    getResource: function getResource() {
+      var _this = this;
+
+      this.resource = null;
+
+      return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId)).then(function (_ref2) {
+        var _ref2$data = _ref2.data,
+            panels = _ref2$data.panels,
+            resource = _ref2$data.resource;
+
+        _this.panels = panels;
+        _this.resource = resource;
+        _this.loading = false;
+      }).catch(function (error) {
+        if (error.response.status >= 500) {
+          Nova.$emit('error', error.response.data.message);
+          return;
+        }
+
+        if (error.response.status === 404 && _this.initialLoading) {
+          _this.$router.push({ name: '404' });
+          return;
+        }
+
+        if (error.response.status === 403) {
+          _this.$router.push({ name: '403' });
+          return;
+        }
+
+        Nova.error(_this.__('This resource no longer exists'));
+
+        _this.$router.push({
+          name: 'index',
+          params: { resourceName: _this.resourceName }
+        });
+      });
+    },
+
+
+    /**
+     * Get the available actions for the resource.
+     */
+    getActions: function getActions() {
+      var _this2 = this;
+
+      this.actions = [];
+
+      return Nova.request().get('/nova-api/' + this.resourceName + '/actions', {
+        params: {
+          resourceId: this.resourceId
+        }
+      }).then(function (response) {
+        _this2.actions = _.filter(response.data.actions, function (a) {
+          return a.showOnDetail;
+        });
+      });
+    },
+
+
+    /**
+     * Handle an action executed event.
+     */
+    actionExecuted: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.getResource();
+
+              case 2:
+                _context2.next = 4;
+                return this.getActions();
+
+              case 4:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function actionExecuted() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return actionExecuted;
+    }(),
+
+
+    /**
+     * Create a new panel for the given field.
+     */
+    createPanelForField: function createPanelForField(field) {
+      return _.tap(_.find(this.panels, function (panel) {
+        return panel.name == field.panel;
+      }), function (panel) {
+        panel.fields = [field];
+      });
+    },
+
+
+    /**
+     * Create a new panel for the given relationship field.
+     */
+    createPanelForRelationship: function createPanelForRelationship(field) {
+      return {
+        component: 'relationship-panel',
+        prefixComponent: true,
+        name: field.name,
+        fields: [field]
+      };
+    },
+
+
+    /**
+     * Show the confirmation modal for deleting or detaching a resource
+     */
+    confirmDelete: function () {
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+        var _this3 = this;
+
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.deleteResources([this.resource], function () {
+                  Nova.success(_this3.__('The :resource was deleted!', {
+                    resource: _this3.resourceInformation.singularLabel.toLowerCase()
+                  }));
+
+                  if (!_this3.resource.softDeletes) {
+                    _this3.$router.push({
+                      name: 'index',
+                      params: { resourceName: _this3.resourceName }
+                    });
+                    return;
+                  }
+
+                  _this3.closeDeleteModal();
+                  _this3.getResource();
+                });
+
+              case 1:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function confirmDelete() {
+        return _ref4.apply(this, arguments);
+      }
+
+      return confirmDelete;
+    }(),
+
+
+    /**
+     * Open the delete modal
+     */
+    openDeleteModal: function openDeleteModal() {
+      this.deleteModalOpen = true;
+    },
+
+
+    /**
+     * Close the delete modal
+     */
+    closeDeleteModal: function closeDeleteModal() {
+      this.deleteModalOpen = false;
+    },
+
+
+    /**
+     * Show the confirmation modal for restoring a resource
+     */
+    confirmRestore: function () {
+      var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+        var _this4 = this;
+
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.restoreResources([this.resource], function () {
+                  Nova.success(_this4.__('The :resource was restored!', {
+                    resource: _this4.resourceInformation.singularLabel.toLowerCase()
+                  }));
+
+                  _this4.closeRestoreModal();
+                  _this4.getResource();
+                });
+
+              case 1:
+              case 'end':
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function confirmRestore() {
+        return _ref5.apply(this, arguments);
+      }
+
+      return confirmRestore;
+    }(),
+
+
+    /**
+     * Open the restore modal
+     */
+    openRestoreModal: function openRestoreModal() {
+      this.restoreModalOpen = true;
+    },
+
+
+    /**
+     * Close the restore modal
+     */
+    closeRestoreModal: function closeRestoreModal() {
+      this.restoreModalOpen = false;
+    },
+
+
+    /**
+     * Show the confirmation modal for force deleting
+     */
+    confirmForceDelete: function () {
+      var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+        var _this5 = this;
+
+        return _regenerator2.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                this.forceDeleteResources([this.resource], function () {
+                  Nova.success(_this5.__('The :resource was deleted!', {
+                    resource: _this5.resourceInformation.singularLabel.toLowerCase()
+                  }));
+
+                  _this5.$router.push({
+                    name: 'index',
+                    params: { resourceName: _this5.resourceName }
+                  });
+                });
+
+              case 1:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function confirmForceDelete() {
+        return _ref6.apply(this, arguments);
+      }
+
+      return confirmForceDelete;
+    }(),
+
+
+    /**
+     * Open the force delete modal
+     */
+    openForceDeleteModal: function openForceDeleteModal() {
+      this.forceDeleteModalOpen = true;
+    },
+
+
+    /**
+     * Close the force delete modal
+     */
+    closeForceDeleteModal: function closeForceDeleteModal() {
+      this.forceDeleteModalOpen = false;
+    }
+  },
+
+  computed: {
+    /**
+     * Get the available field panels.
+     */
+    availablePanels: function availablePanels() {
+      var _this6 = this;
+
+      if (this.resource) {
+        var panels = {};
+
+        var fields = _.toArray(JSON.parse((0, _stringify2.default)(this.resource.fields)));
+
+        fields.forEach(function (field) {
+          if (field.listable) {
+            return panels[field.name] = _this6.createPanelForRelationship(field);
+          } else if (panels[field.panel]) {
+            return panels[field.panel].fields.push(field);
+          }
+
+          panels[field.panel] = _this6.createPanelForField(field);
+        });
+
+        return _.toArray(panels);
+      }
+    },
+
+
+    /**
+     * These are here to satisfy the parameter requirements for deleting the resource
+     */
+    currentSearch: function currentSearch() {
+      return '';
+    },
+    encodedFilters: function encodedFilters() {
+      return [];
+    },
+    currentTrashed: function currentTrashed() {
+      return '';
+    },
+    viaResource: function viaResource() {
+      return '';
+    },
+    viaResourceId: function viaResourceId() {
+      return '';
+    },
+    viaRelationship: function viaRelationship() {
+      return '';
+    },
+    selectedResources: function selectedResources() {
+      return [this.resourceId];
+    },
+
+
+    /**
+     * Determine whether this is a detail view for an Action Event
+     */
+    isActionDetail: function isActionDetail() {
+      return this.resourceName == 'action-events';
+    },
+
+
+    /**
+     * Get the endpoint for this resource's metrics.
+     */
+    cardsEndpoint: function cardsEndpoint() {
+      return '/nova-api/' + this.resourceName + '/cards';
+    },
+
+
+    /**
+     * Get the extra card params to pass to the endpoint.
+     */
+    extraCardParams: function extraCardParams() {
+      return {
+        resourceId: this.resourceId
+      };
+    }
+  }
 }; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -13118,7 +12956,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
@@ -13462,897 +13300,867 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
-    mixins: [_laravelNova.Deletable, _laravelNova.Filterable, _laravelNova.HasCards, _laravelNova.Paginatable, _laravelNova.PerPageable, _laravelNova.InteractsWithResourceInformation, _laravelNova.InteractsWithQueryString],
+  mixins: [_laravelNova.Deletable, _laravelNova.Filterable, _laravelNova.HasCards, _laravelNova.Paginatable, _laravelNova.PerPageable, _laravelNova.InteractsWithResourceInformation, _laravelNova.InteractsWithQueryString],
 
-    props: {
-        field: {
-            type: Object
-        },
-        resourceName: {
-            type: String,
-            required: true
-        },
-        viaResource: {
-            default: ''
-        },
-        viaResourceId: {
-            default: ''
-        },
-        viaRelationship: {
-            default: ''
-        },
-        relationshipType: {
-            type: String,
-            default: ''
-        }
+  props: {
+    field: {
+      type: Object
     },
-
-    data: function data() {
-        return {
-            actionEventsRefresher: null,
-            initialLoading: true,
-            loading: true,
-
-            resourceResponse: null,
-            resources: [],
-            softDeletes: false,
-            selectedResources: [],
-            selectAllMatchingResources: false,
-            allMatchingResourceCount: 0,
-
-            deleteModalOpen: false,
-
-            actions: [],
-            pivotActions: null,
-
-            search: '',
-            lenses: [],
-
-            authorizedToRelate: false,
-
-            orderBy: '',
-            orderByDirection: '',
-            trashed: '',
-
-            // Load More Pagination
-            currentPageLoadMore: null
-        };
+    resourceName: {
+      type: String,
+      required: true
     },
-
-    /**
-     * Mount the component and retrieve its initial data.
-     */
-    created: function () {
-        var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-            var _this = this;
-
-            return _regenerator2.default.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            if (!Nova.missingResource(this.resourceName)) {
-                                _context.next = 2;
-                                break;
-                            }
-
-                            return _context.abrupt('return', this.$router.push({ name: '404' }));
-
-                        case 2:
-
-                            // Bind the keydown even listener when the router is visited if this
-                            // component is not a relation on a Detail page
-                            if (!this.viaResource && !this.viaResourceId) {
-                                document.addEventListener('keydown', this.handleKeydown);
-                            }
-
-                            this.initializeSearchFromQueryString();
-                            this.initializePerPageFromQueryString();
-                            this.initializeTrashedFromQueryString();
-                            this.initializeOrderingFromQueryString();
-
-                            this.perPage = this.resourceInformation.perPageOptions[0];
-
-                            _context.next = 10;
-                            return this.initializeFilters();
-
-                        case 10:
-                            _context.next = 12;
-                            return this.getResources();
-
-                        case 12:
-                            _context.next = 14;
-                            return this.getAuthorizationToRelate();
-
-                        case 14:
-
-                            this.getLenses();
-                            this.getActions();
-
-                            this.initialLoading = false;
-
-                            this.$watch(function () {
-                                return _this.resourceName + _this.encodedFilters + _this.currentSearch + _this.currentPage + _this.perPage + _this.currentOrderBy + _this.currentOrderByDirection + _this.currentTrashed;
-                            }, function () {
-                                _this.getResources();
-                            });
-
-                            // Refresh the action events
-                            if (this.resourceName === 'action-events') {
-                                Nova.$on('refresh-action-events', function () {
-                                    _this.getResources();
-                                });
-
-                                this.actionEventsRefresher = setInterval(function () {
-                                    if (document.hasFocus()) {
-                                        _this.getResources();
-                                    }
-                                }, 15 * 1000);
-                            }
-
-                        case 19:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, this);
-        }));
-
-        function created() {
-            return _ref.apply(this, arguments);
-        }
-
-        return created;
-    }(),
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-        next();
-        this.initializeState(false);
+    viaResource: {
+      default: ''
     },
-
-
-    /**
-     * Unbind the keydown even listener when the component is destroyed
-     */
-    destroyed: function destroyed() {
-        if (this.actionEventsRefresher) {
-            clearInterval(this.actionEventsRefresher);
-        }
-
-        document.removeEventListener('keydown', this.handleKeydown);
+    viaResourceId: {
+      default: ''
     },
-
-
-    methods: {
-        /**
-         * Handle the keydown event
-         */
-        handleKeydown: function handleKeydown(e) {
-            // `c`
-            if (this.authorizedToCreate && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && e.keyCode == 67 && e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA') {
-                this.$router.push({
-                    name: 'create',
-                    params: { resourceName: this.resourceName }
-                });
-            }
-        },
-
-
-        /**
-         * Select all of the available resources
-         */
-        selectAllResources: function selectAllResources() {
-            this.selectedResources = this.resources.slice(0);
-        },
-
-
-        /**
-         * Toggle the selection of all resources
-         */
-        toggleSelectAll: function toggleSelectAll(event) {
-            if (this.selectAllChecked) return this.clearResourceSelections();
-            this.selectAllResources();
-        },
-
-
-        /**
-         * Toggle the selection of all matching resources in the database
-         */
-        toggleSelectAllMatching: function toggleSelectAllMatching() {
-            if (!this.selectAllMatchingResources) {
-                this.selectAllResources();
-                this.selectAllMatchingResources = true;
-
-                return;
-            }
-
-            this.selectAllMatchingResources = false;
-        },
-
-
-        /*
-         * Update the resource selection status
-         */
-        updateSelectionStatus: function updateSelectionStatus(resource) {
-            if (!_(this.selectedResources).includes(resource)) return this.selectedResources.push(resource);
-            var index = this.selectedResources.indexOf(resource);
-            if (index > -1) return this.selectedResources.splice(index, 1);
-        },
-
-
-        /**
-         * Get the resources based on the current page, search, filters, etc.
-         */
-        getResources: function getResources() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            this.$nextTick(function () {
-                _this2.clearResourceSelections();
-
-                return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + _this2.resourceName, {
-                    params: _this2.resourceRequestQueryString
-                }), 300).then(function (_ref2) {
-                    var data = _ref2.data;
-
-                    _this2.resources = [];
-
-                    _this2.resourceResponse = data;
-                    _this2.resources = data.resources;
-                    _this2.softDeletes = data.softDeletes;
-                    _this2.perPage = data.per_page;
-
-                    _this2.loading = false;
-
-                    _this2.getAllMatchingResourceCount();
-
-                    Nova.$emit('resources-loaded');
-                });
-            });
-        },
-
-
-        /**
-         * Get the relatable authorization status for the resource.
-         */
-        getAuthorizationToRelate: function getAuthorizationToRelate() {
-            var _this3 = this;
-
-            if (!this.authorizedToCreate && this.relationshipType != 'belongsToMany' && this.relationshipType != 'morphToMany') {
-                return;
-            }
-
-            if (!this.viaResource) {
-                return this.authorizedToRelate = true;
-            }
-
-            return Nova.request().get('/nova-api/' + this.resourceName + '/relate-authorization' + '?viaResource=' + this.viaResource + '&viaResourceId=' + this.viaResourceId + '&viaRelationship=' + this.viaRelationship + '&relationshipType=' + this.relationshipType).then(function (response) {
-                _this3.authorizedToRelate = response.data.authorized;
-            });
-        },
-
-
-        /**
-         * Get the lenses available for the current resource.
-         */
-        getLenses: function getLenses() {
-            var _this4 = this;
-
-            this.lenses = [];
-
-            if (this.viaResource) {
-                return;
-            }
-
-            return Nova.request().get('/nova-api/' + this.resourceName + '/lenses').then(function (response) {
-                _this4.lenses = response.data;
-            });
-        },
-
-
-        /**
-         * Get the actions available for the current resource.
-         */
-        getActions: function getActions() {
-            var _this5 = this;
-
-            this.actions = [];
-            this.pivotActions = null;
-            return Nova.request().get('/nova-api/' + this.resourceName + '/actions', {
-                params: {
-                    viaResource: this.viaResource,
-                    viaResourceId: this.viaResourceId,
-                    viaRelationship: this.viaRelationship,
-                    relationshipType: this.relationshipType
-                }
-            }).then(function (response) {
-                _this5.actions = _.filter(response.data.actions, function (a) {
-                    return a.showOnIndex;
-                });
-                _this5.pivotActions = response.data.pivotActions;
-            });
-        },
-
-
-        /**
-         * Execute a search against the resource.
-         */
-        performSearch: function performSearch(event) {
-            var _this6 = this;
-
-            this.debouncer(function () {
-                // Only search if we're not tabbing into the field
-                if (event.which != 9) {
-                    var _this6$updateQueryStr;
-
-                    _this6.updateQueryString((_this6$updateQueryStr = {}, (0, _defineProperty3.default)(_this6$updateQueryStr, _this6.pageParameter, 1), (0, _defineProperty3.default)(_this6$updateQueryStr, _this6.searchParameter, _this6.search), _this6$updateQueryStr));
-                }
-            });
-        },
-
-
-        debouncer: _.debounce(function (callback) {
-            return callback();
-        }, 500),
-
-        /**
-         * Clear the selected resouces and the "select all" states.
-         */
-        clearResourceSelections: function clearResourceSelections() {
-            this.selectAllMatchingResources = false;
-            this.selectedResources = [];
-        },
-
-
-        /**
-         * Get the count of all of the matching resources.
-         */
-        getAllMatchingResourceCount: function getAllMatchingResourceCount() {
-            var _this7 = this;
-
-            Nova.request().get('/nova-api/' + this.resourceName + '/count', {
-                params: this.resourceRequestQueryString
-            }).then(function (response) {
-                _this7.allMatchingResourceCount = response.data.count;
-            });
-        },
-
-
-        /**
-         * Sort the resources by the given field.
-         */
-        orderByField: function orderByField(field) {
-            var _updateQueryString;
-
-            var direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc';
-
-            if (this.currentOrderBy != field.sortableUriKey) {
-                direction = 'asc';
-            }
-
-            this.updateQueryString((_updateQueryString = {}, (0, _defineProperty3.default)(_updateQueryString, this.orderByParameter, field.sortableUriKey), (0, _defineProperty3.default)(_updateQueryString, this.orderByDirectionParameter, direction), _updateQueryString));
-        },
-
-
-        /**
-         * Sync the current search value from the query string.
-         */
-        initializeSearchFromQueryString: function initializeSearchFromQueryString() {
-            this.search = this.currentSearch;
-        },
-
-
-        /**
-         * Sync the current order by values from the query string.
-         */
-        initializeOrderingFromQueryString: function initializeOrderingFromQueryString() {
-            this.orderBy = this.currentOrderBy;
-            this.orderByDirection = this.currentOrderByDirection;
-        },
-
-
-        /**
-         * Sync the trashed state values from the query string.
-         */
-        initializeTrashedFromQueryString: function initializeTrashedFromQueryString() {
-            this.trashed = this.currentTrashed;
-        },
-
-
-        /**
-         * Update the trashed constraint for the resource listing.
-         */
-        trashedChanged: function trashedChanged(trashedStatus) {
-            this.trashed = trashedStatus;
-            this.updateQueryString((0, _defineProperty3.default)({}, this.trashedParameter, this.trashed));
-        },
-
-
-        /**
-         * Update the per page parameter in the query string
-         */
-        updatePerPageChanged: function updatePerPageChanged(perPage) {
-            this.perPage = perPage;
-            this.perPageChanged();
-        },
-
-
-        /**
-         * Load more resources.
-         */
-        loadMore: function loadMore() {
-            var _this8 = this;
-
-            if (this.currentPageLoadMore === null) {
-                this.currentPageLoadMore = this.currentPage;
-            }
-
-            this.currentPageLoadMore = this.currentPageLoadMore + 1;
-
-            return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName, {
-                params: (0, _extends3.default)({}, this.resourceRequestQueryString, {
-                    page: this.currentPageLoadMore // We do this to override whatever page number is in the URL
-                })
-            }), 300).then(function (_ref3) {
-                var data = _ref3.data;
-
-                _this8.resourceResponse = data;
-                _this8.resources = [].concat((0, _toConsumableArray3.default)(_this8.resources), (0, _toConsumableArray3.default)(data.resources));
-
-                _this8.getAllMatchingResourceCount();
-
-                Nova.$emit('resources-loaded');
-            });
-        },
-
-
-        /**
-         * Select the next page.
-         */
-        selectPage: function selectPage(page) {
-            this.updateQueryString((0, _defineProperty3.default)({}, this.pageParameter, page));
-        },
-
-
-        /**
-         * Sync the per page values from the query string.
-         */
-        initializePerPageFromQueryString: function initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions);
-        }
+    viaRelationship: {
+      default: ''
     },
-
-    computed: {
-        /**
-         * Determine if the resource has any filters
-         */
-        hasFilters: function hasFilters() {
-            return this.$store.getters[this.resourceName + '/hasFilters'];
-        },
-
-
-        /**
-         * Determine if the resource should show any cards
-         */
-        shouldShowCards: function shouldShowCards() {
-            // Don't show cards if this resource is beings shown via a relations
-            return this.cards.length > 0 && this.resourceName == this.$route.params.resourceName;
-        },
-
-
-        /**
-         * Get the endpoint for this resource's metrics.
-         */
-        cardsEndpoint: function cardsEndpoint() {
-            return '/nova-api/' + this.resourceName + '/cards';
-        },
-
-
-        /**
-         * Get the name of the search query string variable.
-         */
-        searchParameter: function searchParameter() {
-            return this.viaRelationship + '_search';
-        },
-
-
-        /**
-         * Get the name of the order by query string variable.
-         */
-        orderByParameter: function orderByParameter() {
-            return this.viaRelationship ? this.viaRelationship + '_order' : this.resourceName + '_order';
-        },
-
-
-        /**
-         * Get the name of the order by direction query string variable.
-         */
-        orderByDirectionParameter: function orderByDirectionParameter() {
-            return this.viaRelationship ? this.viaRelationship + '_direction' : this.resourceName + '_direction';
-        },
-
-
-        /**
-         * Get the name of the trashed constraint query string variable.
-         */
-        trashedParameter: function trashedParameter() {
-            return this.viaRelationship ? this.viaRelationship + '_trashed' : this.resourceName + '_trashed';
-        },
-
-
-        /**
-         * Get the name of the per page query string variable.
-         */
-        perPageParameter: function perPageParameter() {
-            return this.viaRelationship ? this.viaRelationship + '_per_page' : this.resourceName + '_per_page';
-        },
-
-
-        /**
-         * Get the name of the page query string variable.
-         */
-        pageParameter: function pageParameter() {
-            return this.viaRelationship ? this.viaRelationship + '_page' : this.resourceName + '_page';
-        },
-
-
-        /**
-         * Build the resource request query string.
-         */
-        resourceRequestQueryString: function resourceRequestQueryString() {
-            return {
-                search: this.currentSearch,
-                filters: this.encodedFilters,
-                orderBy: this.currentOrderBy,
-                orderByDirection: this.currentOrderByDirection,
-                perPage: this.currentPerPage,
-                trashed: this.currentTrashed,
-                page: this.currentPage,
-                viaResource: this.viaResource,
-                viaResourceId: this.viaResourceId,
-                viaRelationship: this.viaRelationship,
-                viaResourceRelationship: this.viaResourceRelationship,
-                relationshipType: this.relationshipType
-            };
-        },
-
-
-        /**
-         * Determine if all resources are selected.
-         */
-        selectAllChecked: function selectAllChecked() {
-            return this.selectedResources.length == this.resources.length;
-        },
-
-
-        /**
-         * Determine if all matching resources are selected.
-         */
-        selectAllMatchingChecked: function selectAllMatchingChecked() {
-            return this.selectedResources.length == this.resources.length && this.selectAllMatchingResources;
-        },
-
-
-        /**
-         * Get the IDs for the selected resources.
-         */
-        selectedResourceIds: function selectedResourceIds() {
-            return _.map(this.selectedResources, function (resource) {
-                return resource.id.value;
-            });
-        },
-
-
-        /**
-         * Get all of the actions available to the resource.
-         */
-        allActions: function allActions() {
-            return this.hasPivotActions ? this.actions.concat(this.pivotActions.actions) : this.actions;
-        },
-
-
-        /**
-         * Determine if the resource has any pivot actions available.
-         */
-        hasPivotActions: function hasPivotActions() {
-            return this.pivotActions && this.pivotActions.actions.length > 0;
-        },
-
-
-        /**
-         * Determine if the resource has any actions available.
-         */
-        actionsAreAvailable: function actionsAreAvailable() {
-            return this.allActions.length > 0;
-        },
-
-
-        /**
-         * Get the name of the pivot model for the resource.
-         */
-        pivotName: function pivotName() {
-            return this.pivotActions ? this.pivotActions.name : '';
-        },
-
-
-        /**
-         * Get the current search value from the query string.
-         */
-        currentSearch: function currentSearch() {
-            return this.$route.query[this.searchParameter] || '';
-        },
-
-
-        /**
-         * Get the current order by value from the query string.
-         */
-        currentOrderBy: function currentOrderBy() {
-            return this.$route.query[this.orderByParameter] || '';
-        },
-
-
-        /**
-         * Get the current order by direction from the query string.
-         */
-        currentOrderByDirection: function currentOrderByDirection() {
-            return this.$route.query[this.orderByDirectionParameter] || 'desc';
-        },
-
-
-        /**
-         * Get the current trashed constraint value from the query string.
-         */
-        currentTrashed: function currentTrashed() {
-            return this.$route.query[this.trashedParameter] || '';
-        },
-
-
-        /**
-         * Determine if the current resource listing is via a many-to-many relationship.
-         */
-        viaManyToMany: function viaManyToMany() {
-            return this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany';
-        },
-
-
-        /**
-         * Determine if the resource / relationship is "full".
-         */
-        resourceIsFull: function resourceIsFull() {
-            return this.viaHasOne && this.resources.length > 0;
-        },
-
-
-        /**
-         * Determine if the current resource listing is via a has-one relationship.
-         */
-        viaHasOne: function viaHasOne() {
-            return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne';
-        },
-
-
-        /**
-         * Get the singular name for the resource
-         */
-        singularName: function singularName() {
-            if (this.isRelation && this.field) {
-                return (0, _laravelNova.Capitalize)(this.field.singularLabel);
-            }
-
-            return (0, _laravelNova.Capitalize)(this.resourceInformation.singularLabel);
-        },
-
-
-        /**
-         * Get the selected resources for the action selector.
-         */
-        selectedResourcesForActionSelector: function selectedResourcesForActionSelector() {
-            return this.selectAllMatchingChecked ? 'all' : this.selectedResourceIds;
-        },
-
-
-        /**
-         * Determine if there are any resources for the view
-         */
-        hasResources: function hasResources() {
-            return Boolean(this.resources.length > 0);
-        },
-
-
-        /**
-         * Determine if there any lenses for this resource
-         */
-        hasLenses: function hasLenses() {
-            return Boolean(this.lenses.length > 0);
-        },
-
-
-        /**
-         * Determine whether to show the selection checkboxes for resources
-         */
-        shouldShowCheckBoxes: function shouldShowCheckBoxes() {
-            return Boolean(this.hasResources && !this.viaHasOne) && Boolean(this.actionsAreAvailable || this.authorizedToDeleteAnyResources || this.canShowDeleteMenu);
-        },
-
-
-        /**
-         * Determine if any selected resources may be deleted.
-         */
-        authorizedToDeleteSelectedResources: function authorizedToDeleteSelectedResources() {
-            return Boolean(_.find(this.selectedResources, function (resource) {
-                return resource.authorizedToDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if any selected resources may be force deleted.
-         */
-        authorizedToForceDeleteSelectedResources: function authorizedToForceDeleteSelectedResources() {
-            return Boolean(_.find(this.selectedResources, function (resource) {
-                return resource.authorizedToForceDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if the user is authorized to delete any listed resource.
-         */
-        authorizedToDeleteAnyResources: function authorizedToDeleteAnyResources() {
-            return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
-                return resource.authorizedToDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if the user is authorized to force delete any listed resource.
-         */
-        authorizedToForceDeleteAnyResources: function authorizedToForceDeleteAnyResources() {
-            return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
-                return resource.authorizedToForceDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if any selected resources may be restored.
-         */
-        authorizedToRestoreSelectedResources: function authorizedToRestoreSelectedResources() {
-            return Boolean(_.find(this.selectedResources, function (resource) {
-                return resource.authorizedToRestore;
-            }));
-        },
-
-
-        /**
-         * Determine if the user is authorized to restore any listed resource.
-         */
-        authorizedToRestoreAnyResources: function authorizedToRestoreAnyResources() {
-            return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
-                return resource.authorizedToRestore;
-            }));
-        },
-
-
-        /**
-         * Determinw whether the delete menu should be shown to the user
-         */
-        shouldShowDeleteMenu: function shouldShowDeleteMenu() {
-            return Boolean(this.selectedResources.length > 0) && this.canShowDeleteMenu;
-        },
-
-
-        /**
-         * Determine whether the user is authorized to perform actions on the delete menu
-         */
-        canShowDeleteMenu: function canShowDeleteMenu() {
-            return Boolean(this.authorizedToDeleteSelectedResources || this.authorizedToForceDeleteSelectedResources || this.authorizedToRestoreSelectedResources || this.selectAllMatchingChecked);
-        },
-
-
-        /**
-         * Determine if the index is a relation field
-         */
-        isRelation: function isRelation() {
-            return Boolean(this.viaResourceId && this.viaRelationship);
-        },
-
-
-        /**
-         * Return the heading for the view
-         */
-        headingTitle: function headingTitle() {
-            return this.loading ? '&nbsp;' : this.isRelation && this.field ? this.field.name : this.resourceResponse.label;
-        },
-
-
-        /**
-         * Return the resource count label
-         */
-        resourceCountLabel: function resourceCountLabel() {
-            var first = this.perPage * (this.currentPage - 1);
-
-            return this.resources.length && first + 1 + '-' + (first + this.resources.length) + ' ' + this.__('of') + ' ' + this.allMatchingResourceCount;
-        },
-
-
-        /**
-         * Return the currently encoded filter string from the store
-         */
-        encodedFilters: function encodedFilters() {
-            return this.$store.getters[this.resourceName + '/currentEncodedFilters'];
-        },
-
-
-        /**
-         * Return the initial encoded filters from the query string
-         */
-        initialEncodedFilters: function initialEncodedFilters() {
-            return this.$route.query[this.filterParameter] || '';
-        },
-        paginationComponent: function paginationComponent() {
-            return 'pagination-' + (Nova.config['pagination'] || 'links');
-        },
-        hasNextPage: function hasNextPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.next_page_url);
-        },
-        hasPreviousPage: function hasPreviousPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.prev_page_url);
-        },
-        totalPages: function totalPages() {
-            return Math.ceil(this.allMatchingResourceCount / this.currentPerPage);
-        },
-
-
-        /**
-         * Get the current per page value from the query string.
-         */
-        currentPerPage: function currentPerPage() {
-            return this.perPage;
-        },
-
-
-        /**
-         * The per-page options configured for this resource.
-         */
-        perPageOptions: function perPageOptions() {
-            if (this.resourceResponse) {
-                return this.resourceResponse.per_page_options;
-            }
-        }
+    relationshipType: {
+      type: String,
+      default: ''
     }
+  },
+
+  data: function data() {
+    return {
+      actionEventsRefresher: null,
+      initialLoading: true,
+      loading: true,
+
+      resourceResponse: null,
+      resources: [],
+      softDeletes: false,
+      selectedResources: [],
+      selectAllMatchingResources: false,
+      allMatchingResourceCount: 0,
+
+      deleteModalOpen: false,
+
+      actions: [],
+      pivotActions: null,
+
+      search: '',
+      lenses: [],
+
+      authorizedToRelate: false,
+
+      orderBy: '',
+      orderByDirection: '',
+      trashed: '',
+
+      // Load More Pagination
+      currentPageLoadMore: null
+    };
+  },
+
+  /**
+   * Mount the component and retrieve its initial data.
+   */
+  created: function () {
+    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+      var _this = this;
+
+      return _regenerator2.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!Nova.missingResource(this.resourceName)) {
+                _context.next = 2;
+                break;
+              }
+
+              return _context.abrupt('return', this.$router.push({ name: '404' }));
+
+            case 2:
+
+              // Bind the keydown even listener when the router is visited if this
+              // component is not a relation on a Detail page
+              if (!this.viaResource && !this.viaResourceId) {
+                document.addEventListener('keydown', this.handleKeydown);
+              }
+
+              this.initializeSearchFromQueryString();
+              this.initializePerPageFromQueryString();
+              this.initializeTrashedFromQueryString();
+              this.initializeOrderingFromQueryString();
+
+              this.perPage = this.resourceInformation.perPageOptions[0];
+
+              _context.next = 10;
+              return this.initializeFilters();
+
+            case 10:
+              _context.next = 12;
+              return this.getResources();
+
+            case 12:
+              _context.next = 14;
+              return this.getAuthorizationToRelate();
+
+            case 14:
+
+              this.getLenses();
+              this.getActions();
+
+              this.initialLoading = false;
+
+              this.$watch(function () {
+                return _this.resourceName + _this.encodedFilters + _this.currentSearch + _this.currentPage + _this.perPage + _this.currentOrderBy + _this.currentOrderByDirection + _this.currentTrashed;
+              }, function () {
+                _this.getResources();
+              });
+
+              // Refresh the action events
+              if (this.resourceName === 'action-events') {
+                Nova.$on('refresh-action-events', function () {
+                  _this.getResources();
+                });
+
+                this.actionEventsRefresher = setInterval(function () {
+                  if (document.hasFocus()) {
+                    _this.getResources();
+                  }
+                }, 15 * 1000);
+              }
+
+            case 19:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function created() {
+      return _ref.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    next();
+    this.initializeState(false);
+  },
+
+
+  /**
+   * Unbind the keydown even listener when the component is destroyed
+   */
+  destroyed: function destroyed() {
+    if (this.actionEventsRefresher) {
+      clearInterval(this.actionEventsRefresher);
+    }
+
+    document.removeEventListener('keydown', this.handleKeydown);
+  },
+
+
+  methods: {
+    /**
+     * Handle the keydown event
+     */
+    handleKeydown: function handleKeydown(e) {
+      // `c`
+      if (this.authorizedToCreate && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && e.keyCode == 67 && e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA') {
+        this.$router.push({
+          name: 'create',
+          params: { resourceName: this.resourceName }
+        });
+      }
+    },
+
+
+    /**
+     * Select all of the available resources
+     */
+    selectAllResources: function selectAllResources() {
+      this.selectedResources = this.resources.slice(0);
+    },
+
+
+    /**
+     * Toggle the selection of all resources
+     */
+    toggleSelectAll: function toggleSelectAll(event) {
+      if (this.selectAllChecked) return this.clearResourceSelections();
+      this.selectAllResources();
+    },
+
+
+    /**
+     * Toggle the selection of all matching resources in the database
+     */
+    toggleSelectAllMatching: function toggleSelectAllMatching() {
+      if (!this.selectAllMatchingResources) {
+        this.selectAllResources();
+        this.selectAllMatchingResources = true;
+
+        return;
+      }
+
+      this.selectAllMatchingResources = false;
+    },
+
+
+    /*
+     * Update the resource selection status
+     */
+    updateSelectionStatus: function updateSelectionStatus(resource) {
+      if (!_(this.selectedResources).includes(resource)) return this.selectedResources.push(resource);
+      var index = this.selectedResources.indexOf(resource);
+      if (index > -1) return this.selectedResources.splice(index, 1);
+    },
+
+
+    /**
+     * Get the resources based on the current page, search, filters, etc.
+     */
+    getResources: function getResources() {
+      var _this2 = this;
+
+      this.loading = true;
+
+      this.$nextTick(function () {
+        _this2.clearResourceSelections();
+
+        return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + _this2.resourceName, {
+          params: _this2.resourceRequestQueryString
+        }), 300).then(function (_ref2) {
+          var data = _ref2.data;
+
+          _this2.resources = [];
+
+          _this2.resourceResponse = data;
+          _this2.resources = data.resources;
+          _this2.softDeletes = data.softDeletes;
+          _this2.perPage = data.per_page;
+
+          _this2.loading = false;
+
+          _this2.getAllMatchingResourceCount();
+
+          Nova.$emit('resources-loaded');
+        });
+      });
+    },
+
+
+    /**
+     * Get the relatable authorization status for the resource.
+     */
+    getAuthorizationToRelate: function getAuthorizationToRelate() {
+      var _this3 = this;
+
+      if (!this.authorizedToCreate && this.relationshipType != 'belongsToMany' && this.relationshipType != 'morphToMany') {
+        return;
+      }
+
+      if (!this.viaResource) {
+        return this.authorizedToRelate = true;
+      }
+
+      return Nova.request().get('/nova-api/' + this.resourceName + '/relate-authorization' + '?viaResource=' + this.viaResource + '&viaResourceId=' + this.viaResourceId + '&viaRelationship=' + this.viaRelationship + '&relationshipType=' + this.relationshipType).then(function (response) {
+        _this3.authorizedToRelate = response.data.authorized;
+      });
+    },
+
+
+    /**
+     * Get the lenses available for the current resource.
+     */
+    getLenses: function getLenses() {
+      var _this4 = this;
+
+      this.lenses = [];
+
+      if (this.viaResource) {
+        return;
+      }
+
+      return Nova.request().get('/nova-api/' + this.resourceName + '/lenses').then(function (response) {
+        _this4.lenses = response.data;
+      });
+    },
+
+
+    /**
+     * Get the actions available for the current resource.
+     */
+    getActions: function getActions() {
+      var _this5 = this;
+
+      this.actions = [];
+      this.pivotActions = null;
+      return Nova.request().get('/nova-api/' + this.resourceName + '/actions', {
+        params: {
+          viaResource: this.viaResource,
+          viaResourceId: this.viaResourceId,
+          viaRelationship: this.viaRelationship,
+          relationshipType: this.relationshipType
+        }
+      }).then(function (response) {
+        _this5.actions = _.filter(response.data.actions, function (a) {
+          return a.showOnIndex;
+        });
+        _this5.pivotActions = response.data.pivotActions;
+      });
+    },
+
+
+    /**
+     * Execute a search against the resource.
+     */
+    performSearch: function performSearch(event) {
+      var _this6 = this;
+
+      this.debouncer(function () {
+        // Only search if we're not tabbing into the field
+        if (event.which != 9) {
+          var _this6$updateQueryStr;
+
+          _this6.updateQueryString((_this6$updateQueryStr = {}, (0, _defineProperty3.default)(_this6$updateQueryStr, _this6.pageParameter, 1), (0, _defineProperty3.default)(_this6$updateQueryStr, _this6.searchParameter, _this6.search), _this6$updateQueryStr));
+        }
+      });
+    },
+
+
+    debouncer: _.debounce(function (callback) {
+      return callback();
+    }, 500),
+
+    /**
+     * Clear the selected resouces and the "select all" states.
+     */
+    clearResourceSelections: function clearResourceSelections() {
+      this.selectAllMatchingResources = false;
+      this.selectedResources = [];
+    },
+
+
+    /**
+     * Get the count of all of the matching resources.
+     */
+    getAllMatchingResourceCount: function getAllMatchingResourceCount() {
+      var _this7 = this;
+
+      Nova.request().get('/nova-api/' + this.resourceName + '/count', {
+        params: this.resourceRequestQueryString
+      }).then(function (response) {
+        _this7.allMatchingResourceCount = response.data.count;
+      });
+    },
+
+
+    /**
+     * Sort the resources by the given field.
+     */
+    orderByField: function orderByField(field) {
+      var _updateQueryString;
+
+      var direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc';
+
+      if (this.currentOrderBy != field.sortableUriKey) {
+        direction = 'asc';
+      }
+
+      this.updateQueryString((_updateQueryString = {}, (0, _defineProperty3.default)(_updateQueryString, this.orderByParameter, field.sortableUriKey), (0, _defineProperty3.default)(_updateQueryString, this.orderByDirectionParameter, direction), _updateQueryString));
+    },
+
+
+    /**
+     * Sync the current search value from the query string.
+     */
+    initializeSearchFromQueryString: function initializeSearchFromQueryString() {
+      this.search = this.currentSearch;
+    },
+
+
+    /**
+     * Sync the current order by values from the query string.
+     */
+    initializeOrderingFromQueryString: function initializeOrderingFromQueryString() {
+      this.orderBy = this.currentOrderBy;
+      this.orderByDirection = this.currentOrderByDirection;
+    },
+
+
+    /**
+     * Sync the trashed state values from the query string.
+     */
+    initializeTrashedFromQueryString: function initializeTrashedFromQueryString() {
+      this.trashed = this.currentTrashed;
+    },
+
+
+    /**
+     * Update the trashed constraint for the resource listing.
+     */
+    trashedChanged: function trashedChanged(trashedStatus) {
+      this.trashed = trashedStatus;
+      this.updateQueryString((0, _defineProperty3.default)({}, this.trashedParameter, this.trashed));
+    },
+
+
+    /**
+     * Update the per page parameter in the query string
+     */
+    updatePerPageChanged: function updatePerPageChanged(perPage) {
+      this.perPage = perPage;
+      this.perPageChanged();
+    },
+
+
+    /**
+     * Load more resources.
+     */
+    loadMore: function loadMore() {
+      var _this8 = this;
+
+      if (this.currentPageLoadMore === null) {
+        this.currentPageLoadMore = this.currentPage;
+      }
+
+      this.currentPageLoadMore = this.currentPageLoadMore + 1;
+
+      return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName, {
+        params: (0, _extends3.default)({}, this.resourceRequestQueryString, {
+          page: this.currentPageLoadMore // We do this to override whatever page number is in the URL
+        })
+      }), 300).then(function (_ref3) {
+        var data = _ref3.data;
+
+        _this8.resourceResponse = data;
+        _this8.resources = [].concat((0, _toConsumableArray3.default)(_this8.resources), (0, _toConsumableArray3.default)(data.resources));
+
+        _this8.getAllMatchingResourceCount();
+
+        Nova.$emit('resources-loaded');
+      });
+    },
+
+
+    /**
+     * Select the next page.
+     */
+    selectPage: function selectPage(page) {
+      this.updateQueryString((0, _defineProperty3.default)({}, this.pageParameter, page));
+    },
+
+
+    /**
+     * Sync the per page values from the query string.
+     */
+    initializePerPageFromQueryString: function initializePerPageFromQueryString() {
+      this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions);
+    }
+  },
+
+  computed: {
+    /**
+     * Determine if the resource has any filters
+     */
+    hasFilters: function hasFilters() {
+      return this.$store.getters[this.resourceName + '/hasFilters'];
+    },
+
+
+    /**
+     * Determine if the resource should show any cards
+     */
+    shouldShowCards: function shouldShowCards() {
+      // Don't show cards if this resource is beings shown via a relations
+      return this.cards.length > 0 && this.resourceName == this.$route.params.resourceName;
+    },
+
+
+    /**
+     * Get the endpoint for this resource's metrics.
+     */
+    cardsEndpoint: function cardsEndpoint() {
+      return '/nova-api/' + this.resourceName + '/cards';
+    },
+
+
+    /**
+     * Get the name of the search query string variable.
+     */
+    searchParameter: function searchParameter() {
+      return this.viaRelationship + '_search';
+    },
+
+
+    /**
+     * Get the name of the order by query string variable.
+     */
+    orderByParameter: function orderByParameter() {
+      return this.viaRelationship ? this.viaRelationship + '_order' : this.resourceName + '_order';
+    },
+
+
+    /**
+     * Get the name of the order by direction query string variable.
+     */
+    orderByDirectionParameter: function orderByDirectionParameter() {
+      return this.viaRelationship ? this.viaRelationship + '_direction' : this.resourceName + '_direction';
+    },
+
+
+    /**
+     * Get the name of the trashed constraint query string variable.
+     */
+    trashedParameter: function trashedParameter() {
+      return this.viaRelationship ? this.viaRelationship + '_trashed' : this.resourceName + '_trashed';
+    },
+
+
+    /**
+     * Get the name of the per page query string variable.
+     */
+    perPageParameter: function perPageParameter() {
+      return this.viaRelationship ? this.viaRelationship + '_per_page' : this.resourceName + '_per_page';
+    },
+
+
+    /**
+     * Get the name of the page query string variable.
+     */
+    pageParameter: function pageParameter() {
+      return this.viaRelationship ? this.viaRelationship + '_page' : this.resourceName + '_page';
+    },
+
+
+    /**
+     * Build the resource request query string.
+     */
+    resourceRequestQueryString: function resourceRequestQueryString() {
+      return {
+        search: this.currentSearch,
+        filters: this.encodedFilters,
+        orderBy: this.currentOrderBy,
+        orderByDirection: this.currentOrderByDirection,
+        perPage: this.currentPerPage,
+        trashed: this.currentTrashed,
+        page: this.currentPage,
+        viaResource: this.viaResource,
+        viaResourceId: this.viaResourceId,
+        viaRelationship: this.viaRelationship,
+        viaResourceRelationship: this.viaResourceRelationship,
+        relationshipType: this.relationshipType
+      };
+    },
+
+
+    /**
+     * Determine if all resources are selected.
+     */
+    selectAllChecked: function selectAllChecked() {
+      return this.selectedResources.length == this.resources.length;
+    },
+
+
+    /**
+     * Determine if all matching resources are selected.
+     */
+    selectAllMatchingChecked: function selectAllMatchingChecked() {
+      return this.selectedResources.length == this.resources.length && this.selectAllMatchingResources;
+    },
+
+
+    /**
+     * Get the IDs for the selected resources.
+     */
+    selectedResourceIds: function selectedResourceIds() {
+      return _.map(this.selectedResources, function (resource) {
+        return resource.id.value;
+      });
+    },
+
+
+    /**
+     * Get all of the actions available to the resource.
+     */
+    allActions: function allActions() {
+      return this.hasPivotActions ? this.actions.concat(this.pivotActions.actions) : this.actions;
+    },
+
+
+    /**
+     * Determine if the resource has any pivot actions available.
+     */
+    hasPivotActions: function hasPivotActions() {
+      return this.pivotActions && this.pivotActions.actions.length > 0;
+    },
+
+
+    /**
+     * Determine if the resource has any actions available.
+     */
+    actionsAreAvailable: function actionsAreAvailable() {
+      return this.allActions.length > 0;
+    },
+
+
+    /**
+     * Get the name of the pivot model for the resource.
+     */
+    pivotName: function pivotName() {
+      return this.pivotActions ? this.pivotActions.name : '';
+    },
+
+
+    /**
+     * Get the current search value from the query string.
+     */
+    currentSearch: function currentSearch() {
+      return this.$route.query[this.searchParameter] || '';
+    },
+
+
+    /**
+     * Get the current order by value from the query string.
+     */
+    currentOrderBy: function currentOrderBy() {
+      return this.$route.query[this.orderByParameter] || '';
+    },
+
+
+    /**
+     * Get the current order by direction from the query string.
+     */
+    currentOrderByDirection: function currentOrderByDirection() {
+      return this.$route.query[this.orderByDirectionParameter] || 'desc';
+    },
+
+
+    /**
+     * Get the current trashed constraint value from the query string.
+     */
+    currentTrashed: function currentTrashed() {
+      return this.$route.query[this.trashedParameter] || '';
+    },
+
+
+    /**
+     * Determine if the current resource listing is via a many-to-many relationship.
+     */
+    viaManyToMany: function viaManyToMany() {
+      return this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany';
+    },
+
+
+    /**
+     * Determine if the resource / relationship is "full".
+     */
+    resourceIsFull: function resourceIsFull() {
+      return this.viaHasOne && this.resources.length > 0;
+    },
+
+
+    /**
+     * Determine if the current resource listing is via a has-one relationship.
+     */
+    viaHasOne: function viaHasOne() {
+      return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne';
+    },
+
+
+    /**
+     * Get the singular name for the resource
+     */
+    singularName: function singularName() {
+      if (this.isRelation && this.field) {
+        return (0, _laravelNova.Capitalize)(this.field.singularLabel);
+      }
+
+      return (0, _laravelNova.Capitalize)(this.resourceInformation.singularLabel);
+    },
+
+
+    /**
+     * Get the selected resources for the action selector.
+     */
+    selectedResourcesForActionSelector: function selectedResourcesForActionSelector() {
+      return this.selectAllMatchingChecked ? 'all' : this.selectedResourceIds;
+    },
+
+
+    /**
+     * Determine if there are any resources for the view
+     */
+    hasResources: function hasResources() {
+      return Boolean(this.resources.length > 0);
+    },
+
+
+    /**
+     * Determine if there any lenses for this resource
+     */
+    hasLenses: function hasLenses() {
+      return Boolean(this.lenses.length > 0);
+    },
+
+
+    /**
+     * Determine whether to show the selection checkboxes for resources
+     */
+    shouldShowCheckBoxes: function shouldShowCheckBoxes() {
+      return Boolean(this.hasResources && !this.viaHasOne) && Boolean(this.actionsAreAvailable || this.authorizedToDeleteAnyResources || this.canShowDeleteMenu);
+    },
+
+
+    /**
+     * Determine if any selected resources may be deleted.
+     */
+    authorizedToDeleteSelectedResources: function authorizedToDeleteSelectedResources() {
+      return Boolean(_.find(this.selectedResources, function (resource) {
+        return resource.authorizedToDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if any selected resources may be force deleted.
+     */
+    authorizedToForceDeleteSelectedResources: function authorizedToForceDeleteSelectedResources() {
+      return Boolean(_.find(this.selectedResources, function (resource) {
+        return resource.authorizedToForceDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if the user is authorized to delete any listed resource.
+     */
+    authorizedToDeleteAnyResources: function authorizedToDeleteAnyResources() {
+      return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
+        return resource.authorizedToDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if the user is authorized to force delete any listed resource.
+     */
+    authorizedToForceDeleteAnyResources: function authorizedToForceDeleteAnyResources() {
+      return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
+        return resource.authorizedToForceDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if any selected resources may be restored.
+     */
+    authorizedToRestoreSelectedResources: function authorizedToRestoreSelectedResources() {
+      return Boolean(_.find(this.selectedResources, function (resource) {
+        return resource.authorizedToRestore;
+      }));
+    },
+
+
+    /**
+     * Determine if the user is authorized to restore any listed resource.
+     */
+    authorizedToRestoreAnyResources: function authorizedToRestoreAnyResources() {
+      return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
+        return resource.authorizedToRestore;
+      }));
+    },
+
+
+    /**
+     * Determinw whether the delete menu should be shown to the user
+     */
+    shouldShowDeleteMenu: function shouldShowDeleteMenu() {
+      return Boolean(this.selectedResources.length > 0) && this.canShowDeleteMenu;
+    },
+
+
+    /**
+     * Determine whether the user is authorized to perform actions on the delete menu
+     */
+    canShowDeleteMenu: function canShowDeleteMenu() {
+      return Boolean(this.authorizedToDeleteSelectedResources || this.authorizedToForceDeleteSelectedResources || this.authorizedToRestoreSelectedResources || this.selectAllMatchingChecked);
+    },
+
+
+    /**
+     * Determine if the index is a relation field
+     */
+    isRelation: function isRelation() {
+      return Boolean(this.viaResourceId && this.viaRelationship);
+    },
+
+
+    /**
+     * Return the heading for the view
+     */
+    headingTitle: function headingTitle() {
+      return this.loading ? '&nbsp;' : this.isRelation && this.field ? this.field.name : this.resourceResponse.label;
+    },
+
+
+    /**
+     * Return the resource count label
+     */
+    resourceCountLabel: function resourceCountLabel() {
+      var first = this.perPage * (this.currentPage - 1);
+
+      return this.resources.length && first + 1 + '-' + (first + this.resources.length) + ' ' + this.__('of') + ' ' + this.allMatchingResourceCount;
+    },
+
+
+    /**
+     * Return the currently encoded filter string from the store
+     */
+    encodedFilters: function encodedFilters() {
+      return this.$store.getters[this.resourceName + '/currentEncodedFilters'];
+    },
+
+
+    /**
+     * Return the initial encoded filters from the query string
+     */
+    initialEncodedFilters: function initialEncodedFilters() {
+      return this.$route.query[this.filterParameter] || '';
+    },
+    paginationComponent: function paginationComponent() {
+      return 'pagination-' + (Nova.config['pagination'] || 'links');
+    },
+    hasNextPage: function hasNextPage() {
+      return Boolean(this.resourceResponse && this.resourceResponse.next_page_url);
+    },
+    hasPreviousPage: function hasPreviousPage() {
+      return Boolean(this.resourceResponse && this.resourceResponse.prev_page_url);
+    },
+    totalPages: function totalPages() {
+      return Math.ceil(this.allMatchingResourceCount / this.currentPerPage);
+    },
+
+
+    /**
+     * Get the current per page value from the query string.
+     */
+    currentPerPage: function currentPerPage() {
+      return this.perPage;
+    },
+
+
+    /**
+     * The per-page options configured for this resource.
+     */
+    perPageOptions: function perPageOptions() {
+      if (this.resourceResponse) {
+        return this.resourceResponse.per_page_options;
+      }
+    }
+  }
 };
 
 /***/ }),
@@ -14364,7 +14172,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
@@ -14641,730 +14449,715 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
-    mixins: [_laravelNova.HasCards, _laravelNova.Deletable, _laravelNova.Filterable, _laravelNova.Paginatable, _laravelNova.PerPageable, _laravelNova.InteractsWithResourceInformation, _laravelNova.InteractsWithQueryString],
+  mixins: [_laravelNova.HasCards, _laravelNova.Deletable, _laravelNova.Filterable, _laravelNova.Paginatable, _laravelNova.PerPageable, _laravelNova.InteractsWithResourceInformation, _laravelNova.InteractsWithQueryString],
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        viaResource: {
-            default: ''
-        },
-        viaResourceId: {
-            default: ''
-        },
-        viaRelationship: {
-            default: ''
-        },
-        relationshipType: {
-            type: String,
-            default: ''
-        },
-        lens: {
-            type: String,
-            required: true
+  props: {
+    resourceName: {
+      type: String,
+      required: true
+    },
+    viaResource: {
+      default: ''
+    },
+    viaResourceId: {
+      default: ''
+    },
+    viaRelationship: {
+      default: ''
+    },
+    relationshipType: {
+      type: String,
+      default: ''
+    },
+    lens: {
+      type: String,
+      required: true
+    }
+  },
+
+  data: function data() {
+    return {
+      initialLoading: true,
+      loading: true,
+
+      resourceResponse: null,
+      resources: [],
+      softDeletes: false,
+      selectedResources: [],
+      selectAllMatchingResources: false,
+      allMatchingResourceCount: 0,
+      hasId: false,
+
+      deleteModalOpen: false,
+
+      actions: [],
+      pivotActions: null,
+      actionValidationErrors: new _laravelNova.Errors(),
+
+      authorizedToRelate: false,
+
+      orderBy: '',
+      orderByDirection: '',
+      trashed: '',
+
+      // Load More Pagination
+      currentPageLoadMore: null
+    };
+  },
+
+  /**
+   * Mount the component and retrieve its initial data.
+   */
+  created: function () {
+    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+      var _this = this;
+
+      return _regenerator2.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!Nova.missingResource(this.resourceName)) {
+                _context.next = 2;
+                break;
+              }
+
+              return _context.abrupt('return', this.$router.push({ name: '404' }));
+
+            case 2:
+
+              this.initializeSearchFromQueryString();
+              this.initializePerPageFromQueryString();
+              this.initializeTrashedFromQueryString();
+              this.initializeOrderingFromQueryString();
+
+              this.perPage = this.resourceInformation.perPageOptions[0];
+
+              _context.next = 9;
+              return this.initializeFilters(this.lens);
+
+            case 9:
+              this.getResources();
+              // this.getAuthorizationToRelate()
+              this.getActions();
+
+              this.initialLoading = false;
+
+              this.$watch(function () {
+                return _this.lens + _this.resourceName + _this.encodedFilters + _this.currentSearch + _this.currentPage + _this.currentPerPage + _this.currentOrderBy + _this.currentOrderByDirection + _this.currentTrashed;
+              }, function () {
+                _this.getResources();
+              });
+
+            case 13:
+            case 'end':
+              return _context.stop();
+          }
         }
+      }, _callee, this);
+    }));
+
+    function created() {
+      return _ref.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    next();
+    this.initializeState(this.lens);
+  },
+
+
+  methods: {
+    selectAllResources: function selectAllResources() {
+      this.selectedResources = this.resources.slice(0);
+    },
+    toggleSelectAll: function toggleSelectAll() {
+      if (this.selectAllChecked) return this.clearResourceSelections();
+      this.selectAllResources();
+    },
+    toggleSelectAllMatching: function toggleSelectAllMatching() {
+      if (!this.selectAllMatchingResources) {
+        this.selectAllResources();
+        this.selectAllMatchingResources = true;
+
+        return;
+      }
+
+      this.selectAllMatchingResources = false;
     },
 
-    data: function data() {
-        return {
-            initialLoading: true,
-            loading: true,
 
-            resourceResponse: null,
-            resources: [],
-            softDeletes: false,
-            selectedResources: [],
-            selectAllMatchingResources: false,
-            allMatchingResourceCount: 0,
-            hasId: false,
-
-            deleteModalOpen: false,
-
-            actions: [],
-            pivotActions: null,
-            actionValidationErrors: new _laravelNova.Errors(),
-
-            authorizedToRelate: false,
-
-            orderBy: '',
-            orderByDirection: '',
-            trashed: '',
-
-            // Load More Pagination
-            currentPageLoadMore: null
-        };
+    /*
+     * Update the resource selection status
+     */
+    updateSelectionStatus: function updateSelectionStatus(resource) {
+      if (!_(this.selectedResources).includes(resource)) return this.selectedResources.push(resource);
+      var index = this.selectedResources.indexOf(resource);
+      if (index > -1) return this.selectedResources.splice(index, 1);
     },
+
 
     /**
-     * Mount the component and retrieve its initial data.
+     * Get the resources based on the current page, search, filters, etc.
      */
-    created: function () {
-        var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-            var _this = this;
+    getResources: function getResources() {
+      var _this2 = this;
 
-            return _regenerator2.default.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            if (!Nova.missingResource(this.resourceName)) {
-                                _context.next = 2;
-                                break;
-                            }
+      this.loading = true;
 
-                            return _context.abrupt('return', this.$router.push({ name: '404' }));
+      this.$nextTick(function () {
+        _this2.clearResourceSelections();
 
-                        case 2:
+        return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + _this2.resourceName + '/lens/' + _this2.lens, {
+          params: _this2.resourceRequestQueryString
+        }), 300).then(function (_ref2) {
+          var data = _ref2.data;
 
-                            this.initializeSearchFromQueryString();
-                            this.initializePerPageFromQueryString();
-                            this.initializeTrashedFromQueryString();
-                            this.initializeOrderingFromQueryString();
+          _this2.resources = [];
 
-                            this.perPage = this.resourceInformation.perPageOptions[0];
+          _this2.resourceResponse = data;
+          _this2.resources = data.resources;
+          _this2.softDeletes = data.softDeletes;
+          _this2.perPage = data.per_page;
+          _this2.hasId = data.hasId;
 
-                            _context.next = 9;
-                            return this.initializeFilters(this.lens);
+          _this2.loading = false;
 
-                        case 9:
-                            this.getResources();
-                            // this.getAuthorizationToRelate()
-                            this.getActions();
+          _this2.getAllMatchingResourceCount();
 
-                            this.initialLoading = false;
+          if (!_this2.hasId) {
+            _this2.selectAllMatchingResources = true;
+            _this2.selectAllResources();
+          }
 
-                            this.$watch(function () {
-                                return _this.lens + _this.resourceName + _this.encodedFilters + _this.currentSearch + _this.currentPage + _this.currentPerPage + _this.currentOrderBy + _this.currentOrderByDirection + _this.currentTrashed;
-                            }, function () {
-                                _this.getResources();
-                            });
-
-                        case 13:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, this);
-        }));
-
-        function created() {
-            return _ref.apply(this, arguments);
-        }
-
-        return created;
-    }(),
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-        next();
-        this.initializeState(this.lens);
+          Nova.$emit('resources-loaded');
+        });
+      });
     },
 
 
-    methods: {
-        selectAllResources: function selectAllResources() {
-            this.selectedResources = this.resources.slice(0);
-        },
-        toggleSelectAll: function toggleSelectAll() {
-            if (this.selectAllChecked) return this.clearResourceSelections();
-            this.selectAllResources();
-        },
-        toggleSelectAllMatching: function toggleSelectAllMatching() {
-            if (!this.selectAllMatchingResources) {
-                this.selectAllResources();
-                this.selectAllMatchingResources = true;
+    /**
+     * Get the actions available for the current resource.
+     */
+    getActions: function getActions() {
+      var _this3 = this;
 
-                return;
-            }
-
-            this.selectAllMatchingResources = false;
-        },
-
-
-        /*
-         * Update the resource selection status
-         */
-        updateSelectionStatus: function updateSelectionStatus(resource) {
-            if (!_(this.selectedResources).includes(resource)) return this.selectedResources.push(resource);
-            var index = this.selectedResources.indexOf(resource);
-            if (index > -1) return this.selectedResources.splice(index, 1);
-        },
-
-
-        /**
-         * Get the resources based on the current page, search, filters, etc.
-         */
-        getResources: function getResources() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            this.$nextTick(function () {
-                _this2.clearResourceSelections();
-
-                return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + _this2.resourceName + '/lens/' + _this2.lens, {
-                    params: _this2.resourceRequestQueryString
-                }), 300).then(function (_ref2) {
-                    var data = _ref2.data;
-
-                    _this2.resources = [];
-
-                    _this2.resourceResponse = data;
-                    _this2.resources = data.resources;
-                    _this2.softDeletes = data.softDeletes;
-                    _this2.perPage = data.per_page;
-                    _this2.hasId = data.hasId;
-
-                    _this2.loading = false;
-
-                    _this2.getAllMatchingResourceCount();
-
-                    if (!_this2.hasId) {
-                        _this2.selectAllMatchingResources = true;
-                        _this2.selectAllResources();
-                    }
-
-                    Nova.$emit('resources-loaded');
-                });
-            });
-        },
-
-
-        /**
-         * Get the actions available for the current resource.
-         */
-        getActions: function getActions() {
-            var _this3 = this;
-
-            this.actions = [];
-            this.pivotActions = null;
-            Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens + '/actions', {
-                params: {
-                    viaResource: this.viaResource,
-                    viaResourceId: this.viaResourceId,
-                    viaRelationship: this.viaRelationship,
-                    relationshipType: this.relationshipType
-                }
-            }).then(function (response) {
-                _this3.actions = _.filter(response.data.actions, function (a) {
-                    return a.showOnIndex;
-                });
-                _this3.pivotActions = response.data.pivotActions;
-            });
-        },
-
-
-        /**
-         * Clear the selected resouces and the "select all" states.
-         */
-        clearResourceSelections: function clearResourceSelections() {
-            this.selectAllMatchingResources = false;
-            this.selectedResources = [];
-        },
-
-
-        /**
-         * Get the count of all of the matching resources.
-         */
-        getAllMatchingResourceCount: function getAllMatchingResourceCount() {
-            var _this4 = this;
-
-            Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens + '/count', {
-                params: this.resourceRequestQueryString
-            }).then(function (response) {
-                _this4.allMatchingResourceCount = response.data.count;
-            });
-        },
-
-
-        /**
-         * Sort the resources by the given field.
-         */
-        orderByField: function orderByField(field) {
-            var _updateQueryString;
-
-            var direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc';
-            if (this.currentOrderBy != field.attribute) {
-                direction = 'asc';
-            }
-            this.updateQueryString((_updateQueryString = {}, (0, _defineProperty3.default)(_updateQueryString, this.orderByParameter, field.attribute), (0, _defineProperty3.default)(_updateQueryString, this.orderByDirectionParameter, direction), _updateQueryString));
-        },
-
-
-        /**
-         * Sync the current search value from the query string.
-         */
-        initializeSearchFromQueryString: function initializeSearchFromQueryString() {
-            this.search = this.currentSearch;
-        },
-
-
-        /**
-         * Sync the current order by values from the query string.
-         */
-        initializeOrderingFromQueryString: function initializeOrderingFromQueryString() {
-            this.orderBy = this.currentOrderBy;
-            this.orderByDirection = this.currentOrderByDirection;
-        },
-
-
-        /**
-         * Sync the trashed state values from the query string.
-         */
-        initializeTrashedFromQueryString: function initializeTrashedFromQueryString() {
-            this.trashed = this.currentTrashed;
-        },
-
-
-        /**
-         * Update the trashed constraint for the resource listing.
-         */
-        trashedChanged: function trashedChanged(trashedStatus) {
-            this.trashed = trashedStatus;
-            this.updateQueryString((0, _defineProperty3.default)({}, this.trashedParameter, this.trashed));
-        },
-
-
-        /**
-         * Update the per page parameter in the query string
-         */
-        updatePerPageChanged: function updatePerPageChanged(perPage) {
-            this.perPage = perPage;
-            this.perPageChanged();
-        },
-
-
-        /**
-         * Load more resources.
-         */
-        loadMore: function loadMore() {
-            var _this5 = this;
-
-            if (this.currentPageLoadMore === null) {
-                this.currentPageLoadMore = this.currentPage;
-            }
-
-            this.currentPageLoadMore = this.currentPageLoadMore + 1;
-
-            return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens, {
-                params: (0, _extends3.default)({}, this.resourceRequestQueryString, {
-                    page: this.currentPageLoadMore // We do this to override whatever page number is in the URL
-                })
-            }), 300).then(function (_ref3) {
-                var data = _ref3.data;
-
-                _this5.resourceResponse = data;
-                _this5.resources = [].concat((0, _toConsumableArray3.default)(_this5.resources), (0, _toConsumableArray3.default)(data.resources));
-
-                _this5.getAllMatchingResourceCount();
-
-                Nova.$emit('resources-loaded');
-            });
-        },
-
-
-        /**
-         * Select the next page.
-         */
-        selectPage: function selectPage(page) {
-            this.updateQueryString((0, _defineProperty3.default)({}, this.pageParameter, page));
-        },
-
-
-        /**
-         * Sync the per page values from the query string.
-         */
-        initializePerPageFromQueryString: function initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions);
+      this.actions = [];
+      this.pivotActions = null;
+      Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens + '/actions', {
+        params: {
+          viaResource: this.viaResource,
+          viaResourceId: this.viaResourceId,
+          viaRelationship: this.viaRelationship,
+          relationshipType: this.relationshipType
         }
+      }).then(function (response) {
+        _this3.actions = _.filter(response.data.actions, function (a) {
+          return a.showOnIndex;
+        });
+        _this3.pivotActions = response.data.pivotActions;
+      });
     },
 
-    computed: {
-        /**
-         * Get the endpoint for this resource's actions.
-         */
-        lensActionEndpoint: function lensActionEndpoint() {
-            return '/nova-api/' + this.resourceName + '/lens/' + this.lens + '/action';
-        },
-
-
-        /**
-         * Get the name of the search query string variable.
-         */
-        searchParameter: function searchParameter() {
-            return this.resourceName + '_search';
-        },
-
-
-        /**
-         * Get the name of the order by query string variable.
-         */
-        orderByParameter: function orderByParameter() {
-            return this.resourceName + '_order';
-        },
-
-
-        /**
-         * Get the name of the order by direction query string variable.
-         */
-        orderByDirectionParameter: function orderByDirectionParameter() {
-            return this.resourceName + '_direction';
-        },
-
-
-        /**
-         * Get the name of the trashed constraint query string variable.
-         */
-        trashedParameter: function trashedParameter() {
-            return this.resourceName + '_trashed';
-        },
-
-
-        /**
-         * Get the name of the per page query string variable.
-         */
-        perPageParameter: function perPageParameter() {
-            return this.resourceName + '_per_page';
-        },
-
-
-        /**
-         * Get the name of the page query string variable.
-         */
-        pageParameter: function pageParameter() {
-            return this.resourceName + '_page';
-        },
-
-
-        /**
-         * Build the resource request query string.
-         */
-        resourceRequestQueryString: function resourceRequestQueryString() {
-            return {
-                search: this.currentSearch,
-                filters: this.encodedFilters,
-                orderBy: this.currentOrderBy,
-                orderByDirection: this.currentOrderByDirection,
-                perPage: this.currentPerPage,
-                page: this.currentPage,
-                viaResource: this.viaResource,
-                viaResourceId: this.viaResourceId,
-                // viaRelationship: this.viaRelationship,
-                viaResourceRelationship: this.viaResourceRelationship,
-                relationshipType: this.relationshipType
-            };
-        },
-
-
-        /**
-         * Determine if all resources are selected.
-         */
-        selectAllChecked: function selectAllChecked() {
-            return this.selectedResources.length == this.resources.length;
-        },
-
-
-        /**
-         * Determine if all matching resources are selected.
-         */
-        selectAllMatchingChecked: function selectAllMatchingChecked() {
-            return this.selectedResources.length == this.resources.length && this.selectAllMatchingResources;
-        },
-
-
-        /**
-         * Get the IDs for the selected resources.
-         */
-        selectedResourceIds: function selectedResourceIds() {
-            return _.map(this.selectedResources, function (resource) {
-                return resource.id.value;
-            });
-        },
 
+    /**
+     * Clear the selected resouces and the "select all" states.
+     */
+    clearResourceSelections: function clearResourceSelections() {
+      this.selectAllMatchingResources = false;
+      this.selectedResources = [];
+    },
+
+
+    /**
+     * Get the count of all of the matching resources.
+     */
+    getAllMatchingResourceCount: function getAllMatchingResourceCount() {
+      var _this4 = this;
+
+      Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens + '/count', {
+        params: this.resourceRequestQueryString
+      }).then(function (response) {
+        _this4.allMatchingResourceCount = response.data.count;
+      });
+    },
+
+
+    /**
+     * Sort the resources by the given field.
+     */
+    orderByField: function orderByField(field) {
+      var _updateQueryString;
+
+      var direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc';
+      if (this.currentOrderBy != field.attribute) {
+        direction = 'asc';
+      }
+      this.updateQueryString((_updateQueryString = {}, (0, _defineProperty3.default)(_updateQueryString, this.orderByParameter, field.attribute), (0, _defineProperty3.default)(_updateQueryString, this.orderByDirectionParameter, direction), _updateQueryString));
+    },
+
+
+    /**
+     * Sync the current search value from the query string.
+     */
+    initializeSearchFromQueryString: function initializeSearchFromQueryString() {
+      this.search = this.currentSearch;
+    },
+
+
+    /**
+     * Sync the current order by values from the query string.
+     */
+    initializeOrderingFromQueryString: function initializeOrderingFromQueryString() {
+      this.orderBy = this.currentOrderBy;
+      this.orderByDirection = this.currentOrderByDirection;
+    },
+
+
+    /**
+     * Sync the trashed state values from the query string.
+     */
+    initializeTrashedFromQueryString: function initializeTrashedFromQueryString() {
+      this.trashed = this.currentTrashed;
+    },
+
+
+    /**
+     * Update the trashed constraint for the resource listing.
+     */
+    trashedChanged: function trashedChanged(trashedStatus) {
+      this.trashed = trashedStatus;
+      this.updateQueryString((0, _defineProperty3.default)({}, this.trashedParameter, this.trashed));
+    },
+
+
+    /**
+     * Update the per page parameter in the query string
+     */
+    updatePerPageChanged: function updatePerPageChanged(perPage) {
+      this.perPage = perPage;
+      this.perPageChanged();
+    },
+
+
+    /**
+     * Load more resources.
+     */
+    loadMore: function loadMore() {
+      var _this5 = this;
+
+      if (this.currentPageLoadMore === null) {
+        this.currentPageLoadMore = this.currentPage;
+      }
+
+      this.currentPageLoadMore = this.currentPageLoadMore + 1;
+
+      return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens, {
+        params: (0, _extends3.default)({}, this.resourceRequestQueryString, {
+          page: this.currentPageLoadMore // We do this to override whatever page number is in the URL
+        })
+      }), 300).then(function (_ref3) {
+        var data = _ref3.data;
+
+        _this5.resourceResponse = data;
+        _this5.resources = [].concat((0, _toConsumableArray3.default)(_this5.resources), (0, _toConsumableArray3.default)(data.resources));
 
-        /**
-         * Get all of the actions available to the resource.
-         */
-        allActions: function allActions() {
-            return this.hasPivotActions ? this.actions.concat(this.pivotActions.actions) : this.actions;
-        },
+        _this5.getAllMatchingResourceCount();
 
+        Nova.$emit('resources-loaded');
+      });
+    },
 
-        /**
-         * Determine if the resource has any pivot actions available.
-         */
-        hasPivotActions: function hasPivotActions() {
-            return this.pivotActions && this.pivotActions.actions.length > 0;
-        },
 
+    /**
+     * Select the next page.
+     */
+    selectPage: function selectPage(page) {
+      this.updateQueryString((0, _defineProperty3.default)({}, this.pageParameter, page));
+    },
 
-        /**
-         * Determine if the resource has any actions available.
-         */
-        actionsAreAvailable: function actionsAreAvailable() {
-            return this.allActions.length > 0;
-        },
 
-
-        /**
-         * Get the name of the pivot model for the resource.
-         */
-        pivotName: function pivotName() {
-            return this.pivotActions ? this.pivotActions.name : '';
-        },
-
-
-        /**
-         * Get the current search value from the query string.
-         */
-        currentSearch: function currentSearch() {
-            return this.$route.query[this.searchParameter] || '';
-        },
-
-
-        /**
-         * Get the current order by value from the query string.
-         */
-        currentOrderBy: function currentOrderBy() {
-            return this.$route.query[this.orderByParameter] || '';
-        },
-
-
-        /**
-         * Get the current order by direction from the query string.
-         */
-        currentOrderByDirection: function currentOrderByDirection() {
-            return this.$route.query[this.orderByDirectionParameter] || 'desc';
-        },
-
-
-        /**
-         * Get the current trashed constraint value from the query string.
-         */
-        currentTrashed: function currentTrashed() {
-            return this.$route.query[this.trashedParameter] || '';
-        },
-
-
-        /**
-         * Determine if the current resource listing is via a many-to-many relationship.
-         */
-        viaManyToMany: function viaManyToMany() {
-            return this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany';
-        },
-
-
-        /**
-         * Determine if the resource / relationship is "full".
-         */
-        resourceIsFull: function resourceIsFull() {
-            return this.viaHasOne && this.resources.length > 0;
-        },
-
-
-        /**
-         * Determine if the current resource listing is via a has-one relationship.
-         */
-        viaHasOne: function viaHasOne() {
-            return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne';
-        },
-
-
-        /**
-         * Get the singular name for the resource
-         */
-        singularName: function singularName() {
-            return this.resourceInformation.singularLabel;
-        },
-
-
-        /**
-         * Get the selected resources for the action selector.
-         */
-        selectedResourcesForActionSelector: function selectedResourcesForActionSelector() {
-            return this.selectAllMatchingChecked ? 'all' : this.selectedResourceIds;
-        },
-
-
-        /**
-         * Determine if there are any resources for the view
-         */
-        hasResources: function hasResources() {
-            return Boolean(this.resources.length > 0);
-        },
-
-
-        /**
-         * Determine if the resource should show any cards
-         */
-        shouldShowCards: function shouldShowCards() {
-            return this.cards.length > 0;
-        },
-
-
-        /**
-         * Get the endpoint for this resource's metrics.
-         */
-        cardsEndpoint: function cardsEndpoint() {
-            return '/nova-api/' + this.resourceName + '/lens/' + this.lens + '/cards';
-        },
-
-
-        /**
-         * Determine whether to show the selection checkboxes for resources
-         */
-        shouldShowCheckBoxes: function shouldShowCheckBoxes() {
-            return Boolean(this.hasId && this.hasResources && !this.viaHasOne) && Boolean(this.actionsAreAvailable || this.authorizedToDeleteAnyResources || this.canShowDeleteMenu);
-        },
-
-
-        /**
-         * Determinw whether the delete menu should be shown to the user
-         */
-        shouldShowDeleteMenu: function shouldShowDeleteMenu() {
-            return Boolean(this.selectedResources.length > 0) && this.canShowDeleteMenu;
-        },
-
-
-        /**
-         * Determine if any selected resources may be deleted.
-         */
-        authorizedToDeleteSelectedResources: function authorizedToDeleteSelectedResources() {
-            return Boolean(_.find(this.selectedResources, function (resource) {
-                return resource.authorizedToDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if any selected resources may be force deleted.
-         */
-        authorizedToForceDeleteSelectedResources: function authorizedToForceDeleteSelectedResources() {
-            return Boolean(_.find(this.selectedResources, function (resource) {
-                return resource.authorizedToForceDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if the user is authorized to delete any listed resource.
-         */
-        authorizedToDeleteAnyResources: function authorizedToDeleteAnyResources() {
-            return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
-                return resource.authorizedToDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if the user is authorized to force delete any listed resource.
-         */
-        authorizedToForceDeleteAnyResources: function authorizedToForceDeleteAnyResources() {
-            return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
-                return resource.authorizedToForceDelete;
-            }));
-        },
-
-
-        /**
-         * Determine if any selected resources may be restored.
-         */
-        authorizedToRestoreSelectedResources: function authorizedToRestoreSelectedResources() {
-            return Boolean(_.find(this.selectedResources, function (resource) {
-                return resource.authorizedToRestore;
-            }));
-        },
-
-
-        /**
-         * Determine if the user is authorized to restore any listed resource.
-         */
-        authorizedToRestoreAnyResources: function authorizedToRestoreAnyResources() {
-            return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
-                return resource.authorizedToRestore;
-            }));
-        },
-
-
-        /**
-         * Determinw whether the user is authorized to perform actions on the delete menu
-         */
-        canShowDeleteMenu: function canShowDeleteMenu() {
-            return this.hasId && Boolean(this.authorizedToDeleteSelectedResources || this.authorizedToForceDeleteSelectedResources || this.authorizedToDeleteAnyResources || this.authorizedToForceDeleteAnyResources || this.authorizedToRestoreSelectedResources || this.authorizedToRestoreAnyResources);
-        },
-
-
-        /**
-         * Return the currently encoded filter string from the store
-         */
-        encodedFilters: function encodedFilters() {
-            return this.$store.getters[this.resourceName + '/currentEncodedFilters'];
-        },
-
-
-        /**
-         * Return the initial encoded filters from the query string
-         */
-        initialEncodedFilters: function initialEncodedFilters() {
-            return this.$route.query[this.filterParameter] || '';
-        },
-        paginationComponent: function paginationComponent() {
-            return 'pagination-' + (Nova.config['pagination'] || 'links');
-        },
-        hasNextPage: function hasNextPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.next_page_url);
-        },
-        hasPreviousPage: function hasPreviousPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.prev_page_url);
-        },
-        totalPages: function totalPages() {
-            return Math.ceil(this.allMatchingResourceCount / this.currentPerPage);
-        },
-
-
-        /**
-         * Return the resource count label
-         */
-        resourceCountLabel: function resourceCountLabel() {
-            var first = this.perPage * (this.currentPage - 1);
-
-            return this.resources.length && first + 1 + '-' + (first + this.resources.length) + ' ' + this.__('of') + ' ' + this.allMatchingResourceCount;
-        },
-
-
-        /**
-         * Get the current per page value from the query string.
-         */
-        currentPerPage: function currentPerPage() {
-            return this.perPage;
-        },
-
-
-        /**
-         * The per-page options configured for this resource.
-         */
-        perPageOptions: function perPageOptions() {
-            if (this.resourceResponse) {
-                return this.resourceResponse.per_page_options;
-            }
-        }
+    /**
+     * Sync the per page values from the query string.
+     */
+    initializePerPageFromQueryString: function initializePerPageFromQueryString() {
+      this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions);
     }
+  },
+
+  computed: {
+    /**
+     * Get the endpoint for this resource's actions.
+     */
+    lensActionEndpoint: function lensActionEndpoint() {
+      return '/nova-api/' + this.resourceName + '/lens/' + this.lens + '/action';
+    },
+
+
+    /**
+     * Get the name of the search query string variable.
+     */
+    searchParameter: function searchParameter() {
+      return this.resourceName + '_search';
+    },
+
+
+    /**
+     * Get the name of the order by query string variable.
+     */
+    orderByParameter: function orderByParameter() {
+      return this.resourceName + '_order';
+    },
+
+
+    /**
+     * Get the name of the order by direction query string variable.
+     */
+    orderByDirectionParameter: function orderByDirectionParameter() {
+      return this.resourceName + '_direction';
+    },
+
+
+    /**
+     * Get the name of the trashed constraint query string variable.
+     */
+    trashedParameter: function trashedParameter() {
+      return this.resourceName + '_trashed';
+    },
+
+
+    /**
+     * Get the name of the per page query string variable.
+     */
+    perPageParameter: function perPageParameter() {
+      return this.resourceName + '_per_page';
+    },
+
+
+    /**
+     * Get the name of the page query string variable.
+     */
+    pageParameter: function pageParameter() {
+      return this.resourceName + '_page';
+    },
+
+
+    /**
+     * Build the resource request query string.
+     */
+    resourceRequestQueryString: function resourceRequestQueryString() {
+      return {
+        search: this.currentSearch,
+        filters: this.encodedFilters,
+        orderBy: this.currentOrderBy,
+        orderByDirection: this.currentOrderByDirection,
+        perPage: this.currentPerPage,
+        page: this.currentPage,
+        viaResource: this.viaResource,
+        viaResourceId: this.viaResourceId,
+        // viaRelationship: this.viaRelationship,
+        viaResourceRelationship: this.viaResourceRelationship,
+        relationshipType: this.relationshipType
+      };
+    },
+
+
+    /**
+     * Determine if all resources are selected.
+     */
+    selectAllChecked: function selectAllChecked() {
+      return this.selectedResources.length == this.resources.length;
+    },
+
+
+    /**
+     * Determine if all matching resources are selected.
+     */
+    selectAllMatchingChecked: function selectAllMatchingChecked() {
+      return this.selectedResources.length == this.resources.length && this.selectAllMatchingResources;
+    },
+
+
+    /**
+     * Get the IDs for the selected resources.
+     */
+    selectedResourceIds: function selectedResourceIds() {
+      return _.map(this.selectedResources, function (resource) {
+        return resource.id.value;
+      });
+    },
+
+
+    /**
+     * Get all of the actions available to the resource.
+     */
+    allActions: function allActions() {
+      return this.hasPivotActions ? this.actions.concat(this.pivotActions.actions) : this.actions;
+    },
+
+
+    /**
+     * Determine if the resource has any pivot actions available.
+     */
+    hasPivotActions: function hasPivotActions() {
+      return this.pivotActions && this.pivotActions.actions.length > 0;
+    },
+
+
+    /**
+     * Determine if the resource has any actions available.
+     */
+    actionsAreAvailable: function actionsAreAvailable() {
+      return this.allActions.length > 0;
+    },
+
+
+    /**
+     * Get the name of the pivot model for the resource.
+     */
+    pivotName: function pivotName() {
+      return this.pivotActions ? this.pivotActions.name : '';
+    },
+
+
+    /**
+     * Get the current search value from the query string.
+     */
+    currentSearch: function currentSearch() {
+      return this.$route.query[this.searchParameter] || '';
+    },
+
+
+    /**
+     * Get the current order by value from the query string.
+     */
+    currentOrderBy: function currentOrderBy() {
+      return this.$route.query[this.orderByParameter] || '';
+    },
+
+
+    /**
+     * Get the current order by direction from the query string.
+     */
+    currentOrderByDirection: function currentOrderByDirection() {
+      return this.$route.query[this.orderByDirectionParameter] || 'desc';
+    },
+
+
+    /**
+     * Get the current trashed constraint value from the query string.
+     */
+    currentTrashed: function currentTrashed() {
+      return this.$route.query[this.trashedParameter] || '';
+    },
+
+
+    /**
+     * Determine if the current resource listing is via a many-to-many relationship.
+     */
+    viaManyToMany: function viaManyToMany() {
+      return this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany';
+    },
+
+
+    /**
+     * Determine if the resource / relationship is "full".
+     */
+    resourceIsFull: function resourceIsFull() {
+      return this.viaHasOne && this.resources.length > 0;
+    },
+
+
+    /**
+     * Determine if the current resource listing is via a has-one relationship.
+     */
+    viaHasOne: function viaHasOne() {
+      return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne';
+    },
+
+
+    /**
+     * Get the singular name for the resource
+     */
+    singularName: function singularName() {
+      return this.resourceInformation.singularLabel;
+    },
+
+
+    /**
+     * Get the selected resources for the action selector.
+     */
+    selectedResourcesForActionSelector: function selectedResourcesForActionSelector() {
+      return this.selectAllMatchingChecked ? 'all' : this.selectedResourceIds;
+    },
+
+
+    /**
+     * Determine if there are any resources for the view
+     */
+    hasResources: function hasResources() {
+      return Boolean(this.resources.length > 0);
+    },
+
+
+    /**
+     * Determine if the resource should show any cards
+     */
+    shouldShowCards: function shouldShowCards() {
+      return this.cards.length > 0;
+    },
+
+
+    /**
+     * Get the endpoint for this resource's metrics.
+     */
+    cardsEndpoint: function cardsEndpoint() {
+      return '/nova-api/' + this.resourceName + '/lens/' + this.lens + '/cards';
+    },
+
+
+    /**
+     * Determine whether to show the selection checkboxes for resources
+     */
+    shouldShowCheckBoxes: function shouldShowCheckBoxes() {
+      return Boolean(this.hasId && this.hasResources && !this.viaHasOne) && Boolean(this.actionsAreAvailable || this.authorizedToDeleteAnyResources || this.canShowDeleteMenu);
+    },
+
+
+    /**
+     * Determinw whether the delete menu should be shown to the user
+     */
+    shouldShowDeleteMenu: function shouldShowDeleteMenu() {
+      return Boolean(this.selectedResources.length > 0) && this.canShowDeleteMenu;
+    },
+
+
+    /**
+     * Determine if any selected resources may be deleted.
+     */
+    authorizedToDeleteSelectedResources: function authorizedToDeleteSelectedResources() {
+      return Boolean(_.find(this.selectedResources, function (resource) {
+        return resource.authorizedToDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if any selected resources may be force deleted.
+     */
+    authorizedToForceDeleteSelectedResources: function authorizedToForceDeleteSelectedResources() {
+      return Boolean(_.find(this.selectedResources, function (resource) {
+        return resource.authorizedToForceDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if the user is authorized to delete any listed resource.
+     */
+    authorizedToDeleteAnyResources: function authorizedToDeleteAnyResources() {
+      return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
+        return resource.authorizedToDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if the user is authorized to force delete any listed resource.
+     */
+    authorizedToForceDeleteAnyResources: function authorizedToForceDeleteAnyResources() {
+      return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
+        return resource.authorizedToForceDelete;
+      }));
+    },
+
+
+    /**
+     * Determine if any selected resources may be restored.
+     */
+    authorizedToRestoreSelectedResources: function authorizedToRestoreSelectedResources() {
+      return Boolean(_.find(this.selectedResources, function (resource) {
+        return resource.authorizedToRestore;
+      }));
+    },
+
+
+    /**
+     * Determine if the user is authorized to restore any listed resource.
+     */
+    authorizedToRestoreAnyResources: function authorizedToRestoreAnyResources() {
+      return this.resources.length > 0 && Boolean(_.find(this.resources, function (resource) {
+        return resource.authorizedToRestore;
+      }));
+    },
+
+
+    /**
+     * Determinw whether the user is authorized to perform actions on the delete menu
+     */
+    canShowDeleteMenu: function canShowDeleteMenu() {
+      return this.hasId && Boolean(this.authorizedToDeleteSelectedResources || this.authorizedToForceDeleteSelectedResources || this.authorizedToDeleteAnyResources || this.authorizedToForceDeleteAnyResources || this.authorizedToRestoreSelectedResources || this.authorizedToRestoreAnyResources);
+    },
+
+
+    /**
+     * Return the currently encoded filter string from the store
+     */
+    encodedFilters: function encodedFilters() {
+      return this.$store.getters[this.resourceName + '/currentEncodedFilters'];
+    },
+
+
+    /**
+     * Return the initial encoded filters from the query string
+     */
+    initialEncodedFilters: function initialEncodedFilters() {
+      return this.$route.query[this.filterParameter] || '';
+    },
+    paginationComponent: function paginationComponent() {
+      return 'pagination-' + (Nova.config['pagination'] || 'links');
+    },
+    hasNextPage: function hasNextPage() {
+      return Boolean(this.resourceResponse && this.resourceResponse.next_page_url);
+    },
+    hasPreviousPage: function hasPreviousPage() {
+      return Boolean(this.resourceResponse && this.resourceResponse.prev_page_url);
+    },
+    totalPages: function totalPages() {
+      return Math.ceil(this.allMatchingResourceCount / this.currentPerPage);
+    },
+
+
+    /**
+     * Return the resource count label
+     */
+    resourceCountLabel: function resourceCountLabel() {
+      var first = this.perPage * (this.currentPage - 1);
+
+      return this.resources.length && first + 1 + '-' + (first + this.resources.length) + ' ' + this.__('of') + ' ' + this.allMatchingResourceCount;
+    },
+
+
+    /**
+     * Get the current per page value from the query string.
+     */
+    currentPerPage: function currentPerPage() {
+      return this.perPage;
+    },
+
+
+    /**
+     * The per-page options configured for this resource.
+     */
+    perPageOptions: function perPageOptions() {
+      if (this.resourceResponse) {
+        return this.resourceResponse.per_page_options;
+      }
+    }
+  }
 };
 
 /***/ }),
@@ -15376,7 +15169,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -15392,379 +15185,375 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    mixins: [_laravelNova.InteractsWithResourceInformation],
+  mixins: [_laravelNova.InteractsWithResourceInformation],
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        resourceId: {
-            required: true
-        },
-        viaResource: {
-            default: ''
-        },
-        viaResourceId: {
-            default: ''
-        },
-        viaRelationship: {
-            default: ''
-        }
+  props: {
+    resourceName: {
+      type: String,
+      required: true
     },
-
-    data: function data() {
-        return {
-            relationResponse: null,
-            loading: true,
-            submittedViaUpdateResourceAndContinueEditing: false,
-            submittedViaUpdateResource: false,
-            fields: [],
-            panels: [],
-            validationErrors: new _laravelNova.Errors(),
-            lastRetrievedAt: null,
-            isWorking: false
-        };
+    resourceId: {
+      required: true
     },
+    viaResource: {
+      default: ''
+    },
+    viaResourceId: {
+      default: ''
+    },
+    viaRelationship: {
+      default: ''
+    }
+  },
 
-    created: function () {
-        var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-            var _ref2, data;
+  data: function data() {
+    return {
+      relationResponse: null,
+      loading: true,
+      submittedViaUpdateResourceAndContinueEditing: false,
+      submittedViaUpdateResource: false,
+      fields: [],
+      panels: [],
+      validationErrors: new _laravelNova.Errors(),
+      lastRetrievedAt: null,
+      isWorking: false
+    };
+  },
 
-            return _regenerator2.default.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            if (!Nova.missingResource(this.resourceName)) {
-                                _context.next = 2;
-                                break;
-                            }
+  created: function () {
+    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+      var _ref2, data;
 
-                            return _context.abrupt('return', this.$router.push({ name: '404' }));
+      return _regenerator2.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!Nova.missingResource(this.resourceName)) {
+                _context.next = 2;
+                break;
+              }
 
-                        case 2:
-                            if (!this.isRelation) {
-                                _context.next = 8;
-                                break;
-                            }
+              return _context.abrupt('return', this.$router.push({ name: '404' }));
 
-                            _context.next = 5;
-                            return Nova.request('/nova-api/' + this.viaResource + '/field/' + this.viaRelationship);
+            case 2:
+              if (!this.isRelation) {
+                _context.next = 8;
+                break;
+              }
 
-                        case 5:
-                            _ref2 = _context.sent;
-                            data = _ref2.data;
+              _context.next = 5;
+              return Nova.request('/nova-api/' + this.viaResource + '/field/' + this.viaRelationship);
 
-                            this.relationResponse = data;
+            case 5:
+              _ref2 = _context.sent;
+              data = _ref2.data;
 
-                        case 8:
+              this.relationResponse = data;
 
-                            this.getFields();
-                            this.updateLastRetrievedAtTimestamp();
+            case 8:
 
-                        case 10:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, this);
-        }));
+              this.getFields();
+              this.updateLastRetrievedAtTimestamp();
 
-        function created() {
-            return _ref.apply(this, arguments);
+            case 10:
+            case 'end':
+              return _context.stop();
+          }
         }
+      }, _callee, this);
+    }));
 
-        return created;
+    function created() {
+      return _ref.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+
+
+  methods: {
+    /**
+     * Get the available fields for the resource.
+     */
+    getFields: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+        var _this = this;
+
+        var _ref4, _ref4$data, panels, fields;
+
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.loading = true;
+
+                this.panels = [];
+                this.fields = [];
+
+                _context2.next = 5;
+                return Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/update-fields', {
+                  params: {
+                    editing: true,
+                    editMode: 'update',
+                    viaResource: this.viaResource,
+                    viaResourceId: this.viaResourceId,
+                    viaRelationship: this.viaRelationship
+                  }
+                }).catch(function (error) {
+                  if (error.response.status == 404) {
+                    _this.$router.push({ name: '404' });
+                    return;
+                  }
+                });
+
+              case 5:
+                _ref4 = _context2.sent;
+                _ref4$data = _ref4.data;
+                panels = _ref4$data.panels;
+                fields = _ref4$data.fields;
+
+
+                this.panels = panels;
+                this.fields = fields;
+                this.loading = false;
+
+                Nova.$emit('resource-loaded');
+
+              case 13:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getFields() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return getFields;
+    }(),
+    submitViaUpdateResource: function () {
+      var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(e) {
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                e.preventDefault();
+                this.submittedViaUpdateResource = true;
+                this.submittedViaUpdateResourceAndContinueEditing = false;
+                _context3.next = 5;
+                return this.updateResource();
+
+              case 5:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function submitViaUpdateResource(_x) {
+        return _ref5.apply(this, arguments);
+      }
+
+      return submitViaUpdateResource;
+    }(),
+    submitViaUpdateResourceAndContinueEditing: function () {
+      var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.submittedViaUpdateResourceAndContinueEditing = true;
+                this.submittedViaUpdateResource = false;
+                _context4.next = 4;
+                return this.updateResource();
+
+              case 4:
+              case 'end':
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function submitViaUpdateResourceAndContinueEditing() {
+        return _ref6.apply(this, arguments);
+      }
+
+      return submitViaUpdateResourceAndContinueEditing;
     }(),
 
 
-    methods: {
-        /**
-         * Get the available fields for the resource.
-         */
-        getFields: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-                var _this = this;
+    /**
+     * Update the resource using the provided data.
+     */
+    updateResource: function () {
+      var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+        var _ref8, redirect;
 
-                var _ref4, _ref4$data, panels, fields;
+        return _regenerator2.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                this.isWorking = true;
 
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                this.loading = true;
-
-                                this.panels = [];
-                                this.fields = [];
-
-                                _context2.next = 5;
-                                return Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/update-fields', {
-                                    params: {
-                                        editing: true,
-                                        editMode: 'update',
-                                        viaResource: this.viaResource,
-                                        viaResourceId: this.viaResourceId,
-                                        viaRelationship: this.viaRelationship
-                                    }
-                                }).catch(function (error) {
-                                    if (error.response.status == 404) {
-                                        _this.$router.push({ name: '404' });
-                                        return;
-                                    }
-                                });
-
-                            case 5:
-                                _ref4 = _context2.sent;
-                                _ref4$data = _ref4.data;
-                                panels = _ref4$data.panels;
-                                fields = _ref4$data.fields;
-
-
-                                this.panels = panels;
-                                this.fields = fields;
-                                this.loading = false;
-
-                                Nova.$emit('resource-loaded');
-
-                            case 13:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function getFields() {
-                return _ref3.apply(this, arguments);
-            }
-
-            return getFields;
-        }(),
-        submitViaUpdateResource: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(e) {
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                e.preventDefault();
-                                this.submittedViaUpdateResource = true;
-                                this.submittedViaUpdateResourceAndContinueEditing = false;
-                                _context3.next = 5;
-                                return this.updateResource();
-
-                            case 5:
-                            case 'end':
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this);
-            }));
-
-            function submitViaUpdateResource(_x) {
-                return _ref5.apply(this, arguments);
-            }
-
-            return submitViaUpdateResource;
-        }(),
-        submitViaUpdateResourceAndContinueEditing: function () {
-            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-                return _regenerator2.default.wrap(function _callee4$(_context4) {
-                    while (1) {
-                        switch (_context4.prev = _context4.next) {
-                            case 0:
-                                this.submittedViaUpdateResourceAndContinueEditing = true;
-                                this.submittedViaUpdateResource = false;
-                                _context4.next = 4;
-                                return this.updateResource();
-
-                            case 4:
-                            case 'end':
-                                return _context4.stop();
-                        }
-                    }
-                }, _callee4, this);
-            }));
-
-            function submitViaUpdateResourceAndContinueEditing() {
-                return _ref6.apply(this, arguments);
-            }
-
-            return submitViaUpdateResourceAndContinueEditing;
-        }(),
-
-
-        /**
-         * Update the resource using the provided data.
-         */
-        updateResource: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-                var _ref8, redirect;
-
-                return _regenerator2.default.wrap(function _callee5$(_context5) {
-                    while (1) {
-                        switch (_context5.prev = _context5.next) {
-                            case 0:
-                                this.isWorking = true;
-
-                                if (!this.$refs.form.reportValidity()) {
-                                    _context5.next = 28;
-                                    break;
-                                }
-
-                                _context5.prev = 2;
-                                _context5.next = 5;
-                                return this.updateRequest();
-
-                            case 5:
-                                _ref8 = _context5.sent;
-                                redirect = _ref8.data.redirect;
-
-
-                                Nova.success(this.__('The :resource was updated!', {
-                                    resource: this.resourceInformation.singularLabel.toLowerCase()
-                                }));
-
-                                _context5.next = 10;
-                                return this.updateLastRetrievedAtTimestamp();
-
-                            case 10:
-                                if (!this.submittedViaUpdateResource) {
-                                    _context5.next = 14;
-                                    break;
-                                }
-
-                                this.$router.push({ path: redirect });
-                                _context5.next = 20;
-                                break;
-
-                            case 14:
-                                // Reset the form by refetching the fields
-                                this.getFields();
-                                this.validationErrors = new _laravelNova.Errors();
-                                this.submittedViaUpdateResource = false;
-                                this.submittedViaUpdateResourceAndContinueEditing = false;
-                                this.isWorking = false;
-
-                                return _context5.abrupt('return');
-
-                            case 20:
-                                _context5.next = 28;
-                                break;
-
-                            case 22:
-                                _context5.prev = 22;
-                                _context5.t0 = _context5['catch'](2);
-
-                                this.submittedViaUpdateResource = false;
-                                this.submittedViaUpdateResourceAndContinueEditing = false;
-
-                                if (_context5.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
-                                    Nova.error(this.__('There was a problem submitting the form.'));
-                                }
-
-                                if (_context5.t0.response.status == 409) {
-                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
-                                }
-
-                            case 28:
-
-                                this.submittedViaUpdateResource = false;
-                                this.submittedViaUpdateResourceAndContinueEditing = false;
-                                this.isWorking = false;
-
-                            case 31:
-                            case 'end':
-                                return _context5.stop();
-                        }
-                    }
-                }, _callee5, this, [[2, 22]]);
-            }));
-
-            function updateResource() {
-                return _ref7.apply(this, arguments);
-            }
-
-            return updateResource;
-        }(),
-
-
-        /**
-         * Send an update request for this resource
-         */
-        updateRequest: function updateRequest() {
-            return Nova.request().post('/nova-api/' + this.resourceName + '/' + this.resourceId, this.updateResourceFormData, {
-                params: {
-                    viaResource: this.viaResource,
-                    viaResourceId: this.viaResourceId,
-                    viaRelationship: this.viaRelationship,
-                    editing: true,
-                    editMode: 'update'
+                if (!this.$refs.form.reportValidity()) {
+                  _context5.next = 28;
+                  break;
                 }
-            });
-        },
+
+                _context5.prev = 2;
+                _context5.next = 5;
+                return this.updateRequest();
+
+              case 5:
+                _ref8 = _context5.sent;
+                redirect = _ref8.data.redirect;
 
 
-        /**
-         * Update the last retrieved at timestamp to the current UNIX timestamp.
-         */
-        updateLastRetrievedAtTimestamp: function updateLastRetrievedAtTimestamp() {
-            this.lastRetrievedAt = Math.floor(new Date().getTime() / 1000);
+                Nova.success(this.__('The :resource was updated!', {
+                  resource: this.resourceInformation.singularLabel.toLowerCase()
+                }));
+
+                _context5.next = 10;
+                return this.updateLastRetrievedAtTimestamp();
+
+              case 10:
+                if (!this.submittedViaUpdateResource) {
+                  _context5.next = 14;
+                  break;
+                }
+
+                this.$router.push({ path: redirect });
+                _context5.next = 20;
+                break;
+
+              case 14:
+                // Reset the form by refetching the fields
+                this.getFields();
+                this.validationErrors = new _laravelNova.Errors();
+                this.submittedViaUpdateResource = false;
+                this.submittedViaUpdateResourceAndContinueEditing = false;
+                this.isWorking = false;
+
+                return _context5.abrupt('return');
+
+              case 20:
+                _context5.next = 28;
+                break;
+
+              case 22:
+                _context5.prev = 22;
+                _context5.t0 = _context5['catch'](2);
+
+                this.submittedViaUpdateResource = false;
+                this.submittedViaUpdateResourceAndContinueEditing = false;
+
+                if (_context5.t0.response.status == 422) {
+                  this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
+                  Nova.error(this.__('There was a problem submitting the form.'));
+                }
+
+                if (_context5.t0.response.status == 409) {
+                  Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
+                }
+
+              case 28:
+
+                this.submittedViaUpdateResource = false;
+                this.submittedViaUpdateResourceAndContinueEditing = false;
+                this.isWorking = false;
+
+              case 31:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this, [[2, 22]]);
+      }));
+
+      function updateResource() {
+        return _ref7.apply(this, arguments);
+      }
+
+      return updateResource;
+    }(),
+
+
+    /**
+     * Send an update request for this resource
+     */
+    updateRequest: function updateRequest() {
+      return Nova.request().post('/nova-api/' + this.resourceName + '/' + this.resourceId, this.updateResourceFormData, {
+        params: {
+          viaResource: this.viaResource,
+          viaResourceId: this.viaResourceId,
+          viaRelationship: this.viaRelationship,
+          editing: true,
+          editMode: 'update'
         }
+      });
     },
 
-    computed: {
-        wasSubmittedViaUpdateResourceAndContinueEditing: function wasSubmittedViaUpdateResourceAndContinueEditing() {
-            return this.isWorking && this.submittedViaUpdateResourceAndContinueEditing;
-        },
-        wasSubmittedViaUpdateResource: function wasSubmittedViaUpdateResource() {
-            return this.isWorking && this.submittedViaUpdateResource;
-        },
 
-
-        /**
-         * Create the form data for creating the resource.
-         */
-        updateResourceFormData: function updateResourceFormData() {
-            var _this2 = this;
-
-            return _.tap(new FormData(), function (formData) {
-                _(_this2.fields).each(function (field) {
-                    field.fill(formData);
-                });
-
-                formData.append('_method', 'PUT');
-                formData.append('_retrieved_at', _this2.lastRetrievedAt);
-            });
-        },
-        singularName: function singularName() {
-            if (this.relationResponse) {
-                return this.relationResponse.singularLabel;
-            }
-
-            return this.resourceInformation.singularLabel;
-        },
-        isRelation: function isRelation() {
-            return Boolean(this.viaResourceId && this.viaRelationship);
-        },
-        panelsWithFields: function panelsWithFields() {
-            var _this3 = this;
-
-            return _.map(this.panels, function (panel) {
-                return {
-                    name: panel.name,
-                    fields: _.filter(_this3.fields, function (field) {
-                        return field.panel == panel.name;
-                    })
-                };
-            });
-        }
+    /**
+     * Update the last retrieved at timestamp to the current UNIX timestamp.
+     */
+    updateLastRetrievedAtTimestamp: function updateLastRetrievedAtTimestamp() {
+      this.lastRetrievedAt = Math.floor(new Date().getTime() / 1000);
     }
+  },
+
+  computed: {
+    wasSubmittedViaUpdateResourceAndContinueEditing: function wasSubmittedViaUpdateResourceAndContinueEditing() {
+      return this.isWorking && this.submittedViaUpdateResourceAndContinueEditing;
+    },
+    wasSubmittedViaUpdateResource: function wasSubmittedViaUpdateResource() {
+      return this.isWorking && this.submittedViaUpdateResource;
+    },
+
+
+    /**
+     * Create the form data for creating the resource.
+     */
+    updateResourceFormData: function updateResourceFormData() {
+      var _this2 = this;
+
+      return _.tap(new FormData(), function (formData) {
+        _(_this2.fields).each(function (field) {
+          field.fill(formData);
+        });
+
+        formData.append('_method', 'PUT');
+        formData.append('_retrieved_at', _this2.lastRetrievedAt);
+      });
+    },
+    singularName: function singularName() {
+      if (this.relationResponse) {
+        return this.relationResponse.singularLabel;
+      }
+
+      return this.resourceInformation.singularLabel;
+    },
+    isRelation: function isRelation() {
+      return Boolean(this.viaResourceId && this.viaRelationship);
+    },
+    panelsWithFields: function panelsWithFields() {
+      var _this3 = this;
+
+      return _.map(this.panels, function (panel) {
+        return {
+          name: panel.name,
+          fields: _.filter(_this3.fields, function (field) {
+            return field.panel == panel.name;
+          })
+        };
+      });
+    }
+  }
 }; //
-//
-//
-//
-//
 //
 //
 //
@@ -15826,7 +15615,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -15927,495 +15716,493 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
 
 exports.default = {
-    mixins: [_laravelNova.PerformsSearches, _laravelNova.TogglesTrashed],
+  mixins: [_laravelNova.PerformsSearches, _laravelNova.TogglesTrashed],
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true
-        },
-        resourceId: {
-            required: true
-        },
-        relatedResourceName: {
-            type: String,
-            required: true
-        },
-        relatedResourceId: {
-            required: true
-        },
-        viaResource: {
-            default: ''
-        },
-        viaResourceId: {
-            default: ''
-        },
-        viaRelationship: {
-            default: ''
-        },
-        polymorphic: {
-            default: false
+  props: {
+    resourceName: {
+      type: String,
+      required: true
+    },
+    resourceId: {
+      required: true
+    },
+    relatedResourceName: {
+      type: String,
+      required: true
+    },
+    relatedResourceId: {
+      required: true
+    },
+    viaResource: {
+      default: ''
+    },
+    viaResourceId: {
+      default: ''
+    },
+    viaRelationship: {
+      default: ''
+    },
+    polymorphic: {
+      default: false
+    }
+  },
+
+  data: function data() {
+    return {
+      loading: true,
+      submittedViaUpdateAndContinueEditing: false,
+      submittedViaUpdateAttachedResource: false,
+      field: null,
+      softDeletes: false,
+      fields: [],
+      validationErrors: new _laravelNova.Errors(),
+      selectedResource: null,
+      selectedResourceId: null,
+      lastRetrievedAt: null
+    };
+  },
+
+  created: function created() {
+    if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' });
+  },
+
+
+  /**
+   * Mount the component.
+   */
+  mounted: function mounted() {
+    this.initializeComponent();
+  },
+
+
+  methods: {
+    /**
+     * Initialize the component's data.
+     */
+    initializeComponent: function () {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.softDeletes = false;
+                this.disableWithTrashed();
+                this.clearSelection();
+                this.getField();
+
+                _context.next = 6;
+                return this.getPivotFields();
+
+              case 6:
+                _context.next = 8;
+                return this.getAvailableResources();
+
+              case 8:
+
+                this.selectedResourceId = this.relatedResourceId;
+
+                this.selectInitialResource();
+
+                this.updateLastRetrievedAtTimestamp();
+
+              case 11:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function initializeComponent() {
+        return _ref.apply(this, arguments);
+      }
+
+      return initializeComponent;
+    }(),
+
+
+    /**
+     * Get the many-to-many relationship field.
+     */
+    getField: function getField() {
+      var _this = this;
+
+      this.field = null;
+
+      Nova.request().get('/nova-api/' + this.resourceName + '/field/' + this.viaRelationship).then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this.field = data;
+
+        if (_this.field.searchable) {
+          _this.determineIfSoftDeletes();
         }
-    },
 
-    data: function data() {
-        return {
-            loading: true,
-            submittedViaUpdateAndContinueEditing: false,
-            submittedViaUpdateAttachedResource: false,
-            field: null,
-            softDeletes: false,
-            fields: [],
-            validationErrors: new _laravelNova.Errors(),
-            selectedResource: null,
-            selectedResourceId: null,
-            lastRetrievedAt: null
-        };
-    },
-
-    created: function created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' });
+        _this.loading = false;
+      });
     },
 
 
     /**
-     * Mount the component.
+     * Get all of the available pivot fields for the relationship.
      */
-    mounted: function mounted() {
-        this.initializeComponent();
-    },
-
-
-    methods: {
-        /**
-         * Initialize the component's data.
-         */
-        initializeComponent: function () {
-            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                this.softDeletes = false;
-                                this.disableWithTrashed();
-                                this.clearSelection();
-                                this.getField();
-
-                                _context.next = 6;
-                                return this.getPivotFields();
-
-                            case 6:
-                                _context.next = 8;
-                                return this.getAvailableResources();
-
-                            case 8:
-
-                                this.selectedResourceId = this.relatedResourceId;
-
-                                this.selectInitialResource();
-
-                                this.updateLastRetrievedAtTimestamp();
-
-                            case 11:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function initializeComponent() {
-                return _ref.apply(this, arguments);
-            }
-
-            return initializeComponent;
-        }(),
-
-
-        /**
-         * Get the many-to-many relationship field.
-         */
-        getField: function getField() {
-            var _this = this;
-
-            this.field = null;
-
-            Nova.request().get('/nova-api/' + this.resourceName + '/field/' + this.viaRelationship).then(function (_ref2) {
-                var data = _ref2.data;
-
-                _this.field = data;
-
-                if (_this.field.searchable) {
-                    _this.determineIfSoftDeletes();
-                }
-
-                _this.loading = false;
-            });
-        },
-
-
-        /**
-         * Get all of the available pivot fields for the relationship.
-         */
-        getPivotFields: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-                var _this2 = this;
-
-                var _ref4, data;
-
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                this.fields = [];
-
-                                _context2.next = 3;
-                                return Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/update-pivot-fields/' + this.relatedResourceName + '/' + this.relatedResourceId, {
-                                    params: {
-                                        editing: true,
-                                        editMode: 'update-attached',
-                                        viaRelationship: this.viaRelationship
-                                    }
-                                }).catch(function (error) {
-                                    if (error.response.status == 404) {
-                                        _this2.$router.push({ name: '404' });
-                                        return;
-                                    }
-                                });
-
-                            case 3:
-                                _ref4 = _context2.sent;
-                                data = _ref4.data;
-
-
-                                this.fields = data;
-
-                                _lodash2.default.each(this.fields, function (field) {
-                                    field.fill = function () {
-                                        return '';
-                                    };
-                                });
-
-                            case 7:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function getPivotFields() {
-                return _ref3.apply(this, arguments);
-            }
-
-            return getPivotFields;
-        }(),
-
-
-        /**
-         * Get all of the available resources for the current search / trashed state.
-         */
-        getAvailableResources: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-                var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-                var response;
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                _context3.prev = 0;
-                                _context3.next = 3;
-                                return Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/attachable/' + this.relatedResourceName, {
-                                    params: {
-                                        search: search,
-                                        current: this.relatedResourceId,
-                                        first: true,
-                                        withTrashed: this.withTrashed
-                                    }
-                                });
-
-                            case 3:
-                                response = _context3.sent;
-
-
-                                this.availableResources = response.data.resources;
-                                this.withTrashed = response.data.withTrashed;
-                                this.softDeletes = response.data.softDeletes;
-                                _context3.next = 12;
-                                break;
-
-                            case 9:
-                                _context3.prev = 9;
-                                _context3.t0 = _context3['catch'](0);
-
-                                console.log(_context3.t0);
-
-                            case 12:
-                            case 'end':
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this, [[0, 9]]);
-            }));
-
-            function getAvailableResources() {
-                return _ref5.apply(this, arguments);
-            }
-
-            return getAvailableResources;
-        }(),
-
-
-        /**
-         * Determine if the related resource is soft deleting.
-         */
-        determineIfSoftDeletes: function determineIfSoftDeletes() {
-            var _this3 = this;
-
-            Nova.request().get('/nova-api/' + this.relatedResourceName + '/soft-deletes').then(function (response) {
-                _this3.softDeletes = response.data.softDeletes;
-            });
-        },
-
-
-        /**
-         * Update the attached resource.
-         */
-        updateAttachedResource: function () {
-            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-                return _regenerator2.default.wrap(function _callee4$(_context4) {
-                    while (1) {
-                        switch (_context4.prev = _context4.next) {
-                            case 0:
-                                this.submittedViaUpdateAttachedResource = true;
-
-                                _context4.prev = 1;
-                                _context4.next = 4;
-                                return this.updateRequest();
-
-                            case 4:
-
-                                this.submittedViaUpdateAttachedResource = false;
-
-                                Nova.success(this.__('The resource was updated!'));
-
-                                this.$router.push({
-                                    name: 'detail',
-                                    params: {
-                                        resourceName: this.resourceName,
-                                        resourceId: this.resourceId
-                                    }
-                                });
-                                _context4.next = 14;
-                                break;
-
-                            case 9:
-                                _context4.prev = 9;
-                                _context4.t0 = _context4['catch'](1);
-
-                                this.submittedViaUpdateAttachedResource = false;
-
-                                if (_context4.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context4.t0.response.data.errors);
-                                    Nova.error(this.__('There was a problem submitting the form.'));
-                                }
-
-                                if (_context4.t0.response.status == 409) {
-                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
-                                }
-
-                            case 14:
-                            case 'end':
-                                return _context4.stop();
-                        }
-                    }
-                }, _callee4, this, [[1, 9]]);
-            }));
-
-            function updateAttachedResource() {
-                return _ref6.apply(this, arguments);
-            }
-
-            return updateAttachedResource;
-        }(),
-
-
-        /**
-         * Update the resource and reset the form
-         */
-        updateAndContinueEditing: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-                return _regenerator2.default.wrap(function _callee5$(_context5) {
-                    while (1) {
-                        switch (_context5.prev = _context5.next) {
-                            case 0:
-                                this.submittedViaUpdateAndContinueEditing = true;
-
-                                _context5.prev = 1;
-                                _context5.next = 4;
-                                return this.updateRequest();
-
-                            case 4:
-
-                                this.submittedViaUpdateAndContinueEditing = false;
-
-                                Nova.success(this.__('The resource was updated!'));
-
-                                // Reset the form by refetching the fields
-                                this.initializeComponent();
-                                _context5.next = 14;
-                                break;
-
-                            case 9:
-                                _context5.prev = 9;
-                                _context5.t0 = _context5['catch'](1);
-
-                                this.submittedViaUpdateAndContinueEditing = false;
-
-                                if (_context5.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
-                                    Nova.error(this.__('There was a problem submitting the form.'));
-                                }
-
-                                if (_context5.t0.response.status == 409) {
-                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
-                                }
-
-                            case 14:
-                            case 'end':
-                                return _context5.stop();
-                        }
-                    }
-                }, _callee5, this, [[1, 9]]);
-            }));
-
-            function updateAndContinueEditing() {
-                return _ref7.apply(this, arguments);
-            }
-
-            return updateAndContinueEditing;
-        }(),
-
-
-        /**
-         * Send an update request for this resource
-         */
-        updateRequest: function updateRequest() {
-            return Nova.request().post('/nova-api/' + this.resourceName + '/' + this.resourceId + '/update-attached/' + this.relatedResourceName + '/' + this.relatedResourceId, this.updateAttachmentFormData, {
-                params: {
+    getPivotFields: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+        var _this2 = this;
+
+        var _ref4, data;
+
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.fields = [];
+
+                _context2.next = 3;
+                return Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/update-pivot-fields/' + this.relatedResourceName + '/' + this.relatedResourceId, {
+                  params: {
                     editing: true,
-                    editMode: 'update-attached'
-                }
-            });
-        },
-
-
-        /**
-         * Select a resource using the <select> control
-         */
-        selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
-            this.selectedResourceId = e.target.value;
-            console.log(e.target.value, this.selectedResourceId);
-            this.selectInitialResource();
-        },
-
-
-        /**
-         * Toggle the trashed state of the search
-         */
-        toggleWithTrashed: function toggleWithTrashed() {
-            this.withTrashed = !this.withTrashed;
-
-            // Reload the data if the component doesn't support searching
-            if (!this.isSearchable) {
-                this.getAvailableResources();
-            }
-        },
-
-
-        /**
-         * Select the initial selected resource
-         */
-        selectInitialResource: function selectInitialResource() {
-            var _this4 = this;
-
-            this.selectedResource = _lodash2.default.find(this.availableResources, function (r) {
-                return r.value == _this4.selectedResourceId;
-            });
-        },
-
-
-        /**
-         * Update the last retrieved at timestamp to the current UNIX timestamp.
-         */
-        updateLastRetrievedAtTimestamp: function updateLastRetrievedAtTimestamp() {
-            this.lastRetrievedAt = Math.floor(new Date().getTime() / 1000);
-        }
-    },
-
-    computed: {
-        /**
-         * Get the attachment endpoint for the relationship type.
-         */
-        attachmentEndpoint: function attachmentEndpoint() {
-            return this.polymorphic ? '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach-morphed/' + this.relatedResourceName : '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach/' + this.relatedResourceName;
-        },
-
-
-        /*
-         * Get the form data for the resource attachment update.
-         */
-        updateAttachmentFormData: function updateAttachmentFormData() {
-            var _this5 = this;
-
-            return _lodash2.default.tap(new FormData(), function (formData) {
-                _lodash2.default.each(_this5.fields, function (field) {
-                    field.fill(formData);
+                    editMode: 'update-attached',
+                    viaRelationship: this.viaRelationship
+                  }
+                }).catch(function (error) {
+                  if (error.response.status == 404) {
+                    _this2.$router.push({ name: '404' });
+                    return;
+                  }
                 });
 
-                formData.append('viaRelationship', _this5.viaRelationship);
+              case 3:
+                _ref4 = _context2.sent;
+                data = _ref4.data;
 
-                if (!_this5.selectedResource) {
-                    formData.append(_this5.relatedResourceName, '');
-                } else {
-                    formData.append(_this5.relatedResourceName, _this5.selectedResource.value);
+
+                this.fields = data;
+
+                _lodash2.default.each(this.fields, function (field) {
+                  field.fill = function () {
+                    return '';
+                  };
+                });
+
+              case 7:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getPivotFields() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return getPivotFields;
+    }(),
+
+
+    /**
+     * Get all of the available resources for the current search / trashed state.
+     */
+    getAvailableResources: function () {
+      var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+        var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        var response;
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId + '/attachable/' + this.relatedResourceName, {
+                  params: {
+                    search: search,
+                    current: this.relatedResourceId,
+                    first: true,
+                    withTrashed: this.withTrashed
+                  }
+                });
+
+              case 3:
+                response = _context3.sent;
+
+
+                this.availableResources = response.data.resources;
+                this.withTrashed = response.data.withTrashed;
+                this.softDeletes = response.data.softDeletes;
+                _context3.next = 12;
+                break;
+
+              case 9:
+                _context3.prev = 9;
+                _context3.t0 = _context3['catch'](0);
+
+                console.log(_context3.t0);
+
+              case 12:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 9]]);
+      }));
+
+      function getAvailableResources() {
+        return _ref5.apply(this, arguments);
+      }
+
+      return getAvailableResources;
+    }(),
+
+
+    /**
+     * Determine if the related resource is soft deleting.
+     */
+    determineIfSoftDeletes: function determineIfSoftDeletes() {
+      var _this3 = this;
+
+      Nova.request().get('/nova-api/' + this.relatedResourceName + '/soft-deletes').then(function (response) {
+        _this3.softDeletes = response.data.softDeletes;
+      });
+    },
+
+
+    /**
+     * Update the attached resource.
+     */
+    updateAttachedResource: function () {
+      var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.submittedViaUpdateAttachedResource = true;
+
+                _context4.prev = 1;
+                _context4.next = 4;
+                return this.updateRequest();
+
+              case 4:
+
+                this.submittedViaUpdateAttachedResource = false;
+
+                Nova.success(this.__('The resource was updated!'));
+
+                this.$router.push({
+                  name: 'detail',
+                  params: {
+                    resourceName: this.resourceName,
+                    resourceId: this.resourceId
+                  }
+                });
+                _context4.next = 14;
+                break;
+
+              case 9:
+                _context4.prev = 9;
+                _context4.t0 = _context4['catch'](1);
+
+                this.submittedViaUpdateAttachedResource = false;
+
+                if (_context4.t0.response.status == 422) {
+                  this.validationErrors = new _laravelNova.Errors(_context4.t0.response.data.errors);
+                  Nova.error(this.__('There was a problem submitting the form.'));
                 }
 
-                formData.append(_this5.relatedResourceName + '_trashed', _this5.withTrashed);
-                formData.append('_retrieved_at', _this5.lastRetrievedAt);
-            });
-        },
+                if (_context4.t0.response.status == 409) {
+                  Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
+                }
 
-
-        /**
-         * Get the label for the related resource.
-         */
-        relatedResourceLabel: function relatedResourceLabel() {
-            if (this.field) {
-                return this.field.singularLabel;
+              case 14:
+              case 'end':
+                return _context4.stop();
             }
-        },
+          }
+        }, _callee4, this, [[1, 9]]);
+      }));
+
+      function updateAttachedResource() {
+        return _ref6.apply(this, arguments);
+      }
+
+      return updateAttachedResource;
+    }(),
 
 
-        /**
-         * Determine if the related resources is searchable
-         */
-        isSearchable: function isSearchable() {
-            return this.field.searchable;
-        },
+    /**
+     * Update the resource and reset the form
+     */
+    updateAndContinueEditing: function () {
+      var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+        return _regenerator2.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                this.submittedViaUpdateAndContinueEditing = true;
+
+                _context5.prev = 1;
+                _context5.next = 4;
+                return this.updateRequest();
+
+              case 4:
+
+                this.submittedViaUpdateAndContinueEditing = false;
+
+                Nova.success(this.__('The resource was updated!'));
+
+                // Reset the form by refetching the fields
+                this.initializeComponent();
+                _context5.next = 14;
+                break;
+
+              case 9:
+                _context5.prev = 9;
+                _context5.t0 = _context5['catch'](1);
+
+                this.submittedViaUpdateAndContinueEditing = false;
+
+                if (_context5.t0.response.status == 422) {
+                  this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
+                  Nova.error(this.__('There was a problem submitting the form.'));
+                }
+
+                if (_context5.t0.response.status == 409) {
+                  Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
+                }
+
+              case 14:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this, [[1, 9]]);
+      }));
+
+      function updateAndContinueEditing() {
+        return _ref7.apply(this, arguments);
+      }
+
+      return updateAndContinueEditing;
+    }(),
 
 
-        /**
-         * Determine if the form is being processed
-         */
-        isWorking: function isWorking() {
-            return this.submittedViaUpdateAttachedResource || this.submittedViaUpdateAndContinueEditing;
+    /**
+     * Send an update request for this resource
+     */
+    updateRequest: function updateRequest() {
+      return Nova.request().post('/nova-api/' + this.resourceName + '/' + this.resourceId + '/update-attached/' + this.relatedResourceName + '/' + this.relatedResourceId, this.updateAttachmentFormData, {
+        params: {
+          editing: true,
+          editMode: 'update-attached'
         }
+      });
+    },
+
+
+    /**
+     * Select a resource using the <select> control
+     */
+    selectResourceFromSelectControl: function selectResourceFromSelectControl(e) {
+      this.selectedResourceId = e.target.value;
+      console.log(e.target.value, this.selectedResourceId);
+      this.selectInitialResource();
+    },
+
+
+    /**
+     * Toggle the trashed state of the search
+     */
+    toggleWithTrashed: function toggleWithTrashed() {
+      this.withTrashed = !this.withTrashed;
+
+      // Reload the data if the component doesn't support searching
+      if (!this.isSearchable) {
+        this.getAvailableResources();
+      }
+    },
+
+
+    /**
+     * Select the initial selected resource
+     */
+    selectInitialResource: function selectInitialResource() {
+      var _this4 = this;
+
+      this.selectedResource = _lodash2.default.find(this.availableResources, function (r) {
+        return r.value == _this4.selectedResourceId;
+      });
+    },
+
+
+    /**
+     * Update the last retrieved at timestamp to the current UNIX timestamp.
+     */
+    updateLastRetrievedAtTimestamp: function updateLastRetrievedAtTimestamp() {
+      this.lastRetrievedAt = Math.floor(new Date().getTime() / 1000);
     }
+  },
+
+  computed: {
+    /**
+     * Get the attachment endpoint for the relationship type.
+     */
+    attachmentEndpoint: function attachmentEndpoint() {
+      return this.polymorphic ? '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach-morphed/' + this.relatedResourceName : '/nova-api/' + this.resourceName + '/' + this.resourceId + '/attach/' + this.relatedResourceName;
+    },
+
+
+    /*
+     * Get the form data for the resource attachment update.
+     */
+    updateAttachmentFormData: function updateAttachmentFormData() {
+      var _this5 = this;
+
+      return _lodash2.default.tap(new FormData(), function (formData) {
+        _lodash2.default.each(_this5.fields, function (field) {
+          field.fill(formData);
+        });
+
+        formData.append('viaRelationship', _this5.viaRelationship);
+
+        if (!_this5.selectedResource) {
+          formData.append(_this5.relatedResourceName, '');
+        } else {
+          formData.append(_this5.relatedResourceName, _this5.selectedResource.value);
+        }
+
+        formData.append(_this5.relatedResourceName + '_trashed', _this5.withTrashed);
+        formData.append('_retrieved_at', _this5.lastRetrievedAt);
+      });
+    },
+
+
+    /**
+     * Get the label for the related resource.
+     */
+    relatedResourceLabel: function relatedResourceLabel() {
+      if (this.field) {
+        return this.field.singularLabel;
+      }
+    },
+
+
+    /**
+     * Determine if the related resources is searchable
+     */
+    isSearchable: function isSearchable() {
+      return this.field.searchable;
+    },
+
+
+    /**
+     * Determine if the form is being processed
+     */
+    isWorking: function isWorking() {
+      return this.submittedViaUpdateAttachedResource || this.submittedViaUpdateAndContinueEditing;
+    }
+  }
 };
 
 /***/ }),
@@ -34187,22 +33974,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.ico-button {\n    width: 35px;\n    height: 35px;\n}\n.ico-button:hover {\n    color: var(--primary);\n}\n.ico-button:active {\n    color: var(--brand-80);\n}\n.cm-fat-cursor .CodeMirror-cursor {\n    background: #000;\n}\n.cm-s-default .cm-header {\n    color: black;\n}\n.cm-s-default .cm-link {\n    color: var(--primary);\n}\n.CodeMirror-line {\n    color: var(--gray-60);\n}\n.cm-s-default .cm-variable-2 {\n    color: var(--gray-60);\n}\n.cm-s-default .cm-quote {\n    color: var(--gray-60);\n}\n.cm-s-default .cm-comment {\n    color: var(--gray-60);\n}\n.cm-s-default .cm-string {\n    color: var(--gray-40);\n}\n.cm-s-default .cm-url {\n    color: var(--gray-40);\n}\n.CodeMirror {\n    height: auto;\n    font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;\n    box-sizing: border-box;\n    width: 100%;\n}\n.readonly > .CodeMirror {\n    background-color: var(--30) !important;\n}\n.markdown-fullscreen .markdown-content {\n    height: calc(100vh - 30px);\n}\n.markdown-fullscreen .CodeMirror {\n    height: 100%;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2b1228f0\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/CheckboxWithLabel.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\ninput[type='checkbox'][data-v-2b1228f0] {\n    position: absolute;\n    left: 0;\n    opacity: 0;\n    outline: none;\n    z-index: -1;\n}\n", ""]);
+exports.push([module.i, "\n.ico-button {\n  width: 35px;\n  height: 35px;\n}\n.ico-button:hover {\n  color: var(--primary);\n}\n.ico-button:active {\n  color: var(--brand-80);\n}\n.cm-fat-cursor .CodeMirror-cursor {\n  background: #000;\n}\n.cm-s-default .cm-header {\n  color: black;\n}\n.cm-s-default .cm-link {\n  color: var(--primary);\n}\n.CodeMirror-line {\n  color: var(--gray-60);\n}\n.cm-s-default .cm-variable-2 {\n  color: var(--gray-60);\n}\n.cm-s-default .cm-quote {\n  color: var(--gray-60);\n}\n.cm-s-default .cm-comment {\n  color: var(--gray-60);\n}\n.cm-s-default .cm-string {\n  color: var(--gray-40);\n}\n.cm-s-default .cm-url {\n  color: var(--gray-40);\n}\n.CodeMirror {\n  height: auto;\n  font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;\n  box-sizing: border-box;\n  width: 100%;\n}\n.readonly > .CodeMirror {\n  background-color: var(--30) !important;\n}\n.markdown-fullscreen .markdown-content {\n  height: calc(100vh - 30px);\n}\n.markdown-fullscreen .CodeMirror {\n  height: 100%;\n}\n", ""]);
 
 // exports
 
@@ -34217,7 +33989,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.\\!cursor-not-allowed[data-v-412102b4] {\n    cursor: not-allowed !important;\n}\n", ""]);
+exports.push([module.i, "\n.\\!cursor-not-allowed[data-v-412102b4] {\n  cursor: not-allowed !important;\n}\n", ""]);
 
 // exports
 
@@ -34232,7 +34004,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.progress[data-v-6ca9e6be] {\n    position: fixed;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    height: 2px;\n    width: 0%;\n    transition: width 0.2s, opacity 0.4s;\n    opacity: 1;\n    background-color: #efc14e;\n    z-index: 999999;\n}\n", ""]);
+exports.push([module.i, "\n.progress[data-v-6ca9e6be] {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  right: 0px;\n  height: 2px;\n  width: 0%;\n  transition: width 0.2s, opacity 0.4s;\n  opacity: 1;\n  background-color: #efc14e;\n  z-index: 999999;\n}\n", ""]);
 
 // exports
 
@@ -35087,7 +34859,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.CodeMirror {\n    min-height: 50px;\n    font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;\n    box-sizing: border-box;\n    height: auto;\n    margin: auto;\n    position: relative;\n    z-index: 0;\n    width: 100%;\n}\n.CodeMirror-wrap {\n    padding: 0.5rem;\n}\n.CodeMirror-scroll {\n    height: auto;\n    overflow: visible;\n    box-sizing: border-box;\n}\n", ""]);
+exports.push([module.i, "\n.CodeMirror {\n  min-height: 50px;\n  font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;\n  box-sizing: border-box;\n  height: auto;\n  margin: auto;\n  position: relative;\n  z-index: 0;\n  width: 100%;\n}\n.CodeMirror-wrap {\n  padding: 0.5rem;\n}\n.CodeMirror-scroll {\n  height: auto;\n  overflow: visible;\n  box-sizing: border-box;\n}\n", ""]);
 
 // exports
 
@@ -35102,7 +34874,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.card[data-v-a0368d9a] {\n    padding: 0 !important;\n}\n", ""]);
+exports.push([module.i, "\n.card[data-v-a0368d9a] {\n  padding: 0 !important;\n}\n", ""]);
 
 // exports
 
@@ -35957,7 +35729,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.CodeMirror {\n    min-height: 50px;\n    font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;\n    box-sizing: border-box;\n    height: auto;\n    margin: auto;\n    position: relative;\n    z-index: 0;\n    width: 100%;\n}\n.CodeMirror-wrap {\n    padding: 0.5rem;\n}\n.CodeMirror-scroll {\n    height: auto;\n    overflow: visible;\n    box-sizing: border-box;\n}\n", ""]);
+exports.push([module.i, "\n.CodeMirror {\n  min-height: 50px;\n  font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;\n  box-sizing: border-box;\n  height: auto;\n  margin: auto;\n  position: relative;\n  z-index: 0;\n  width: 100%;\n}\n.CodeMirror-wrap {\n  padding: 0.5rem;\n}\n.CodeMirror-scroll {\n  height: auto;\n  overflow: visible;\n  box-sizing: border-box;\n}\n", ""]);
 
 // exports
 
@@ -37353,6 +37125,7031 @@ if(false) {
 
 /***/ }),
 
+/***/ "./node_modules/v-tooltip/dist/v-tooltip.esm.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VClosePopover", function() { return VClosePopover; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VPopover", function() { return VPopover; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VTooltip", function() { return VTooltip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTooltip", function() { return createTooltip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyTooltip", function() { return destroyTooltip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__("./node_modules/v-tooltip/node_modules/popper.js/dist/esm/popper.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_resize__ = __webpack_require__("./node_modules/vue-resize/dist/vue-resize.esm.js");
+
+
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    var ownKeys = Object.keys(source);
+
+    if (typeof Object.getOwnPropertySymbols === 'function') {
+      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+      }));
+    }
+
+    ownKeys.forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    });
+  }
+
+  return target;
+}
+
+var SVGAnimatedString = function SVGAnimatedString() {};
+
+if (typeof window !== 'undefined') {
+  SVGAnimatedString = window.SVGAnimatedString;
+}
+
+function convertToArray(value) {
+  if (typeof value === 'string') {
+    value = value.split(' ');
+  }
+
+  return value;
+}
+/**
+ * Add classes to an element.
+ * This method checks to ensure that the classes don't already exist before adding them.
+ * It uses el.className rather than classList in order to be IE friendly.
+ * @param {object} el - The element to add the classes to.
+ * @param {classes} string - List of space separated classes to be added to the element.
+ */
+
+function addClasses(el, classes) {
+  var newClasses = convertToArray(classes);
+  var classList;
+
+  if (el.className instanceof SVGAnimatedString) {
+    classList = convertToArray(el.className.baseVal);
+  } else {
+    classList = convertToArray(el.className);
+  }
+
+  newClasses.forEach(function (newClass) {
+    if (classList.indexOf(newClass) === -1) {
+      classList.push(newClass);
+    }
+  });
+
+  if (el instanceof SVGElement) {
+    el.setAttribute('class', classList.join(' '));
+  } else {
+    el.className = classList.join(' ');
+  }
+}
+/**
+ * Remove classes from an element.
+ * It uses el.className rather than classList in order to be IE friendly.
+ * @export
+ * @param {any} el The element to remove the classes from.
+ * @param {any} classes List of space separated classes to be removed from the element.
+ */
+
+function removeClasses(el, classes) {
+  var newClasses = convertToArray(classes);
+  var classList;
+
+  if (el.className instanceof SVGAnimatedString) {
+    classList = convertToArray(el.className.baseVal);
+  } else {
+    classList = convertToArray(el.className);
+  }
+
+  newClasses.forEach(function (newClass) {
+    var index = classList.indexOf(newClass);
+
+    if (index !== -1) {
+      classList.splice(index, 1);
+    }
+  });
+
+  if (el instanceof SVGElement) {
+    el.setAttribute('class', classList.join(' '));
+  } else {
+    el.className = classList.join(' ');
+  }
+}
+var supportsPassive = false;
+
+if (typeof window !== 'undefined') {
+  supportsPassive = false;
+
+  try {
+    var opts = Object.defineProperty({}, 'passive', {
+      get: function get() {
+        supportsPassive = true;
+      }
+    });
+    window.addEventListener('test', null, opts);
+  } catch (e) {}
+}
+
+var DEFAULT_OPTIONS = {
+  container: false,
+  delay: 0,
+  html: false,
+  placement: 'top',
+  title: '',
+  template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+  trigger: 'hover focus',
+  offset: 0
+};
+var openTooltips = [];
+
+var Tooltip =
+/*#__PURE__*/
+function () {
+  /**
+   * Create a new Tooltip.js instance
+   * @class Tooltip
+   * @param {HTMLElement} reference - The DOM node used as reference of the tooltip (it can be a jQuery element).
+   * @param {Object} options
+   * @param {String} options.placement=bottom
+   *      Placement of the popper accepted values: `top(-start, -end), right(-start, -end), bottom(-start, -end),
+   *      left(-start, -end)`
+   * @param {HTMLElement|String|false} options.container=false - Append the tooltip to a specific element.
+   * @param {Number|Object} options.delay=0
+   *      Delay showing and hiding the tooltip (ms) - does not apply to manual trigger type.
+   *      If a number is supplied, delay is applied to both hide/show.
+   *      Object structure is: `{ show: 500, hide: 100 }`
+   * @param {Boolean} options.html=false - Insert HTML into the tooltip. If false, the content will inserted with `innerText`.
+   * @param {String|PlacementFunction} options.placement='top' - One of the allowed placements, or a function returning one of them.
+   * @param {String} [options.template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>']
+   *      Base HTML to used when creating the tooltip.
+   *      The tooltip's `title` will be injected into the `.tooltip-inner` or `.tooltip__inner`.
+   *      `.tooltip-arrow` or `.tooltip__arrow` will become the tooltip's arrow.
+   *      The outermost wrapper element should have the `.tooltip` class.
+   * @param {String|HTMLElement|TitleFunction} options.title='' - Default title value if `title` attribute isn't present.
+   * @param {String} [options.trigger='hover focus']
+   *      How tooltip is triggered - click, hover, focus, manual.
+   *      You may pass multiple triggers; separate them with a space. `manual` cannot be combined with any other trigger.
+   * @param {HTMLElement} options.boundariesElement
+   *      The element used as boundaries for the tooltip. For more information refer to Popper.js'
+   *      [boundariesElement docs](https://popper.js.org/popper-documentation.html)
+   * @param {Number|String} options.offset=0 - Offset of the tooltip relative to its reference. For more information refer to Popper.js'
+   *      [offset docs](https://popper.js.org/popper-documentation.html)
+   * @param {Object} options.popperOptions={} - Popper options, will be passed directly to popper instance. For more information refer to Popper.js'
+   *      [options docs](https://popper.js.org/popper-documentation.html)
+   * @return {Object} instance - The generated tooltip instance
+   */
+  function Tooltip(_reference, _options) {
+    var _this = this;
+
+    _classCallCheck(this, Tooltip);
+
+    _defineProperty(this, "_events", []);
+
+    _defineProperty(this, "_setTooltipNodeEvent", function (evt, reference, delay, options) {
+      var relatedreference = evt.relatedreference || evt.toElement || evt.relatedTarget;
+
+      var callback = function callback(evt2) {
+        var relatedreference2 = evt2.relatedreference || evt2.toElement || evt2.relatedTarget; // Remove event listener after call
+
+        _this._tooltipNode.removeEventListener(evt.type, callback); // If the new reference is not the reference element
+
+
+        if (!reference.contains(relatedreference2)) {
+          // Schedule to hide tooltip
+          _this._scheduleHide(reference, options.delay, options, evt2);
+        }
+      };
+
+      if (_this._tooltipNode.contains(relatedreference)) {
+        // listen to mouseleave on the tooltip element to be able to hide the tooltip
+        _this._tooltipNode.addEventListener(evt.type, callback);
+
+        return true;
+      }
+
+      return false;
+    });
+
+    // apply user options over default ones
+    _options = _objectSpread({}, DEFAULT_OPTIONS, _options);
+    _reference.jquery && (_reference = _reference[0]);
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this); // cache reference and options
+
+    this.reference = _reference;
+    this.options = _options; // set initial state
+
+    this._isOpen = false;
+
+    this._init();
+  } //
+  // Public methods
+  //
+
+  /**
+   * Reveals an element's tooltip. This is considered a "manual" triggering of the tooltip.
+   * Tooltips with zero-length titles are never displayed.
+   * @method Tooltip#show
+   * @memberof Tooltip
+   */
+
+
+  _createClass(Tooltip, [{
+    key: "show",
+    value: function show() {
+      this._show(this.reference, this.options);
+    }
+    /**
+     * Hides an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+     * @method Tooltip#hide
+     * @memberof Tooltip
+     */
+
+  }, {
+    key: "hide",
+    value: function hide() {
+      this._hide();
+    }
+    /**
+     * Hides and destroys an element’s tooltip.
+     * @method Tooltip#dispose
+     * @memberof Tooltip
+     */
+
+  }, {
+    key: "dispose",
+    value: function dispose() {
+      this._dispose();
+    }
+    /**
+     * Toggles an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+     * @method Tooltip#toggle
+     * @memberof Tooltip
+     */
+
+  }, {
+    key: "toggle",
+    value: function toggle() {
+      if (this._isOpen) {
+        return this.hide();
+      } else {
+        return this.show();
+      }
+    }
+  }, {
+    key: "setClasses",
+    value: function setClasses(classes) {
+      this._classes = classes;
+    }
+  }, {
+    key: "setContent",
+    value: function setContent(content) {
+      this.options.title = content;
+
+      if (this._tooltipNode) {
+        this._setContent(content, this.options);
+      }
+    }
+  }, {
+    key: "setOptions",
+    value: function setOptions(options) {
+      var classesUpdated = false;
+      var classes = options && options.classes || directive.options.defaultClass;
+
+      if (this._classes !== classes) {
+        this.setClasses(classes);
+        classesUpdated = true;
+      }
+
+      options = getOptions(options);
+      var needPopperUpdate = false;
+      var needRestart = false;
+
+      if (this.options.offset !== options.offset || this.options.placement !== options.placement) {
+        needPopperUpdate = true;
+      }
+
+      if (this.options.template !== options.template || this.options.trigger !== options.trigger || this.options.container !== options.container || classesUpdated) {
+        needRestart = true;
+      }
+
+      for (var key in options) {
+        this.options[key] = options[key];
+      }
+
+      if (this._tooltipNode) {
+        if (needRestart) {
+          var isOpen = this._isOpen;
+          this.dispose();
+
+          this._init();
+
+          if (isOpen) {
+            this.show();
+          }
+        } else if (needPopperUpdate) {
+          this.popperInstance.update();
+        }
+      }
+    } //
+    // Private methods
+    //
+
+  }, {
+    key: "_init",
+    value: function _init() {
+      // get events list
+      var events = typeof this.options.trigger === 'string' ? this.options.trigger.split(' ') : [];
+      this._isDisposed = false;
+      this._enableDocumentTouch = events.indexOf('manual') === -1;
+      events = events.filter(function (trigger) {
+        return ['click', 'hover', 'focus'].indexOf(trigger) !== -1;
+      }); // set event listeners
+
+      this._setEventListeners(this.reference, events, this.options); // title attribute
+
+
+      this.$_originalTitle = this.reference.getAttribute('title');
+      this.reference.removeAttribute('title');
+      this.reference.setAttribute('data-original-title', this.$_originalTitle);
+    }
+    /**
+     * Creates a new tooltip node
+     * @memberof Tooltip
+     * @private
+     * @param {HTMLElement} reference
+     * @param {String} template
+     * @param {String|HTMLElement|TitleFunction} title
+     * @param {Boolean} allowHtml
+     * @return {HTMLelement} tooltipNode
+     */
+
+  }, {
+    key: "_create",
+    value: function _create(reference, template) {
+      // create tooltip element
+      var tooltipGenerator = window.document.createElement('div');
+      tooltipGenerator.innerHTML = template.trim();
+      var tooltipNode = tooltipGenerator.childNodes[0]; // add unique ID to our tooltip (needed for accessibility reasons)
+
+      tooltipNode.id = "tooltip_".concat(Math.random().toString(36).substr(2, 10)); // Initially hide the tooltip
+      // The attribute will be switched in a next frame so
+      // CSS transitions can play
+
+      tooltipNode.setAttribute('aria-hidden', 'true');
+
+      if (this.options.autoHide && this.options.trigger.indexOf('hover') !== -1) {
+        tooltipNode.addEventListener('mouseenter', this.hide);
+        tooltipNode.addEventListener('click', this.hide);
+      } // return the generated tooltip node
+
+
+      return tooltipNode;
+    }
+  }, {
+    key: "_setContent",
+    value: function _setContent(content, options) {
+      var _this2 = this;
+
+      this.asyncContent = false;
+
+      this._applyContent(content, options).then(function () {
+        _this2.popperInstance.update();
+      });
+    }
+  }, {
+    key: "_applyContent",
+    value: function _applyContent(title, options) {
+      var _this3 = this;
+
+      return new Promise(function (resolve, reject) {
+        var allowHtml = options.html;
+        var rootNode = _this3._tooltipNode;
+        if (!rootNode) return;
+        var titleNode = rootNode.querySelector(_this3.options.innerSelector);
+
+        if (title.nodeType === 1) {
+          // if title is a node, append it only if allowHtml is true
+          if (allowHtml) {
+            while (titleNode.firstChild) {
+              titleNode.removeChild(titleNode.firstChild);
+            }
+
+            titleNode.appendChild(title);
+          }
+        } else if (typeof title === 'function') {
+          // if title is a function, call it and set innerText or innerHtml depending by `allowHtml` value
+          var result = title();
+
+          if (result && typeof result.then === 'function') {
+            _this3.asyncContent = true;
+            options.loadingClass && addClasses(rootNode, options.loadingClass);
+
+            if (options.loadingContent) {
+              _this3._applyContent(options.loadingContent, options);
+            }
+
+            result.then(function (asyncResult) {
+              options.loadingClass && removeClasses(rootNode, options.loadingClass);
+              return _this3._applyContent(asyncResult, options);
+            }).then(resolve).catch(reject);
+          } else {
+            _this3._applyContent(result, options).then(resolve).catch(reject);
+          }
+
+          return;
+        } else {
+          // if it's just a simple text, set innerText or innerHtml depending by `allowHtml` value
+          allowHtml ? titleNode.innerHTML = title : titleNode.innerText = title;
+        }
+
+        resolve();
+      });
+    }
+  }, {
+    key: "_show",
+    value: function _show(reference, options) {
+      if (options && typeof options.container === 'string') {
+        var container = document.querySelector(options.container);
+        if (!container) return;
+      }
+
+      clearTimeout(this._disposeTimer);
+      options = Object.assign({}, options);
+      delete options.offset;
+      var updateClasses = true;
+
+      if (this._tooltipNode) {
+        addClasses(this._tooltipNode, this._classes);
+        updateClasses = false;
+      }
+
+      var result = this._ensureShown(reference, options);
+
+      if (updateClasses && this._tooltipNode) {
+        addClasses(this._tooltipNode, this._classes);
+      }
+
+      addClasses(reference, ['v-tooltip-open']);
+      return result;
+    }
+  }, {
+    key: "_ensureShown",
+    value: function _ensureShown(reference, options) {
+      var _this4 = this;
+
+      // don't show if it's already visible
+      if (this._isOpen) {
+        return this;
+      }
+
+      this._isOpen = true;
+      openTooltips.push(this); // if the tooltipNode already exists, just show it
+
+      if (this._tooltipNode) {
+        this._tooltipNode.style.display = '';
+
+        this._tooltipNode.setAttribute('aria-hidden', 'false');
+
+        this.popperInstance.enableEventListeners();
+        this.popperInstance.update();
+
+        if (this.asyncContent) {
+          this._setContent(options.title, options);
+        }
+
+        return this;
+      } // get title
+
+
+      var title = reference.getAttribute('title') || options.title; // don't show tooltip if no title is defined
+
+      if (!title) {
+        return this;
+      } // create tooltip node
+
+
+      var tooltipNode = this._create(reference, options.template);
+
+      this._tooltipNode = tooltipNode; // Add `aria-describedby` to our reference element for accessibility reasons
+
+      reference.setAttribute('aria-describedby', tooltipNode.id); // append tooltip to container
+
+      var container = this._findContainer(options.container, reference);
+
+      this._append(tooltipNode, container);
+
+      var popperOptions = _objectSpread({}, options.popperOptions, {
+        placement: options.placement
+      });
+
+      popperOptions.modifiers = _objectSpread({}, popperOptions.modifiers, {
+        arrow: {
+          element: this.options.arrowSelector
+        }
+      });
+
+      if (options.boundariesElement) {
+        popperOptions.modifiers.preventOverflow = {
+          boundariesElement: options.boundariesElement
+        };
+      }
+
+      this.popperInstance = new __WEBPACK_IMPORTED_MODULE_0_popper_js__["a" /* default */](reference, tooltipNode, popperOptions);
+
+      this._setContent(title, options); // Fix position
+
+
+      requestAnimationFrame(function () {
+        if (!_this4._isDisposed && _this4.popperInstance) {
+          _this4.popperInstance.update(); // Show the tooltip
+
+
+          requestAnimationFrame(function () {
+            if (!_this4._isDisposed) {
+              _this4._isOpen && tooltipNode.setAttribute('aria-hidden', 'false');
+            } else {
+              _this4.dispose();
+            }
+          });
+        } else {
+          _this4.dispose();
+        }
+      });
+      return this;
+    }
+  }, {
+    key: "_noLongerOpen",
+    value: function _noLongerOpen() {
+      var index = openTooltips.indexOf(this);
+
+      if (index !== -1) {
+        openTooltips.splice(index, 1);
+      }
+    }
+  }, {
+    key: "_hide",
+    value: function _hide()
+    /* reference, options */
+    {
+      var _this5 = this;
+
+      // don't hide if it's already hidden
+      if (!this._isOpen) {
+        return this;
+      }
+
+      this._isOpen = false;
+
+      this._noLongerOpen(); // hide tooltipNode
+
+
+      this._tooltipNode.style.display = 'none';
+
+      this._tooltipNode.setAttribute('aria-hidden', 'true');
+
+      this.popperInstance.disableEventListeners();
+      clearTimeout(this._disposeTimer);
+      var disposeTime = directive.options.disposeTimeout;
+
+      if (disposeTime !== null) {
+        this._disposeTimer = setTimeout(function () {
+          if (_this5._tooltipNode) {
+            _this5._tooltipNode.removeEventListener('mouseenter', _this5.hide);
+
+            _this5._tooltipNode.removeEventListener('click', _this5.hide); // Don't remove popper instance, just the HTML element
+
+
+            _this5._removeTooltipNode();
+          }
+        }, disposeTime);
+      }
+
+      removeClasses(this.reference, ['v-tooltip-open']);
+      return this;
+    }
+  }, {
+    key: "_removeTooltipNode",
+    value: function _removeTooltipNode() {
+      if (!this._tooltipNode) return;
+      var parentNode = this._tooltipNode.parentNode;
+
+      if (parentNode) {
+        parentNode.removeChild(this._tooltipNode);
+        this.reference.removeAttribute('aria-describedby');
+      }
+
+      this._tooltipNode = null;
+    }
+  }, {
+    key: "_dispose",
+    value: function _dispose() {
+      var _this6 = this;
+
+      this._isDisposed = true;
+      this.reference.removeAttribute('data-original-title');
+
+      if (this.$_originalTitle) {
+        this.reference.setAttribute('title', this.$_originalTitle);
+      } // remove event listeners first to prevent any unexpected behaviour
+
+
+      this._events.forEach(function (_ref) {
+        var func = _ref.func,
+            event = _ref.event;
+
+        _this6.reference.removeEventListener(event, func);
+      });
+
+      this._events = [];
+
+      if (this._tooltipNode) {
+        this._hide();
+
+        this._tooltipNode.removeEventListener('mouseenter', this.hide);
+
+        this._tooltipNode.removeEventListener('click', this.hide); // destroy instance
+
+
+        this.popperInstance.destroy(); // destroy tooltipNode if removeOnDestroy is not set, as popperInstance.destroy() already removes the element
+
+        if (!this.popperInstance.options.removeOnDestroy) {
+          this._removeTooltipNode();
+        }
+      } else {
+        this._noLongerOpen();
+      }
+
+      return this;
+    }
+  }, {
+    key: "_findContainer",
+    value: function _findContainer(container, reference) {
+      // if container is a query, get the relative element
+      if (typeof container === 'string') {
+        container = window.document.querySelector(container);
+      } else if (container === false) {
+        // if container is `false`, set it to reference parent
+        container = reference.parentNode;
+      }
+
+      return container;
+    }
+    /**
+     * Append tooltip to container
+     * @memberof Tooltip
+     * @private
+     * @param {HTMLElement} tooltip
+     * @param {HTMLElement|String|false} container
+     */
+
+  }, {
+    key: "_append",
+    value: function _append(tooltipNode, container) {
+      container.appendChild(tooltipNode);
+    }
+  }, {
+    key: "_setEventListeners",
+    value: function _setEventListeners(reference, events, options) {
+      var _this7 = this;
+
+      var directEvents = [];
+      var oppositeEvents = [];
+      events.forEach(function (event) {
+        switch (event) {
+          case 'hover':
+            directEvents.push('mouseenter');
+            oppositeEvents.push('mouseleave');
+            if (_this7.options.hideOnTargetClick) oppositeEvents.push('click');
+            break;
+
+          case 'focus':
+            directEvents.push('focus');
+            oppositeEvents.push('blur');
+            if (_this7.options.hideOnTargetClick) oppositeEvents.push('click');
+            break;
+
+          case 'click':
+            directEvents.push('click');
+            oppositeEvents.push('click');
+            break;
+        }
+      }); // schedule show tooltip
+
+      directEvents.forEach(function (event) {
+        var func = function func(evt) {
+          if (_this7._isOpen === true) {
+            return;
+          }
+
+          evt.usedByTooltip = true;
+
+          _this7._scheduleShow(reference, options.delay, options, evt);
+        };
+
+        _this7._events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      }); // schedule hide tooltip
+
+      oppositeEvents.forEach(function (event) {
+        var func = function func(evt) {
+          if (evt.usedByTooltip === true) {
+            return;
+          }
+
+          _this7._scheduleHide(reference, options.delay, options, evt);
+        };
+
+        _this7._events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      });
+    }
+  }, {
+    key: "_onDocumentTouch",
+    value: function _onDocumentTouch(event) {
+      if (this._enableDocumentTouch) {
+        this._scheduleHide(this.reference, this.options.delay, this.options, event);
+      }
+    }
+  }, {
+    key: "_scheduleShow",
+    value: function _scheduleShow(reference, delay, options
+    /*, evt */
+    ) {
+      var _this8 = this;
+
+      // defaults to 0
+      var computedDelay = delay && delay.show || delay || 0;
+      clearTimeout(this._scheduleTimer);
+      this._scheduleTimer = window.setTimeout(function () {
+        return _this8._show(reference, options);
+      }, computedDelay);
+    }
+  }, {
+    key: "_scheduleHide",
+    value: function _scheduleHide(reference, delay, options, evt) {
+      var _this9 = this;
+
+      // defaults to 0
+      var computedDelay = delay && delay.hide || delay || 0;
+      clearTimeout(this._scheduleTimer);
+      this._scheduleTimer = window.setTimeout(function () {
+        if (_this9._isOpen === false) {
+          return;
+        }
+
+        if (!document.body.contains(_this9._tooltipNode)) {
+          return;
+        } // if we are hiding because of a mouseleave, we must check that the new
+        // reference isn't the tooltip, because in this case we don't want to hide it
+
+
+        if (evt.type === 'mouseleave') {
+          var isSet = _this9._setTooltipNodeEvent(evt, reference, delay, options); // if we set the new event, don't hide the tooltip yet
+          // the new event will take care to hide it if necessary
+
+
+          if (isSet) {
+            return;
+          }
+        }
+
+        _this9._hide(reference, options);
+      }, computedDelay);
+    }
+  }]);
+
+  return Tooltip;
+}(); // Hide tooltips on touch devices
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('touchstart', function (event) {
+    for (var i = 0; i < openTooltips.length; i++) {
+      openTooltips[i]._onDocumentTouch(event);
+    }
+  }, supportsPassive ? {
+    passive: true,
+    capture: true
+  } : true);
+}
+/**
+ * Placement function, its context is the Tooltip instance.
+ * @memberof Tooltip
+ * @callback PlacementFunction
+ * @param {HTMLElement} tooltip - tooltip DOM node.
+ * @param {HTMLElement} reference - reference DOM node.
+ * @return {String} placement - One of the allowed placement options.
+ */
+
+/**
+ * Title function, its context is the Tooltip instance.
+ * @memberof Tooltip
+ * @callback TitleFunction
+ * @return {String} placement - The desired title.
+ */
+
+var state = {
+  enabled: true
+};
+var positions = ['top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end'];
+var defaultOptions = {
+  // Default tooltip placement relative to target element
+  defaultPlacement: 'top',
+  // Default CSS classes applied to the tooltip element
+  defaultClass: 'vue-tooltip-theme',
+  // Default CSS classes applied to the target element of the tooltip
+  defaultTargetClass: 'has-tooltip',
+  // Is the content HTML by default?
+  defaultHtml: true,
+  // Default HTML template of the tooltip element
+  // It must include `tooltip-arrow` & `tooltip-inner` CSS classes (can be configured, see below)
+  // Change if the classes conflict with other libraries (for example bootstrap)
+  defaultTemplate: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+  // Selector used to get the arrow element in the tooltip template
+  defaultArrowSelector: '.tooltip-arrow, .tooltip__arrow',
+  // Selector used to get the inner content element in the tooltip template
+  defaultInnerSelector: '.tooltip-inner, .tooltip__inner',
+  // Delay (ms)
+  defaultDelay: 0,
+  // Default events that trigger the tooltip
+  defaultTrigger: 'hover focus',
+  // Default position offset (px)
+  defaultOffset: 0,
+  // Default container where the tooltip will be appended
+  defaultContainer: 'body',
+  defaultBoundariesElement: undefined,
+  defaultPopperOptions: {},
+  // Class added when content is loading
+  defaultLoadingClass: 'tooltip-loading',
+  // Displayed when tooltip content is loading
+  defaultLoadingContent: '...',
+  // Hide on mouseover tooltip
+  autoHide: true,
+  // Close tooltip on click on tooltip target?
+  defaultHideOnTargetClick: true,
+  // Auto destroy tooltip DOM nodes (ms)
+  disposeTimeout: 5000,
+  // Options for popover
+  popover: {
+    defaultPlacement: 'bottom',
+    // Use the `popoverClass` prop for theming
+    defaultClass: 'vue-popover-theme',
+    // Base class (change if conflicts with other libraries)
+    defaultBaseClass: 'tooltip popover',
+    // Wrapper class (contains arrow and inner)
+    defaultWrapperClass: 'wrapper',
+    // Inner content class
+    defaultInnerClass: 'tooltip-inner popover-inner',
+    // Arrow class
+    defaultArrowClass: 'tooltip-arrow popover-arrow',
+    // Class added when popover is open
+    defaultOpenClass: 'open',
+    defaultDelay: 0,
+    defaultTrigger: 'click',
+    defaultOffset: 0,
+    defaultContainer: 'body',
+    defaultBoundariesElement: undefined,
+    defaultPopperOptions: {},
+    // Hides if clicked outside of popover
+    defaultAutoHide: true,
+    // Update popper on content resize
+    defaultHandleResize: true
+  }
+};
+function getOptions(options) {
+  var result = {
+    placement: typeof options.placement !== 'undefined' ? options.placement : directive.options.defaultPlacement,
+    delay: typeof options.delay !== 'undefined' ? options.delay : directive.options.defaultDelay,
+    html: typeof options.html !== 'undefined' ? options.html : directive.options.defaultHtml,
+    template: typeof options.template !== 'undefined' ? options.template : directive.options.defaultTemplate,
+    arrowSelector: typeof options.arrowSelector !== 'undefined' ? options.arrowSelector : directive.options.defaultArrowSelector,
+    innerSelector: typeof options.innerSelector !== 'undefined' ? options.innerSelector : directive.options.defaultInnerSelector,
+    trigger: typeof options.trigger !== 'undefined' ? options.trigger : directive.options.defaultTrigger,
+    offset: typeof options.offset !== 'undefined' ? options.offset : directive.options.defaultOffset,
+    container: typeof options.container !== 'undefined' ? options.container : directive.options.defaultContainer,
+    boundariesElement: typeof options.boundariesElement !== 'undefined' ? options.boundariesElement : directive.options.defaultBoundariesElement,
+    autoHide: typeof options.autoHide !== 'undefined' ? options.autoHide : directive.options.autoHide,
+    hideOnTargetClick: typeof options.hideOnTargetClick !== 'undefined' ? options.hideOnTargetClick : directive.options.defaultHideOnTargetClick,
+    loadingClass: typeof options.loadingClass !== 'undefined' ? options.loadingClass : directive.options.defaultLoadingClass,
+    loadingContent: typeof options.loadingContent !== 'undefined' ? options.loadingContent : directive.options.defaultLoadingContent,
+    popperOptions: _objectSpread({}, typeof options.popperOptions !== 'undefined' ? options.popperOptions : directive.options.defaultPopperOptions)
+  };
+
+  if (result.offset) {
+    var typeofOffset = _typeof(result.offset);
+
+    var offset = result.offset; // One value -> switch
+
+    if (typeofOffset === 'number' || typeofOffset === 'string' && offset.indexOf(',') === -1) {
+      offset = "0, ".concat(offset);
+    }
+
+    if (!result.popperOptions.modifiers) {
+      result.popperOptions.modifiers = {};
+    }
+
+    result.popperOptions.modifiers.offset = {
+      offset: offset
+    };
+  }
+
+  if (result.trigger && result.trigger.indexOf('click') !== -1) {
+    result.hideOnTargetClick = false;
+  }
+
+  return result;
+}
+function getPlacement(value, modifiers) {
+  var placement = value.placement;
+
+  for (var i = 0; i < positions.length; i++) {
+    var pos = positions[i];
+
+    if (modifiers[pos]) {
+      placement = pos;
+    }
+  }
+
+  return placement;
+}
+function getContent(value) {
+  var type = _typeof(value);
+
+  if (type === 'string') {
+    return value;
+  } else if (value && type === 'object') {
+    return value.content;
+  } else {
+    return false;
+  }
+}
+function createTooltip(el, value) {
+  var modifiers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var content = getContent(value);
+  var classes = typeof value.classes !== 'undefined' ? value.classes : directive.options.defaultClass;
+
+  var opts = _objectSpread({
+    title: content
+  }, getOptions(_objectSpread({}, value, {
+    placement: getPlacement(value, modifiers)
+  })));
+
+  var tooltip = el._tooltip = new Tooltip(el, opts);
+  tooltip.setClasses(classes);
+  tooltip._vueEl = el; // Class on target
+
+  var targetClasses = typeof value.targetClasses !== 'undefined' ? value.targetClasses : directive.options.defaultTargetClass;
+  el._tooltipTargetClasses = targetClasses;
+  addClasses(el, targetClasses);
+  return tooltip;
+}
+function destroyTooltip(el) {
+  if (el._tooltip) {
+    el._tooltip.dispose();
+
+    delete el._tooltip;
+    delete el._tooltipOldShow;
+  }
+
+  if (el._tooltipTargetClasses) {
+    removeClasses(el, el._tooltipTargetClasses);
+    delete el._tooltipTargetClasses;
+  }
+}
+function bind(el, _ref) {
+  var value = _ref.value,
+      oldValue = _ref.oldValue,
+      modifiers = _ref.modifiers;
+  var content = getContent(value);
+
+  if (!content || !state.enabled) {
+    destroyTooltip(el);
+  } else {
+    var tooltip;
+
+    if (el._tooltip) {
+      tooltip = el._tooltip; // Content
+
+      tooltip.setContent(content); // Options
+
+      tooltip.setOptions(_objectSpread({}, value, {
+        placement: getPlacement(value, modifiers)
+      }));
+    } else {
+      tooltip = createTooltip(el, value, modifiers);
+    } // Manual show
+
+
+    if (typeof value.show !== 'undefined' && value.show !== el._tooltipOldShow) {
+      el._tooltipOldShow = value.show;
+      value.show ? tooltip.show() : tooltip.hide();
+    }
+  }
+}
+var directive = {
+  options: defaultOptions,
+  bind: bind,
+  update: bind,
+  unbind: function unbind(el) {
+    destroyTooltip(el);
+  }
+};
+
+function addListeners(el) {
+  el.addEventListener('click', onClick);
+  el.addEventListener('touchstart', onTouchStart, supportsPassive ? {
+    passive: true
+  } : false);
+}
+
+function removeListeners(el) {
+  el.removeEventListener('click', onClick);
+  el.removeEventListener('touchstart', onTouchStart);
+  el.removeEventListener('touchend', onTouchEnd);
+  el.removeEventListener('touchcancel', onTouchCancel);
+}
+
+function onClick(event) {
+  var el = event.currentTarget;
+  event.closePopover = !el.$_vclosepopover_touch;
+  event.closeAllPopover = el.$_closePopoverModifiers && !!el.$_closePopoverModifiers.all;
+}
+
+function onTouchStart(event) {
+  if (event.changedTouches.length === 1) {
+    var el = event.currentTarget;
+    el.$_vclosepopover_touch = true;
+    var touch = event.changedTouches[0];
+    el.$_vclosepopover_touchPoint = touch;
+    el.addEventListener('touchend', onTouchEnd);
+    el.addEventListener('touchcancel', onTouchCancel);
+  }
+}
+
+function onTouchEnd(event) {
+  var el = event.currentTarget;
+  el.$_vclosepopover_touch = false;
+
+  if (event.changedTouches.length === 1) {
+    var touch = event.changedTouches[0];
+    var firstTouch = el.$_vclosepopover_touchPoint;
+    event.closePopover = Math.abs(touch.screenY - firstTouch.screenY) < 20 && Math.abs(touch.screenX - firstTouch.screenX) < 20;
+    event.closeAllPopover = el.$_closePopoverModifiers && !!el.$_closePopoverModifiers.all;
+  }
+}
+
+function onTouchCancel(event) {
+  var el = event.currentTarget;
+  el.$_vclosepopover_touch = false;
+}
+
+var vclosepopover = {
+  bind: function bind(el, _ref) {
+    var value = _ref.value,
+        modifiers = _ref.modifiers;
+    el.$_closePopoverModifiers = modifiers;
+
+    if (typeof value === 'undefined' || value) {
+      addListeners(el);
+    }
+  },
+  update: function update(el, _ref2) {
+    var value = _ref2.value,
+        oldValue = _ref2.oldValue,
+        modifiers = _ref2.modifiers;
+    el.$_closePopoverModifiers = modifiers;
+
+    if (value !== oldValue) {
+      if (typeof value === 'undefined' || value) {
+        addListeners(el);
+      } else {
+        removeListeners(el);
+      }
+    }
+  },
+  unbind: function unbind(el) {
+    removeListeners(el);
+  }
+};
+
+function getDefault(key) {
+  var value = directive.options.popover[key];
+
+  if (typeof value === 'undefined') {
+    return directive.options[key];
+  }
+
+  return value;
+}
+
+var isIOS = false;
+
+if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+  isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+var openPopovers = [];
+
+var Element = function Element() {};
+
+if (typeof window !== 'undefined') {
+  Element = window.Element;
+}
+
+var script = {
+  name: 'VPopover',
+  components: {
+    ResizeObserver: __WEBPACK_IMPORTED_MODULE_1_vue_resize__["a" /* ResizeObserver */]
+  },
+  props: {
+    open: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    placement: {
+      type: String,
+      default: function _default() {
+        return getDefault('defaultPlacement');
+      }
+    },
+    delay: {
+      type: [String, Number, Object],
+      default: function _default() {
+        return getDefault('defaultDelay');
+      }
+    },
+    offset: {
+      type: [String, Number],
+      default: function _default() {
+        return getDefault('defaultOffset');
+      }
+    },
+    trigger: {
+      type: String,
+      default: function _default() {
+        return getDefault('defaultTrigger');
+      }
+    },
+    container: {
+      type: [String, Object, Element, Boolean],
+      default: function _default() {
+        return getDefault('defaultContainer');
+      }
+    },
+    boundariesElement: {
+      type: [String, Element],
+      default: function _default() {
+        return getDefault('defaultBoundariesElement');
+      }
+    },
+    popperOptions: {
+      type: Object,
+      default: function _default() {
+        return getDefault('defaultPopperOptions');
+      }
+    },
+    popoverClass: {
+      type: [String, Array],
+      default: function _default() {
+        return getDefault('defaultClass');
+      }
+    },
+    popoverBaseClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultBaseClass;
+      }
+    },
+    popoverInnerClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultInnerClass;
+      }
+    },
+    popoverWrapperClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultWrapperClass;
+      }
+    },
+    popoverArrowClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultArrowClass;
+      }
+    },
+    autoHide: {
+      type: Boolean,
+      default: function _default() {
+        return directive.options.popover.defaultAutoHide;
+      }
+    },
+    handleResize: {
+      type: Boolean,
+      default: function _default() {
+        return directive.options.popover.defaultHandleResize;
+      }
+    },
+    openGroup: {
+      type: String,
+      default: null
+    },
+    openClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultOpenClass;
+      }
+    }
+  },
+  data: function data() {
+    return {
+      isOpen: false,
+      id: Math.random().toString(36).substr(2, 10)
+    };
+  },
+  computed: {
+    cssClass: function cssClass() {
+      return _defineProperty({}, this.openClass, this.isOpen);
+    },
+    popoverId: function popoverId() {
+      return "popover_".concat(this.id);
+    }
+  },
+  watch: {
+    open: function open(val) {
+      if (val) {
+        this.show();
+      } else {
+        this.hide();
+      }
+    },
+    disabled: function disabled(val, oldVal) {
+      if (val !== oldVal) {
+        if (val) {
+          this.hide();
+        } else if (this.open) {
+          this.show();
+        }
+      }
+    },
+    container: function container(val) {
+      if (this.isOpen && this.popperInstance) {
+        var popoverNode = this.$refs.popover;
+        var reference = this.$refs.trigger;
+        var container = this.$_findContainer(this.container, reference);
+
+        if (!container) {
+          console.warn('No container for popover', this);
+          return;
+        }
+
+        container.appendChild(popoverNode);
+        this.popperInstance.scheduleUpdate();
+      }
+    },
+    trigger: function trigger(val) {
+      this.$_removeEventListeners();
+      this.$_addEventListeners();
+    },
+    placement: function placement(val) {
+      var _this = this;
+
+      this.$_updatePopper(function () {
+        _this.popperInstance.options.placement = val;
+      });
+    },
+    offset: '$_restartPopper',
+    boundariesElement: '$_restartPopper',
+    popperOptions: {
+      handler: '$_restartPopper',
+      deep: true
+    }
+  },
+  created: function created() {
+    this.$_isDisposed = false;
+    this.$_mounted = false;
+    this.$_events = [];
+    this.$_preventOpen = false;
+  },
+  mounted: function mounted() {
+    var popoverNode = this.$refs.popover;
+    popoverNode.parentNode && popoverNode.parentNode.removeChild(popoverNode);
+    this.$_init();
+
+    if (this.open) {
+      this.show();
+    }
+  },
+  deactivated: function deactivated() {
+    this.hide();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.dispose();
+  },
+  methods: {
+    show: function show() {
+      var _this2 = this;
+
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          event = _ref2.event,
+          _ref2$skipDelay = _ref2.skipDelay,
+          _ref2$force = _ref2.force,
+          force = _ref2$force === void 0 ? false : _ref2$force;
+
+      if (force || !this.disabled) {
+        this.$_scheduleShow(event);
+        this.$emit('show');
+      }
+
+      this.$emit('update:open', true);
+      this.$_beingShowed = true;
+      requestAnimationFrame(function () {
+        _this2.$_beingShowed = false;
+      });
+    },
+    hide: function hide() {
+      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          event = _ref3.event,
+          _ref3$skipDelay = _ref3.skipDelay;
+
+      this.$_scheduleHide(event);
+      this.$emit('hide');
+      this.$emit('update:open', false);
+    },
+    dispose: function dispose() {
+      this.$_isDisposed = true;
+      this.$_removeEventListeners();
+      this.hide({
+        skipDelay: true
+      });
+
+      if (this.popperInstance) {
+        this.popperInstance.destroy(); // destroy tooltipNode if removeOnDestroy is not set, as popperInstance.destroy() already removes the element
+
+        if (!this.popperInstance.options.removeOnDestroy) {
+          var popoverNode = this.$refs.popover;
+          popoverNode.parentNode && popoverNode.parentNode.removeChild(popoverNode);
+        }
+      }
+
+      this.$_mounted = false;
+      this.popperInstance = null;
+      this.isOpen = false;
+      this.$emit('dispose');
+    },
+    $_init: function $_init() {
+      if (this.trigger.indexOf('manual') === -1) {
+        this.$_addEventListeners();
+      }
+    },
+    $_show: function $_show() {
+      var _this3 = this;
+
+      var reference = this.$refs.trigger;
+      var popoverNode = this.$refs.popover;
+      clearTimeout(this.$_disposeTimer); // Already open
+
+      if (this.isOpen) {
+        return;
+      } // Popper is already initialized
+
+
+      if (this.popperInstance) {
+        this.isOpen = true;
+        this.popperInstance.enableEventListeners();
+        this.popperInstance.scheduleUpdate();
+      }
+
+      if (!this.$_mounted) {
+        var container = this.$_findContainer(this.container, reference);
+
+        if (!container) {
+          console.warn('No container for popover', this);
+          return;
+        }
+
+        container.appendChild(popoverNode);
+        this.$_mounted = true;
+      }
+
+      if (!this.popperInstance) {
+        var popperOptions = _objectSpread({}, this.popperOptions, {
+          placement: this.placement
+        });
+
+        popperOptions.modifiers = _objectSpread({}, popperOptions.modifiers, {
+          arrow: _objectSpread({}, popperOptions.modifiers && popperOptions.modifiers.arrow, {
+            element: this.$refs.arrow
+          })
+        });
+
+        if (this.offset) {
+          var offset = this.$_getOffset();
+          popperOptions.modifiers.offset = _objectSpread({}, popperOptions.modifiers && popperOptions.modifiers.offset, {
+            offset: offset
+          });
+        }
+
+        if (this.boundariesElement) {
+          popperOptions.modifiers.preventOverflow = _objectSpread({}, popperOptions.modifiers && popperOptions.modifiers.preventOverflow, {
+            boundariesElement: this.boundariesElement
+          });
+        }
+
+        this.popperInstance = new __WEBPACK_IMPORTED_MODULE_0_popper_js__["a" /* default */](reference, popoverNode, popperOptions); // Fix position
+
+        requestAnimationFrame(function () {
+          if (_this3.hidden) {
+            _this3.hidden = false;
+
+            _this3.$_hide();
+
+            return;
+          }
+
+          if (!_this3.$_isDisposed && _this3.popperInstance) {
+            _this3.popperInstance.scheduleUpdate(); // Show the tooltip
+
+
+            requestAnimationFrame(function () {
+              if (_this3.hidden) {
+                _this3.hidden = false;
+
+                _this3.$_hide();
+
+                return;
+              }
+
+              if (!_this3.$_isDisposed) {
+                _this3.isOpen = true;
+              } else {
+                _this3.dispose();
+              }
+            });
+          } else {
+            _this3.dispose();
+          }
+        });
+      }
+
+      var openGroup = this.openGroup;
+
+      if (openGroup) {
+        var popover;
+
+        for (var i = 0; i < openPopovers.length; i++) {
+          popover = openPopovers[i];
+
+          if (popover.openGroup !== openGroup) {
+            popover.hide();
+            popover.$emit('close-group');
+          }
+        }
+      }
+
+      openPopovers.push(this);
+      this.$emit('apply-show');
+    },
+    $_hide: function $_hide() {
+      var _this4 = this;
+
+      // Already hidden
+      if (!this.isOpen) {
+        return;
+      }
+
+      var index = openPopovers.indexOf(this);
+
+      if (index !== -1) {
+        openPopovers.splice(index, 1);
+      }
+
+      this.isOpen = false;
+
+      if (this.popperInstance) {
+        this.popperInstance.disableEventListeners();
+      }
+
+      clearTimeout(this.$_disposeTimer);
+      var disposeTime = directive.options.popover.disposeTimeout || directive.options.disposeTimeout;
+
+      if (disposeTime !== null) {
+        this.$_disposeTimer = setTimeout(function () {
+          var popoverNode = _this4.$refs.popover;
+
+          if (popoverNode) {
+            // Don't remove popper instance, just the HTML element
+            popoverNode.parentNode && popoverNode.parentNode.removeChild(popoverNode);
+            _this4.$_mounted = false;
+          }
+        }, disposeTime);
+      }
+
+      this.$emit('apply-hide');
+    },
+    $_findContainer: function $_findContainer(container, reference) {
+      // if container is a query, get the relative element
+      if (typeof container === 'string') {
+        container = window.document.querySelector(container);
+      } else if (container === false) {
+        // if container is `false`, set it to reference parent
+        container = reference.parentNode;
+      }
+
+      return container;
+    },
+    $_getOffset: function $_getOffset() {
+      var typeofOffset = _typeof(this.offset);
+
+      var offset = this.offset; // One value -> switch
+
+      if (typeofOffset === 'number' || typeofOffset === 'string' && offset.indexOf(',') === -1) {
+        offset = "0, ".concat(offset);
+      }
+
+      return offset;
+    },
+    $_addEventListeners: function $_addEventListeners() {
+      var _this5 = this;
+
+      var reference = this.$refs.trigger;
+      var directEvents = [];
+      var oppositeEvents = [];
+      var events = typeof this.trigger === 'string' ? this.trigger.split(' ').filter(function (trigger) {
+        return ['click', 'hover', 'focus'].indexOf(trigger) !== -1;
+      }) : [];
+      events.forEach(function (event) {
+        switch (event) {
+          case 'hover':
+            directEvents.push('mouseenter');
+            oppositeEvents.push('mouseleave');
+            break;
+
+          case 'focus':
+            directEvents.push('focus');
+            oppositeEvents.push('blur');
+            break;
+
+          case 'click':
+            directEvents.push('click');
+            oppositeEvents.push('click');
+            break;
+        }
+      }); // schedule show tooltip
+
+      directEvents.forEach(function (event) {
+        var func = function func(event) {
+          if (_this5.isOpen) {
+            return;
+          }
+
+          event.usedByTooltip = true;
+          !_this5.$_preventOpen && _this5.show({
+            event: event
+          });
+          _this5.hidden = false;
+        };
+
+        _this5.$_events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      }); // schedule hide tooltip
+
+      oppositeEvents.forEach(function (event) {
+        var func = function func(event) {
+          if (event.usedByTooltip) {
+            return;
+          }
+
+          _this5.hide({
+            event: event
+          });
+
+          _this5.hidden = true;
+        };
+
+        _this5.$_events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      });
+    },
+    $_scheduleShow: function $_scheduleShow() {
+      var skipDelay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      clearTimeout(this.$_scheduleTimer);
+
+      if (skipDelay) {
+        this.$_show();
+      } else {
+        // defaults to 0
+        var computedDelay = parseInt(this.delay && this.delay.show || this.delay || 0);
+        this.$_scheduleTimer = setTimeout(this.$_show.bind(this), computedDelay);
+      }
+    },
+    $_scheduleHide: function $_scheduleHide() {
+      var _this6 = this;
+
+      var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var skipDelay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      clearTimeout(this.$_scheduleTimer);
+
+      if (skipDelay) {
+        this.$_hide();
+      } else {
+        // defaults to 0
+        var computedDelay = parseInt(this.delay && this.delay.hide || this.delay || 0);
+        this.$_scheduleTimer = setTimeout(function () {
+          if (!_this6.isOpen) {
+            return;
+          } // if we are hiding because of a mouseleave, we must check that the new
+          // reference isn't the tooltip, because in this case we don't want to hide it
+
+
+          if (event && event.type === 'mouseleave') {
+            var isSet = _this6.$_setTooltipNodeEvent(event); // if we set the new event, don't hide the tooltip yet
+            // the new event will take care to hide it if necessary
+
+
+            if (isSet) {
+              return;
+            }
+          }
+
+          _this6.$_hide();
+        }, computedDelay);
+      }
+    },
+    $_setTooltipNodeEvent: function $_setTooltipNodeEvent(event) {
+      var _this7 = this;
+
+      var reference = this.$refs.trigger;
+      var popoverNode = this.$refs.popover;
+      var relatedreference = event.relatedreference || event.toElement || event.relatedTarget;
+
+      var callback = function callback(event2) {
+        var relatedreference2 = event2.relatedreference || event2.toElement || event2.relatedTarget; // Remove event listener after call
+
+        popoverNode.removeEventListener(event.type, callback); // If the new reference is not the reference element
+
+        if (!reference.contains(relatedreference2)) {
+          // Schedule to hide tooltip
+          _this7.hide({
+            event: event2
+          });
+        }
+      };
+
+      if (popoverNode.contains(relatedreference)) {
+        // listen to mouseleave on the tooltip element to be able to hide the tooltip
+        popoverNode.addEventListener(event.type, callback);
+        return true;
+      }
+
+      return false;
+    },
+    $_removeEventListeners: function $_removeEventListeners() {
+      var reference = this.$refs.trigger;
+      this.$_events.forEach(function (_ref4) {
+        var func = _ref4.func,
+            event = _ref4.event;
+        reference.removeEventListener(event, func);
+      });
+      this.$_events = [];
+    },
+    $_updatePopper: function $_updatePopper(cb) {
+      if (this.popperInstance) {
+        cb();
+        if (this.isOpen) this.popperInstance.scheduleUpdate();
+      }
+    },
+    $_restartPopper: function $_restartPopper() {
+      if (this.popperInstance) {
+        var isOpen = this.isOpen;
+        this.dispose();
+        this.$_isDisposed = false;
+        this.$_init();
+
+        if (isOpen) {
+          this.show({
+            skipDelay: true,
+            force: true
+          });
+        }
+      }
+    },
+    $_handleGlobalClose: function $_handleGlobalClose(event) {
+      var _this8 = this;
+
+      var touch = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (this.$_beingShowed) return;
+      this.hide({
+        event: event
+      });
+
+      if (event.closePopover) {
+        this.$emit('close-directive');
+      } else {
+        this.$emit('auto-hide');
+      }
+
+      if (touch) {
+        this.$_preventOpen = true;
+        setTimeout(function () {
+          _this8.$_preventOpen = false;
+        }, 300);
+      }
+    },
+    $_handleResize: function $_handleResize() {
+      if (this.isOpen && this.popperInstance) {
+        this.popperInstance.scheduleUpdate();
+        this.$emit('resize');
+      }
+    }
+  }
+};
+
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  if (isIOS) {
+    document.addEventListener('touchend', handleGlobalTouchend, supportsPassive ? {
+      passive: true,
+      capture: true
+    } : true);
+  } else {
+    window.addEventListener('click', handleGlobalClick, true);
+  }
+}
+
+function handleGlobalClick(event) {
+  handleGlobalClose(event);
+}
+
+function handleGlobalTouchend(event) {
+  handleGlobalClose(event, true);
+}
+
+function handleGlobalClose(event) {
+  var touch = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var _loop = function _loop(i) {
+    var popover = openPopovers[i];
+
+    if (popover.$refs.popover) {
+      var contains = popover.$refs.popover.contains(event.target);
+      requestAnimationFrame(function () {
+        if (event.closeAllPopover || event.closePopover && contains || popover.autoHide && !contains) {
+          popover.$_handleGlobalClose(event, touch);
+        }
+      });
+    }
+  };
+
+  // Delay so that close directive has time to set values
+  for (var i = 0; i < openPopovers.length; i++) {
+    _loop(i);
+  }
+}
+
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
+/* server only */
+, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+  if (typeof shadowMode !== 'boolean') {
+    createInjectorSSR = createInjector;
+    createInjector = shadowMode;
+    shadowMode = false;
+  } // Vue.extend constructor export interop.
+
+
+  var options = typeof script === 'function' ? script.options : script; // render functions
+
+  if (template && template.render) {
+    options.render = template.render;
+    options.staticRenderFns = template.staticRenderFns;
+    options._compiled = true; // functional template
+
+    if (isFunctionalTemplate) {
+      options.functional = true;
+    }
+  } // scopedId
+
+
+  if (scopeId) {
+    options._scopeId = scopeId;
+  }
+
+  var hook;
+
+  if (moduleIdentifier) {
+    // server build
+    hook = function hook(context) {
+      // 2.3 injection
+      context = context || // cached call
+      this.$vnode && this.$vnode.ssrContext || // stateful
+      this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext; // functional
+      // 2.2 with runInNewContext: true
+
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__;
+      } // inject component styles
+
+
+      if (style) {
+        style.call(this, createInjectorSSR(context));
+      } // register component module identifier for async chunk inference
+
+
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier);
+      }
+    }; // used by ssr in case component is cached and beforeCreate
+    // never gets called
+
+
+    options._ssrRegister = hook;
+  } else if (style) {
+    hook = shadowMode ? function () {
+      style.call(this, createInjectorShadow(this.$root.$options.shadowRoot));
+    } : function (context) {
+      style.call(this, createInjector(context));
+    };
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // register for functional component in vue file
+      var originalRender = options.render;
+
+      options.render = function renderWithStyleInjection(h, context) {
+        hook.call(context);
+        return originalRender(h, context);
+      };
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate;
+      options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+    }
+  }
+
+  return script;
+}
+
+var normalizeComponent_1 = normalizeComponent;
+
+/* script */
+var __vue_script__ = script;
+/* template */
+
+var __vue_render__ = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c("div", {
+    staticClass: "v-popover",
+    class: _vm.cssClass
+  }, [_c("div", {
+    ref: "trigger",
+    staticClass: "trigger",
+    staticStyle: {
+      display: "inline-block"
+    },
+    attrs: {
+      "aria-describedby": _vm.popoverId,
+      tabindex: _vm.trigger.indexOf("focus") !== -1 ? 0 : undefined
+    }
+  }, [_vm._t("default")], 2), _vm._v(" "), _c("div", {
+    ref: "popover",
+    class: [_vm.popoverBaseClass, _vm.popoverClass, _vm.cssClass],
+    style: {
+      visibility: _vm.isOpen ? "visible" : "hidden"
+    },
+    attrs: {
+      id: _vm.popoverId,
+      "aria-hidden": _vm.isOpen ? "false" : "true",
+      tabindex: _vm.autoHide ? 0 : undefined
+    },
+    on: {
+      keyup: function keyup($event) {
+        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "esc", 27, $event.key, ["Esc", "Escape"])) {
+          return null;
+        }
+
+        _vm.autoHide && _vm.hide();
+      }
+    }
+  }, [_c("div", {
+    class: _vm.popoverWrapperClass
+  }, [_c("div", {
+    ref: "inner",
+    class: _vm.popoverInnerClass,
+    staticStyle: {
+      position: "relative"
+    }
+  }, [_c("div", [_vm._t("popover")], 2), _vm._v(" "), _vm.handleResize ? _c("ResizeObserver", {
+    on: {
+      notify: _vm.$_handleResize
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c("div", {
+    ref: "arrow",
+    class: _vm.popoverArrowClass
+  })])])]);
+};
+
+var __vue_staticRenderFns__ = [];
+__vue_render__._withStripped = true;
+/* style */
+
+var __vue_inject_styles__ = undefined;
+/* scoped */
+
+var __vue_scope_id__ = undefined;
+/* module identifier */
+
+var __vue_module_identifier__ = undefined;
+/* functional template */
+
+var __vue_is_functional_template__ = false;
+/* style inject */
+
+/* style inject SSR */
+
+var Popover = normalizeComponent_1({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, undefined, undefined);
+
+/**
+ * Removes all key-value entries from the list cache.
+ *
+ * @private
+ * @name clear
+ * @memberOf ListCache
+ */
+function listCacheClear() {
+  this.__data__ = [];
+  this.size = 0;
+}
+
+var _listCacheClear = listCacheClear;
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+var eq_1 = eq;
+
+/**
+ * Gets the index at which the `key` is found in `array` of key-value pairs.
+ *
+ * @private
+ * @param {Array} array The array to inspect.
+ * @param {*} key The key to search for.
+ * @returns {number} Returns the index of the matched value, else `-1`.
+ */
+function assocIndexOf(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq_1(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
+}
+
+var _assocIndexOf = assocIndexOf;
+
+/** Used for built-in method references. */
+var arrayProto = Array.prototype;
+
+/** Built-in value references. */
+var splice = arrayProto.splice;
+
+/**
+ * Removes `key` and its value from the list cache.
+ *
+ * @private
+ * @name delete
+ * @memberOf ListCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function listCacheDelete(key) {
+  var data = this.__data__,
+      index = _assocIndexOf(data, key);
+
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice.call(data, index, 1);
+  }
+  --this.size;
+  return true;
+}
+
+var _listCacheDelete = listCacheDelete;
+
+/**
+ * Gets the list cache value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf ListCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function listCacheGet(key) {
+  var data = this.__data__,
+      index = _assocIndexOf(data, key);
+
+  return index < 0 ? undefined : data[index][1];
+}
+
+var _listCacheGet = listCacheGet;
+
+/**
+ * Checks if a list cache value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf ListCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function listCacheHas(key) {
+  return _assocIndexOf(this.__data__, key) > -1;
+}
+
+var _listCacheHas = listCacheHas;
+
+/**
+ * Sets the list cache `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf ListCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the list cache instance.
+ */
+function listCacheSet(key, value) {
+  var data = this.__data__,
+      index = _assocIndexOf(data, key);
+
+  if (index < 0) {
+    ++this.size;
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
+}
+
+var _listCacheSet = listCacheSet;
+
+/**
+ * Creates an list cache object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function ListCache(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+// Add methods to `ListCache`.
+ListCache.prototype.clear = _listCacheClear;
+ListCache.prototype['delete'] = _listCacheDelete;
+ListCache.prototype.get = _listCacheGet;
+ListCache.prototype.has = _listCacheHas;
+ListCache.prototype.set = _listCacheSet;
+
+var _ListCache = ListCache;
+
+/**
+ * Removes all key-value entries from the stack.
+ *
+ * @private
+ * @name clear
+ * @memberOf Stack
+ */
+function stackClear() {
+  this.__data__ = new _ListCache;
+  this.size = 0;
+}
+
+var _stackClear = stackClear;
+
+/**
+ * Removes `key` and its value from the stack.
+ *
+ * @private
+ * @name delete
+ * @memberOf Stack
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function stackDelete(key) {
+  var data = this.__data__,
+      result = data['delete'](key);
+
+  this.size = data.size;
+  return result;
+}
+
+var _stackDelete = stackDelete;
+
+/**
+ * Gets the stack value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Stack
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function stackGet(key) {
+  return this.__data__.get(key);
+}
+
+var _stackGet = stackGet;
+
+/**
+ * Checks if a stack value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Stack
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function stackHas(key) {
+  return this.__data__.has(key);
+}
+
+var _stackHas = stackHas;
+
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+
+var _freeGlobal = freeGlobal;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = _freeGlobal || freeSelf || Function('return this')();
+
+var _root = root;
+
+/** Built-in value references. */
+var Symbol$1 = _root.Symbol;
+
+var _Symbol = Symbol$1;
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/** Built-in value references. */
+var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
+ */
+function getRawTag(value) {
+  var isOwn = hasOwnProperty.call(value, symToStringTag),
+      tag = value[symToStringTag];
+
+  try {
+    value[symToStringTag] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag] = tag;
+    } else {
+      delete value[symToStringTag];
+    }
+  }
+  return result;
+}
+
+var _getRawTag = getRawTag;
+
+/** Used for built-in method references. */
+var objectProto$1 = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString$1 = objectProto$1.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString$1.call(value);
+}
+
+var _objectToString = objectToString;
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]',
+    undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag$1 = _Symbol ? _Symbol.toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag$1 && symToStringTag$1 in Object(value))
+    ? _getRawTag(value)
+    : _objectToString(value);
+}
+
+var _baseGetTag = baseGetTag;
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return value != null && (type == 'object' || type == 'function');
+}
+
+var isObject_1 = isObject;
+
+/** `Object#toString` result references. */
+var asyncTag = '[object AsyncFunction]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    proxyTag = '[object Proxy]';
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  if (!isObject_1(value)) {
+    return false;
+  }
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 9 which returns 'object' for typed arrays and other constructors.
+  var tag = _baseGetTag(value);
+  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+}
+
+var isFunction_1 = isFunction;
+
+/** Used to detect overreaching core-js shims. */
+var coreJsData = _root['__core-js_shared__'];
+
+var _coreJsData = coreJsData;
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(_coreJsData && _coreJsData.keys && _coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+
+var _isMasked = isMasked;
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/**
+ * Converts `func` to its source code.
+ *
+ * @private
+ * @param {Function} func The function to convert.
+ * @returns {string} Returns the source code.
+ */
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+var _toSource = toSource;
+
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/** Used for built-in method references. */
+var funcProto$1 = Function.prototype,
+    objectProto$2 = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString$1 = funcProto$1.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$1 = objectProto$2.hasOwnProperty;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString$1.call(hasOwnProperty$1).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative(value) {
+  if (!isObject_1(value) || _isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction_1(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(_toSource(value));
+}
+
+var _baseIsNative = baseIsNative;
+
+/**
+ * Gets the value at `key` of `object`.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+var _getValue = getValue;
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = _getValue(object, key);
+  return _baseIsNative(value) ? value : undefined;
+}
+
+var _getNative = getNative;
+
+/* Built-in method references that are verified to be native. */
+var Map = _getNative(_root, 'Map');
+
+var _Map = Map;
+
+/* Built-in method references that are verified to be native. */
+var nativeCreate = _getNative(Object, 'create');
+
+var _nativeCreate = nativeCreate;
+
+/**
+ * Removes all key-value entries from the hash.
+ *
+ * @private
+ * @name clear
+ * @memberOf Hash
+ */
+function hashClear() {
+  this.__data__ = _nativeCreate ? _nativeCreate(null) : {};
+  this.size = 0;
+}
+
+var _hashClear = hashClear;
+
+/**
+ * Removes `key` and its value from the hash.
+ *
+ * @private
+ * @name delete
+ * @memberOf Hash
+ * @param {Object} hash The hash to modify.
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function hashDelete(key) {
+  var result = this.has(key) && delete this.__data__[key];
+  this.size -= result ? 1 : 0;
+  return result;
+}
+
+var _hashDelete = hashDelete;
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+/** Used for built-in method references. */
+var objectProto$3 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$2 = objectProto$3.hasOwnProperty;
+
+/**
+ * Gets the hash value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Hash
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function hashGet(key) {
+  var data = this.__data__;
+  if (_nativeCreate) {
+    var result = data[key];
+    return result === HASH_UNDEFINED ? undefined : result;
+  }
+  return hasOwnProperty$2.call(data, key) ? data[key] : undefined;
+}
+
+var _hashGet = hashGet;
+
+/** Used for built-in method references. */
+var objectProto$4 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
+
+/**
+ * Checks if a hash value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Hash
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function hashHas(key) {
+  var data = this.__data__;
+  return _nativeCreate ? (data[key] !== undefined) : hasOwnProperty$3.call(data, key);
+}
+
+var _hashHas = hashHas;
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
+
+/**
+ * Sets the hash `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Hash
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the hash instance.
+ */
+function hashSet(key, value) {
+  var data = this.__data__;
+  this.size += this.has(key) ? 0 : 1;
+  data[key] = (_nativeCreate && value === undefined) ? HASH_UNDEFINED$1 : value;
+  return this;
+}
+
+var _hashSet = hashSet;
+
+/**
+ * Creates a hash object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Hash(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+// Add methods to `Hash`.
+Hash.prototype.clear = _hashClear;
+Hash.prototype['delete'] = _hashDelete;
+Hash.prototype.get = _hashGet;
+Hash.prototype.has = _hashHas;
+Hash.prototype.set = _hashSet;
+
+var _Hash = Hash;
+
+/**
+ * Removes all key-value entries from the map.
+ *
+ * @private
+ * @name clear
+ * @memberOf MapCache
+ */
+function mapCacheClear() {
+  this.size = 0;
+  this.__data__ = {
+    'hash': new _Hash,
+    'map': new (_Map || _ListCache),
+    'string': new _Hash
+  };
+}
+
+var _mapCacheClear = mapCacheClear;
+
+/**
+ * Checks if `value` is suitable for use as unique object key.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+ */
+function isKeyable(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
+}
+
+var _isKeyable = isKeyable;
+
+/**
+ * Gets the data for `map`.
+ *
+ * @private
+ * @param {Object} map The map to query.
+ * @param {string} key The reference key.
+ * @returns {*} Returns the map data.
+ */
+function getMapData(map, key) {
+  var data = map.__data__;
+  return _isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
+}
+
+var _getMapData = getMapData;
+
+/**
+ * Removes `key` and its value from the map.
+ *
+ * @private
+ * @name delete
+ * @memberOf MapCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function mapCacheDelete(key) {
+  var result = _getMapData(this, key)['delete'](key);
+  this.size -= result ? 1 : 0;
+  return result;
+}
+
+var _mapCacheDelete = mapCacheDelete;
+
+/**
+ * Gets the map value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf MapCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function mapCacheGet(key) {
+  return _getMapData(this, key).get(key);
+}
+
+var _mapCacheGet = mapCacheGet;
+
+/**
+ * Checks if a map value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf MapCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function mapCacheHas(key) {
+  return _getMapData(this, key).has(key);
+}
+
+var _mapCacheHas = mapCacheHas;
+
+/**
+ * Sets the map `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf MapCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the map cache instance.
+ */
+function mapCacheSet(key, value) {
+  var data = _getMapData(this, key),
+      size = data.size;
+
+  data.set(key, value);
+  this.size += data.size == size ? 0 : 1;
+  return this;
+}
+
+var _mapCacheSet = mapCacheSet;
+
+/**
+ * Creates a map cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function MapCache(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+// Add methods to `MapCache`.
+MapCache.prototype.clear = _mapCacheClear;
+MapCache.prototype['delete'] = _mapCacheDelete;
+MapCache.prototype.get = _mapCacheGet;
+MapCache.prototype.has = _mapCacheHas;
+MapCache.prototype.set = _mapCacheSet;
+
+var _MapCache = MapCache;
+
+/** Used as the size to enable large array optimizations. */
+var LARGE_ARRAY_SIZE = 200;
+
+/**
+ * Sets the stack `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Stack
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the stack cache instance.
+ */
+function stackSet(key, value) {
+  var data = this.__data__;
+  if (data instanceof _ListCache) {
+    var pairs = data.__data__;
+    if (!_Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
+      pairs.push([key, value]);
+      this.size = ++data.size;
+      return this;
+    }
+    data = this.__data__ = new _MapCache(pairs);
+  }
+  data.set(key, value);
+  this.size = data.size;
+  return this;
+}
+
+var _stackSet = stackSet;
+
+/**
+ * Creates a stack cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Stack(entries) {
+  var data = this.__data__ = new _ListCache(entries);
+  this.size = data.size;
+}
+
+// Add methods to `Stack`.
+Stack.prototype.clear = _stackClear;
+Stack.prototype['delete'] = _stackDelete;
+Stack.prototype.get = _stackGet;
+Stack.prototype.has = _stackHas;
+Stack.prototype.set = _stackSet;
+
+var _Stack = Stack;
+
+var defineProperty = (function() {
+  try {
+    var func = _getNative(Object, 'defineProperty');
+    func({}, '', {});
+    return func;
+  } catch (e) {}
+}());
+
+var _defineProperty$1 = defineProperty;
+
+/**
+ * The base implementation of `assignValue` and `assignMergeValue` without
+ * value checks.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function baseAssignValue(object, key, value) {
+  if (key == '__proto__' && _defineProperty$1) {
+    _defineProperty$1(object, key, {
+      'configurable': true,
+      'enumerable': true,
+      'value': value,
+      'writable': true
+    });
+  } else {
+    object[key] = value;
+  }
+}
+
+var _baseAssignValue = baseAssignValue;
+
+/**
+ * This function is like `assignValue` except that it doesn't assign
+ * `undefined` values.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignMergeValue(object, key, value) {
+  if ((value !== undefined && !eq_1(object[key], value)) ||
+      (value === undefined && !(key in object))) {
+    _baseAssignValue(object, key, value);
+  }
+}
+
+var _assignMergeValue = assignMergeValue;
+
+/**
+ * Creates a base function for methods like `_.forIn` and `_.forOwn`.
+ *
+ * @private
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseFor(fromRight) {
+  return function(object, iteratee, keysFunc) {
+    var index = -1,
+        iterable = Object(object),
+        props = keysFunc(object),
+        length = props.length;
+
+    while (length--) {
+      var key = props[fromRight ? length : ++index];
+      if (iteratee(iterable[key], key, iterable) === false) {
+        break;
+      }
+    }
+    return object;
+  };
+}
+
+var _createBaseFor = createBaseFor;
+
+/**
+ * The base implementation of `baseForOwn` which iterates over `object`
+ * properties returned by `keysFunc` and invokes `iteratee` for each property.
+ * Iteratee functions may exit iteration early by explicitly returning `false`.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @returns {Object} Returns `object`.
+ */
+var baseFor = _createBaseFor();
+
+var _baseFor = baseFor;
+
+var _cloneBuffer = createCommonjsModule(function (module, exports) {
+/** Detect free variable `exports`. */
+var freeExports = exports && !exports.nodeType && exports;
+
+/** Detect free variable `module`. */
+var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+
+/** Detect the popular CommonJS extension `module.exports`. */
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+/** Built-in value references. */
+var Buffer = moduleExports ? _root.Buffer : undefined,
+    allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined;
+
+/**
+ * Creates a clone of  `buffer`.
+ *
+ * @private
+ * @param {Buffer} buffer The buffer to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Buffer} Returns the cloned buffer.
+ */
+function cloneBuffer(buffer, isDeep) {
+  if (isDeep) {
+    return buffer.slice();
+  }
+  var length = buffer.length,
+      result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+
+  buffer.copy(result);
+  return result;
+}
+
+module.exports = cloneBuffer;
+});
+
+/** Built-in value references. */
+var Uint8Array = _root.Uint8Array;
+
+var _Uint8Array = Uint8Array;
+
+/**
+ * Creates a clone of `arrayBuffer`.
+ *
+ * @private
+ * @param {ArrayBuffer} arrayBuffer The array buffer to clone.
+ * @returns {ArrayBuffer} Returns the cloned array buffer.
+ */
+function cloneArrayBuffer(arrayBuffer) {
+  var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
+  new _Uint8Array(result).set(new _Uint8Array(arrayBuffer));
+  return result;
+}
+
+var _cloneArrayBuffer = cloneArrayBuffer;
+
+/**
+ * Creates a clone of `typedArray`.
+ *
+ * @private
+ * @param {Object} typedArray The typed array to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Object} Returns the cloned typed array.
+ */
+function cloneTypedArray(typedArray, isDeep) {
+  var buffer = isDeep ? _cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
+  return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
+}
+
+var _cloneTypedArray = cloneTypedArray;
+
+/**
+ * Copies the values of `source` to `array`.
+ *
+ * @private
+ * @param {Array} source The array to copy values from.
+ * @param {Array} [array=[]] The array to copy values to.
+ * @returns {Array} Returns `array`.
+ */
+function copyArray(source, array) {
+  var index = -1,
+      length = source.length;
+
+  array || (array = Array(length));
+  while (++index < length) {
+    array[index] = source[index];
+  }
+  return array;
+}
+
+var _copyArray = copyArray;
+
+/** Built-in value references. */
+var objectCreate = Object.create;
+
+/**
+ * The base implementation of `_.create` without support for assigning
+ * properties to the created object.
+ *
+ * @private
+ * @param {Object} proto The object to inherit from.
+ * @returns {Object} Returns the new object.
+ */
+var baseCreate = (function() {
+  function object() {}
+  return function(proto) {
+    if (!isObject_1(proto)) {
+      return {};
+    }
+    if (objectCreate) {
+      return objectCreate(proto);
+    }
+    object.prototype = proto;
+    var result = new object;
+    object.prototype = undefined;
+    return result;
+  };
+}());
+
+var _baseCreate = baseCreate;
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+var _overArg = overArg;
+
+/** Built-in value references. */
+var getPrototype = _overArg(Object.getPrototypeOf, Object);
+
+var _getPrototype = getPrototype;
+
+/** Used for built-in method references. */
+var objectProto$5 = Object.prototype;
+
+/**
+ * Checks if `value` is likely a prototype object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+ */
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$5;
+
+  return value === proto;
+}
+
+var _isPrototype = isPrototype;
+
+/**
+ * Initializes an object clone.
+ *
+ * @private
+ * @param {Object} object The object to clone.
+ * @returns {Object} Returns the initialized clone.
+ */
+function initCloneObject(object) {
+  return (typeof object.constructor == 'function' && !_isPrototype(object))
+    ? _baseCreate(_getPrototype(object))
+    : {};
+}
+
+var _initCloneObject = initCloneObject;
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
+var isObjectLike_1 = isObjectLike;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]';
+
+/**
+ * The base implementation of `_.isArguments`.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ */
+function baseIsArguments(value) {
+  return isObjectLike_1(value) && _baseGetTag(value) == argsTag;
+}
+
+var _baseIsArguments = baseIsArguments;
+
+/** Used for built-in method references. */
+var objectProto$6 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$4 = objectProto$6.hasOwnProperty;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto$6.propertyIsEnumerable;
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+var isArguments = _baseIsArguments(function() { return arguments; }()) ? _baseIsArguments : function(value) {
+  return isObjectLike_1(value) && hasOwnProperty$4.call(value, 'callee') &&
+    !propertyIsEnumerable.call(value, 'callee');
+};
+
+var isArguments_1 = isArguments;
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+var isArray_1 = isArray;
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+var isLength_1 = isLength;
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength_1(value.length) && !isFunction_1(value);
+}
+
+var isArrayLike_1 = isArrayLike;
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike_1(value) && isArrayLike_1(value);
+}
+
+var isArrayLikeObject_1 = isArrayLikeObject;
+
+/**
+ * This method returns `false`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.13.0
+ * @category Util
+ * @returns {boolean} Returns `false`.
+ * @example
+ *
+ * _.times(2, _.stubFalse);
+ * // => [false, false]
+ */
+function stubFalse() {
+  return false;
+}
+
+var stubFalse_1 = stubFalse;
+
+var isBuffer_1 = createCommonjsModule(function (module, exports) {
+/** Detect free variable `exports`. */
+var freeExports = exports && !exports.nodeType && exports;
+
+/** Detect free variable `module`. */
+var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+
+/** Detect the popular CommonJS extension `module.exports`. */
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+/** Built-in value references. */
+var Buffer = moduleExports ? _root.Buffer : undefined;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+
+/**
+ * Checks if `value` is a buffer.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.3.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+ * @example
+ *
+ * _.isBuffer(new Buffer(2));
+ * // => true
+ *
+ * _.isBuffer(new Uint8Array(2));
+ * // => false
+ */
+var isBuffer = nativeIsBuffer || stubFalse_1;
+
+module.exports = isBuffer;
+});
+
+/** `Object#toString` result references. */
+var objectTag = '[object Object]';
+
+/** Used for built-in method references. */
+var funcProto$2 = Function.prototype,
+    objectProto$7 = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString$2 = funcProto$2.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
+
+/** Used to infer the `Object` constructor. */
+var objectCtorString = funcToString$2.call(Object);
+
+/**
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.8.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * _.isPlainObject(new Foo);
+ * // => false
+ *
+ * _.isPlainObject([1, 2, 3]);
+ * // => false
+ *
+ * _.isPlainObject({ 'x': 0, 'y': 0 });
+ * // => true
+ *
+ * _.isPlainObject(Object.create(null));
+ * // => true
+ */
+function isPlainObject(value) {
+  if (!isObjectLike_1(value) || _baseGetTag(value) != objectTag) {
+    return false;
+  }
+  var proto = _getPrototype(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty$5.call(proto, 'constructor') && proto.constructor;
+  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+    funcToString$2.call(Ctor) == objectCtorString;
+}
+
+var isPlainObject_1 = isPlainObject;
+
+/** `Object#toString` result references. */
+var argsTag$1 = '[object Arguments]',
+    arrayTag = '[object Array]',
+    boolTag = '[object Boolean]',
+    dateTag = '[object Date]',
+    errorTag = '[object Error]',
+    funcTag$1 = '[object Function]',
+    mapTag = '[object Map]',
+    numberTag = '[object Number]',
+    objectTag$1 = '[object Object]',
+    regexpTag = '[object RegExp]',
+    setTag = '[object Set]',
+    stringTag = '[object String]',
+    weakMapTag = '[object WeakMap]';
+
+var arrayBufferTag = '[object ArrayBuffer]',
+    dataViewTag = '[object DataView]',
+    float32Tag = '[object Float32Array]',
+    float64Tag = '[object Float64Array]',
+    int8Tag = '[object Int8Array]',
+    int16Tag = '[object Int16Array]',
+    int32Tag = '[object Int32Array]',
+    uint8Tag = '[object Uint8Array]',
+    uint8ClampedTag = '[object Uint8ClampedArray]',
+    uint16Tag = '[object Uint16Array]',
+    uint32Tag = '[object Uint32Array]';
+
+/** Used to identify `toStringTag` values of typed arrays. */
+var typedArrayTags = {};
+typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+typedArrayTags[uint32Tag] = true;
+typedArrayTags[argsTag$1] = typedArrayTags[arrayTag] =
+typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+typedArrayTags[errorTag] = typedArrayTags[funcTag$1] =
+typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+typedArrayTags[objectTag$1] = typedArrayTags[regexpTag] =
+typedArrayTags[setTag] = typedArrayTags[stringTag] =
+typedArrayTags[weakMapTag] = false;
+
+/**
+ * The base implementation of `_.isTypedArray` without Node.js optimizations.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+ */
+function baseIsTypedArray(value) {
+  return isObjectLike_1(value) &&
+    isLength_1(value.length) && !!typedArrayTags[_baseGetTag(value)];
+}
+
+var _baseIsTypedArray = baseIsTypedArray;
+
+/**
+ * The base implementation of `_.unary` without support for storing metadata.
+ *
+ * @private
+ * @param {Function} func The function to cap arguments for.
+ * @returns {Function} Returns the new capped function.
+ */
+function baseUnary(func) {
+  return function(value) {
+    return func(value);
+  };
+}
+
+var _baseUnary = baseUnary;
+
+var _nodeUtil = createCommonjsModule(function (module, exports) {
+/** Detect free variable `exports`. */
+var freeExports = exports && !exports.nodeType && exports;
+
+/** Detect free variable `module`. */
+var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+
+/** Detect the popular CommonJS extension `module.exports`. */
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+/** Detect free variable `process` from Node.js. */
+var freeProcess = moduleExports && _freeGlobal.process;
+
+/** Used to access faster Node.js helpers. */
+var nodeUtil = (function() {
+  try {
+    // Use `util.types` for Node.js 10+.
+    var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+    if (types) {
+      return types;
+    }
+
+    // Legacy `process.binding('util')` for Node.js < 10.
+    return freeProcess && freeProcess.binding && freeProcess.binding('util');
+  } catch (e) {}
+}());
+
+module.exports = nodeUtil;
+});
+
+/* Node.js helper references. */
+var nodeIsTypedArray = _nodeUtil && _nodeUtil.isTypedArray;
+
+/**
+ * Checks if `value` is classified as a typed array.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+ * @example
+ *
+ * _.isTypedArray(new Uint8Array);
+ * // => true
+ *
+ * _.isTypedArray([]);
+ * // => false
+ */
+var isTypedArray = nodeIsTypedArray ? _baseUnary(nodeIsTypedArray) : _baseIsTypedArray;
+
+var isTypedArray_1 = isTypedArray;
+
+/**
+ * Gets the value at `key`, unless `key` is "__proto__".
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function safeGet(object, key) {
+  if (key == '__proto__') {
+    return;
+  }
+
+  return object[key];
+}
+
+var _safeGet = safeGet;
+
+/** Used for built-in method references. */
+var objectProto$8 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+
+/**
+ * Assigns `value` to `key` of `object` if the existing value is not equivalent
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * for equality comparisons.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty$6.call(object, key) && eq_1(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    _baseAssignValue(object, key, value);
+  }
+}
+
+var _assignValue = assignValue;
+
+/**
+ * Copies properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @param {Function} [customizer] The function to customize copied values.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object, customizer) {
+  var isNew = !object;
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index];
+
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
+
+    if (newValue === undefined) {
+      newValue = source[key];
+    }
+    if (isNew) {
+      _baseAssignValue(object, key, newValue);
+    } else {
+      _assignValue(object, key, newValue);
+    }
+  }
+  return object;
+}
+
+var _copyObject = copyObject;
+
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+var _baseTimes = baseTimes;
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER$1 = 9007199254740991;
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  var type = typeof value;
+  length = length == null ? MAX_SAFE_INTEGER$1 : length;
+
+  return !!length &&
+    (type == 'number' ||
+      (type != 'symbol' && reIsUint.test(value))) &&
+        (value > -1 && value % 1 == 0 && value < length);
+}
+
+var _isIndex = isIndex;
+
+/** Used for built-in method references. */
+var objectProto$9 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  var isArr = isArray_1(value),
+      isArg = !isArr && isArguments_1(value),
+      isBuff = !isArr && !isArg && isBuffer_1(value),
+      isType = !isArr && !isArg && !isBuff && isTypedArray_1(value),
+      skipIndexes = isArr || isArg || isBuff || isType,
+      result = skipIndexes ? _baseTimes(value.length, String) : [],
+      length = result.length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty$7.call(value, key)) &&
+        !(skipIndexes && (
+           // Safari 9 has enumerable `arguments.length` in strict mode.
+           key == 'length' ||
+           // Node.js 0.10 has enumerable non-index properties on buffers.
+           (isBuff && (key == 'offset' || key == 'parent')) ||
+           // PhantomJS 2 has enumerable non-index properties on typed arrays.
+           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+           // Skip index properties.
+           _isIndex(key, length)
+        ))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+var _arrayLikeKeys = arrayLikeKeys;
+
+/**
+ * This function is like
+ * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * except that it includes inherited enumerable properties.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function nativeKeysIn(object) {
+  var result = [];
+  if (object != null) {
+    for (var key in Object(object)) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+var _nativeKeysIn = nativeKeysIn;
+
+/** Used for built-in method references. */
+var objectProto$a = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$8 = objectProto$a.hasOwnProperty;
+
+/**
+ * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeysIn(object) {
+  if (!isObject_1(object)) {
+    return _nativeKeysIn(object);
+  }
+  var isProto = _isPrototype(object),
+      result = [];
+
+  for (var key in object) {
+    if (!(key == 'constructor' && (isProto || !hasOwnProperty$8.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+var _baseKeysIn = baseKeysIn;
+
+/**
+ * Creates an array of the own and inherited enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keysIn(new Foo);
+ * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+ */
+function keysIn(object) {
+  return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
+}
+
+var keysIn_1 = keysIn;
+
+/**
+ * Converts `value` to a plain object flattening inherited enumerable string
+ * keyed properties of `value` to own properties of the plain object.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {Object} Returns the converted plain object.
+ * @example
+ *
+ * function Foo() {
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.assign({ 'a': 1 }, new Foo);
+ * // => { 'a': 1, 'b': 2 }
+ *
+ * _.assign({ 'a': 1 }, _.toPlainObject(new Foo));
+ * // => { 'a': 1, 'b': 2, 'c': 3 }
+ */
+function toPlainObject(value) {
+  return _copyObject(value, keysIn_1(value));
+}
+
+var toPlainObject_1 = toPlainObject;
+
+/**
+ * A specialized version of `baseMerge` for arrays and objects which performs
+ * deep merges and tracks traversed objects enabling objects with circular
+ * references to be merged.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @param {string} key The key of the value to merge.
+ * @param {number} srcIndex The index of `source`.
+ * @param {Function} mergeFunc The function to merge values.
+ * @param {Function} [customizer] The function to customize assigned values.
+ * @param {Object} [stack] Tracks traversed source values and their merged
+ *  counterparts.
+ */
+function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+  var objValue = _safeGet(object, key),
+      srcValue = _safeGet(source, key),
+      stacked = stack.get(srcValue);
+
+  if (stacked) {
+    _assignMergeValue(object, key, stacked);
+    return;
+  }
+  var newValue = customizer
+    ? customizer(objValue, srcValue, (key + ''), object, source, stack)
+    : undefined;
+
+  var isCommon = newValue === undefined;
+
+  if (isCommon) {
+    var isArr = isArray_1(srcValue),
+        isBuff = !isArr && isBuffer_1(srcValue),
+        isTyped = !isArr && !isBuff && isTypedArray_1(srcValue);
+
+    newValue = srcValue;
+    if (isArr || isBuff || isTyped) {
+      if (isArray_1(objValue)) {
+        newValue = objValue;
+      }
+      else if (isArrayLikeObject_1(objValue)) {
+        newValue = _copyArray(objValue);
+      }
+      else if (isBuff) {
+        isCommon = false;
+        newValue = _cloneBuffer(srcValue, true);
+      }
+      else if (isTyped) {
+        isCommon = false;
+        newValue = _cloneTypedArray(srcValue, true);
+      }
+      else {
+        newValue = [];
+      }
+    }
+    else if (isPlainObject_1(srcValue) || isArguments_1(srcValue)) {
+      newValue = objValue;
+      if (isArguments_1(objValue)) {
+        newValue = toPlainObject_1(objValue);
+      }
+      else if (!isObject_1(objValue) || isFunction_1(objValue)) {
+        newValue = _initCloneObject(srcValue);
+      }
+    }
+    else {
+      isCommon = false;
+    }
+  }
+  if (isCommon) {
+    // Recursively merge objects and arrays (susceptible to call stack limits).
+    stack.set(srcValue, newValue);
+    mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
+    stack['delete'](srcValue);
+  }
+  _assignMergeValue(object, key, newValue);
+}
+
+var _baseMergeDeep = baseMergeDeep;
+
+/**
+ * The base implementation of `_.merge` without support for multiple sources.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @param {number} srcIndex The index of `source`.
+ * @param {Function} [customizer] The function to customize merged values.
+ * @param {Object} [stack] Tracks traversed source values and their merged
+ *  counterparts.
+ */
+function baseMerge(object, source, srcIndex, customizer, stack) {
+  if (object === source) {
+    return;
+  }
+  _baseFor(source, function(srcValue, key) {
+    if (isObject_1(srcValue)) {
+      stack || (stack = new _Stack);
+      _baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+    }
+    else {
+      var newValue = customizer
+        ? customizer(_safeGet(object, key), srcValue, (key + ''), object, source, stack)
+        : undefined;
+
+      if (newValue === undefined) {
+        newValue = srcValue;
+      }
+      _assignMergeValue(object, key, newValue);
+    }
+  }, keysIn_1);
+}
+
+var _baseMerge = baseMerge;
+
+/**
+ * This method returns the first argument it receives.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Util
+ * @param {*} value Any value.
+ * @returns {*} Returns `value`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ *
+ * console.log(_.identity(object) === object);
+ * // => true
+ */
+function identity(value) {
+  return value;
+}
+
+var identity_1 = identity;
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} args The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+var _apply = apply;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max;
+
+/**
+ * A specialized version of `baseRest` which transforms the rest array.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @param {Function} transform The rest array transform.
+ * @returns {Function} Returns the new function.
+ */
+function overRest(func, start, transform) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = transform(array);
+    return _apply(func, this, otherArgs);
+  };
+}
+
+var _overRest = overRest;
+
+/**
+ * Creates a function that returns `value`.
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Util
+ * @param {*} value The value to return from the new function.
+ * @returns {Function} Returns the new constant function.
+ * @example
+ *
+ * var objects = _.times(2, _.constant({ 'a': 1 }));
+ *
+ * console.log(objects);
+ * // => [{ 'a': 1 }, { 'a': 1 }]
+ *
+ * console.log(objects[0] === objects[1]);
+ * // => true
+ */
+function constant(value) {
+  return function() {
+    return value;
+  };
+}
+
+var constant_1 = constant;
+
+/**
+ * The base implementation of `setToString` without support for hot loop shorting.
+ *
+ * @private
+ * @param {Function} func The function to modify.
+ * @param {Function} string The `toString` result.
+ * @returns {Function} Returns `func`.
+ */
+var baseSetToString = !_defineProperty$1 ? identity_1 : function(func, string) {
+  return _defineProperty$1(func, 'toString', {
+    'configurable': true,
+    'enumerable': false,
+    'value': constant_1(string),
+    'writable': true
+  });
+};
+
+var _baseSetToString = baseSetToString;
+
+/** Used to detect hot functions by number of calls within a span of milliseconds. */
+var HOT_COUNT = 800,
+    HOT_SPAN = 16;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeNow = Date.now;
+
+/**
+ * Creates a function that'll short out and invoke `identity` instead
+ * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+ * milliseconds.
+ *
+ * @private
+ * @param {Function} func The function to restrict.
+ * @returns {Function} Returns the new shortable function.
+ */
+function shortOut(func) {
+  var count = 0,
+      lastCalled = 0;
+
+  return function() {
+    var stamp = nativeNow(),
+        remaining = HOT_SPAN - (stamp - lastCalled);
+
+    lastCalled = stamp;
+    if (remaining > 0) {
+      if (++count >= HOT_COUNT) {
+        return arguments[0];
+      }
+    } else {
+      count = 0;
+    }
+    return func.apply(undefined, arguments);
+  };
+}
+
+var _shortOut = shortOut;
+
+/**
+ * Sets the `toString` method of `func` to return `string`.
+ *
+ * @private
+ * @param {Function} func The function to modify.
+ * @param {Function} string The `toString` result.
+ * @returns {Function} Returns `func`.
+ */
+var setToString = _shortOut(_baseSetToString);
+
+var _setToString = setToString;
+
+/**
+ * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ */
+function baseRest(func, start) {
+  return _setToString(_overRest(func, start, identity_1), func + '');
+}
+
+var _baseRest = baseRest;
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject_1(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike_1(object) && _isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq_1(object[index], value);
+  }
+  return false;
+}
+
+var _isIterateeCall = isIterateeCall;
+
+/**
+ * Creates a function like `_.assign`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return _baseRest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+
+    if (guard && _isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+var _createAssigner = createAssigner;
+
+/**
+ * This method is like `_.assign` except that it recursively merges own and
+ * inherited enumerable string keyed properties of source objects into the
+ * destination object. Source properties that resolve to `undefined` are
+ * skipped if a destination value exists. Array and plain object properties
+ * are merged recursively. Other objects and value types are overridden by
+ * assignment. Source objects are applied from left to right. Subsequent
+ * sources overwrite property assignments of previous sources.
+ *
+ * **Note:** This method mutates `object`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.5.0
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * var object = {
+ *   'a': [{ 'b': 2 }, { 'd': 4 }]
+ * };
+ *
+ * var other = {
+ *   'a': [{ 'c': 3 }, { 'e': 5 }]
+ * };
+ *
+ * _.merge(object, other);
+ * // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
+ */
+var merge = _createAssigner(function(object, source, srcIndex) {
+  _baseMerge(object, source, srcIndex);
+});
+
+var merge_1 = merge;
+
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css = ".resize-observer[data-v-b329ee4c]{position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;border:none;background-color:transparent;pointer-events:none;display:block;overflow:hidden;opacity:0}.resize-observer[data-v-b329ee4c] object{display:block;position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden;pointer-events:none;z-index:-1}";
+styleInject(css);
+
+function install(Vue) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  if (install.installed) return;
+  install.installed = true;
+  var finalOptions = {};
+  merge_1(finalOptions, defaultOptions, options);
+  plugin.options = finalOptions;
+  directive.options = finalOptions;
+  Vue.directive('tooltip', directive);
+  Vue.directive('close-popover', vclosepopover);
+  Vue.component('v-popover', Popover);
+}
+var VTooltip = directive;
+var VClosePopover = vclosepopover;
+var VPopover = Popover;
+var plugin = {
+  install: install,
+
+  get enabled() {
+    return state.enabled;
+  },
+
+  set enabled(value) {
+    state.enabled = value;
+  }
+
+}; // Auto-install
+
+var GlobalVue = null;
+
+if (typeof window !== 'undefined') {
+  GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+  GlobalVue = global.Vue;
+}
+
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (plugin);
+
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/popper.js/dist/esm/popper.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/**!
+ * @fileOverview Kickass library to create and place poppers near their reference elements.
+ * @version 1.16.0
+ * @license
+ * Copyright (c) 2016 Federico Zivolo and contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof navigator !== 'undefined';
+
+var timeoutDuration = function () {
+  var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
+  for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
+    if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
+      return 1;
+    }
+  }
+  return 0;
+}();
+
+function microtaskDebounce(fn) {
+  var called = false;
+  return function () {
+    if (called) {
+      return;
+    }
+    called = true;
+    window.Promise.resolve().then(function () {
+      called = false;
+      fn();
+    });
+  };
+}
+
+function taskDebounce(fn) {
+  var scheduled = false;
+  return function () {
+    if (!scheduled) {
+      scheduled = true;
+      setTimeout(function () {
+        scheduled = false;
+        fn();
+      }, timeoutDuration);
+    }
+  };
+}
+
+var supportsMicroTasks = isBrowser && window.Promise;
+
+/**
+* Create a debounced version of a method, that's asynchronously deferred
+* but called in the minimum time possible.
+*
+* @method
+* @memberof Popper.Utils
+* @argument {Function} fn
+* @returns {Function}
+*/
+var debounce = supportsMicroTasks ? microtaskDebounce : taskDebounce;
+
+/**
+ * Check if the given variable is a function
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Any} functionToCheck - variable to check
+ * @returns {Boolean} answer to: is a function?
+ */
+function isFunction(functionToCheck) {
+  var getType = {};
+  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+}
+
+/**
+ * Get CSS computed property of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Eement} element
+ * @argument {String} property
+ */
+function getStyleComputedProperty(element, property) {
+  if (element.nodeType !== 1) {
+    return [];
+  }
+  // NOTE: 1 DOM access here
+  var window = element.ownerDocument.defaultView;
+  var css = window.getComputedStyle(element, null);
+  return property ? css[property] : css;
+}
+
+/**
+ * Returns the parentNode or the host of the element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} parent
+ */
+function getParentNode(element) {
+  if (element.nodeName === 'HTML') {
+    return element;
+  }
+  return element.parentNode || element.host;
+}
+
+/**
+ * Returns the scrolling parent of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} scroll parent
+ */
+function getScrollParent(element) {
+  // Return body, `getScroll` will take care to get the correct `scrollTop` from it
+  if (!element) {
+    return document.body;
+  }
+
+  switch (element.nodeName) {
+    case 'HTML':
+    case 'BODY':
+      return element.ownerDocument.body;
+    case '#document':
+      return element.body;
+  }
+
+  // Firefox want us to check `-x` and `-y` variations as well
+
+  var _getStyleComputedProp = getStyleComputedProperty(element),
+      overflow = _getStyleComputedProp.overflow,
+      overflowX = _getStyleComputedProp.overflowX,
+      overflowY = _getStyleComputedProp.overflowY;
+
+  if (/(auto|scroll|overlay)/.test(overflow + overflowY + overflowX)) {
+    return element;
+  }
+
+  return getScrollParent(getParentNode(element));
+}
+
+/**
+ * Returns the reference node of the reference object, or the reference object itself.
+ * @method
+ * @memberof Popper.Utils
+ * @param {Element|Object} reference - the reference element (the popper will be relative to this)
+ * @returns {Element} parent
+ */
+function getReferenceNode(reference) {
+  return reference && reference.referenceNode ? reference.referenceNode : reference;
+}
+
+var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
+var isIE10 = isBrowser && /MSIE 10/.test(navigator.userAgent);
+
+/**
+ * Determines if the browser is Internet Explorer
+ * @method
+ * @memberof Popper.Utils
+ * @param {Number} version to check
+ * @returns {Boolean} isIE
+ */
+function isIE(version) {
+  if (version === 11) {
+    return isIE11;
+  }
+  if (version === 10) {
+    return isIE10;
+  }
+  return isIE11 || isIE10;
+}
+
+/**
+ * Returns the offset parent of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} offset parent
+ */
+function getOffsetParent(element) {
+  if (!element) {
+    return document.documentElement;
+  }
+
+  var noOffsetParent = isIE(10) ? document.body : null;
+
+  // NOTE: 1 DOM access here
+  var offsetParent = element.offsetParent || null;
+  // Skip hidden elements which don't have an offsetParent
+  while (offsetParent === noOffsetParent && element.nextElementSibling) {
+    offsetParent = (element = element.nextElementSibling).offsetParent;
+  }
+
+  var nodeName = offsetParent && offsetParent.nodeName;
+
+  if (!nodeName || nodeName === 'BODY' || nodeName === 'HTML') {
+    return element ? element.ownerDocument.documentElement : document.documentElement;
+  }
+
+  // .offsetParent will return the closest TH, TD or TABLE in case
+  // no offsetParent is present, I hate this job...
+  if (['TH', 'TD', 'TABLE'].indexOf(offsetParent.nodeName) !== -1 && getStyleComputedProperty(offsetParent, 'position') === 'static') {
+    return getOffsetParent(offsetParent);
+  }
+
+  return offsetParent;
+}
+
+function isOffsetContainer(element) {
+  var nodeName = element.nodeName;
+
+  if (nodeName === 'BODY') {
+    return false;
+  }
+  return nodeName === 'HTML' || getOffsetParent(element.firstElementChild) === element;
+}
+
+/**
+ * Finds the root node (document, shadowDOM root) of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} node
+ * @returns {Element} root node
+ */
+function getRoot(node) {
+  if (node.parentNode !== null) {
+    return getRoot(node.parentNode);
+  }
+
+  return node;
+}
+
+/**
+ * Finds the offset parent common to the two provided nodes
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element1
+ * @argument {Element} element2
+ * @returns {Element} common offset parent
+ */
+function findCommonOffsetParent(element1, element2) {
+  // This check is needed to avoid errors in case one of the elements isn't defined for any reason
+  if (!element1 || !element1.nodeType || !element2 || !element2.nodeType) {
+    return document.documentElement;
+  }
+
+  // Here we make sure to give as "start" the element that comes first in the DOM
+  var order = element1.compareDocumentPosition(element2) & Node.DOCUMENT_POSITION_FOLLOWING;
+  var start = order ? element1 : element2;
+  var end = order ? element2 : element1;
+
+  // Get common ancestor container
+  var range = document.createRange();
+  range.setStart(start, 0);
+  range.setEnd(end, 0);
+  var commonAncestorContainer = range.commonAncestorContainer;
+
+  // Both nodes are inside #document
+
+  if (element1 !== commonAncestorContainer && element2 !== commonAncestorContainer || start.contains(end)) {
+    if (isOffsetContainer(commonAncestorContainer)) {
+      return commonAncestorContainer;
+    }
+
+    return getOffsetParent(commonAncestorContainer);
+  }
+
+  // one of the nodes is inside shadowDOM, find which one
+  var element1root = getRoot(element1);
+  if (element1root.host) {
+    return findCommonOffsetParent(element1root.host, element2);
+  } else {
+    return findCommonOffsetParent(element1, getRoot(element2).host);
+  }
+}
+
+/**
+ * Gets the scroll value of the given element in the given side (top and left)
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @argument {String} side `top` or `left`
+ * @returns {number} amount of scrolled pixels
+ */
+function getScroll(element) {
+  var side = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
+
+  var upperSide = side === 'top' ? 'scrollTop' : 'scrollLeft';
+  var nodeName = element.nodeName;
+
+  if (nodeName === 'BODY' || nodeName === 'HTML') {
+    var html = element.ownerDocument.documentElement;
+    var scrollingElement = element.ownerDocument.scrollingElement || html;
+    return scrollingElement[upperSide];
+  }
+
+  return element[upperSide];
+}
+
+/*
+ * Sum or subtract the element scroll values (left and top) from a given rect object
+ * @method
+ * @memberof Popper.Utils
+ * @param {Object} rect - Rect object you want to change
+ * @param {HTMLElement} element - The element from the function reads the scroll values
+ * @param {Boolean} subtract - set to true if you want to subtract the scroll values
+ * @return {Object} rect - The modifier rect object
+ */
+function includeScroll(rect, element) {
+  var subtract = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  var scrollTop = getScroll(element, 'top');
+  var scrollLeft = getScroll(element, 'left');
+  var modifier = subtract ? -1 : 1;
+  rect.top += scrollTop * modifier;
+  rect.bottom += scrollTop * modifier;
+  rect.left += scrollLeft * modifier;
+  rect.right += scrollLeft * modifier;
+  return rect;
+}
+
+/*
+ * Helper to detect borders of a given element
+ * @method
+ * @memberof Popper.Utils
+ * @param {CSSStyleDeclaration} styles
+ * Result of `getStyleComputedProperty` on the given element
+ * @param {String} axis - `x` or `y`
+ * @return {number} borders - The borders size of the given axis
+ */
+
+function getBordersSize(styles, axis) {
+  var sideA = axis === 'x' ? 'Left' : 'Top';
+  var sideB = sideA === 'Left' ? 'Right' : 'Bottom';
+
+  return parseFloat(styles['border' + sideA + 'Width'], 10) + parseFloat(styles['border' + sideB + 'Width'], 10);
+}
+
+function getSize(axis, body, html, computedStyle) {
+  return Math.max(body['offset' + axis], body['scroll' + axis], html['client' + axis], html['offset' + axis], html['scroll' + axis], isIE(10) ? parseInt(html['offset' + axis]) + parseInt(computedStyle['margin' + (axis === 'Height' ? 'Top' : 'Left')]) + parseInt(computedStyle['margin' + (axis === 'Height' ? 'Bottom' : 'Right')]) : 0);
+}
+
+function getWindowSizes(document) {
+  var body = document.body;
+  var html = document.documentElement;
+  var computedStyle = isIE(10) && getComputedStyle(html);
+
+  return {
+    height: getSize('Height', body, html, computedStyle),
+    width: getSize('Width', body, html, computedStyle)
+  };
+}
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+var defineProperty = function (obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+/**
+ * Given element offsets, generate an output similar to getBoundingClientRect
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Object} offsets
+ * @returns {Object} ClientRect like output
+ */
+function getClientRect(offsets) {
+  return _extends({}, offsets, {
+    right: offsets.left + offsets.width,
+    bottom: offsets.top + offsets.height
+  });
+}
+
+/**
+ * Get bounding client rect of given element
+ * @method
+ * @memberof Popper.Utils
+ * @param {HTMLElement} element
+ * @return {Object} client rect
+ */
+function getBoundingClientRect(element) {
+  var rect = {};
+
+  // IE10 10 FIX: Please, don't ask, the element isn't
+  // considered in DOM in some circumstances...
+  // This isn't reproducible in IE10 compatibility mode of IE11
+  try {
+    if (isIE(10)) {
+      rect = element.getBoundingClientRect();
+      var scrollTop = getScroll(element, 'top');
+      var scrollLeft = getScroll(element, 'left');
+      rect.top += scrollTop;
+      rect.left += scrollLeft;
+      rect.bottom += scrollTop;
+      rect.right += scrollLeft;
+    } else {
+      rect = element.getBoundingClientRect();
+    }
+  } catch (e) {}
+
+  var result = {
+    left: rect.left,
+    top: rect.top,
+    width: rect.right - rect.left,
+    height: rect.bottom - rect.top
+  };
+
+  // subtract scrollbar size from sizes
+  var sizes = element.nodeName === 'HTML' ? getWindowSizes(element.ownerDocument) : {};
+  var width = sizes.width || element.clientWidth || result.width;
+  var height = sizes.height || element.clientHeight || result.height;
+
+  var horizScrollbar = element.offsetWidth - width;
+  var vertScrollbar = element.offsetHeight - height;
+
+  // if an hypothetical scrollbar is detected, we must be sure it's not a `border`
+  // we make this check conditional for performance reasons
+  if (horizScrollbar || vertScrollbar) {
+    var styles = getStyleComputedProperty(element);
+    horizScrollbar -= getBordersSize(styles, 'x');
+    vertScrollbar -= getBordersSize(styles, 'y');
+
+    result.width -= horizScrollbar;
+    result.height -= vertScrollbar;
+  }
+
+  return getClientRect(result);
+}
+
+function getOffsetRectRelativeToArbitraryNode(children, parent) {
+  var fixedPosition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  var isIE10 = isIE(10);
+  var isHTML = parent.nodeName === 'HTML';
+  var childrenRect = getBoundingClientRect(children);
+  var parentRect = getBoundingClientRect(parent);
+  var scrollParent = getScrollParent(children);
+
+  var styles = getStyleComputedProperty(parent);
+  var borderTopWidth = parseFloat(styles.borderTopWidth, 10);
+  var borderLeftWidth = parseFloat(styles.borderLeftWidth, 10);
+
+  // In cases where the parent is fixed, we must ignore negative scroll in offset calc
+  if (fixedPosition && isHTML) {
+    parentRect.top = Math.max(parentRect.top, 0);
+    parentRect.left = Math.max(parentRect.left, 0);
+  }
+  var offsets = getClientRect({
+    top: childrenRect.top - parentRect.top - borderTopWidth,
+    left: childrenRect.left - parentRect.left - borderLeftWidth,
+    width: childrenRect.width,
+    height: childrenRect.height
+  });
+  offsets.marginTop = 0;
+  offsets.marginLeft = 0;
+
+  // Subtract margins of documentElement in case it's being used as parent
+  // we do this only on HTML because it's the only element that behaves
+  // differently when margins are applied to it. The margins are included in
+  // the box of the documentElement, in the other cases not.
+  if (!isIE10 && isHTML) {
+    var marginTop = parseFloat(styles.marginTop, 10);
+    var marginLeft = parseFloat(styles.marginLeft, 10);
+
+    offsets.top -= borderTopWidth - marginTop;
+    offsets.bottom -= borderTopWidth - marginTop;
+    offsets.left -= borderLeftWidth - marginLeft;
+    offsets.right -= borderLeftWidth - marginLeft;
+
+    // Attach marginTop and marginLeft because in some circumstances we may need them
+    offsets.marginTop = marginTop;
+    offsets.marginLeft = marginLeft;
+  }
+
+  if (isIE10 && !fixedPosition ? parent.contains(scrollParent) : parent === scrollParent && scrollParent.nodeName !== 'BODY') {
+    offsets = includeScroll(offsets, parent);
+  }
+
+  return offsets;
+}
+
+function getViewportOffsetRectRelativeToArtbitraryNode(element) {
+  var excludeScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var html = element.ownerDocument.documentElement;
+  var relativeOffset = getOffsetRectRelativeToArbitraryNode(element, html);
+  var width = Math.max(html.clientWidth, window.innerWidth || 0);
+  var height = Math.max(html.clientHeight, window.innerHeight || 0);
+
+  var scrollTop = !excludeScroll ? getScroll(html) : 0;
+  var scrollLeft = !excludeScroll ? getScroll(html, 'left') : 0;
+
+  var offset = {
+    top: scrollTop - relativeOffset.top + relativeOffset.marginTop,
+    left: scrollLeft - relativeOffset.left + relativeOffset.marginLeft,
+    width: width,
+    height: height
+  };
+
+  return getClientRect(offset);
+}
+
+/**
+ * Check if the given element is fixed or is inside a fixed parent
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @argument {Element} customContainer
+ * @returns {Boolean} answer to "isFixed?"
+ */
+function isFixed(element) {
+  var nodeName = element.nodeName;
+  if (nodeName === 'BODY' || nodeName === 'HTML') {
+    return false;
+  }
+  if (getStyleComputedProperty(element, 'position') === 'fixed') {
+    return true;
+  }
+  var parentNode = getParentNode(element);
+  if (!parentNode) {
+    return false;
+  }
+  return isFixed(parentNode);
+}
+
+/**
+ * Finds the first parent of an element that has a transformed property defined
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} first transformed parent or documentElement
+ */
+
+function getFixedPositionOffsetParent(element) {
+  // This check is needed to avoid errors in case one of the elements isn't defined for any reason
+  if (!element || !element.parentElement || isIE()) {
+    return document.documentElement;
+  }
+  var el = element.parentElement;
+  while (el && getStyleComputedProperty(el, 'transform') === 'none') {
+    el = el.parentElement;
+  }
+  return el || document.documentElement;
+}
+
+/**
+ * Computed the boundaries limits and return them
+ * @method
+ * @memberof Popper.Utils
+ * @param {HTMLElement} popper
+ * @param {HTMLElement} reference
+ * @param {number} padding
+ * @param {HTMLElement} boundariesElement - Element used to define the boundaries
+ * @param {Boolean} fixedPosition - Is in fixed position mode
+ * @returns {Object} Coordinates of the boundaries
+ */
+function getBoundaries(popper, reference, padding, boundariesElement) {
+  var fixedPosition = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+  // NOTE: 1 DOM access here
+
+  var boundaries = { top: 0, left: 0 };
+  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+
+  // Handle viewport case
+  if (boundariesElement === 'viewport') {
+    boundaries = getViewportOffsetRectRelativeToArtbitraryNode(offsetParent, fixedPosition);
+  } else {
+    // Handle other cases based on DOM element used as boundaries
+    var boundariesNode = void 0;
+    if (boundariesElement === 'scrollParent') {
+      boundariesNode = getScrollParent(getParentNode(reference));
+      if (boundariesNode.nodeName === 'BODY') {
+        boundariesNode = popper.ownerDocument.documentElement;
+      }
+    } else if (boundariesElement === 'window') {
+      boundariesNode = popper.ownerDocument.documentElement;
+    } else {
+      boundariesNode = boundariesElement;
+    }
+
+    var offsets = getOffsetRectRelativeToArbitraryNode(boundariesNode, offsetParent, fixedPosition);
+
+    // In case of HTML, we need a different computation
+    if (boundariesNode.nodeName === 'HTML' && !isFixed(offsetParent)) {
+      var _getWindowSizes = getWindowSizes(popper.ownerDocument),
+          height = _getWindowSizes.height,
+          width = _getWindowSizes.width;
+
+      boundaries.top += offsets.top - offsets.marginTop;
+      boundaries.bottom = height + offsets.top;
+      boundaries.left += offsets.left - offsets.marginLeft;
+      boundaries.right = width + offsets.left;
+    } else {
+      // for all the other DOM elements, this one is good
+      boundaries = offsets;
+    }
+  }
+
+  // Add paddings
+  padding = padding || 0;
+  var isPaddingNumber = typeof padding === 'number';
+  boundaries.left += isPaddingNumber ? padding : padding.left || 0;
+  boundaries.top += isPaddingNumber ? padding : padding.top || 0;
+  boundaries.right -= isPaddingNumber ? padding : padding.right || 0;
+  boundaries.bottom -= isPaddingNumber ? padding : padding.bottom || 0;
+
+  return boundaries;
+}
+
+function getArea(_ref) {
+  var width = _ref.width,
+      height = _ref.height;
+
+  return width * height;
+}
+
+/**
+ * Utility used to transform the `auto` placement to the placement with more
+ * available space.
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function computeAutoPlacement(placement, refRect, popper, reference, boundariesElement) {
+  var padding = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+
+  if (placement.indexOf('auto') === -1) {
+    return placement;
+  }
+
+  var boundaries = getBoundaries(popper, reference, padding, boundariesElement);
+
+  var rects = {
+    top: {
+      width: boundaries.width,
+      height: refRect.top - boundaries.top
+    },
+    right: {
+      width: boundaries.right - refRect.right,
+      height: boundaries.height
+    },
+    bottom: {
+      width: boundaries.width,
+      height: boundaries.bottom - refRect.bottom
+    },
+    left: {
+      width: refRect.left - boundaries.left,
+      height: boundaries.height
+    }
+  };
+
+  var sortedAreas = Object.keys(rects).map(function (key) {
+    return _extends({
+      key: key
+    }, rects[key], {
+      area: getArea(rects[key])
+    });
+  }).sort(function (a, b) {
+    return b.area - a.area;
+  });
+
+  var filteredAreas = sortedAreas.filter(function (_ref2) {
+    var width = _ref2.width,
+        height = _ref2.height;
+    return width >= popper.clientWidth && height >= popper.clientHeight;
+  });
+
+  var computedPlacement = filteredAreas.length > 0 ? filteredAreas[0].key : sortedAreas[0].key;
+
+  var variation = placement.split('-')[1];
+
+  return computedPlacement + (variation ? '-' + variation : '');
+}
+
+/**
+ * Get offsets to the reference element
+ * @method
+ * @memberof Popper.Utils
+ * @param {Object} state
+ * @param {Element} popper - the popper element
+ * @param {Element} reference - the reference element (the popper will be relative to this)
+ * @param {Element} fixedPosition - is in fixed position mode
+ * @returns {Object} An object containing the offsets which will be applied to the popper
+ */
+function getReferenceOffsets(state, popper, reference) {
+  var fixedPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+  return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
+}
+
+/**
+ * Get the outer sizes of the given element (offset size + margins)
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Object} object containing width and height properties
+ */
+function getOuterSizes(element) {
+  var window = element.ownerDocument.defaultView;
+  var styles = window.getComputedStyle(element);
+  var x = parseFloat(styles.marginTop || 0) + parseFloat(styles.marginBottom || 0);
+  var y = parseFloat(styles.marginLeft || 0) + parseFloat(styles.marginRight || 0);
+  var result = {
+    width: element.offsetWidth + y,
+    height: element.offsetHeight + x
+  };
+  return result;
+}
+
+/**
+ * Get the opposite placement of the given one
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} placement
+ * @returns {String} flipped placement
+ */
+function getOppositePlacement(placement) {
+  var hash = { left: 'right', right: 'left', bottom: 'top', top: 'bottom' };
+  return placement.replace(/left|right|bottom|top/g, function (matched) {
+    return hash[matched];
+  });
+}
+
+/**
+ * Get offsets to the popper
+ * @method
+ * @memberof Popper.Utils
+ * @param {Object} position - CSS position the Popper will get applied
+ * @param {HTMLElement} popper - the popper element
+ * @param {Object} referenceOffsets - the reference offsets (the popper will be relative to this)
+ * @param {String} placement - one of the valid placement options
+ * @returns {Object} popperOffsets - An object containing the offsets which will be applied to the popper
+ */
+function getPopperOffsets(popper, referenceOffsets, placement) {
+  placement = placement.split('-')[0];
+
+  // Get popper node sizes
+  var popperRect = getOuterSizes(popper);
+
+  // Add position, width and height to our offsets object
+  var popperOffsets = {
+    width: popperRect.width,
+    height: popperRect.height
+  };
+
+  // depending by the popper placement we have to compute its offsets slightly differently
+  var isHoriz = ['right', 'left'].indexOf(placement) !== -1;
+  var mainSide = isHoriz ? 'top' : 'left';
+  var secondarySide = isHoriz ? 'left' : 'top';
+  var measurement = isHoriz ? 'height' : 'width';
+  var secondaryMeasurement = !isHoriz ? 'height' : 'width';
+
+  popperOffsets[mainSide] = referenceOffsets[mainSide] + referenceOffsets[measurement] / 2 - popperRect[measurement] / 2;
+  if (placement === secondarySide) {
+    popperOffsets[secondarySide] = referenceOffsets[secondarySide] - popperRect[secondaryMeasurement];
+  } else {
+    popperOffsets[secondarySide] = referenceOffsets[getOppositePlacement(secondarySide)];
+  }
+
+  return popperOffsets;
+}
+
+/**
+ * Mimics the `find` method of Array
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Array} arr
+ * @argument prop
+ * @argument value
+ * @returns index or -1
+ */
+function find(arr, check) {
+  // use native find if supported
+  if (Array.prototype.find) {
+    return arr.find(check);
+  }
+
+  // use `filter` to obtain the same behavior of `find`
+  return arr.filter(check)[0];
+}
+
+/**
+ * Return the index of the matching object
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Array} arr
+ * @argument prop
+ * @argument value
+ * @returns index or -1
+ */
+function findIndex(arr, prop, value) {
+  // use native findIndex if supported
+  if (Array.prototype.findIndex) {
+    return arr.findIndex(function (cur) {
+      return cur[prop] === value;
+    });
+  }
+
+  // use `find` + `indexOf` if `findIndex` isn't supported
+  var match = find(arr, function (obj) {
+    return obj[prop] === value;
+  });
+  return arr.indexOf(match);
+}
+
+/**
+ * Loop trough the list of modifiers and run them in order,
+ * each of them will then edit the data object.
+ * @method
+ * @memberof Popper.Utils
+ * @param {dataObject} data
+ * @param {Array} modifiers
+ * @param {String} ends - Optional modifier name used as stopper
+ * @returns {dataObject}
+ */
+function runModifiers(modifiers, data, ends) {
+  var modifiersToRun = ends === undefined ? modifiers : modifiers.slice(0, findIndex(modifiers, 'name', ends));
+
+  modifiersToRun.forEach(function (modifier) {
+    if (modifier['function']) {
+      // eslint-disable-line dot-notation
+      console.warn('`modifier.function` is deprecated, use `modifier.fn`!');
+    }
+    var fn = modifier['function'] || modifier.fn; // eslint-disable-line dot-notation
+    if (modifier.enabled && isFunction(fn)) {
+      // Add properties to offsets to make them a complete clientRect object
+      // we do this before each modifier to make sure the previous one doesn't
+      // mess with these values
+      data.offsets.popper = getClientRect(data.offsets.popper);
+      data.offsets.reference = getClientRect(data.offsets.reference);
+
+      data = fn(data, modifier);
+    }
+  });
+
+  return data;
+}
+
+/**
+ * Updates the position of the popper, computing the new offsets and applying
+ * the new style.<br />
+ * Prefer `scheduleUpdate` over `update` because of performance reasons.
+ * @method
+ * @memberof Popper
+ */
+function update() {
+  // if popper is destroyed, don't perform any further update
+  if (this.state.isDestroyed) {
+    return;
+  }
+
+  var data = {
+    instance: this,
+    styles: {},
+    arrowStyles: {},
+    attributes: {},
+    flipped: false,
+    offsets: {}
+  };
+
+  // compute reference element offsets
+  data.offsets.reference = getReferenceOffsets(this.state, this.popper, this.reference, this.options.positionFixed);
+
+  // compute auto placement, store placement inside the data object,
+  // modifiers will be able to edit `placement` if needed
+  // and refer to originalPlacement to know the original value
+  data.placement = computeAutoPlacement(this.options.placement, data.offsets.reference, this.popper, this.reference, this.options.modifiers.flip.boundariesElement, this.options.modifiers.flip.padding);
+
+  // store the computed placement inside `originalPlacement`
+  data.originalPlacement = data.placement;
+
+  data.positionFixed = this.options.positionFixed;
+
+  // compute the popper offsets
+  data.offsets.popper = getPopperOffsets(this.popper, data.offsets.reference, data.placement);
+
+  data.offsets.popper.position = this.options.positionFixed ? 'fixed' : 'absolute';
+
+  // run the modifiers
+  data = runModifiers(this.modifiers, data);
+
+  // the first `update` will call `onCreate` callback
+  // the other ones will call `onUpdate` callback
+  if (!this.state.isCreated) {
+    this.state.isCreated = true;
+    this.options.onCreate(data);
+  } else {
+    this.options.onUpdate(data);
+  }
+}
+
+/**
+ * Helper used to know if the given modifier is enabled.
+ * @method
+ * @memberof Popper.Utils
+ * @returns {Boolean}
+ */
+function isModifierEnabled(modifiers, modifierName) {
+  return modifiers.some(function (_ref) {
+    var name = _ref.name,
+        enabled = _ref.enabled;
+    return enabled && name === modifierName;
+  });
+}
+
+/**
+ * Get the prefixed supported property name
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} property (camelCase)
+ * @returns {String} prefixed property (camelCase or PascalCase, depending on the vendor prefix)
+ */
+function getSupportedPropertyName(property) {
+  var prefixes = [false, 'ms', 'Webkit', 'Moz', 'O'];
+  var upperProp = property.charAt(0).toUpperCase() + property.slice(1);
+
+  for (var i = 0; i < prefixes.length; i++) {
+    var prefix = prefixes[i];
+    var toCheck = prefix ? '' + prefix + upperProp : property;
+    if (typeof document.body.style[toCheck] !== 'undefined') {
+      return toCheck;
+    }
+  }
+  return null;
+}
+
+/**
+ * Destroys the popper.
+ * @method
+ * @memberof Popper
+ */
+function destroy() {
+  this.state.isDestroyed = true;
+
+  // touch DOM only if `applyStyle` modifier is enabled
+  if (isModifierEnabled(this.modifiers, 'applyStyle')) {
+    this.popper.removeAttribute('x-placement');
+    this.popper.style.position = '';
+    this.popper.style.top = '';
+    this.popper.style.left = '';
+    this.popper.style.right = '';
+    this.popper.style.bottom = '';
+    this.popper.style.willChange = '';
+    this.popper.style[getSupportedPropertyName('transform')] = '';
+  }
+
+  this.disableEventListeners();
+
+  // remove the popper if user explicitly asked for the deletion on destroy
+  // do not use `remove` because IE11 doesn't support it
+  if (this.options.removeOnDestroy) {
+    this.popper.parentNode.removeChild(this.popper);
+  }
+  return this;
+}
+
+/**
+ * Get the window associated with the element
+ * @argument {Element} element
+ * @returns {Window}
+ */
+function getWindow(element) {
+  var ownerDocument = element.ownerDocument;
+  return ownerDocument ? ownerDocument.defaultView : window;
+}
+
+function attachToScrollParents(scrollParent, event, callback, scrollParents) {
+  var isBody = scrollParent.nodeName === 'BODY';
+  var target = isBody ? scrollParent.ownerDocument.defaultView : scrollParent;
+  target.addEventListener(event, callback, { passive: true });
+
+  if (!isBody) {
+    attachToScrollParents(getScrollParent(target.parentNode), event, callback, scrollParents);
+  }
+  scrollParents.push(target);
+}
+
+/**
+ * Setup needed event listeners used to update the popper position
+ * @method
+ * @memberof Popper.Utils
+ * @private
+ */
+function setupEventListeners(reference, options, state, updateBound) {
+  // Resize event listener on window
+  state.updateBound = updateBound;
+  getWindow(reference).addEventListener('resize', state.updateBound, { passive: true });
+
+  // Scroll event listener on scroll parents
+  var scrollElement = getScrollParent(reference);
+  attachToScrollParents(scrollElement, 'scroll', state.updateBound, state.scrollParents);
+  state.scrollElement = scrollElement;
+  state.eventsEnabled = true;
+
+  return state;
+}
+
+/**
+ * It will add resize/scroll events and start recalculating
+ * position of the popper element when they are triggered.
+ * @method
+ * @memberof Popper
+ */
+function enableEventListeners() {
+  if (!this.state.eventsEnabled) {
+    this.state = setupEventListeners(this.reference, this.options, this.state, this.scheduleUpdate);
+  }
+}
+
+/**
+ * Remove event listeners used to update the popper position
+ * @method
+ * @memberof Popper.Utils
+ * @private
+ */
+function removeEventListeners(reference, state) {
+  // Remove resize event listener on window
+  getWindow(reference).removeEventListener('resize', state.updateBound);
+
+  // Remove scroll event listener on scroll parents
+  state.scrollParents.forEach(function (target) {
+    target.removeEventListener('scroll', state.updateBound);
+  });
+
+  // Reset state
+  state.updateBound = null;
+  state.scrollParents = [];
+  state.scrollElement = null;
+  state.eventsEnabled = false;
+  return state;
+}
+
+/**
+ * It will remove resize/scroll events and won't recalculate popper position
+ * when they are triggered. It also won't trigger `onUpdate` callback anymore,
+ * unless you call `update` method manually.
+ * @method
+ * @memberof Popper
+ */
+function disableEventListeners() {
+  if (this.state.eventsEnabled) {
+    cancelAnimationFrame(this.scheduleUpdate);
+    this.state = removeEventListeners(this.reference, this.state);
+  }
+}
+
+/**
+ * Tells if a given input is a number
+ * @method
+ * @memberof Popper.Utils
+ * @param {*} input to check
+ * @return {Boolean}
+ */
+function isNumeric(n) {
+  return n !== '' && !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+/**
+ * Set the style to the given popper
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element - Element to apply the style to
+ * @argument {Object} styles
+ * Object with a list of properties and values which will be applied to the element
+ */
+function setStyles(element, styles) {
+  Object.keys(styles).forEach(function (prop) {
+    var unit = '';
+    // add unit if the value is numeric and is one of the following
+    if (['width', 'height', 'top', 'right', 'bottom', 'left'].indexOf(prop) !== -1 && isNumeric(styles[prop])) {
+      unit = 'px';
+    }
+    element.style[prop] = styles[prop] + unit;
+  });
+}
+
+/**
+ * Set the attributes to the given popper
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element - Element to apply the attributes to
+ * @argument {Object} styles
+ * Object with a list of properties and values which will be applied to the element
+ */
+function setAttributes(element, attributes) {
+  Object.keys(attributes).forEach(function (prop) {
+    var value = attributes[prop];
+    if (value !== false) {
+      element.setAttribute(prop, attributes[prop]);
+    } else {
+      element.removeAttribute(prop);
+    }
+  });
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} data.styles - List of style properties - values to apply to popper element
+ * @argument {Object} data.attributes - List of attribute properties - values to apply to popper element
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The same data object
+ */
+function applyStyle(data) {
+  // any property present in `data.styles` will be applied to the popper,
+  // in this way we can make the 3rd party modifiers add custom styles to it
+  // Be aware, modifiers could override the properties defined in the previous
+  // lines of this modifier!
+  setStyles(data.instance.popper, data.styles);
+
+  // any property present in `data.attributes` will be applied to the popper,
+  // they will be set as HTML attributes of the element
+  setAttributes(data.instance.popper, data.attributes);
+
+  // if arrowElement is defined and arrowStyles has some properties
+  if (data.arrowElement && Object.keys(data.arrowStyles).length) {
+    setStyles(data.arrowElement, data.arrowStyles);
+  }
+
+  return data;
+}
+
+/**
+ * Set the x-placement attribute before everything else because it could be used
+ * to add margins to the popper margins needs to be calculated to get the
+ * correct popper offsets.
+ * @method
+ * @memberof Popper.modifiers
+ * @param {HTMLElement} reference - The reference element used to position the popper
+ * @param {HTMLElement} popper - The HTML element used as popper
+ * @param {Object} options - Popper.js options
+ */
+function applyStyleOnLoad(reference, popper, options, modifierOptions, state) {
+  // compute reference element offsets
+  var referenceOffsets = getReferenceOffsets(state, popper, reference, options.positionFixed);
+
+  // compute auto placement, store placement inside the data object,
+  // modifiers will be able to edit `placement` if needed
+  // and refer to originalPlacement to know the original value
+  var placement = computeAutoPlacement(options.placement, referenceOffsets, popper, reference, options.modifiers.flip.boundariesElement, options.modifiers.flip.padding);
+
+  popper.setAttribute('x-placement', placement);
+
+  // Apply `position` to popper before anything else because
+  // without the position applied we can't guarantee correct computations
+  setStyles(popper, { position: options.positionFixed ? 'fixed' : 'absolute' });
+
+  return options;
+}
+
+/**
+ * @function
+ * @memberof Popper.Utils
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Boolean} shouldRound - If the offsets should be rounded at all
+ * @returns {Object} The popper's position offsets rounded
+ *
+ * The tale of pixel-perfect positioning. It's still not 100% perfect, but as
+ * good as it can be within reason.
+ * Discussion here: https://github.com/FezVrasta/popper.js/pull/715
+ *
+ * Low DPI screens cause a popper to be blurry if not using full pixels (Safari
+ * as well on High DPI screens).
+ *
+ * Firefox prefers no rounding for positioning and does not have blurriness on
+ * high DPI screens.
+ *
+ * Only horizontal placement and left/right values need to be considered.
+ */
+function getRoundedOffsets(data, shouldRound) {
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+  var round = Math.round,
+      floor = Math.floor;
+
+  var noRound = function noRound(v) {
+    return v;
+  };
+
+  var referenceWidth = round(reference.width);
+  var popperWidth = round(popper.width);
+
+  var isVertical = ['left', 'right'].indexOf(data.placement) !== -1;
+  var isVariation = data.placement.indexOf('-') !== -1;
+  var sameWidthParity = referenceWidth % 2 === popperWidth % 2;
+  var bothOddWidth = referenceWidth % 2 === 1 && popperWidth % 2 === 1;
+
+  var horizontalToInteger = !shouldRound ? noRound : isVertical || isVariation || sameWidthParity ? round : floor;
+  var verticalToInteger = !shouldRound ? noRound : round;
+
+  return {
+    left: horizontalToInteger(bothOddWidth && !isVariation && shouldRound ? popper.left - 1 : popper.left),
+    top: verticalToInteger(popper.top),
+    bottom: verticalToInteger(popper.bottom),
+    right: horizontalToInteger(popper.right)
+  };
+}
+
+var isFirefox = isBrowser && /Firefox/i.test(navigator.userAgent);
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function computeStyle(data, options) {
+  var x = options.x,
+      y = options.y;
+  var popper = data.offsets.popper;
+
+  // Remove this legacy support in Popper.js v2
+
+  var legacyGpuAccelerationOption = find(data.instance.modifiers, function (modifier) {
+    return modifier.name === 'applyStyle';
+  }).gpuAcceleration;
+  if (legacyGpuAccelerationOption !== undefined) {
+    console.warn('WARNING: `gpuAcceleration` option moved to `computeStyle` modifier and will not be supported in future versions of Popper.js!');
+  }
+  var gpuAcceleration = legacyGpuAccelerationOption !== undefined ? legacyGpuAccelerationOption : options.gpuAcceleration;
+
+  var offsetParent = getOffsetParent(data.instance.popper);
+  var offsetParentRect = getBoundingClientRect(offsetParent);
+
+  // Styles
+  var styles = {
+    position: popper.position
+  };
+
+  var offsets = getRoundedOffsets(data, window.devicePixelRatio < 2 || !isFirefox);
+
+  var sideA = x === 'bottom' ? 'top' : 'bottom';
+  var sideB = y === 'right' ? 'left' : 'right';
+
+  // if gpuAcceleration is set to `true` and transform is supported,
+  //  we use `translate3d` to apply the position to the popper we
+  // automatically use the supported prefixed version if needed
+  var prefixedProperty = getSupportedPropertyName('transform');
+
+  // now, let's make a step back and look at this code closely (wtf?)
+  // If the content of the popper grows once it's been positioned, it
+  // may happen that the popper gets misplaced because of the new content
+  // overflowing its reference element
+  // To avoid this problem, we provide two options (x and y), which allow
+  // the consumer to define the offset origin.
+  // If we position a popper on top of a reference element, we can set
+  // `x` to `top` to make the popper grow towards its top instead of
+  // its bottom.
+  var left = void 0,
+      top = void 0;
+  if (sideA === 'bottom') {
+    // when offsetParent is <html> the positioning is relative to the bottom of the screen (excluding the scrollbar)
+    // and not the bottom of the html element
+    if (offsetParent.nodeName === 'HTML') {
+      top = -offsetParent.clientHeight + offsets.bottom;
+    } else {
+      top = -offsetParentRect.height + offsets.bottom;
+    }
+  } else {
+    top = offsets.top;
+  }
+  if (sideB === 'right') {
+    if (offsetParent.nodeName === 'HTML') {
+      left = -offsetParent.clientWidth + offsets.right;
+    } else {
+      left = -offsetParentRect.width + offsets.right;
+    }
+  } else {
+    left = offsets.left;
+  }
+  if (gpuAcceleration && prefixedProperty) {
+    styles[prefixedProperty] = 'translate3d(' + left + 'px, ' + top + 'px, 0)';
+    styles[sideA] = 0;
+    styles[sideB] = 0;
+    styles.willChange = 'transform';
+  } else {
+    // othwerise, we use the standard `top`, `left`, `bottom` and `right` properties
+    var invertTop = sideA === 'bottom' ? -1 : 1;
+    var invertLeft = sideB === 'right' ? -1 : 1;
+    styles[sideA] = top * invertTop;
+    styles[sideB] = left * invertLeft;
+    styles.willChange = sideA + ', ' + sideB;
+  }
+
+  // Attributes
+  var attributes = {
+    'x-placement': data.placement
+  };
+
+  // Update `data` attributes, styles and arrowStyles
+  data.attributes = _extends({}, attributes, data.attributes);
+  data.styles = _extends({}, styles, data.styles);
+  data.arrowStyles = _extends({}, data.offsets.arrow, data.arrowStyles);
+
+  return data;
+}
+
+/**
+ * Helper used to know if the given modifier depends from another one.<br />
+ * It checks if the needed modifier is listed and enabled.
+ * @method
+ * @memberof Popper.Utils
+ * @param {Array} modifiers - list of modifiers
+ * @param {String} requestingName - name of requesting modifier
+ * @param {String} requestedName - name of requested modifier
+ * @returns {Boolean}
+ */
+function isModifierRequired(modifiers, requestingName, requestedName) {
+  var requesting = find(modifiers, function (_ref) {
+    var name = _ref.name;
+    return name === requestingName;
+  });
+
+  var isRequired = !!requesting && modifiers.some(function (modifier) {
+    return modifier.name === requestedName && modifier.enabled && modifier.order < requesting.order;
+  });
+
+  if (!isRequired) {
+    var _requesting = '`' + requestingName + '`';
+    var requested = '`' + requestedName + '`';
+    console.warn(requested + ' modifier is required by ' + _requesting + ' modifier in order to work, be sure to include it before ' + _requesting + '!');
+  }
+  return isRequired;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function arrow(data, options) {
+  var _data$offsets$arrow;
+
+  // arrow depends on keepTogether in order to work
+  if (!isModifierRequired(data.instance.modifiers, 'arrow', 'keepTogether')) {
+    return data;
+  }
+
+  var arrowElement = options.element;
+
+  // if arrowElement is a string, suppose it's a CSS selector
+  if (typeof arrowElement === 'string') {
+    arrowElement = data.instance.popper.querySelector(arrowElement);
+
+    // if arrowElement is not found, don't run the modifier
+    if (!arrowElement) {
+      return data;
+    }
+  } else {
+    // if the arrowElement isn't a query selector we must check that the
+    // provided DOM node is child of its popper node
+    if (!data.instance.popper.contains(arrowElement)) {
+      console.warn('WARNING: `arrow.element` must be child of its popper element!');
+      return data;
+    }
+  }
+
+  var placement = data.placement.split('-')[0];
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var isVertical = ['left', 'right'].indexOf(placement) !== -1;
+
+  var len = isVertical ? 'height' : 'width';
+  var sideCapitalized = isVertical ? 'Top' : 'Left';
+  var side = sideCapitalized.toLowerCase();
+  var altSide = isVertical ? 'left' : 'top';
+  var opSide = isVertical ? 'bottom' : 'right';
+  var arrowElementSize = getOuterSizes(arrowElement)[len];
+
+  //
+  // extends keepTogether behavior making sure the popper and its
+  // reference have enough pixels in conjunction
+  //
+
+  // top/left side
+  if (reference[opSide] - arrowElementSize < popper[side]) {
+    data.offsets.popper[side] -= popper[side] - (reference[opSide] - arrowElementSize);
+  }
+  // bottom/right side
+  if (reference[side] + arrowElementSize > popper[opSide]) {
+    data.offsets.popper[side] += reference[side] + arrowElementSize - popper[opSide];
+  }
+  data.offsets.popper = getClientRect(data.offsets.popper);
+
+  // compute center of the popper
+  var center = reference[side] + reference[len] / 2 - arrowElementSize / 2;
+
+  // Compute the sideValue using the updated popper offsets
+  // take popper margin in account because we don't have this info available
+  var css = getStyleComputedProperty(data.instance.popper);
+  var popperMarginSide = parseFloat(css['margin' + sideCapitalized], 10);
+  var popperBorderSide = parseFloat(css['border' + sideCapitalized + 'Width'], 10);
+  var sideValue = center - data.offsets.popper[side] - popperMarginSide - popperBorderSide;
+
+  // prevent arrowElement from being placed not contiguously to its popper
+  sideValue = Math.max(Math.min(popper[len] - arrowElementSize, sideValue), 0);
+
+  data.arrowElement = arrowElement;
+  data.offsets.arrow = (_data$offsets$arrow = {}, defineProperty(_data$offsets$arrow, side, Math.round(sideValue)), defineProperty(_data$offsets$arrow, altSide, ''), _data$offsets$arrow);
+
+  return data;
+}
+
+/**
+ * Get the opposite placement variation of the given one
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} placement variation
+ * @returns {String} flipped placement variation
+ */
+function getOppositeVariation(variation) {
+  if (variation === 'end') {
+    return 'start';
+  } else if (variation === 'start') {
+    return 'end';
+  }
+  return variation;
+}
+
+/**
+ * List of accepted placements to use as values of the `placement` option.<br />
+ * Valid placements are:
+ * - `auto`
+ * - `top`
+ * - `right`
+ * - `bottom`
+ * - `left`
+ *
+ * Each placement can have a variation from this list:
+ * - `-start`
+ * - `-end`
+ *
+ * Variations are interpreted easily if you think of them as the left to right
+ * written languages. Horizontally (`top` and `bottom`), `start` is left and `end`
+ * is right.<br />
+ * Vertically (`left` and `right`), `start` is top and `end` is bottom.
+ *
+ * Some valid examples are:
+ * - `top-end` (on top of reference, right aligned)
+ * - `right-start` (on right of reference, top aligned)
+ * - `bottom` (on bottom, centered)
+ * - `auto-end` (on the side with more space available, alignment depends by placement)
+ *
+ * @static
+ * @type {Array}
+ * @enum {String}
+ * @readonly
+ * @method placements
+ * @memberof Popper
+ */
+var placements = ['auto-start', 'auto', 'auto-end', 'top-start', 'top', 'top-end', 'right-start', 'right', 'right-end', 'bottom-end', 'bottom', 'bottom-start', 'left-end', 'left', 'left-start'];
+
+// Get rid of `auto` `auto-start` and `auto-end`
+var validPlacements = placements.slice(3);
+
+/**
+ * Given an initial placement, returns all the subsequent placements
+ * clockwise (or counter-clockwise).
+ *
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} placement - A valid placement (it accepts variations)
+ * @argument {Boolean} counter - Set to true to walk the placements counterclockwise
+ * @returns {Array} placements including their variations
+ */
+function clockwise(placement) {
+  var counter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var index = validPlacements.indexOf(placement);
+  var arr = validPlacements.slice(index + 1).concat(validPlacements.slice(0, index));
+  return counter ? arr.reverse() : arr;
+}
+
+var BEHAVIORS = {
+  FLIP: 'flip',
+  CLOCKWISE: 'clockwise',
+  COUNTERCLOCKWISE: 'counterclockwise'
+};
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function flip(data, options) {
+  // if `inner` modifier is enabled, we can't use the `flip` modifier
+  if (isModifierEnabled(data.instance.modifiers, 'inner')) {
+    return data;
+  }
+
+  if (data.flipped && data.placement === data.originalPlacement) {
+    // seems like flip is trying to loop, probably there's not enough space on any of the flippable sides
+    return data;
+  }
+
+  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, options.boundariesElement, data.positionFixed);
+
+  var placement = data.placement.split('-')[0];
+  var placementOpposite = getOppositePlacement(placement);
+  var variation = data.placement.split('-')[1] || '';
+
+  var flipOrder = [];
+
+  switch (options.behavior) {
+    case BEHAVIORS.FLIP:
+      flipOrder = [placement, placementOpposite];
+      break;
+    case BEHAVIORS.CLOCKWISE:
+      flipOrder = clockwise(placement);
+      break;
+    case BEHAVIORS.COUNTERCLOCKWISE:
+      flipOrder = clockwise(placement, true);
+      break;
+    default:
+      flipOrder = options.behavior;
+  }
+
+  flipOrder.forEach(function (step, index) {
+    if (placement !== step || flipOrder.length === index + 1) {
+      return data;
+    }
+
+    placement = data.placement.split('-')[0];
+    placementOpposite = getOppositePlacement(placement);
+
+    var popperOffsets = data.offsets.popper;
+    var refOffsets = data.offsets.reference;
+
+    // using floor because the reference offsets may contain decimals we are not going to consider here
+    var floor = Math.floor;
+    var overlapsRef = placement === 'left' && floor(popperOffsets.right) > floor(refOffsets.left) || placement === 'right' && floor(popperOffsets.left) < floor(refOffsets.right) || placement === 'top' && floor(popperOffsets.bottom) > floor(refOffsets.top) || placement === 'bottom' && floor(popperOffsets.top) < floor(refOffsets.bottom);
+
+    var overflowsLeft = floor(popperOffsets.left) < floor(boundaries.left);
+    var overflowsRight = floor(popperOffsets.right) > floor(boundaries.right);
+    var overflowsTop = floor(popperOffsets.top) < floor(boundaries.top);
+    var overflowsBottom = floor(popperOffsets.bottom) > floor(boundaries.bottom);
+
+    var overflowsBoundaries = placement === 'left' && overflowsLeft || placement === 'right' && overflowsRight || placement === 'top' && overflowsTop || placement === 'bottom' && overflowsBottom;
+
+    // flip the variation if required
+    var isVertical = ['top', 'bottom'].indexOf(placement) !== -1;
+
+    // flips variation if reference element overflows boundaries
+    var flippedVariationByRef = !!options.flipVariations && (isVertical && variation === 'start' && overflowsLeft || isVertical && variation === 'end' && overflowsRight || !isVertical && variation === 'start' && overflowsTop || !isVertical && variation === 'end' && overflowsBottom);
+
+    // flips variation if popper content overflows boundaries
+    var flippedVariationByContent = !!options.flipVariationsByContent && (isVertical && variation === 'start' && overflowsRight || isVertical && variation === 'end' && overflowsLeft || !isVertical && variation === 'start' && overflowsBottom || !isVertical && variation === 'end' && overflowsTop);
+
+    var flippedVariation = flippedVariationByRef || flippedVariationByContent;
+
+    if (overlapsRef || overflowsBoundaries || flippedVariation) {
+      // this boolean to detect any flip loop
+      data.flipped = true;
+
+      if (overlapsRef || overflowsBoundaries) {
+        placement = flipOrder[index + 1];
+      }
+
+      if (flippedVariation) {
+        variation = getOppositeVariation(variation);
+      }
+
+      data.placement = placement + (variation ? '-' + variation : '');
+
+      // this object contains `position`, we want to preserve it along with
+      // any additional property we may add in the future
+      data.offsets.popper = _extends({}, data.offsets.popper, getPopperOffsets(data.instance.popper, data.offsets.reference, data.placement));
+
+      data = runModifiers(data.instance.modifiers, data, 'flip');
+    }
+  });
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function keepTogether(data) {
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var placement = data.placement.split('-')[0];
+  var floor = Math.floor;
+  var isVertical = ['top', 'bottom'].indexOf(placement) !== -1;
+  var side = isVertical ? 'right' : 'bottom';
+  var opSide = isVertical ? 'left' : 'top';
+  var measurement = isVertical ? 'width' : 'height';
+
+  if (popper[side] < floor(reference[opSide])) {
+    data.offsets.popper[opSide] = floor(reference[opSide]) - popper[measurement];
+  }
+  if (popper[opSide] > floor(reference[side])) {
+    data.offsets.popper[opSide] = floor(reference[side]);
+  }
+
+  return data;
+}
+
+/**
+ * Converts a string containing value + unit into a px value number
+ * @function
+ * @memberof {modifiers~offset}
+ * @private
+ * @argument {String} str - Value + unit string
+ * @argument {String} measurement - `height` or `width`
+ * @argument {Object} popperOffsets
+ * @argument {Object} referenceOffsets
+ * @returns {Number|String}
+ * Value in pixels, or original string if no values were extracted
+ */
+function toValue(str, measurement, popperOffsets, referenceOffsets) {
+  // separate value from unit
+  var split = str.match(/((?:\-|\+)?\d*\.?\d*)(.*)/);
+  var value = +split[1];
+  var unit = split[2];
+
+  // If it's not a number it's an operator, I guess
+  if (!value) {
+    return str;
+  }
+
+  if (unit.indexOf('%') === 0) {
+    var element = void 0;
+    switch (unit) {
+      case '%p':
+        element = popperOffsets;
+        break;
+      case '%':
+      case '%r':
+      default:
+        element = referenceOffsets;
+    }
+
+    var rect = getClientRect(element);
+    return rect[measurement] / 100 * value;
+  } else if (unit === 'vh' || unit === 'vw') {
+    // if is a vh or vw, we calculate the size based on the viewport
+    var size = void 0;
+    if (unit === 'vh') {
+      size = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    } else {
+      size = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    }
+    return size / 100 * value;
+  } else {
+    // if is an explicit pixel unit, we get rid of the unit and keep the value
+    // if is an implicit unit, it's px, and we return just the value
+    return value;
+  }
+}
+
+/**
+ * Parse an `offset` string to extrapolate `x` and `y` numeric offsets.
+ * @function
+ * @memberof {modifiers~offset}
+ * @private
+ * @argument {String} offset
+ * @argument {Object} popperOffsets
+ * @argument {Object} referenceOffsets
+ * @argument {String} basePlacement
+ * @returns {Array} a two cells array with x and y offsets in numbers
+ */
+function parseOffset(offset, popperOffsets, referenceOffsets, basePlacement) {
+  var offsets = [0, 0];
+
+  // Use height if placement is left or right and index is 0 otherwise use width
+  // in this way the first offset will use an axis and the second one
+  // will use the other one
+  var useHeight = ['right', 'left'].indexOf(basePlacement) !== -1;
+
+  // Split the offset string to obtain a list of values and operands
+  // The regex addresses values with the plus or minus sign in front (+10, -20, etc)
+  var fragments = offset.split(/(\+|\-)/).map(function (frag) {
+    return frag.trim();
+  });
+
+  // Detect if the offset string contains a pair of values or a single one
+  // they could be separated by comma or space
+  var divider = fragments.indexOf(find(fragments, function (frag) {
+    return frag.search(/,|\s/) !== -1;
+  }));
+
+  if (fragments[divider] && fragments[divider].indexOf(',') === -1) {
+    console.warn('Offsets separated by white space(s) are deprecated, use a comma (,) instead.');
+  }
+
+  // If divider is found, we divide the list of values and operands to divide
+  // them by ofset X and Y.
+  var splitRegex = /\s*,\s*|\s+/;
+  var ops = divider !== -1 ? [fragments.slice(0, divider).concat([fragments[divider].split(splitRegex)[0]]), [fragments[divider].split(splitRegex)[1]].concat(fragments.slice(divider + 1))] : [fragments];
+
+  // Convert the values with units to absolute pixels to allow our computations
+  ops = ops.map(function (op, index) {
+    // Most of the units rely on the orientation of the popper
+    var measurement = (index === 1 ? !useHeight : useHeight) ? 'height' : 'width';
+    var mergeWithPrevious = false;
+    return op
+    // This aggregates any `+` or `-` sign that aren't considered operators
+    // e.g.: 10 + +5 => [10, +, +5]
+    .reduce(function (a, b) {
+      if (a[a.length - 1] === '' && ['+', '-'].indexOf(b) !== -1) {
+        a[a.length - 1] = b;
+        mergeWithPrevious = true;
+        return a;
+      } else if (mergeWithPrevious) {
+        a[a.length - 1] += b;
+        mergeWithPrevious = false;
+        return a;
+      } else {
+        return a.concat(b);
+      }
+    }, [])
+    // Here we convert the string values into number values (in px)
+    .map(function (str) {
+      return toValue(str, measurement, popperOffsets, referenceOffsets);
+    });
+  });
+
+  // Loop trough the offsets arrays and execute the operations
+  ops.forEach(function (op, index) {
+    op.forEach(function (frag, index2) {
+      if (isNumeric(frag)) {
+        offsets[index] += frag * (op[index2 - 1] === '-' ? -1 : 1);
+      }
+    });
+  });
+  return offsets;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @argument {Number|String} options.offset=0
+ * The offset value as described in the modifier description
+ * @returns {Object} The data object, properly modified
+ */
+function offset(data, _ref) {
+  var offset = _ref.offset;
+  var placement = data.placement,
+      _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var basePlacement = placement.split('-')[0];
+
+  var offsets = void 0;
+  if (isNumeric(+offset)) {
+    offsets = [+offset, 0];
+  } else {
+    offsets = parseOffset(offset, popper, reference, basePlacement);
+  }
+
+  if (basePlacement === 'left') {
+    popper.top += offsets[0];
+    popper.left -= offsets[1];
+  } else if (basePlacement === 'right') {
+    popper.top += offsets[0];
+    popper.left += offsets[1];
+  } else if (basePlacement === 'top') {
+    popper.left += offsets[0];
+    popper.top -= offsets[1];
+  } else if (basePlacement === 'bottom') {
+    popper.left += offsets[0];
+    popper.top += offsets[1];
+  }
+
+  data.popper = popper;
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function preventOverflow(data, options) {
+  var boundariesElement = options.boundariesElement || getOffsetParent(data.instance.popper);
+
+  // If offsetParent is the reference element, we really want to
+  // go one step up and use the next offsetParent as reference to
+  // avoid to make this modifier completely useless and look like broken
+  if (data.instance.reference === boundariesElement) {
+    boundariesElement = getOffsetParent(boundariesElement);
+  }
+
+  // NOTE: DOM access here
+  // resets the popper's position so that the document size can be calculated excluding
+  // the size of the popper element itself
+  var transformProp = getSupportedPropertyName('transform');
+  var popperStyles = data.instance.popper.style; // assignment to help minification
+  var top = popperStyles.top,
+      left = popperStyles.left,
+      transform = popperStyles[transformProp];
+
+  popperStyles.top = '';
+  popperStyles.left = '';
+  popperStyles[transformProp] = '';
+
+  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, boundariesElement, data.positionFixed);
+
+  // NOTE: DOM access here
+  // restores the original style properties after the offsets have been computed
+  popperStyles.top = top;
+  popperStyles.left = left;
+  popperStyles[transformProp] = transform;
+
+  options.boundaries = boundaries;
+
+  var order = options.priority;
+  var popper = data.offsets.popper;
+
+  var check = {
+    primary: function primary(placement) {
+      var value = popper[placement];
+      if (popper[placement] < boundaries[placement] && !options.escapeWithReference) {
+        value = Math.max(popper[placement], boundaries[placement]);
+      }
+      return defineProperty({}, placement, value);
+    },
+    secondary: function secondary(placement) {
+      var mainSide = placement === 'right' ? 'left' : 'top';
+      var value = popper[mainSide];
+      if (popper[placement] > boundaries[placement] && !options.escapeWithReference) {
+        value = Math.min(popper[mainSide], boundaries[placement] - (placement === 'right' ? popper.width : popper.height));
+      }
+      return defineProperty({}, mainSide, value);
+    }
+  };
+
+  order.forEach(function (placement) {
+    var side = ['left', 'top'].indexOf(placement) !== -1 ? 'primary' : 'secondary';
+    popper = _extends({}, popper, check[side](placement));
+  });
+
+  data.offsets.popper = popper;
+
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function shift(data) {
+  var placement = data.placement;
+  var basePlacement = placement.split('-')[0];
+  var shiftvariation = placement.split('-')[1];
+
+  // if shift shiftvariation is specified, run the modifier
+  if (shiftvariation) {
+    var _data$offsets = data.offsets,
+        reference = _data$offsets.reference,
+        popper = _data$offsets.popper;
+
+    var isVertical = ['bottom', 'top'].indexOf(basePlacement) !== -1;
+    var side = isVertical ? 'left' : 'top';
+    var measurement = isVertical ? 'width' : 'height';
+
+    var shiftOffsets = {
+      start: defineProperty({}, side, reference[side]),
+      end: defineProperty({}, side, reference[side] + reference[measurement] - popper[measurement])
+    };
+
+    data.offsets.popper = _extends({}, popper, shiftOffsets[shiftvariation]);
+  }
+
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function hide(data) {
+  if (!isModifierRequired(data.instance.modifiers, 'hide', 'preventOverflow')) {
+    return data;
+  }
+
+  var refRect = data.offsets.reference;
+  var bound = find(data.instance.modifiers, function (modifier) {
+    return modifier.name === 'preventOverflow';
+  }).boundaries;
+
+  if (refRect.bottom < bound.top || refRect.left > bound.right || refRect.top > bound.bottom || refRect.right < bound.left) {
+    // Avoid unnecessary DOM access if visibility hasn't changed
+    if (data.hide === true) {
+      return data;
+    }
+
+    data.hide = true;
+    data.attributes['x-out-of-boundaries'] = '';
+  } else {
+    // Avoid unnecessary DOM access if visibility hasn't changed
+    if (data.hide === false) {
+      return data;
+    }
+
+    data.hide = false;
+    data.attributes['x-out-of-boundaries'] = false;
+  }
+
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function inner(data) {
+  var placement = data.placement;
+  var basePlacement = placement.split('-')[0];
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var isHoriz = ['left', 'right'].indexOf(basePlacement) !== -1;
+
+  var subtractLength = ['top', 'left'].indexOf(basePlacement) === -1;
+
+  popper[isHoriz ? 'left' : 'top'] = reference[basePlacement] - (subtractLength ? popper[isHoriz ? 'width' : 'height'] : 0);
+
+  data.placement = getOppositePlacement(placement);
+  data.offsets.popper = getClientRect(popper);
+
+  return data;
+}
+
+/**
+ * Modifier function, each modifier can have a function of this type assigned
+ * to its `fn` property.<br />
+ * These functions will be called on each update, this means that you must
+ * make sure they are performant enough to avoid performance bottlenecks.
+ *
+ * @function ModifierFn
+ * @argument {dataObject} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {dataObject} The data object, properly modified
+ */
+
+/**
+ * Modifiers are plugins used to alter the behavior of your poppers.<br />
+ * Popper.js uses a set of 9 modifiers to provide all the basic functionalities
+ * needed by the library.
+ *
+ * Usually you don't want to override the `order`, `fn` and `onLoad` props.
+ * All the other properties are configurations that could be tweaked.
+ * @namespace modifiers
+ */
+var modifiers = {
+  /**
+   * Modifier used to shift the popper on the start or end of its reference
+   * element.<br />
+   * It will read the variation of the `placement` property.<br />
+   * It can be one either `-end` or `-start`.
+   * @memberof modifiers
+   * @inner
+   */
+  shift: {
+    /** @prop {number} order=100 - Index used to define the order of execution */
+    order: 100,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: shift
+  },
+
+  /**
+   * The `offset` modifier can shift your popper on both its axis.
+   *
+   * It accepts the following units:
+   * - `px` or unit-less, interpreted as pixels
+   * - `%` or `%r`, percentage relative to the length of the reference element
+   * - `%p`, percentage relative to the length of the popper element
+   * - `vw`, CSS viewport width unit
+   * - `vh`, CSS viewport height unit
+   *
+   * For length is intended the main axis relative to the placement of the popper.<br />
+   * This means that if the placement is `top` or `bottom`, the length will be the
+   * `width`. In case of `left` or `right`, it will be the `height`.
+   *
+   * You can provide a single value (as `Number` or `String`), or a pair of values
+   * as `String` divided by a comma or one (or more) white spaces.<br />
+   * The latter is a deprecated method because it leads to confusion and will be
+   * removed in v2.<br />
+   * Additionally, it accepts additions and subtractions between different units.
+   * Note that multiplications and divisions aren't supported.
+   *
+   * Valid examples are:
+   * ```
+   * 10
+   * '10%'
+   * '10, 10'
+   * '10%, 10'
+   * '10 + 10%'
+   * '10 - 5vh + 3%'
+   * '-10px + 5vh, 5px - 6%'
+   * ```
+   * > **NB**: If you desire to apply offsets to your poppers in a way that may make them overlap
+   * > with their reference element, unfortunately, you will have to disable the `flip` modifier.
+   * > You can read more on this at this [issue](https://github.com/FezVrasta/popper.js/issues/373).
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  offset: {
+    /** @prop {number} order=200 - Index used to define the order of execution */
+    order: 200,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: offset,
+    /** @prop {Number|String} offset=0
+     * The offset value as described in the modifier description
+     */
+    offset: 0
+  },
+
+  /**
+   * Modifier used to prevent the popper from being positioned outside the boundary.
+   *
+   * A scenario exists where the reference itself is not within the boundaries.<br />
+   * We can say it has "escaped the boundaries" — or just "escaped".<br />
+   * In this case we need to decide whether the popper should either:
+   *
+   * - detach from the reference and remain "trapped" in the boundaries, or
+   * - if it should ignore the boundary and "escape with its reference"
+   *
+   * When `escapeWithReference` is set to`true` and reference is completely
+   * outside its boundaries, the popper will overflow (or completely leave)
+   * the boundaries in order to remain attached to the edge of the reference.
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  preventOverflow: {
+    /** @prop {number} order=300 - Index used to define the order of execution */
+    order: 300,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: preventOverflow,
+    /**
+     * @prop {Array} [priority=['left','right','top','bottom']]
+     * Popper will try to prevent overflow following these priorities by default,
+     * then, it could overflow on the left and on top of the `boundariesElement`
+     */
+    priority: ['left', 'right', 'top', 'bottom'],
+    /**
+     * @prop {number} padding=5
+     * Amount of pixel used to define a minimum distance between the boundaries
+     * and the popper. This makes sure the popper always has a little padding
+     * between the edges of its container
+     */
+    padding: 5,
+    /**
+     * @prop {String|HTMLElement} boundariesElement='scrollParent'
+     * Boundaries used by the modifier. Can be `scrollParent`, `window`,
+     * `viewport` or any DOM element.
+     */
+    boundariesElement: 'scrollParent'
+  },
+
+  /**
+   * Modifier used to make sure the reference and its popper stay near each other
+   * without leaving any gap between the two. Especially useful when the arrow is
+   * enabled and you want to ensure that it points to its reference element.
+   * It cares only about the first axis. You can still have poppers with margin
+   * between the popper and its reference element.
+   * @memberof modifiers
+   * @inner
+   */
+  keepTogether: {
+    /** @prop {number} order=400 - Index used to define the order of execution */
+    order: 400,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: keepTogether
+  },
+
+  /**
+   * This modifier is used to move the `arrowElement` of the popper to make
+   * sure it is positioned between the reference element and its popper element.
+   * It will read the outer size of the `arrowElement` node to detect how many
+   * pixels of conjunction are needed.
+   *
+   * It has no effect if no `arrowElement` is provided.
+   * @memberof modifiers
+   * @inner
+   */
+  arrow: {
+    /** @prop {number} order=500 - Index used to define the order of execution */
+    order: 500,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: arrow,
+    /** @prop {String|HTMLElement} element='[x-arrow]' - Selector or node used as arrow */
+    element: '[x-arrow]'
+  },
+
+  /**
+   * Modifier used to flip the popper's placement when it starts to overlap its
+   * reference element.
+   *
+   * Requires the `preventOverflow` modifier before it in order to work.
+   *
+   * **NOTE:** this modifier will interrupt the current update cycle and will
+   * restart it if it detects the need to flip the placement.
+   * @memberof modifiers
+   * @inner
+   */
+  flip: {
+    /** @prop {number} order=600 - Index used to define the order of execution */
+    order: 600,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: flip,
+    /**
+     * @prop {String|Array} behavior='flip'
+     * The behavior used to change the popper's placement. It can be one of
+     * `flip`, `clockwise`, `counterclockwise` or an array with a list of valid
+     * placements (with optional variations)
+     */
+    behavior: 'flip',
+    /**
+     * @prop {number} padding=5
+     * The popper will flip if it hits the edges of the `boundariesElement`
+     */
+    padding: 5,
+    /**
+     * @prop {String|HTMLElement} boundariesElement='viewport'
+     * The element which will define the boundaries of the popper position.
+     * The popper will never be placed outside of the defined boundaries
+     * (except if `keepTogether` is enabled)
+     */
+    boundariesElement: 'viewport',
+    /**
+     * @prop {Boolean} flipVariations=false
+     * The popper will switch placement variation between `-start` and `-end` when
+     * the reference element overlaps its boundaries.
+     *
+     * The original placement should have a set variation.
+     */
+    flipVariations: false,
+    /**
+     * @prop {Boolean} flipVariationsByContent=false
+     * The popper will switch placement variation between `-start` and `-end` when
+     * the popper element overlaps its reference boundaries.
+     *
+     * The original placement should have a set variation.
+     */
+    flipVariationsByContent: false
+  },
+
+  /**
+   * Modifier used to make the popper flow toward the inner of the reference element.
+   * By default, when this modifier is disabled, the popper will be placed outside
+   * the reference element.
+   * @memberof modifiers
+   * @inner
+   */
+  inner: {
+    /** @prop {number} order=700 - Index used to define the order of execution */
+    order: 700,
+    /** @prop {Boolean} enabled=false - Whether the modifier is enabled or not */
+    enabled: false,
+    /** @prop {ModifierFn} */
+    fn: inner
+  },
+
+  /**
+   * Modifier used to hide the popper when its reference element is outside of the
+   * popper boundaries. It will set a `x-out-of-boundaries` attribute which can
+   * be used to hide with a CSS selector the popper when its reference is
+   * out of boundaries.
+   *
+   * Requires the `preventOverflow` modifier before it in order to work.
+   * @memberof modifiers
+   * @inner
+   */
+  hide: {
+    /** @prop {number} order=800 - Index used to define the order of execution */
+    order: 800,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: hide
+  },
+
+  /**
+   * Computes the style that will be applied to the popper element to gets
+   * properly positioned.
+   *
+   * Note that this modifier will not touch the DOM, it just prepares the styles
+   * so that `applyStyle` modifier can apply it. This separation is useful
+   * in case you need to replace `applyStyle` with a custom implementation.
+   *
+   * This modifier has `850` as `order` value to maintain backward compatibility
+   * with previous versions of Popper.js. Expect the modifiers ordering method
+   * to change in future major versions of the library.
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  computeStyle: {
+    /** @prop {number} order=850 - Index used to define the order of execution */
+    order: 850,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: computeStyle,
+    /**
+     * @prop {Boolean} gpuAcceleration=true
+     * If true, it uses the CSS 3D transformation to position the popper.
+     * Otherwise, it will use the `top` and `left` properties
+     */
+    gpuAcceleration: true,
+    /**
+     * @prop {string} [x='bottom']
+     * Where to anchor the X axis (`bottom` or `top`). AKA X offset origin.
+     * Change this if your popper should grow in a direction different from `bottom`
+     */
+    x: 'bottom',
+    /**
+     * @prop {string} [x='left']
+     * Where to anchor the Y axis (`left` or `right`). AKA Y offset origin.
+     * Change this if your popper should grow in a direction different from `right`
+     */
+    y: 'right'
+  },
+
+  /**
+   * Applies the computed styles to the popper element.
+   *
+   * All the DOM manipulations are limited to this modifier. This is useful in case
+   * you want to integrate Popper.js inside a framework or view library and you
+   * want to delegate all the DOM manipulations to it.
+   *
+   * Note that if you disable this modifier, you must make sure the popper element
+   * has its position set to `absolute` before Popper.js can do its work!
+   *
+   * Just disable this modifier and define your own to achieve the desired effect.
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  applyStyle: {
+    /** @prop {number} order=900 - Index used to define the order of execution */
+    order: 900,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: applyStyle,
+    /** @prop {Function} */
+    onLoad: applyStyleOnLoad,
+    /**
+     * @deprecated since version 1.10.0, the property moved to `computeStyle` modifier
+     * @prop {Boolean} gpuAcceleration=true
+     * If true, it uses the CSS 3D transformation to position the popper.
+     * Otherwise, it will use the `top` and `left` properties
+     */
+    gpuAcceleration: undefined
+  }
+};
+
+/**
+ * The `dataObject` is an object containing all the information used by Popper.js.
+ * This object is passed to modifiers and to the `onCreate` and `onUpdate` callbacks.
+ * @name dataObject
+ * @property {Object} data.instance The Popper.js instance
+ * @property {String} data.placement Placement applied to popper
+ * @property {String} data.originalPlacement Placement originally defined on init
+ * @property {Boolean} data.flipped True if popper has been flipped by flip modifier
+ * @property {Boolean} data.hide True if the reference element is out of boundaries, useful to know when to hide the popper
+ * @property {HTMLElement} data.arrowElement Node used as arrow by arrow modifier
+ * @property {Object} data.styles Any CSS property defined here will be applied to the popper. It expects the JavaScript nomenclature (eg. `marginBottom`)
+ * @property {Object} data.arrowStyles Any CSS property defined here will be applied to the popper arrow. It expects the JavaScript nomenclature (eg. `marginBottom`)
+ * @property {Object} data.boundaries Offsets of the popper boundaries
+ * @property {Object} data.offsets The measurements of popper, reference and arrow elements
+ * @property {Object} data.offsets.popper `top`, `left`, `width`, `height` values
+ * @property {Object} data.offsets.reference `top`, `left`, `width`, `height` values
+ * @property {Object} data.offsets.arrow] `top` and `left` offsets, only one of them will be different from 0
+ */
+
+/**
+ * Default options provided to Popper.js constructor.<br />
+ * These can be overridden using the `options` argument of Popper.js.<br />
+ * To override an option, simply pass an object with the same
+ * structure of the `options` object, as the 3rd argument. For example:
+ * ```
+ * new Popper(ref, pop, {
+ *   modifiers: {
+ *     preventOverflow: { enabled: false }
+ *   }
+ * })
+ * ```
+ * @type {Object}
+ * @static
+ * @memberof Popper
+ */
+var Defaults = {
+  /**
+   * Popper's placement.
+   * @prop {Popper.placements} placement='bottom'
+   */
+  placement: 'bottom',
+
+  /**
+   * Set this to true if you want popper to position it self in 'fixed' mode
+   * @prop {Boolean} positionFixed=false
+   */
+  positionFixed: false,
+
+  /**
+   * Whether events (resize, scroll) are initially enabled.
+   * @prop {Boolean} eventsEnabled=true
+   */
+  eventsEnabled: true,
+
+  /**
+   * Set to true if you want to automatically remove the popper when
+   * you call the `destroy` method.
+   * @prop {Boolean} removeOnDestroy=false
+   */
+  removeOnDestroy: false,
+
+  /**
+   * Callback called when the popper is created.<br />
+   * By default, it is set to no-op.<br />
+   * Access Popper.js instance with `data.instance`.
+   * @prop {onCreate}
+   */
+  onCreate: function onCreate() {},
+
+  /**
+   * Callback called when the popper is updated. This callback is not called
+   * on the initialization/creation of the popper, but only on subsequent
+   * updates.<br />
+   * By default, it is set to no-op.<br />
+   * Access Popper.js instance with `data.instance`.
+   * @prop {onUpdate}
+   */
+  onUpdate: function onUpdate() {},
+
+  /**
+   * List of modifiers used to modify the offsets before they are applied to the popper.
+   * They provide most of the functionalities of Popper.js.
+   * @prop {modifiers}
+   */
+  modifiers: modifiers
+};
+
+/**
+ * @callback onCreate
+ * @param {dataObject} data
+ */
+
+/**
+ * @callback onUpdate
+ * @param {dataObject} data
+ */
+
+// Utils
+// Methods
+var Popper = function () {
+  /**
+   * Creates a new Popper.js instance.
+   * @class Popper
+   * @param {Element|referenceObject} reference - The reference element used to position the popper
+   * @param {Element} popper - The HTML / XML element used as the popper
+   * @param {Object} options - Your custom options to override the ones defined in [Defaults](#defaults)
+   * @return {Object} instance - The generated Popper.js instance
+   */
+  function Popper(reference, popper) {
+    var _this = this;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    classCallCheck(this, Popper);
+
+    this.scheduleUpdate = function () {
+      return requestAnimationFrame(_this.update);
+    };
+
+    // make update() debounced, so that it only runs at most once-per-tick
+    this.update = debounce(this.update.bind(this));
+
+    // with {} we create a new object with the options inside it
+    this.options = _extends({}, Popper.Defaults, options);
+
+    // init state
+    this.state = {
+      isDestroyed: false,
+      isCreated: false,
+      scrollParents: []
+    };
+
+    // get reference and popper elements (allow jQuery wrappers)
+    this.reference = reference && reference.jquery ? reference[0] : reference;
+    this.popper = popper && popper.jquery ? popper[0] : popper;
+
+    // Deep merge modifiers options
+    this.options.modifiers = {};
+    Object.keys(_extends({}, Popper.Defaults.modifiers, options.modifiers)).forEach(function (name) {
+      _this.options.modifiers[name] = _extends({}, Popper.Defaults.modifiers[name] || {}, options.modifiers ? options.modifiers[name] : {});
+    });
+
+    // Refactoring modifiers' list (Object => Array)
+    this.modifiers = Object.keys(this.options.modifiers).map(function (name) {
+      return _extends({
+        name: name
+      }, _this.options.modifiers[name]);
+    })
+    // sort the modifiers by order
+    .sort(function (a, b) {
+      return a.order - b.order;
+    });
+
+    // modifiers have the ability to execute arbitrary code when Popper.js get inited
+    // such code is executed in the same order of its modifier
+    // they could add new properties to their options configuration
+    // BE AWARE: don't add options to `options.modifiers.name` but to `modifierOptions`!
+    this.modifiers.forEach(function (modifierOptions) {
+      if (modifierOptions.enabled && isFunction(modifierOptions.onLoad)) {
+        modifierOptions.onLoad(_this.reference, _this.popper, _this.options, modifierOptions, _this.state);
+      }
+    });
+
+    // fire the first update to position the popper in the right place
+    this.update();
+
+    var eventsEnabled = this.options.eventsEnabled;
+    if (eventsEnabled) {
+      // setup event listeners, they will take care of update the position in specific situations
+      this.enableEventListeners();
+    }
+
+    this.state.eventsEnabled = eventsEnabled;
+  }
+
+  // We can't use class properties because they don't get listed in the
+  // class prototype and break stuff like Sinon stubs
+
+
+  createClass(Popper, [{
+    key: 'update',
+    value: function update$$1() {
+      return update.call(this);
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy$$1() {
+      return destroy.call(this);
+    }
+  }, {
+    key: 'enableEventListeners',
+    value: function enableEventListeners$$1() {
+      return enableEventListeners.call(this);
+    }
+  }, {
+    key: 'disableEventListeners',
+    value: function disableEventListeners$$1() {
+      return disableEventListeners.call(this);
+    }
+
+    /**
+     * Schedules an update. It will run on the next UI update available.
+     * @method scheduleUpdate
+     * @memberof Popper
+     */
+
+
+    /**
+     * Collection of utilities useful when writing custom modifiers.
+     * Starting from version 1.7, this method is available only if you
+     * include `popper-utils.js` before `popper.js`.
+     *
+     * **DEPRECATION**: This way to access PopperUtils is deprecated
+     * and will be removed in v2! Use the PopperUtils module directly instead.
+     * Due to the high instability of the methods contained in Utils, we can't
+     * guarantee them to follow semver. Use them at your own risk!
+     * @static
+     * @private
+     * @type {Object}
+     * @deprecated since version 1.8
+     * @member Utils
+     * @memberof Popper
+     */
+
+  }]);
+  return Popper;
+}();
+
+/**
+ * The `referenceObject` is an object that provides an interface compatible with Popper.js
+ * and lets you use it as replacement of a real DOM node.<br />
+ * You can use this method to position a popper relatively to a set of coordinates
+ * in case you don't have a DOM node to use as reference.
+ *
+ * ```
+ * new Popper(referenceObject, popperNode);
+ * ```
+ *
+ * NB: This feature isn't supported in Internet Explorer 10.
+ * @name referenceObject
+ * @property {Function} data.getBoundingClientRect
+ * A function that returns a set of coordinates compatible with the native `getBoundingClientRect` method.
+ * @property {number} data.clientWidth
+ * An ES6 getter that will return the width of the virtual reference element.
+ * @property {number} data.clientHeight
+ * An ES6 getter that will return the height of the virtual reference element.
+ */
+
+
+Popper.Utils = (typeof window !== 'undefined' ? window : global).PopperUtils;
+Popper.placements = placements;
+Popper.Defaults = Defaults;
+
+/* harmony default export */ __webpack_exports__["a"] = (Popper);
+//# sourceMappingURL=popper.js.map
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/component-normalizer.js":
 /***/ (function(module, exports) {
 
@@ -37558,9 +44355,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                    " +
+                              "\n          " +
                                 _vm._s(action.name) +
-                                "\n                "
+                                "\n        "
                             )
                           ]
                         )
@@ -37588,9 +44385,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                    " +
+                              "\n          " +
                                 _vm._s(action.name) +
-                                "\n                "
+                                "\n        "
                             )
                           ]
                         )
@@ -37792,9 +44589,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                        " +
+                          "\n            " +
                             _vm._s(_vm.__("Write")) +
-                            "\n                    "
+                            "\n          "
                         )
                       ]
                     ),
@@ -37815,9 +44612,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                        " +
+                          "\n            " +
                             _vm._s(_vm.__("Preview")) +
-                            "\n                    "
+                            "\n          "
                         )
                       ]
                     )
@@ -38061,9 +44858,9 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                " +
+                      "\n        " +
                         _vm._s(_vm.__("Create & Add Another")) +
-                        "\n            "
+                        "\n      "
                     )
                   ]
                 ),
@@ -38080,13 +44877,13 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                " +
+                      "\n        " +
                         _vm._s(
                           _vm.__("Create :resource", {
                             resource: _vm.singularName
                           })
                         ) +
-                        "\n            "
+                        "\n      "
                     )
                   ]
                 )
@@ -38698,13 +45495,13 @@ var render = function() {
             _vm._v(" "),
             _c("p", { staticClass: "text-error-message mb-8 leading-normal" }, [
               _vm._v(
-                "\n                " +
+                "\n        " +
                   _vm._s(
                     _vm.__(
                       "The government won't let us show you what's behind these doors"
                     )
                   ) +
-                  "…\n            "
+                  "…\n      "
               )
             ]),
             _vm._v(" "),
@@ -38715,13 +45512,7 @@ var render = function() {
                   "dim btn btn-lg btn-default btn-white text-90 no-text-shadow tracking-wide uppercase",
                 attrs: { to: { name: "dashboard" } }
               },
-              [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.__("Go Home")) +
-                    "\n            "
-                )
-              ]
+              [_vm._v("\n        " + _vm._s(_vm.__("Go Home")) + "\n      ")]
             )
           ],
           1
@@ -39300,22 +46091,18 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("p", { staticClass: "text-error-subtitle mb-6" }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.__("Whoops")) +
-                  "…\n            "
-              )
+              _vm._v(_vm._s(_vm.__("Whoops")) + "…")
             ]),
             _vm._v(" "),
             _c("p", { staticClass: "text-error-message mb-8 leading-normal" }, [
               _vm._v(
-                "\n                " +
+                "\n        " +
                   _vm._s(
                     _vm.__(
                       "We're lost in space. The page you were trying to view does not exist."
                     )
                   ) +
-                  "\n            "
+                  "\n      "
               )
             ]),
             _vm._v(" "),
@@ -39326,13 +46113,7 @@ var render = function() {
                   "dim btn btn-lg btn-default btn-white text-90 no-text-shadow tracking-wide uppercase",
                 attrs: { to: { name: "dashboard" } }
               },
-              [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.__("Go Home")) +
-                    "\n            "
-                )
-              ]
+              [_vm._v("\n        " + _vm._s(_vm.__("Go Home")) + "\n      ")]
             )
           ],
           1
@@ -39391,7 +46172,7 @@ var render = function() {
     _c(
       "p",
       { staticClass: "text-90", attrs: { slot: "value" }, slot: "value" },
-      [_vm._v("\n        ·········\n    ")]
+      [_vm._v("\n    ·········\n  ")]
     )
   ])
 }
@@ -39462,13 +46243,13 @@ var render = function() {
             },
             [
               _vm._v(
-                "\n            " +
+                "\n      " +
                   _vm._s(_vm.field.name) +
                   ": " +
                   _vm._s(_vm.field.value) +
                   " (" +
                   _vm._s(_vm.field.resourceLabel) +
-                  ")\n        "
+                  ")\n    "
               )
             ]
           )
@@ -39540,11 +46321,7 @@ var render = function() {
               attrs: { "label-for": _vm.field.attribute }
             },
             [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.fieldLabel) +
-                  "\n\n                "
-              ),
+              _vm._v("\n        " + _vm._s(_vm.fieldLabel) + "\n\n        "),
               _vm.field.required
                 ? _c("span", { staticClass: "text-danger text-sm" }, [
                     _vm._v(_vm._s(_vm.__("*")))
@@ -39565,15 +46342,13 @@ var render = function() {
         _vm._v(" "),
         _vm.showErrors && _vm.hasError
           ? _c("help-text", { staticClass: "error-text mt-2 text-danger" }, [
-              _vm._v("\n            " + _vm._s(_vm.firstError) + "\n        ")
+              _vm._v("\n      " + _vm._s(_vm.firstError) + "\n    ")
             ])
           : _vm._e(),
         _vm._v(" "),
         _vm.showHelpText
           ? _c("help-text", { staticClass: "help-text mt-2" }, [
-              _vm._v(
-                "\n            " + _vm._s(_vm.field.helpText) + "\n        "
-              )
+              _vm._v("\n      " + _vm._s(_vm.field.helpText) + "\n    ")
             ])
           : _vm._e()
       ],
@@ -39691,9 +46466,9 @@ var render = function() {
                               [
                                 _c("span", { staticClass: "class ml-2 mt-1" }, [
                                   _vm._v(
-                                    "\n                        " +
+                                    "\n            " +
                                       _vm._s(_vm.__("Delete")) +
-                                      "\n                    "
+                                      "\n          "
                                   )
                                 ])
                               ]
@@ -39753,9 +46528,7 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.__("Choose File")) +
-                    "\n            "
+                  "\n        " + _vm._s(_vm.__("Choose File")) + "\n      "
                 )
               ]
             )
@@ -39768,7 +46541,7 @@ var render = function() {
         _vm._v(" "),
         _vm.hasError
           ? _c("p", { staticClass: "text-xs mt-2 text-danger" }, [
-              _vm._v("\n            " + _vm._s(_vm.firstError) + "\n        ")
+              _vm._v("\n      " + _vm._s(_vm.firstError) + "\n    ")
             ])
           : _vm._e()
       ])
@@ -39922,7 +46695,7 @@ var render = function() {
     { staticClass: "px-6 py-4", attrs: { loading: _vm.loading } },
     [
       _c("h3", { staticClass: "flex mb-3 text-base text-80 font-bold" }, [
-        _vm._v("\n        " + _vm._s(_vm.title) + "\n\n        "),
+        _vm._v("\n    " + _vm._s(_vm.title) + "\n\n    "),
         _c("span", { staticClass: "ml-auto font-semibold text-70 text-sm" }, [
           _vm._v(
             "(" +
@@ -39982,9 +46755,9 @@ var render = function() {
                 _vm._s(item.label) +
                   " (" +
                   _vm._s(item.value) +
-                  " -\n                " +
+                  " - " +
                   _vm._s(item.percentage) +
-                  "%)\n            "
+                  "%)\n      "
               )
             ])
           }),
@@ -40134,7 +46907,7 @@ var render = function() {
         },
         [
           _vm._v(
-            "\n    " +
+            "\n  " +
               _vm._s(_vm.field.resourceLabel) +
               ": " +
               _vm._s(_vm.field.value) +
@@ -40341,7 +47114,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(
                               _vm.__(
                                 _vm.viaManyToMany
@@ -40349,9 +47122,9 @@ var render = function() {
                                   : "Delete Selected"
                               )
                             ) +
-                            "\n                    (" +
+                            "\n          (" +
                             _vm._s(_vm.selectedResourcesCount) +
-                            ")\n                "
+                            ")\n        "
                         )
                       ]
                     )
@@ -40372,11 +47145,11 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(_vm.__("Restore Selected")) +
                             " (" +
                             _vm._s(_vm.selectedResourcesCount) +
-                            ")\n                "
+                            ")\n        "
                         )
                       ]
                     )
@@ -40396,11 +47169,11 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(_vm.__("Force Delete Selected")) +
                             " (" +
                             _vm._s(_vm.selectedResourcesCount) +
-                            ")\n                "
+                            ")\n        "
                         )
                       ]
                     )
@@ -40462,13 +47235,13 @@ var render = function() {
                                   { staticClass: "text-80 leading-normal" },
                                   [
                                     _vm._v(
-                                      "\n                    " +
+                                      "\n          " +
                                         _vm._s(
                                           _vm.__(
                                             "Are you sure you want to force delete the selected resources?"
                                           )
                                         ) +
-                                        "\n                "
+                                        "\n        "
                                     )
                                   ]
                                 )
@@ -40480,7 +47253,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      3163805590
+                      4136856598
                     )
                   })
                 : _vm._e(),
@@ -40596,7 +47369,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n            " + _vm._s(lens.name) + "\n        ")]
+            [_vm._v("\n      " + _vm._s(lens.name) + "\n    ")]
           )
         ],
         1
@@ -40691,7 +47464,7 @@ var render = function() {
           staticClass:
             "bg-clip w-48 uppercase font-bold text-xs text-80 tracking-wide px-3 py-3"
         },
-        [_vm._v("\n        " + _vm._s(_vm.keyLabel) + "\n    ")]
+        [_vm._v("\n    " + _vm._s(_vm.keyLabel) + "\n  ")]
       ),
       _vm._v(" "),
       _c(
@@ -40700,7 +47473,7 @@ var render = function() {
           staticClass:
             "bg-clip flex-grow uppercase font-bold text-xs text-80 tracking-wide px-3 py-3 border-l border-50"
         },
-        [_vm._v("\n        " + _vm._s(_vm.valueLabel) + "\n    ")]
+        [_vm._v("\n    " + _vm._s(_vm.valueLabel) + "\n  ")]
       )
     ]
   )
@@ -40783,13 +47556,7 @@ var render = function() {
                       selected: _vm.selectedRangeKey == option.value
                     }
                   },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(option.label) +
-                        "\n            "
-                    )
-                  ]
+                  [_vm._v("\n        " + _vm._s(option.label) + "\n      ")]
                 )
               }),
               0
@@ -40798,7 +47565,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "flex items-center text-4xl mb-4" }, [
-        _vm._v("\n        " + _vm._s(_vm.formattedValue) + "\n        "),
+        _vm._v("\n    " + _vm._s(_vm.formattedValue) + "\n    "),
         _vm.suffix
           ? _c("span", { staticClass: "ml-2 text-sm font-bold text-80" }, [
               _vm._v(_vm._s(_vm.formattedSuffix))
@@ -40849,11 +47616,11 @@ var render = function() {
                 _vm.growthPercentage !== 0
                   ? _c("span", [
                       _vm._v(
-                        "\n                    " +
+                        "\n          " +
                           _vm._s(_vm.growthPercentage) +
-                          "%\n                    " +
+                          "%\n          " +
                           _vm._s(_vm.__(_vm.increaseOrDecreaseLabel)) +
-                          "\n                "
+                          "\n        "
                       )
                     ])
                   : _c("span", [
@@ -40864,9 +47631,9 @@ var render = function() {
                 _vm.previous == "0" && _vm.value != "0"
                   ? _c("span", [
                       _vm._v(
-                        "\n                    " +
+                        "\n          " +
                           _vm._s(_vm.__("No Prior Data")) +
-                          "\n                "
+                          "\n        "
                       )
                     ])
                   : _vm._e(),
@@ -40874,9 +47641,9 @@ var render = function() {
                 _vm.value == "0" && _vm.previous != "0"
                   ? _c("span", [
                       _vm._v(
-                        "\n                    " +
+                        "\n          " +
                           _vm._s(_vm.__("No Current Data")) +
-                          "\n                "
+                          "\n        "
                       )
                     ])
                   : _vm._e(),
@@ -40884,9 +47651,9 @@ var render = function() {
                 _vm.value == "0" && _vm.previous == "0"
                   ? _c("span", [
                       _vm._v(
-                        "\n                    " +
+                        "\n          " +
                           _vm._s(_vm.__("No Data")) +
-                          "\n                "
+                          "\n        "
                       )
                     ])
                   : _vm._e()
@@ -41014,9 +47781,7 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                    " +
-                        _vm._s(_vm.field.value) +
-                        "\n                "
+                      "\n          " + _vm._s(_vm.field.value) + "\n        "
                     )
                   ]
                 )
@@ -41233,7 +47998,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2b1228f0\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/CheckboxWithLabel.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2b1228f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/CheckboxWithLabel.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -41242,39 +48007,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "label",
-    {
-      ref: "label",
-      staticClass: "flex items-center select-none",
-      on: {
-        keydown: function($event) {
-          if (
-            !$event.type.indexOf("key") &&
-            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter") &&
-            _vm._k($event.keyCode, "space", 32, $event.key, [" ", "Spacebar"])
-          ) {
-            return null
-          }
-          $event.preventDefault()
-          return _vm.$refs.label.click()
-        }
-      }
-    },
+    { staticClass: "flex items-center select-none" },
     [
-      _c("fake-checkbox", {
+      _c("checkbox", {
         staticClass: "mr-2",
-        attrs: { checked: _vm.checked }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: {
-          type: "checkbox",
-          disabled: _vm.disabled,
-          tabindex: _vm.disabled ? false : 0,
-          "aria-checked": _vm.checked
-        },
+        attrs: { checked: _vm.checked, name: _vm.name },
         on: {
-          change: function($event) {
-            return _vm.$emit("change", $event)
+          input: function($event) {
+            return _vm.$emit("input", $event)
           }
         }
       }),
@@ -41336,13 +48076,13 @@ var render = function() {
                       _vm._v(" "),
                       _c("p", { staticClass: "text-80 leading-normal" }, [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(
                               _vm.__(
                                 "Are you sure you want to restore the selected resources?"
                               )
                             ) +
-                            "\n                "
+                            "\n        "
                         )
                       ])
                     ],
@@ -41370,9 +48110,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(_vm.__("Cancel")) +
-                            "\n                "
+                            "\n        "
                         )
                       ]
                     ),
@@ -41390,9 +48130,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(_vm.__("Restore")) +
-                            "\n                "
+                            "\n        "
                         )
                       ]
                     )
@@ -41467,7 +48207,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("p", { staticClass: "text-80 leading-normal" }, [
                           _vm._v(
-                            "\n                    " +
+                            "\n          " +
                               _vm._s(
                                 _vm.__(
                                   "Are you sure you want to " +
@@ -41475,7 +48215,7 @@ var render = function() {
                                     " the selected resources?"
                                 )
                               ) +
-                              "\n                "
+                              "\n        "
                           )
                         ])
                       ],
@@ -41506,9 +48246,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(_vm.__("Cancel")) +
-                            "\n                "
+                            "\n        "
                         )
                       ]
                     ),
@@ -41526,9 +48266,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n          " +
                             _vm._s(_vm.__(_vm.uppercaseMode)) +
-                            "\n                "
+                            "\n        "
                         )
                       ]
                     )
@@ -41623,13 +48363,7 @@ var render = function() {
                       selected: _vm.selectedRangeKey == option.value
                     }
                   },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(option.label) +
-                        "\n            "
-                    )
-                  ]
+                  [_vm._v("\n        " + _vm._s(option.label) + "\n      ")]
                 )
               }),
               0
@@ -41638,7 +48372,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "flex items-center text-4xl mb-4" }, [
-        _vm._v("\n        " + _vm._s(_vm.formattedValue) + "\n        "),
+        _vm._v("\n    " + _vm._s(_vm.formattedValue) + "\n    "),
         _vm.suffix
           ? _c("span", { staticClass: "ml-2 text-sm font-bold text-80" }, [
               _vm._v(_vm._s(_vm.formattedSuffix))
@@ -41865,7 +48599,7 @@ var render = function() {
         }
       }
     },
-    [_vm._v("\n    " + _vm._s(_vm.__("Cancel")) + "\n")]
+    [_vm._v("\n  " + _vm._s(_vm.__("Cancel")) + "\n")]
   )
 }
 var staticRenderFns = []
@@ -41907,13 +48641,7 @@ var render = function() {
                     }
                   }
                 },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.field.value) +
-                      "\n            "
-                  )
-                ]
+                [_vm._v("\n        " + _vm._s(_vm.field.value) + "\n      ")]
               )
             ],
             1
@@ -42117,7 +48845,7 @@ var render = function() {
     _c(
       "h3",
       { staticClass: "text-sm uppercase tracking-wide text-80 bg-30 p-3" },
-      [_vm._v("\n        " + _vm._s(_vm.filter.name) + "\n    ")]
+      [_vm._v("\n    " + _vm._s(_vm.filter.name) + "\n  ")]
     ),
     _vm._v(" "),
     _c(
@@ -42450,11 +49178,7 @@ var render = function() {
               _c(
                 "dropdown-trigger",
                 { staticClass: "text-sm text-90 px-3 py-1 h-!8" },
-                [
-                  _vm._v(
-                    "\n            " + _vm._s(_vm.__("Actions")) + "\n        "
-                  )
-                ]
+                [_vm._v("\n      " + _vm._s(_vm.__("Actions")) + "\n    ")]
               ),
               _vm._v(" "),
               _c(
@@ -42476,13 +49200,7 @@ var render = function() {
                         }
                       }
                     },
-                    [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(action.name) +
-                          "\n            "
-                      )
-                    ]
+                    [_vm._v("\n        " + _vm._s(action.name) + "\n      ")]
                   )
                 }),
                 0
@@ -42655,9 +49373,9 @@ var render = function() {
                                                   )
                                                 : _vm._e(),
                                               _vm._v(
-                                                "\n\n                            " +
+                                                "\n\n              " +
                                                   _vm._s(option.display) +
-                                                  "\n                        "
+                                                  "\n            "
                                               )
                                             ]
                                           )
@@ -42666,7 +49384,7 @@ var render = function() {
                                     ],
                                     null,
                                     false,
-                                    1999877282
+                                    4294758946
                                   )
                                 },
                                 [
@@ -42697,11 +49415,11 @@ var render = function() {
                                               )
                                             : _vm._e(),
                                           _vm._v(
-                                            "\n\n                            " +
+                                            "\n\n              " +
                                               _vm._s(
                                                 _vm.selectedResource.display
                                               ) +
-                                              "\n                        "
+                                              "\n            "
                                           )
                                         ]
                                       )
@@ -42770,9 +49488,9 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                            " +
+                                        "\n              " +
                                           _vm._s(_vm.__("With Trashed")) +
-                                          "\n                        "
+                                          "\n            "
                                       )
                                     ]
                                   )
@@ -42833,9 +49551,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(_vm.__("Attach & Attach Another")) +
-                          "\n            "
+                          "\n      "
                       )
                     ]
                   ),
@@ -42852,13 +49570,13 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(
                             _vm.__("Attach :resource", {
                               resource: _vm.relatedResourceLabel
                             })
                           ) +
-                          "\n            "
+                          "\n      "
                       )
                     ]
                   )
@@ -42986,6 +49704,90 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-47bfd04b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Index/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { class: "text-" + _vm.field.textAlign },
+    [
+      _c(
+        "tooltip",
+        { attrs: { trigger: "click" } },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "text-primary inline-flex items-center dim cursor-pointer"
+            },
+            [
+              _c("span", { staticClass: "text-primary font-bold" }, [
+                _vm._v("View")
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "tooltip-content",
+            { attrs: { slot: "content" }, slot: "content" },
+            [
+              _c(
+                "ul",
+                { staticClass: "list-reset" },
+                _vm._l(_vm.value, function(option) {
+                  return _c("li", { staticClass: "mb-1" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "inline-flex items-center py-1 pl-2 pr-3 rounded-full font-bold text-sm",
+                        class: _vm.classes[option.checked]
+                      },
+                      [
+                        _c("boolean-icon", {
+                          attrs: {
+                            value: option.checked,
+                            width: "20",
+                            height: "20"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "ml-1" }, [
+                          _vm._v(_vm._s(option.label))
+                        ])
+                      ],
+                      1
+                    )
+                  ])
+                }),
+                0
+              )
+            ]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-47bfd04b", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-48ad04f9\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Detail/DateField.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -43036,7 +49838,7 @@ var render = function() {
         { slot: "field" },
         [
           _c("checkbox", {
-            staticClass: "py-2",
+            staticClass: "mt-2",
             attrs: {
               id: _vm.field.attribute,
               name: _vm.field.name,
@@ -43096,7 +49898,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("\n            " + _vm._s(_vm.__("Previous")) + "\n        ")]
+          [_vm._v("\n      " + _vm._s(_vm.__("Previous")) + "\n    ")]
         ),
         _vm._v(" "),
         _vm._t("default"),
@@ -43121,7 +49923,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("\n            " + _vm._s(_vm.__("Next")) + "\n        ")]
+          [_vm._v("\n      " + _vm._s(_vm.__("Next")) + "\n    ")]
         )
       ],
       2
@@ -43309,14 +50111,16 @@ var render = function() {
                         _c(
                           "dropdown",
                           {
+                            staticClass: "-mx-2",
                             attrs: {
                               dusk: "select-all-dropdown",
-                              placement: "bottom-start"
+                              placement: "bottom-end"
                             }
                           },
                           [
                             _c(
                               "dropdown-trigger",
+                              { staticClass: "px-2" },
                               [
                                 _c("fake-checkbox", {
                                   attrs: { checked: _vm.selectAllChecked }
@@ -43348,13 +50152,13 @@ var render = function() {
                                             attrs: {
                                               checked: _vm.selectAllChecked
                                             },
-                                            on: { change: _vm.toggleSelectAll }
+                                            on: { input: _vm.toggleSelectAll }
                                           },
                                           [
                                             _vm._v(
-                                              "\n                                            " +
+                                              "\n                      " +
                                                 _vm._s(_vm.__("Select All")) +
-                                                "\n                                        "
+                                                "\n                    "
                                             )
                                           ]
                                         )
@@ -43376,8 +50180,7 @@ var render = function() {
                                                 _vm.selectAllMatchingChecked
                                             },
                                             on: {
-                                              change:
-                                                _vm.toggleSelectAllMatching
+                                              input: _vm.toggleSelectAllMatching
                                             }
                                           },
                                           [
@@ -43387,17 +50190,17 @@ var render = function() {
                                                 { staticClass: "mr-1" },
                                                 [
                                                   _vm._v(
-                                                    "\n                                                    " +
+                                                    "\n                          " +
                                                       _vm._s(
                                                         _vm.__(
                                                           "Select All Matching"
                                                         )
                                                       ) +
-                                                      "\n                                                    (" +
+                                                      " (" +
                                                       _vm._s(
                                                         _vm.allMatchingResourceCount
                                                       ) +
-                                                      ")\n                                                "
+                                                      ")\n                        "
                                                   )
                                                 ]
                                               )
@@ -43463,9 +50266,9 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                            " +
+                                  "\n              " +
                                     _vm._s(_vm.__("Lens")) +
-                                    "\n                        "
+                                    "\n            "
                                 )
                               ]
                             )
@@ -43602,7 +50405,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                        " +
+                                "\n            " +
                                   _vm._s(
                                     _vm.__(
                                       "No :resource matched the given criteria.",
@@ -43611,7 +50414,7 @@ var render = function() {
                                       }
                                     )
                                   ) +
-                                  "\n                    "
+                                  "\n          "
                               )
                             ]
                           ),
@@ -43701,9 +50504,9 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n          " +
                                   _vm._s(_vm.resourceCountLabel) +
-                                  "\n                "
+                                  "\n        "
                               )
                             ]
                           )
@@ -43787,9 +50590,9 @@ var render = function() {
                                   ])
                                 : _vm._e(),
                               _vm._v(
-                                "\n\n                " +
+                                "\n\n        " +
                                   _vm._s(option.display) +
-                                  "\n            "
+                                  "\n      "
                               )
                             ]
                           )
@@ -43798,7 +50601,7 @@ var render = function() {
                     ],
                     null,
                     false,
-                    3624764066
+                    3359963426
                   )
                 },
                 [
@@ -43820,9 +50623,9 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(
-                            "\n\n                " +
+                            "\n\n        " +
                               _vm._s(_vm.selectedResource.display) +
-                              "\n            "
+                              "\n      "
                           )
                         ]
                       )
@@ -43879,9 +50682,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(_vm.__("With Trashed")) +
-                          "\n            "
+                          "\n      "
                       )
                     ]
                   )
@@ -43968,9 +50771,7 @@ var render = function() {
               _vm.action.fields.length == 0
                 ? _c("p", { staticClass: "text-80 px-8 my-8" }, [
                     _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.action.confirmText) +
-                        "\n            "
+                      "\n        " + _vm._s(_vm.action.confirmText) + "\n      "
                     )
                   ])
                 : _c(
@@ -44021,9 +50822,9 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n                    " +
+                    "\n          " +
                       _vm._s(_vm.action.cancelButtonText) +
-                      "\n                "
+                      "\n        "
                   )
                 ]
               ),
@@ -44168,7 +50969,7 @@ var render = function() {
         "whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold",
       class: _vm.extraClasses
     },
-    [_vm._v("\n    " + _vm._s(_vm.label) + "\n")]
+    [_vm._v("\n  " + _vm._s(_vm.label) + "\n")]
   )
 }
 var staticRenderFns = []
@@ -44260,120 +51061,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "flex items-center" },
-    [
-      _c(
-        "div",
-        {
-          staticClass: "checkbox select-none rounded",
-          class: { "opacity-75": _vm.disabled },
-          attrs: {
-            disabled: _vm.disabled,
-            tabindex: "0",
-            role: "checkbox",
-            "aria-checked": _vm.checked
-          },
-          on: {
-            keydown: function($event) {
-              if (
-                !$event.type.indexOf("key") &&
-                _vm._k($event.keyCode, "space", 32, $event.key, [
-                  " ",
-                  "Spacebar"
-                ]) &&
-                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-              ) {
-                return null
-              }
-              $event.preventDefault()
-              return _vm.toggle($event)
-            },
-            click: _vm.toggle
-          }
-        },
-        [
-          _c("input", {
-            staticClass: "hidden",
-            attrs: { type: "checkbox", disabled: _vm.disabled },
-            domProps: { checked: _vm.checked }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "check" }, [
-            _vm.checked
-              ? _c(
-                  "svg",
-                  {
-                    staticClass: "block",
-                    attrs: {
-                      width: "20",
-                      height: "20",
-                      xmlns: "http://www.w3.org/2000/svg",
-                      viewBox: "0 0 20 20"
-                    }
-                  },
-                  [
-                    _c("rect", {
-                      attrs: {
-                        width: "20",
-                        height: "20",
-                        fill: "var(--primary)",
-                        rx: "4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        fill: "#FFF",
-                        d:
-                          "M7.7 9.3c-.23477048-.3130273-.63054226-.46037132-1.01285927-.37708287-.38231702.08328846-.68093514.38190658-.7642236.7642236C5.83962868 10.0694577 5.9869727 10.4652295 6.3 10.7l2 2c.38884351.3811429 1.01115649.3811429 1.4 0l4-4c.3130273-.23477048.4603713-.63054226.3770829-1.01285927-.0832885-.38231702-.3819066-.68093514-.7642236-.7642236C12.9305423 6.83962868 12.5347705 6.9869727 12.3 7.3L9 10.58l-1.3-1.3v.02z"
-                      }
-                    })
-                  ]
-                )
-              : _c(
-                  "svg",
-                  {
-                    staticClass: "block",
-                    attrs: {
-                      width: "20",
-                      height: "20",
-                      xmlns: "http://www.w3.org/2000/svg",
-                      viewBox: "0 0 20 20"
-                    }
-                  },
-                  [
-                    _c("rect", {
-                      attrs: {
-                        width: "20",
-                        height: "20",
-                        fill: "#FFF",
-                        rx: "4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("rect", {
-                      attrs: {
-                        width: "19",
-                        height: "19",
-                        fill: "none",
-                        x: ".5",
-                        y: ".5",
-                        stroke: "#CCD4DB",
-                        rx: "4"
-                      }
-                    })
-                  ]
-                )
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _vm._t("default")
-    ],
-    2
-  )
+  return _c("input", {
+    staticClass: "checkbox",
+    attrs: { type: "checkbox", disabled: _vm.disabled },
+    domProps: { checked: _vm.checked },
+    on: {
+      input: function($event) {
+        return _vm.$emit("input", $event)
+      }
+    }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -44548,9 +51245,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(_vm.__("Choose Type")) +
-                          "\n            "
+                          "\n      "
                       )
                     ]
                   ),
@@ -44567,9 +51264,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                " +
+                          "\n        " +
                             _vm._s(option.singularLabel) +
-                            "\n            "
+                            "\n      "
                         )
                       ]
                     )
@@ -44586,13 +51283,13 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n            " +
+                    "\n      " +
                       _vm._s(
                         _vm.__(
                           "There are no available options for this resource."
                         )
                       ) +
-                      "\n        "
+                      "\n    "
                   )
                 ]
               )
@@ -44659,9 +51356,9 @@ var render = function() {
                                           ])
                                         : _vm._e(),
                                       _vm._v(
-                                        "\n\n                    " +
+                                        "\n\n          " +
                                           _vm._s(option.display) +
-                                          "\n                "
+                                          "\n        "
                                       )
                                     ]
                                   )
@@ -44670,7 +51367,7 @@ var render = function() {
                             ],
                             null,
                             false,
-                            2142038178
+                            428272674
                           )
                         },
                         [
@@ -44695,9 +51392,9 @@ var render = function() {
                                       ])
                                     : _vm._e(),
                                   _vm._v(
-                                    "\n\n                    " +
+                                    "\n\n          " +
                                       _vm._s(_vm.selectedResource.display) +
-                                      "\n                "
+                                      "\n        "
                                   )
                                 ]
                               )
@@ -44738,11 +51435,11 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n          " +
                                   _vm._s(_vm.__("Choose")) +
                                   " " +
                                   _vm._s(_vm.fieldTypeName) +
-                                  "\n                "
+                                  "\n        "
                               )
                             ]
                           )
@@ -44767,9 +51464,9 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n          " +
                                   _vm._s(_vm.__("With Trashed")) +
-                                  "\n                "
+                                  "\n        "
                               )
                             ]
                           )
@@ -44854,9 +51551,7 @@ var render = function() {
       _vm._v(" "),
       _vm.allResourcesLoaded
         ? _c("p", { staticClass: "leading-normal text-sm text-80" }, [
-            _vm._v(
-              "\n        " + _vm._s(_vm.__("All resources loaded.")) + "\n    "
-            )
+            _vm._v("\n    " + _vm._s(_vm.__("All resources loaded.")) + "\n  ")
           ])
         : _c(
             "button",
@@ -44864,16 +51559,16 @@ var render = function() {
               staticClass: "btn btn btn-link px-4 text-primary dim",
               on: { click: _vm.loadMore }
             },
-            [_vm._v("\n        " + _vm._s(_vm.buttonLabel) + "\n    ")]
+            [_vm._v("\n    " + _vm._s(_vm.buttonLabel) + "\n  ")]
           ),
       _vm._v(" "),
       _c("p", { staticClass: "leading-normal text-sm text-80" }, [
         _vm._v(
-          "\n        " +
+          "\n    " +
             _vm._s(
               _vm.__(":amount Total", { amount: _vm.allMatchingResourceCount })
             ) +
-            "\n    "
+            "\n  "
         )
       ])
     ]
@@ -44886,6 +51581,58 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-55396c6f", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-59978b83\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "default-field",
+    { attrs: { field: _vm.field, errors: _vm.errors } },
+    [
+      _c(
+        "template",
+        { slot: "field" },
+        _vm._l(_vm.value, function(option) {
+          return _c(
+            "checkbox-with-label",
+            {
+              key: option.name,
+              staticClass: "mt-2",
+              attrs: {
+                name: option.name,
+                checked: option.checked,
+                disabled: _vm.isReadonly
+              },
+              on: {
+                input: function($event) {
+                  return _vm.toggle($event, option)
+                }
+              }
+            },
+            [_vm._v("\n      " + _vm._s(option.label) + "\n    ")]
+          )
+        }),
+        1
+      )
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-59978b83", module.exports)
   }
 }
 
@@ -45043,9 +51790,9 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                " +
+                      "\n        " +
                         _vm._s(_vm.__("No Results Found.")) +
-                        "\n            "
+                        "\n      "
                     )
                   ]
                 )
@@ -45071,9 +51818,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                    " +
+                        "\n          " +
                           _vm._s(group.resourceTitle) +
-                          "\n                "
+                          "\n        "
                       )
                     ]
                   ),
@@ -45137,9 +51884,9 @@ var render = function() {
                                       { staticClass: "text-xs mt-1 text-80" },
                                       [
                                         _vm._v(
-                                          "\n                                    " +
+                                          "\n                  " +
                                             _vm._s(item.subTitle) +
-                                            "\n                                "
+                                            "\n                "
                                         )
                                       ]
                                     )
@@ -45204,9 +51951,7 @@ var render = function() {
                     { staticClass: "ml-2 font-bold text-white text-80" },
                     [
                       _vm._v(
-                        "\n            " +
-                          _vm._s(_vm.activeFilterCount) +
-                          "\n        "
+                        "\n      " + _vm._s(_vm.activeFilterCount) + "\n    "
                       )
                     ]
                   )
@@ -45246,9 +51991,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                    " +
+                              "\n          " +
                                 _vm._s(_vm.__("Reset Filters")) +
-                                "\n                "
+                                "\n        "
                             )
                           ]
                         )
@@ -45287,9 +52032,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                    " +
+                              "\n          " +
                                 _vm._s(_vm.__("Trashed")) +
-                                "\n                "
+                                "\n        "
                             )
                           ]
                         ),
@@ -45337,9 +52082,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                    " +
+                              "\n          " +
                                 _vm._s(_vm.__("Per Page")) +
-                                "\n                "
+                                "\n        "
                             )
                           ]
                         ),
@@ -45361,9 +52106,9 @@ var render = function() {
                             _vm._l(_vm.perPageOptions, function(option) {
                               return _c("option", { key: option }, [
                                 _vm._v(
-                                  "\n                            " +
+                                  "\n              " +
                                     _vm._s(option) +
-                                    "\n                        "
+                                    "\n            "
                                 )
                               ])
                             }),
@@ -45425,11 +52170,7 @@ var render = function() {
                     }
                   }
                 },
-                [
-                  _vm._v(
-                    "\n            " + _vm._s(_vm.field.value) + "\n        "
-                  )
-                ]
+                [_vm._v("\n      " + _vm._s(_vm.field.value) + "\n    ")]
               )
             : _c("p", [_vm._v("—")])
         ],
@@ -45583,7 +52324,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("span", { staticClass: "px-2 text-70" }, [_vm._v("/")]),
-              _vm._v(" " + _vm._s(_vm.resourceResponse.name) + "\n    ")
+              _vm._v(" " + _vm._s(_vm.resourceResponse.name) + "\n  ")
             ],
             1
           )
@@ -45679,17 +52420,17 @@ var render = function() {
                                                   { staticClass: "mr-1" },
                                                   [
                                                     _vm._v(
-                                                      "\n                                                " +
+                                                      "\n                        " +
                                                         _vm._s(
                                                           _vm.__(
                                                             "Select All Matching"
                                                           )
                                                         ) +
-                                                        "\n                                                (" +
+                                                        "\n                        (" +
                                                         _vm._s(
                                                           _vm.allMatchingResourceCount
                                                         ) +
-                                                        ")\n                                            "
+                                                        ")\n                      "
                                                     )
                                                   ]
                                                 )
@@ -45849,7 +52590,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                        " +
+                                "\n            " +
                                   _vm._s(
                                     _vm.__(
                                       "No :resource matched the given criteria.",
@@ -45858,7 +52599,7 @@ var render = function() {
                                       }
                                     )
                                   ) +
-                                  "\n                    "
+                                  "\n          "
                               )
                             ]
                           ),
@@ -45946,9 +52687,9 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n          " +
                                   _vm._s(_vm.resourceCountLabel) +
-                                  "\n                "
+                                  "\n        "
                               )
                             ]
                           )
@@ -45989,7 +52730,7 @@ var render = function() {
     _c(
       "h3",
       { staticClass: "text-sm uppercase tracking-wide text-80 bg-30 p-3" },
-      [_vm._v("\n        " + _vm._s(_vm.filter.name) + "\n    ")]
+      [_vm._v("\n    " + _vm._s(_vm.filter.name) + "\n  ")]
     ),
     _vm._v(" "),
     _c(
@@ -46093,7 +52834,7 @@ var render = function() {
         _vm._v(" "),
         _c("p", { staticClass: "text-90 leading-tight mb-8" }, [
           _vm._v(
-            "\n            Welcome to Nova! Get familiar with Nova and explore its features\n            in the documentation:\n        "
+            "\n      Welcome to Nova! Get familiar with Nova and explore its features in the\n      documentation:\n    "
           )
         ]),
         _vm._v(" "),
@@ -46160,7 +52901,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", { staticClass: "text-90 leading-normal" }, [
                               _vm._v(
-                                "\n                                    Nova's resource manager allows you to\n                                    quickly view and manage your Eloquent\n                                    model records directly from Nova's\n                                    intuitive interface.\n                                "
+                                "\n                  Nova's resource manager allows you to quickly view and\n                  manage your Eloquent model records directly from Nova's\n                  intuitive interface.\n                "
                               )
                             ])
                           ],
@@ -46223,7 +52964,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", { staticClass: "text-90 leading-normal" }, [
                               _vm._v(
-                                "\n                                    Actions perform tasks on a single record\n                                    or an entire batch of records. Have an\n                                    action that takes a while? No problem.\n                                    Nova can queue them using Laravel's\n                                    powerful queue system.\n                                "
+                                "\n                  Actions perform tasks on a single record or an entire batch\n                  of records. Have an action that takes a while? No problem.\n                  Nova can queue them using Laravel's powerful queue system.\n                "
                               )
                             ])
                           ],
@@ -46290,7 +53031,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", { staticClass: "text-90 leading-normal" }, [
                               _vm._v(
-                                "\n                                    Write custom filters for your resource\n                                    indexes to offer your users quick\n                                    glances at different segments of your\n                                    data.\n                                "
+                                "\n                  Write custom filters for your resource indexes to offer your\n                  users quick glances at different segments of your data.\n                "
                               )
                             ])
                           ],
@@ -46353,7 +53094,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", { staticClass: "text-90 leading-normal" }, [
                               _vm._v(
-                                "\n                                    Need to customize a resource list a\n                                    little more than a filter can provide?\n                                    No problem. Add lenses to your resource\n                                    to take full control over the entire\n                                    Eloquent query.\n                                "
+                                "\n                  Need to customize a resource list a little more than a\n                  filter can provide? No problem. Add lenses to your resource\n                  to take full control over the entire Eloquent query.\n                "
                               )
                             ])
                           ],
@@ -46420,7 +53161,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", { staticClass: "text-90 leading-normal" }, [
                               _vm._v(
-                                "\n                                    Nova makes it painless to quickly\n                                    display custom metrics for your\n                                    application. To put the cherry on top,\n                                    we’ve included query helpers to make it\n                                    all easy as pie.\n                                "
+                                "\n                  Nova makes it painless to quickly display custom metrics for\n                  your application. To put the cherry on top, we’ve included\n                  query helpers to make it all easy as pie.\n                "
                               )
                             ])
                           ],
@@ -46483,7 +53224,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", { staticClass: "text-90 leading-normal" }, [
                               _vm._v(
-                                "\n                                    Nova offers CLI generators for\n                                    scaffolding your own custom cards. We’ll\n                                    give you a Vue component and infinite\n                                    possibilities.\n                                "
+                                "\n                  Nova offers CLI generators for scaffolding your own custom\n                  cards. We’ll give you a Vue component and infinite\n                  possibilities.\n                "
                               )
                             ])
                           ],
@@ -46539,9 +53280,9 @@ var render = function() {
             _vm._v(" "),
             _c("p", { staticClass: "text-80" }, [
               _vm._v(
-                "\n                " +
+                "\n        " +
                   _vm._s(_vm.__("Are you sure you want to delete this file?")) +
-                  "\n            "
+                  "\n      "
               )
             ])
           ],
@@ -46566,13 +53307,7 @@ var render = function() {
                   }
                 }
               },
-              [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(_vm.__("Cancel")) +
-                    "\n                "
-                )
-              ]
+              [_vm._v("\n          " + _vm._s(_vm.__("Cancel")) + "\n        ")]
             ),
             _vm._v(" "),
             _c(
@@ -46591,13 +53326,7 @@ var render = function() {
                   }
                 }
               },
-              [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(_vm.__("Delete")) +
-                    "\n                "
-                )
-              ]
+              [_vm._v("\n          " + _vm._s(_vm.__("Delete")) + "\n        ")]
             )
           ])
         ])
@@ -46664,11 +53393,7 @@ var render = function() {
           _vm._t("value", [
             _vm.fieldValue && !_vm.shouldDisplayAsHtml
               ? _c("p", { staticClass: "text-90" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.fieldValue) +
-                      "\n            "
-                  )
+                  _vm._v("\n        " + _vm._s(_vm.fieldValue) + "\n      ")
                 ])
               : _vm.fieldValue && _vm.shouldDisplayAsHtml
               ? _c("div", { domProps: { innerHTML: _vm._s(_vm.field.value) } })
@@ -46980,7 +53705,7 @@ var render = function() {
       _c(
         "h3",
         { staticClass: "text-sm uppercase tracking-wide text-80 bg-30 p-3" },
-        [_vm._v("\n        " + _vm._s(_vm.filter.name) + "\n    ")]
+        [_vm._v("\n    " + _vm._s(_vm.filter.name) + "\n  ")]
       ),
       _vm._v(" "),
       _vm._l(_vm.options, function(option) {
@@ -47081,9 +53806,9 @@ var render = function() {
           _c("div", { staticClass: "col-6 alert alert-danger" }, [
             _c("strong", [_vm._v(_vm._s(_vm.__("Whoops!")))]),
             _vm._v(
-              "\n            " +
+              "\n      " +
                 _vm._s(_vm.__("Something went wrong.")) +
-                "\n\n            "
+                "\n\n      "
             ),
             _c("br"),
             _c("br"),
@@ -47658,7 +54383,7 @@ var render = function() {
                 attrs: { "aria-role": "button" },
                 on: { click: _vm.toggle }
               },
-              [_vm._v("\n        " + _vm._s(_vm.showHideLabel) + "\n    ")]
+              [_vm._v("\n    " + _vm._s(_vm.showHideLabel) + "\n  ")]
             )
           : _vm._e()
       ])
@@ -48090,7 +54815,7 @@ var render = function() {
                                       { staticClass: "text-80 leading-normal" },
                                       [
                                         _vm._v(
-                                          "\n                        " +
+                                          "\n            " +
                                             _vm._s(
                                               _vm.__(
                                                 "Are you sure you want to " +
@@ -48098,7 +54823,7 @@ var render = function() {
                                                   " this resource?"
                                               )
                                             ) +
-                                            "\n                    "
+                                            "\n          "
                                         )
                                       ]
                                     )
@@ -48110,7 +54835,7 @@ var render = function() {
                           ],
                           null,
                           false,
-                          4160932014
+                          2825585582
                         )
                       })
                     : _vm._e(),
@@ -48140,13 +54865,13 @@ var render = function() {
                                 { staticClass: "text-80 leading-normal" },
                                 [
                                   _vm._v(
-                                    "\n                        " +
+                                    "\n            " +
                                       _vm._s(
                                         _vm.__(
                                           "Are you sure you want to restore this resource?"
                                         )
                                       ) +
-                                      "\n                    "
+                                      "\n          "
                                   )
                                 ]
                               )
@@ -48292,7 +55017,7 @@ var render = function() {
                 [
                   _vm._t("default", [
                     _vm._v(
-                      "\n            " +
+                      " " +
                         _vm._s(
                           _vm.__("Attach :resource", {
                             resource: _vm.singularName
@@ -48325,13 +55050,13 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n        " +
+                    "\n    " +
                       _vm._s(
                         _vm.__("Create :resource", {
                           resource: _vm.singularName
                         })
                       ) +
-                      "\n    "
+                      "\n  "
                   )
                 ]
               )
@@ -48383,9 +55108,7 @@ var render = function() {
                 [_vm._v(_vm._s(_vm.__("This image")))]
               ),
               _vm._v(
-                "\n            " +
-                  _vm._s(_vm.__("could not be found.")) +
-                  "\n        "
+                "\n      " + _vm._s(_vm.__("could not be found.")) + "\n    "
               )
             ])
           ])
@@ -48485,7 +55208,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                «\n            ")]
+              [_vm._v("\n        «\n      ")]
             ),
             _vm._v(" "),
             _c(
@@ -48510,7 +55233,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                ‹\n            ")]
+              [_vm._v("\n        ‹\n      ")]
             ),
             _vm._v(" "),
             _vm._l(_vm.printPages, function(n) {
@@ -48532,7 +55255,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("\n                " + _vm._s(n) + "\n            ")]
+                [_vm._v("\n        " + _vm._s(n) + "\n      ")]
               )
             }),
             _vm._v(" "),
@@ -48557,7 +55280,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                ›\n            ")]
+              [_vm._v("\n        ›\n      ")]
             ),
             _vm._v(" "),
             _c(
@@ -48581,7 +55304,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                »\n            ")]
+              [_vm._v("\n        »\n      ")]
             )
           ],
           2
@@ -48807,9 +55530,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(_vm.__("Update & Continue Editing")) +
-                          "\n            "
+                          "\n      "
                       )
                     ]
                   ),
@@ -48826,13 +55549,13 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(
                             _vm.__("Update :resource", {
                               resource: _vm.relatedResourceLabel
                             })
                           ) +
-                          "\n            "
+                          "\n      "
                       )
                     ]
                   )
@@ -48965,12 +55688,15 @@ var render = function() {
           staticClass: "m-2",
           attrs: { checked: _vm.isChecked },
           on: {
-            change: function($event) {
-              return _vm.updateCheckedState(_vm.option.value, $event)
+            input: function($event) {
+              return _vm.updateCheckedState(
+                _vm.option.value,
+                $event.target.checked
+              )
             }
           }
         },
-        [_vm._v("\n        " + _vm._s(_vm.option.name) + "\n    ")]
+        [_vm._v("\n    " + _vm._s(_vm.option.name) + "\n  ")]
       )
     ],
     1
@@ -48983,6 +55709,62 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-b2c8d03c", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b49cb2e0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Detail/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "panel-item",
+    { attrs: { field: _vm.field } },
+    [
+      _c("template", { slot: "value" }, [
+        _c(
+          "ul",
+          { staticClass: "list-reset" },
+          _vm._l(_vm.value, function(option) {
+            return _c("li", { staticClass: "mb-1" }, [
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "inline-flex items-center py-1 pl-2 pr-3 rounded-full font-bold text-sm",
+                  class: _vm.classes[option.checked]
+                },
+                [
+                  _c("boolean-icon", {
+                    attrs: { value: option.checked, width: "20", height: "20" }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "ml-1" }, [
+                    _vm._v(_vm._s(option.label))
+                  ])
+                ],
+                1
+              )
+            ])
+          }),
+          0
+        )
+      ])
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-b49cb2e0", module.exports)
   }
 }
 
@@ -49054,9 +55836,9 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                " +
+                      "\n        " +
                         _vm._s(_vm.__("Update & Continue Editing")) +
-                        "\n            "
+                        "\n      "
                     )
                   ]
                 ),
@@ -49073,13 +55855,13 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                " +
+                      "\n        " +
                         _vm._s(
                           _vm.__("Update :resource", {
                             resource: _vm.singularName
                           })
                         ) +
-                        "\n            "
+                        "\n      "
                     )
                   ]
                 )
@@ -49157,9 +55939,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(_vm.__("Show All Fields")) +
-                          "\n            "
+                          "\n      "
                       )
                     ]
                   )
@@ -49213,11 +55995,7 @@ var render = function() {
         _vm._t("value", [
           _vm.fieldValue && !_vm.shouldDisplayAsHtml
             ? _c("p", { staticClass: "text-90" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.fieldValue) +
-                    "\n            "
-                )
+                _vm._v("\n        " + _vm._s(_vm.fieldValue) + "\n      ")
               ])
             : _vm.fieldValue && _vm.shouldDisplayAsHtml
             ? _c("div", { domProps: { innerHTML: _vm._s(_vm.field.value) } })
@@ -49326,68 +56104,10 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "checkbox select-none rounded" }, [
-    _vm.checked
-      ? _c(
-          "svg",
-          {
-            staticClass: "block",
-            attrs: {
-              width: "20",
-              height: "20",
-              xmlns: "http://www.w3.org/2000/svg",
-              viewBox: "0 0 20 20"
-            }
-          },
-          [
-            _c("rect", {
-              attrs: {
-                width: "20",
-                height: "20",
-                fill: "var(--primary)",
-                rx: "4"
-              }
-            }),
-            _vm._v(" "),
-            _c("path", {
-              attrs: {
-                fill: "#FFF",
-                d:
-                  "M7.7 9.3c-.23477048-.3130273-.63054226-.46037132-1.01285927-.37708287-.38231702.08328846-.68093514.38190658-.7642236.7642236C5.83962868 10.0694577 5.9869727 10.4652295 6.3 10.7l2 2c.38884351.3811429 1.01115649.3811429 1.4 0l4-4c.3130273-.23477048.4603713-.63054226.3770829-1.01285927-.0832885-.38231702-.3819066-.68093514-.7642236-.7642236C12.9305423 6.83962868 12.5347705 6.9869727 12.3 7.3L9 10.58l-1.3-1.3v.02z"
-              }
-            })
-          ]
-        )
-      : _c(
-          "svg",
-          {
-            staticClass: "block",
-            attrs: {
-              width: "20",
-              height: "20",
-              xmlns: "http://www.w3.org/2000/svg",
-              viewBox: "0 0 20 20"
-            }
-          },
-          [
-            _c("rect", {
-              attrs: { width: "20", height: "20", fill: "#FFF", rx: "4" }
-            }),
-            _vm._v(" "),
-            _c("rect", {
-              attrs: {
-                width: "19",
-                height: "19",
-                fill: "none",
-                x: ".5",
-                y: ".5",
-                stroke: "#CCD4DB",
-                rx: "4"
-              }
-            })
-          ]
-        )
-  ])
+  return _c("checkbox", {
+    staticClass: "pointer-events-none",
+    attrs: { checked: _vm.checked, disabled: true }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49504,7 +56224,7 @@ var render = function() {
         },
         [
           _vm._v(
-            "\n    " +
+            "\n  " +
               _vm._s(_vm.field.resourceLabel) +
               ": " +
               _vm._s(_vm.field.value) +
@@ -49552,7 +56272,7 @@ var render = function() {
                   return _c(
                     "option",
                     _vm._b({}, "option", _vm.attrsFor(option), false),
-                    [_vm._v(_vm._s(_vm.labelFor(option)) + "\n            ")]
+                    [_vm._v(_vm._s(_vm.labelFor(option)) + "\n      ")]
                   )
                 }),
                 0
@@ -49561,7 +56281,7 @@ var render = function() {
                 return _c(
                   "option",
                   _vm._b({}, "option", _vm.attrsFor(option), false),
-                  [_vm._v(_vm._s(_vm.labelFor(option)) + "\n            ")]
+                  [_vm._v(_vm._s(_vm.labelFor(option)) + "\n      ")]
                 )
               })
         ]
@@ -49648,7 +56368,7 @@ var render = function() {
           "text-danger": _vm.field.failedWords.includes(_vm.field.value)
         }
       },
-      [_vm._v("\n        " + _vm._s(_vm.field.value) + "\n    ")]
+      [_vm._v("\n    " + _vm._s(_vm.field.value) + "\n  ")]
     )
   ])
 }
@@ -49706,7 +56426,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { class: "text-" + _vm.field.textAlign }, [
     _c("span", { staticClass: "font-bold" }, [
-      _vm._v("\n        · · · · · · ·\n        ·\n    ")
+      _vm._v("\n    · · · · · · · ·\n  ")
     ])
   ])
 }
@@ -49732,27 +56452,7 @@ var render = function() {
   return _c(
     "div",
     { class: "text-" + _vm.field.textAlign },
-    [
-      _vm.field.value
-        ? _c("icon", {
-            staticClass: "text-success",
-            attrs: {
-              viewBox: "0 0 24 24",
-              width: "24",
-              height: "24",
-              type: "check-circle"
-            }
-          })
-        : _c("icon", {
-            staticClass: "text-danger",
-            attrs: {
-              viewBox: "0 0 24 24",
-              width: "24",
-              height: "24",
-              type: "x-circle"
-            }
-          })
-    ],
+    [_c("boolean-icon", { attrs: { value: _vm.field.value } })],
     1
   )
 }
@@ -49954,11 +56654,7 @@ var render = function() {
                     }
                   }
                 },
-                [
-                  _vm._v(
-                    "\n            " + _vm._s(_vm.field.value) + "\n        "
-                  )
-                ]
+                [_vm._v("\n      " + _vm._s(_vm.field.value) + "\n    ")]
               )
             : _vm.field.value
             ? _c("p", [_vm._v(_vm._s(_vm.field.value))])
@@ -50013,7 +56709,7 @@ var render = function() {
                       "w-8": !_vm.shouldShowCheckboxes
                     }
                   },
-                  [_vm._v("\n                 \n            ")]
+                  [_vm._v("\n         \n      ")]
                 ),
                 _vm._v(" "),
                 _vm._l(_vm.fields, function(field) {
@@ -50037,9 +56733,9 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n          " +
                                   _vm._s(field.indexName) +
-                                  "\n                "
+                                  "\n        "
                               )
                             ]
                           )
@@ -50123,6 +56819,45 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb60bf5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/BooleanIcon.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.value
+    ? _c("icon", {
+        staticClass: "text-success",
+        attrs: {
+          viewBox: _vm.viewBox,
+          width: _vm.width,
+          height: _vm.height,
+          type: "check-circle"
+        }
+      })
+    : _c("icon", {
+        staticClass: "text-danger",
+        attrs: {
+          viewBox: _vm.viewBox,
+          width: _vm.width,
+          height: _vm.height,
+          type: "x-circle"
+        }
+      })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-eb60bf5e", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ec0557ce\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/Icon.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -50186,72 +56921,6 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-ec119ce8", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ef782e08\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Dropdown.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "button",
-    {
-      staticClass:
-        "rounded active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
-      attrs: { type: "button" },
-      on: { click: _vm.toggle }
-    },
-    [
-      _vm._t("default"),
-      _vm._v(" "),
-      _vm.visible
-        ? _c("portal", { attrs: { to: "dropdowns" } }, [
-            _c("div", [
-              _c("div", {
-                staticStyle: {
-                  position: "fixed",
-                  top: "0",
-                  right: "0",
-                  left: "0",
-                  bottom: "0",
-                  "z-index": "99998"
-                },
-                on: { click: _vm.toggle }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  ref: "menu",
-                  staticStyle: { position: "absolute", "z-index": "99999" },
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                    }
-                  }
-                },
-                [_vm._t("menu")],
-                2
-              )
-            ])
-          ])
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-ef782e08", module.exports)
   }
 }
 
@@ -50403,6 +57072,132 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-resize/dist/vue-resize.esm.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export install */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResizeObserver; });
+function getInternetExplorerVersion() {
+	var ua = window.navigator.userAgent;
+
+	var msie = ua.indexOf('MSIE ');
+	if (msie > 0) {
+		// IE 10 or older => return version number
+		return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+	}
+
+	var trident = ua.indexOf('Trident/');
+	if (trident > 0) {
+		// IE 11 => return version number
+		var rv = ua.indexOf('rv:');
+		return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+	}
+
+	var edge = ua.indexOf('Edge/');
+	if (edge > 0) {
+		// Edge (IE 12+) => return version number
+		return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+	}
+
+	// other browser
+	return -1;
+}
+
+var isIE = void 0;
+
+function initCompat() {
+	if (!initCompat.init) {
+		initCompat.init = true;
+		isIE = getInternetExplorerVersion() !== -1;
+	}
+}
+
+var ResizeObserver = { render: function render() {
+		var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "resize-observer", attrs: { "tabindex": "-1" } });
+	}, staticRenderFns: [], _scopeId: 'data-v-b329ee4c',
+	name: 'resize-observer',
+
+	methods: {
+		compareAndNotify: function compareAndNotify() {
+			if (this._w !== this.$el.offsetWidth || this._h !== this.$el.offsetHeight) {
+				this._w = this.$el.offsetWidth;
+				this._h = this.$el.offsetHeight;
+				this.$emit('notify');
+			}
+		},
+		addResizeHandlers: function addResizeHandlers() {
+			this._resizeObject.contentDocument.defaultView.addEventListener('resize', this.compareAndNotify);
+			this.compareAndNotify();
+		},
+		removeResizeHandlers: function removeResizeHandlers() {
+			if (this._resizeObject && this._resizeObject.onload) {
+				if (!isIE && this._resizeObject.contentDocument) {
+					this._resizeObject.contentDocument.defaultView.removeEventListener('resize', this.compareAndNotify);
+				}
+				delete this._resizeObject.onload;
+			}
+		}
+	},
+
+	mounted: function mounted() {
+		var _this = this;
+
+		initCompat();
+		this.$nextTick(function () {
+			_this._w = _this.$el.offsetWidth;
+			_this._h = _this.$el.offsetHeight;
+		});
+		var object = document.createElement('object');
+		this._resizeObject = object;
+		object.setAttribute('aria-hidden', 'true');
+		object.setAttribute('tabindex', -1);
+		object.onload = this.addResizeHandlers;
+		object.type = 'text/html';
+		if (isIE) {
+			this.$el.appendChild(object);
+		}
+		object.data = 'about:blank';
+		if (!isIE) {
+			this.$el.appendChild(object);
+		}
+	},
+	beforeDestroy: function beforeDestroy() {
+		this.removeResizeHandlers();
+	}
+};
+
+// Install the components
+function install(Vue) {
+	Vue.component('resize-observer', ResizeObserver);
+	Vue.component('ResizeObserver', ResizeObserver);
+}
+
+// Plugin
+var plugin = {
+	// eslint-disable-next-line no-undef
+	version: "0.4.5",
+	install: install
+};
+
+// Auto-install
+var GlobalVue = null;
+if (typeof window !== 'undefined') {
+	GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+	GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+	GlobalVue.use(plugin);
+}
+
+
+/* unused harmony default export */ var _unused_webpack_default_export = (plugin);
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-05d064cb\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/codemirror/lib/codemirror.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -50447,33 +57242,6 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-05d064cb\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=1!./MarkdownField.vue", function() {
      var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-05d064cb\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=1!./MarkdownField.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2b1228f0\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/CheckboxWithLabel.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2b1228f0\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/CheckboxWithLabel.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("74a3e015", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2b1228f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CheckboxWithLabel.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2b1228f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CheckboxWithLabel.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -54947,7 +61715,7 @@ var index_esm = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _classCallCheck2 = __webpack_require__("./node_modules/babel-runtime/helpers/classCallCheck.js");
@@ -54994,207 +61762,212 @@ var _resources = __webpack_require__("./resources/js/store/resources.js");
 
 var _resources2 = _interopRequireDefault(_resources);
 
+var _vTooltip = __webpack_require__("./node_modules/v-tooltip/dist/v-tooltip.esm.js");
+
+var _vTooltip2 = _interopRequireDefault(_vTooltip);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_portalVue2.default);
 _vue2.default.use(_vueAsyncComputed2.default);
+_vue2.default.use(_vTooltip2.default);
 
 _vue2.default.use(_vueToasted2.default, {
-    router: _router2.default,
-    theme: 'nova',
-    position: 'bottom-right',
-    duration: 6000
+  router: _router2.default,
+  theme: 'nova',
+  position: 'bottom-right',
+  duration: 6000
 });
 
 var Nova = function () {
-    function Nova(config) {
-        (0, _classCallCheck3.default)(this, Nova);
+  function Nova(config) {
+    (0, _classCallCheck3.default)(this, Nova);
 
-        this.bus = new _vue2.default();
-        this.bootingCallbacks = [];
-        this.config = config;
+    this.bus = new _vue2.default();
+    this.bootingCallbacks = [];
+    this.config = config;
+  }
+
+  /**
+   * Register a callback to be called before Nova starts. This is used to bootstrap
+   * addons, tools, custom fields, or anything else Nova needs
+   */
+
+
+  (0, _createClass3.default)(Nova, [{
+    key: 'booting',
+    value: function booting(callback) {
+      this.bootingCallbacks.push(callback);
     }
 
     /**
-     * Register a callback to be called before Nova starts. This is used to bootstrap
-     * addons, tools, custom fields, or anything else Nova needs
+     * Execute all of the booting callbacks.
      */
 
+  }, {
+    key: 'boot',
+    value: function boot() {
+      this.bootingCallbacks.forEach(function (callback) {
+        return callback(_vue2.default, _router2.default, _store2.default);
+      });
+      this.bootingCallbacks = [];
+    }
 
-    (0, _createClass3.default)(Nova, [{
-        key: 'booting',
-        value: function booting(callback) {
-            this.bootingCallbacks.push(callback);
-        }
+    /**
+     * Register the built-in Vuex modules for each resource
+     */
 
-        /**
-         * Execute all of the booting callbacks.
-         */
+  }, {
+    key: 'registerStoreModules',
+    value: function registerStoreModules() {
+      this.config.resources.forEach(function (resource) {
+        _store2.default.registerModule(resource.uriKey, _resources2.default);
+      });
+    }
 
-    }, {
-        key: 'boot',
-        value: function boot() {
-            this.bootingCallbacks.forEach(function (callback) {
-                return callback(_vue2.default, _router2.default, _store2.default);
+    /**
+     * Start the Nova app by calling each of the tool's callbacks and then creating
+     * the underlying Vue instance.
+     */
+
+  }, {
+    key: 'liftOff',
+    value: function liftOff() {
+      var _this = this;
+
+      this.boot();
+      this.registerStoreModules();
+
+      this.app = new _vue2.default({
+        el: '#nova',
+        router: _router2.default,
+        store: _store2.default,
+        components: { Loading: _Loading2.default },
+        mounted: function mounted() {
+          var _this2 = this;
+
+          this.$loading = this.$refs.loading;
+
+          _this.$on('error', function (message) {
+            _this2.$toasted.show(message, { type: 'error' });
+          });
+
+          _this.$on('token-expired', function () {
+            _this2.$toasted.show(_this2.__('Sorry, your session has expired.'), {
+              action: {
+                onClick: function onClick() {
+                  return location.reload();
+                },
+                text: _this2.__('Reload')
+              },
+              duration: null,
+              type: 'error'
             });
-            this.bootingCallbacks = [];
+          });
         }
+      });
+    }
 
-        /**
-         * Register the built-in Vuex modules for each resource
-         */
+    /**
+     * Return an axios instance configured to make requests to Nova's API
+     * and handle certain response codes.
+     */
 
-    }, {
-        key: 'registerStoreModules',
-        value: function registerStoreModules() {
-            this.config.resources.forEach(function (resource) {
-                _store2.default.registerModule(resource.uriKey, _resources2.default);
-            });
-        }
+  }, {
+    key: 'request',
+    value: function request(options) {
+      if (options !== undefined) {
+        return (0, _axios2.default)(options);
+      }
 
-        /**
-         * Start the Nova app by calling each of the tool's callbacks and then creating
-         * the underlying Vue instance.
-         */
+      return _axios2.default;
+    }
 
-    }, {
-        key: 'liftOff',
-        value: function liftOff() {
-            var _this = this;
+    /**
+     * Register a listener on Nova's built-in event bus
+     */
 
-            this.boot();
-            this.registerStoreModules();
+  }, {
+    key: '$on',
+    value: function $on() {
+      var _bus;
 
-            this.app = new _vue2.default({
-                el: '#nova',
-                router: _router2.default,
-                store: _store2.default,
-                components: { Loading: _Loading2.default },
-                mounted: function mounted() {
-                    var _this2 = this;
+      (_bus = this.bus).$on.apply(_bus, arguments);
+    }
 
-                    this.$loading = this.$refs.loading;
+    /**
+     * Register a one-time listener on the event bus
+     */
 
-                    _this.$on('error', function (message) {
-                        _this2.$toasted.show(message, { type: 'error' });
-                    });
+  }, {
+    key: '$once',
+    value: function $once() {
+      var _bus2;
 
-                    _this.$on('token-expired', function () {
-                        _this2.$toasted.show(_this2.__('Sorry, your session has expired.'), {
-                            action: {
-                                onClick: function onClick() {
-                                    return location.reload();
-                                },
-                                text: _this2.__('Reload')
-                            },
-                            duration: null,
-                            type: 'error'
-                        });
-                    });
-                }
-            });
-        }
+      (_bus2 = this.bus).$once.apply(_bus2, arguments);
+    }
 
-        /**
-         * Return an axios instance configured to make requests to Nova's API
-         * and handle certain response codes.
-         */
+    /**
+     * Unregister an listener on the event bus
+     */
 
-    }, {
-        key: 'request',
-        value: function request(options) {
-            if (options !== undefined) {
-                return (0, _axios2.default)(options);
-            }
+  }, {
+    key: '$off',
+    value: function $off() {
+      var _bus3;
 
-            return _axios2.default;
-        }
+      (_bus3 = this.bus).$off.apply(_bus3, arguments);
+    }
 
-        /**
-         * Register a listener on Nova's built-in event bus
-         */
+    /**
+     * Emit an event on the event bus
+     */
 
-    }, {
-        key: '$on',
-        value: function $on() {
-            var _bus;
+  }, {
+    key: '$emit',
+    value: function $emit() {
+      var _bus4;
 
-            (_bus = this.bus).$on.apply(_bus, arguments);
-        }
+      (_bus4 = this.bus).$emit.apply(_bus4, arguments);
+    }
 
-        /**
-         * Register a one-time listener on the event bus
-         */
+    /**
+     * Determine if Nova is missing the requested resource with the given uri key
+     */
 
-    }, {
-        key: '$once',
-        value: function $once() {
-            var _bus2;
+  }, {
+    key: 'missingResource',
+    value: function missingResource(uriKey) {
+      return _.find(this.config.resources, function (r) {
+        return r.uriKey == uriKey;
+      }) == undefined;
+    }
 
-            (_bus2 = this.bus).$once.apply(_bus2, arguments);
-        }
+    /**
+     * Show an error message to the user.
+     *
+     * @param {string} message
+     */
 
-        /**
-         * Unregister an listener on the event bus
-         */
+  }, {
+    key: 'error',
+    value: function error(message) {
+      _vue2.default.toasted.show(message, { type: 'error' });
+    }
 
-    }, {
-        key: '$off',
-        value: function $off() {
-            var _bus3;
+    /**
+     * Show a success message to the user.
+     *
+     * @param {string} message
+     */
 
-            (_bus3 = this.bus).$off.apply(_bus3, arguments);
-        }
-
-        /**
-         * Emit an event on the event bus
-         */
-
-    }, {
-        key: '$emit',
-        value: function $emit() {
-            var _bus4;
-
-            (_bus4 = this.bus).$emit.apply(_bus4, arguments);
-        }
-
-        /**
-         * Determine if Nova is missing the requested resource with the given uri key
-         */
-
-    }, {
-        key: 'missingResource',
-        value: function missingResource(uriKey) {
-            return _.find(this.config.resources, function (r) {
-                return r.uriKey == uriKey;
-            }) == undefined;
-        }
-
-        /**
-         * Show an error message to the user.
-         *
-         * @param {string} message
-         */
-
-    }, {
-        key: 'error',
-        value: function error(message) {
-            _vue2.default.toasted.show(message, { type: 'error' });
-        }
-
-        /**
-         * Show a success message to the user.
-         *
-         * @param {string} message
-         */
-
-    }, {
-        key: 'success',
-        value: function success(message) {
-            _vue2.default.toasted.show(message, { type: 'success' });
-        }
-    }]);
-    return Nova;
+  }, {
+    key: 'success',
+    value: function success(message) {
+      _vue2.default.toasted.show(message, { type: 'success' });
+    }
+  }]);
+  return Nova;
 }();
 
 exports.default = Nova;
@@ -55252,20 +62025,20 @@ _vue2.default.mixin(__webpack_require__("./resources/js/base.js"));
 
 
 module.exports = {
-    methods: {
-        /**
-         * Translate the given key.
-         */
-        __: function __(key, replace) {
-            var translation = window.config.translations[key] ? window.config.translations[key] : key;
+  methods: {
+    /**
+     * Translate the given key.
+     */
+    __: function __(key, replace) {
+      var translation = window.config.translations[key] ? window.config.translations[key] : key;
 
-            _.forEach(replace, function (value, key) {
-                translation = translation.replace(':' + key, value);
-            });
+      _.forEach(replace, function (value, key) {
+        translation = translation.replace(':' + key, value);
+      });
 
-            return translation;
-        }
+      return translation;
     }
+  }
 };
 
 /***/ }),
@@ -55303,6 +62076,10 @@ var _ValueMetric2 = _interopRequireDefault(_ValueMetric);
 var _Bold = __webpack_require__("./resources/js/components/Icons/Editor/Bold.vue");
 
 var _Bold2 = _interopRequireDefault(_Bold);
+
+var _BooleanIcon = __webpack_require__("./resources/js/components/Icons/BooleanIcon.vue");
+
+var _BooleanIcon2 = _interopRequireDefault(_BooleanIcon);
 
 var _CancelButton = __webpack_require__("./resources/js/components/Form/CancelButton.vue");
 
@@ -55629,6 +62406,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _vue2.default.config.ignoredElements = ['trix-editor'];
 
 _vue2.default.component('action-selector', _ActionSelector2.default);
+_vue2.default.component('boolean-icon', _BooleanIcon2.default);
 _vue2.default.component('base-partition-metric', _PartitionMetric2.default);
 _vue2.default.component('base-trend-metric', _TrendMetric2.default);
 _vue2.default.component('base-value-metric', _ValueMetric2.default);
@@ -56060,21 +62838,17 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2b1228f0\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/CheckboxWithLabel.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/CheckboxWithLabel.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2b1228f0\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/CheckboxWithLabel.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2b1228f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/CheckboxWithLabel.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-2b1228f0"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -56725,6 +63499,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-5fbd6696", Component.options)
   } else {
     hotAPI.reload("data-v-5fbd6696", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Detail/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Detail/BooleanGroupField.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b49cb2e0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Detail/BooleanGroupField.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Detail/BooleanGroupField.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b49cb2e0", Component.options)
+  } else {
+    hotAPI.reload("data-v-b49cb2e0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -57716,7 +64538,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Dropdown.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ef782e08\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Dropdown.vue")
+var __vue_template__ = null
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58225,6 +65047,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-4926dbe2", Component.options)
   } else {
     hotAPI.reload("data-v-4926dbe2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Form/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Form/BooleanGroupField.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-59978b83\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/BooleanGroupField.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Form/BooleanGroupField.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-59978b83", Component.options)
+  } else {
+    hotAPI.reload("data-v-59978b83", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -59597,6 +66467,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/components/Icons/BooleanIcon.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Icons/BooleanIcon.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb60bf5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/BooleanIcon.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/BooleanIcon.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-eb60bf5e", Component.options)
+  } else {
+    hotAPI.reload("data-v-eb60bf5e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Icons/CheckCircle.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -60838,6 +67756,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-d9ee8bcc", Component.options)
   } else {
     hotAPI.reload("data-v-d9ee8bcc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Index/BooleanGroupField.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Index/BooleanGroupField.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-47bfd04b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Index/BooleanGroupField.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Index/BooleanGroupField.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-47bfd04b", Component.options)
+  } else {
+    hotAPI.reload("data-v-47bfd04b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -62884,6 +69850,11 @@ _vue2.default.component('index-boolean-field', __webpack_require__("./resources/
 _vue2.default.component('detail-boolean-field', __webpack_require__("./resources/js/components/Detail/BooleanField.vue"));
 _vue2.default.component('form-boolean-field', __webpack_require__("./resources/js/components/Form/BooleanField.vue"));
 
+// Boolean Group Field
+_vue2.default.component('index-boolean-group-field', __webpack_require__("./resources/js/components/Index/BooleanGroupField.vue"));
+_vue2.default.component('detail-boolean-group-field', __webpack_require__("./resources/js/components/Detail/BooleanGroupField.vue"));
+_vue2.default.component('form-boolean-group-field', __webpack_require__("./resources/js/components/Form/BooleanGroupField.vue"));
+
 // Select Box Field
 _vue2.default.component('form-select-field', __webpack_require__("./resources/js/components/Form/SelectField.vue"));
 _vue2.default.component('detail-select-field', __webpack_require__("./resources/js/components/Detail/TextField.vue"));
@@ -62954,256 +69925,256 @@ _vue2.default.component('form-morph-to-field', __webpack_require__("./resources/
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 exports.default = {
-    props: {
-        resourceName: String,
+  props: {
+    resourceName: String,
 
-        actions: {},
+    actions: {},
 
-        pivotActions: {
-            default: function _default() {
-                return [];
-            }
-        },
-
-        endpoint: {
-            type: String,
-            default: null
-        },
-
-        queryString: {
-            type: Object,
-            default: function _default() {
-                return {
-                    currentSearch: '',
-                    encodedFilters: '',
-                    currentTrashed: '',
-                    viaResource: '',
-                    viaResourceId: '',
-                    viaRelationship: ''
-                };
-            }
-        }
+    pivotActions: {
+      default: function _default() {
+        return [];
+      }
     },
 
-    data: function data() {
+    endpoint: {
+      type: String,
+      default: null
+    },
+
+    queryString: {
+      type: Object,
+      default: function _default() {
         return {
-            working: false,
-            selectedActionKey: '',
-            errors: new _laravelNova.Errors(),
-            confirmActionModalOpened: false
+          currentSearch: '',
+          encodedFilters: '',
+          currentTrashed: '',
+          viaResource: '',
+          viaResourceId: '',
+          viaRelationship: ''
         };
-    },
-
-    methods: {
-        /**
-         * Determine whether the action should redirect or open a confirmation modal
-         */
-        determineActionStrategy: function determineActionStrategy() {
-            if (this.selectedAction.withoutConfirmation) {
-                this.executeAction();
-            } else {
-                this.openConfirmationModal();
-            }
-        },
-
-
-        /**
-         * Confirm with the user that they actually want to run the selected action.
-         */
-        openConfirmationModal: function openConfirmationModal() {
-            this.confirmActionModalOpened = true;
-        },
-
-
-        /**
-         * Close the action confirmation modal.
-         */
-        closeConfirmationModal: function closeConfirmationModal() {
-            this.confirmActionModalOpened = false;
-            this.errors = new _laravelNova.Errors();
-        },
-
-
-        /**
-         * Initialize all of the action fields to empty strings.
-         */
-        initializeActionFields: function initializeActionFields() {
-            _(this.allActions).each(function (action) {
-                _(action.fields).each(function (field) {
-                    field.fill = function () {
-                        return '';
-                    };
-                });
-            });
-        },
-
-
-        /**
-         * Execute the selected action.
-         */
-        executeAction: function executeAction() {
-            var _this = this;
-
-            this.working = true;
-
-            if (this.selectedResources.length == 0) {
-                alert(this.__('Please select a resource to perform this action on.'));
-                return;
-            }
-
-            Nova.request({
-                method: 'post',
-                url: this.endpoint || '/nova-api/' + this.resourceName + '/action',
-                params: this.actionRequestQueryString,
-                data: this.actionFormData()
-            }).then(function (response) {
-                _this.confirmActionModalOpened = false;
-                _this.handleActionResponse(response.data);
-                _this.working = false;
-            }).catch(function (error) {
-                _this.working = false;
-
-                if (error.response.status == 422) {
-                    _this.errors = new _laravelNova.Errors(error.response.data.errors);
-                    Nova.error(_this.__('There was a problem executing the action.'));
-                }
-            });
-        },
-
-
-        /**
-         * Gather the action FormData for the given action.
-         */
-        actionFormData: function actionFormData() {
-            var _this2 = this;
-
-            return _.tap(new FormData(), function (formData) {
-                formData.append('resources', _this2.selectedResources);
-
-                _.each(_this2.selectedAction.fields, function (field) {
-                    field.fill(formData);
-                });
-            });
-        },
-
-
-        /**
-         * Handle the action response. Typically either a message, download or a redirect.
-         */
-        handleActionResponse: function handleActionResponse(data) {
-            if (data.message) {
-                this.$emit('actionExecuted');
-                Nova.$emit('action-executed');
-                Nova.success(data.message);
-            } else if (data.deleted) {
-                this.$emit('actionExecuted');
-                Nova.$emit('action-executed');
-            } else if (data.danger) {
-                this.$emit('actionExecuted');
-                Nova.$emit('action-executed');
-                Nova.error(data.danger);
-            } else if (data.download) {
-                var link = document.createElement('a');
-                link.href = data.download;
-                link.download = data.name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else if (data.redirect) {
-                window.location = data.redirect;
-            } else if (data.push) {
-                this.$router.push(data.push);
-            } else if (data.openInNewTab) {
-                window.open(data.openInNewTab, '_blank');
-            } else {
-                this.$emit('actionExecuted');
-                Nova.$emit('action-executed');
-                Nova.success(this.__('The action ran successfully!'));
-            }
-        }
-    },
-
-    computed: {
-        /**
-         * Get the query string for an action request.
-         */
-        actionRequestQueryString: function actionRequestQueryString() {
-            return {
-                action: this.selectedActionKey,
-                pivotAction: this.selectedActionIsPivotAction,
-                search: this.queryString.currentSearch,
-                filters: this.queryString.encodedFilters,
-                trashed: this.queryString.currentTrashed,
-                viaResource: this.queryString.viaResource,
-                viaResourceId: this.queryString.viaResourceId,
-                viaRelationship: this.queryString.viaRelationship
-            };
-        },
-
-
-        /**
-         * Get all of the available actions.
-         */
-        allActions: function allActions() {
-            return this.actions.concat(this.pivotActions.actions);
-        },
-
-
-        /**
-         * Return the selected action being executed.
-         */
-        selectedAction: function selectedAction() {
-            var _this3 = this;
-
-            if (this.selectedActionKey) {
-                return _.find(this.allActions, function (a) {
-                    return a.uriKey == _this3.selectedActionKey;
-                });
-            }
-        },
-
-
-        /**
-         * Determine if the selected action is a pivot action.
-         */
-        selectedActionIsPivotAction: function selectedActionIsPivotAction() {
-            var _this4 = this;
-
-            return this.hasPivotActions && Boolean(_.find(this.pivotActions.actions, function (a) {
-                return a === _this4.selectedAction;
-            }));
-        },
-
-
-        /**
-         * Get all of the available pivot actions for the resource.
-         */
-        availablePivotActions: function availablePivotActions() {
-            var _this5 = this;
-
-            return _(this.pivotActions.actions).filter(function (action) {
-                if (_this5.selectedResources != 'all') {
-                    return true;
-                }
-
-                return action.availableForEntireResource;
-            }).value();
-        },
-
-
-        /**
-         * Determine whether there are any pivot actions
-         */
-        hasPivotActions: function hasPivotActions() {
-            return this.availablePivotActions.length > 0;
-        }
+      }
     }
+  },
+
+  data: function data() {
+    return {
+      working: false,
+      selectedActionKey: '',
+      errors: new _laravelNova.Errors(),
+      confirmActionModalOpened: false
+    };
+  },
+
+  methods: {
+    /**
+     * Determine whether the action should redirect or open a confirmation modal
+     */
+    determineActionStrategy: function determineActionStrategy() {
+      if (this.selectedAction.withoutConfirmation) {
+        this.executeAction();
+      } else {
+        this.openConfirmationModal();
+      }
+    },
+
+
+    /**
+     * Confirm with the user that they actually want to run the selected action.
+     */
+    openConfirmationModal: function openConfirmationModal() {
+      this.confirmActionModalOpened = true;
+    },
+
+
+    /**
+     * Close the action confirmation modal.
+     */
+    closeConfirmationModal: function closeConfirmationModal() {
+      this.confirmActionModalOpened = false;
+      this.errors = new _laravelNova.Errors();
+    },
+
+
+    /**
+     * Initialize all of the action fields to empty strings.
+     */
+    initializeActionFields: function initializeActionFields() {
+      _(this.allActions).each(function (action) {
+        _(action.fields).each(function (field) {
+          field.fill = function () {
+            return '';
+          };
+        });
+      });
+    },
+
+
+    /**
+     * Execute the selected action.
+     */
+    executeAction: function executeAction() {
+      var _this = this;
+
+      this.working = true;
+
+      if (this.selectedResources.length == 0) {
+        alert(this.__('Please select a resource to perform this action on.'));
+        return;
+      }
+
+      Nova.request({
+        method: 'post',
+        url: this.endpoint || '/nova-api/' + this.resourceName + '/action',
+        params: this.actionRequestQueryString,
+        data: this.actionFormData()
+      }).then(function (response) {
+        _this.confirmActionModalOpened = false;
+        _this.handleActionResponse(response.data);
+        _this.working = false;
+      }).catch(function (error) {
+        _this.working = false;
+
+        if (error.response.status == 422) {
+          _this.errors = new _laravelNova.Errors(error.response.data.errors);
+          Nova.error(_this.__('There was a problem executing the action.'));
+        }
+      });
+    },
+
+
+    /**
+     * Gather the action FormData for the given action.
+     */
+    actionFormData: function actionFormData() {
+      var _this2 = this;
+
+      return _.tap(new FormData(), function (formData) {
+        formData.append('resources', _this2.selectedResources);
+
+        _.each(_this2.selectedAction.fields, function (field) {
+          field.fill(formData);
+        });
+      });
+    },
+
+
+    /**
+     * Handle the action response. Typically either a message, download or a redirect.
+     */
+    handleActionResponse: function handleActionResponse(data) {
+      if (data.message) {
+        this.$emit('actionExecuted');
+        Nova.$emit('action-executed');
+        Nova.success(data.message);
+      } else if (data.deleted) {
+        this.$emit('actionExecuted');
+        Nova.$emit('action-executed');
+      } else if (data.danger) {
+        this.$emit('actionExecuted');
+        Nova.$emit('action-executed');
+        Nova.error(data.danger);
+      } else if (data.download) {
+        var link = document.createElement('a');
+        link.href = data.download;
+        link.download = data.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else if (data.redirect) {
+        window.location = data.redirect;
+      } else if (data.push) {
+        this.$router.push(data.push);
+      } else if (data.openInNewTab) {
+        window.open(data.openInNewTab, '_blank');
+      } else {
+        this.$emit('actionExecuted');
+        Nova.$emit('action-executed');
+        Nova.success(this.__('The action ran successfully!'));
+      }
+    }
+  },
+
+  computed: {
+    /**
+     * Get the query string for an action request.
+     */
+    actionRequestQueryString: function actionRequestQueryString() {
+      return {
+        action: this.selectedActionKey,
+        pivotAction: this.selectedActionIsPivotAction,
+        search: this.queryString.currentSearch,
+        filters: this.queryString.encodedFilters,
+        trashed: this.queryString.currentTrashed,
+        viaResource: this.queryString.viaResource,
+        viaResourceId: this.queryString.viaResourceId,
+        viaRelationship: this.queryString.viaRelationship
+      };
+    },
+
+
+    /**
+     * Get all of the available actions.
+     */
+    allActions: function allActions() {
+      return this.actions.concat(this.pivotActions.actions);
+    },
+
+
+    /**
+     * Return the selected action being executed.
+     */
+    selectedAction: function selectedAction() {
+      var _this3 = this;
+
+      if (this.selectedActionKey) {
+        return _.find(this.allActions, function (a) {
+          return a.uriKey == _this3.selectedActionKey;
+        });
+      }
+    },
+
+
+    /**
+     * Determine if the selected action is a pivot action.
+     */
+    selectedActionIsPivotAction: function selectedActionIsPivotAction() {
+      var _this4 = this;
+
+      return this.hasPivotActions && Boolean(_.find(this.pivotActions.actions, function (a) {
+        return a === _this4.selectedAction;
+      }));
+    },
+
+
+    /**
+     * Get all of the available pivot actions for the resource.
+     */
+    availablePivotActions: function availablePivotActions() {
+      var _this5 = this;
+
+      return _(this.pivotActions.actions).filter(function (action) {
+        if (_this5.selectedResources != 'all') {
+          return true;
+        }
+
+        return action.availableForEntireResource;
+      }).value();
+    },
+
+
+    /**
+     * Determine whether there are any pivot actions
+     */
+    hasPivotActions: function hasPivotActions() {
+      return this.availablePivotActions.length > 0;
+    }
+  }
 };
 
 /***/ }),
@@ -63283,7 +70254,7 @@ window.moment = _momentTimezone2.default;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.default = composedPath;
 /**
@@ -63314,31 +70285,31 @@ exports.default = composedPath;
  */
 
 function composedPath(evt) {
-    var path = evt.composedPath && evt.composedPath() || evt.path,
-        target = evt.target;
+  var path = evt.composedPath && evt.composedPath() || evt.path,
+      target = evt.target;
 
-    if (path != null) {
-        // Safari doesn't include Window, and it should.
-        path = path.indexOf(window) < 0 ? path.concat([window]) : path;
-        return path;
+  if (path != null) {
+    // Safari doesn't include Window, and it should.
+    path = path.indexOf(window) < 0 ? path.concat([window]) : path;
+    return path;
+  }
+
+  if (target === window) {
+    return [window];
+  }
+
+  function getParents(node, memo) {
+    memo = memo || [];
+    var parentNode = node.parentNode;
+
+    if (!parentNode) {
+      return memo;
+    } else {
+      return getParents(parentNode, memo.concat([parentNode]));
     }
+  }
 
-    if (target === window) {
-        return [window];
-    }
-
-    function getParents(node, memo) {
-        memo = memo || [];
-        var parentNode = node.parentNode;
-
-        if (!parentNode) {
-            return memo;
-        } else {
-            return getParents(parentNode, memo.concat([parentNode]));
-        }
-    }
-
-    return [target].concat(getParents(target)).concat([window]);
+  return [target].concat(getParents(target)).concat([window]);
 }
 
 /***/ }),
@@ -63350,7 +70321,7 @@ function composedPath(evt) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _slicedToArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/slicedToArray.js");
@@ -63381,47 +70352,47 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
  * @param {Function} next
  */
 var beforeEach = function () {
-    var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(to, from, next) {
-        var components;
-        return _regenerator2.default.wrap(function _callee$(_context) {
-            while (1) {
-                switch (_context.prev = _context.next) {
-                    case 0:
-                        _context.next = 2;
-                        return resolveComponents(router.getMatchedComponents((0, _extends3.default)({}, to)));
+  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(to, from, next) {
+    var components;
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return resolveComponents(router.getMatchedComponents((0, _extends3.default)({}, to)));
 
-                    case 2:
-                        components = _context.sent;
+          case 2:
+            components = _context.sent;
 
-                        if (!(components.length === 0)) {
-                            _context.next = 5;
-                            break;
-                        }
-
-                        return _context.abrupt('return', next());
-
-                    case 5:
-
-                        // Start the loading bar.
-                        if (components[components.length - 1].loading !== false) {
-                            router.app.$nextTick(function () {
-                                return router.app.$loading.start();
-                            });
-                        }
-
-                        next();
-
-                    case 7:
-                    case 'end':
-                        return _context.stop();
-                }
+            if (!(components.length === 0)) {
+              _context.next = 5;
+              break;
             }
-        }, _callee, this);
-    }));
 
-    return function beforeEach(_x, _x2, _x3) {
-        return _ref2.apply(this, arguments);
-    };
+            return _context.abrupt('return', next());
+
+          case 5:
+
+            // Start the loading bar.
+            if (components[components.length - 1].loading !== false) {
+              router.app.$nextTick(function () {
+                return router.app.$loading.start();
+              });
+            }
+
+            next();
+
+          case 7:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function beforeEach(_x, _x2, _x3) {
+    return _ref2.apply(this, arguments);
+  };
 }();
 
 /**
@@ -63434,28 +70405,28 @@ var beforeEach = function () {
 
 
 var afterEach = function () {
-    var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(to, from, next) {
-        return _regenerator2.default.wrap(function _callee2$(_context2) {
-            while (1) {
-                switch (_context2.prev = _context2.next) {
-                    case 0:
-                        _context2.next = 2;
-                        return router.app.$nextTick();
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(to, from, next) {
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return router.app.$nextTick();
 
-                    case 2:
-                        router.app.$loading.finish();
+          case 2:
+            router.app.$loading.finish();
 
-                    case 3:
-                    case 'end':
-                        return _context2.stop();
-                }
-            }
-        }, _callee2, this);
-    }));
+          case 3:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
 
-    return function afterEach(_x4, _x5, _x6) {
-        return _ref3.apply(this, arguments);
-    };
+  return function afterEach(_x4, _x5, _x6) {
+    return _ref3.apply(this, arguments);
+  };
 }();
 
 /**
@@ -63495,23 +70466,23 @@ exports.default = router;
  */
 
 function createRouter(_ref) {
-    var base = _ref.base;
+  var base = _ref.base;
 
-    var router = new _vueRouter2.default({
-        // scrollBehavior,
-        base: base,
-        mode: 'history',
-        routes: _routes2.default
-    });
+  var router = new _vueRouter2.default({
+    // scrollBehavior,
+    base: base,
+    mode: 'history',
+    routes: _routes2.default
+  });
 
-    router.beforeEach(beforeEach);
-    router.afterEach(afterEach);
+  router.beforeEach(beforeEach);
+  router.afterEach(afterEach);
 
-    return router;
+  return router;
 }function resolveComponents(components) {
-    return _promise2.default.all(components.map(function (component) {
-        return typeof component === 'function' ? component() : component;
-    }));
+  return _promise2.default.all(components.map(function (component) {
+    return typeof component === 'function' ? component() : component;
+  }));
 }
 
 /**
@@ -63525,23 +70496,23 @@ function createRouter(_ref) {
  * @return {Object}
  */
 function scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-        return savedPosition;
-    }
+  if (savedPosition) {
+    return savedPosition;
+  }
 
-    if (to.hash) {
-        return { selector: to.hash };
-    }
+  if (to.hash) {
+    return { selector: to.hash };
+  }
 
-    var _router$getMatchedCom = router.getMatchedComponents((0, _extends3.default)({}, to)).slice(-1),
-        _router$getMatchedCom2 = (0, _slicedToArray3.default)(_router$getMatchedCom, 1),
-        component = _router$getMatchedCom2[0];
+  var _router$getMatchedCom = router.getMatchedComponents((0, _extends3.default)({}, to)).slice(-1),
+      _router$getMatchedCom2 = (0, _slicedToArray3.default)(_router$getMatchedCom, 1),
+      component = _router$getMatchedCom2[0];
 
-    if (component && component.scrollToTop === false) {
-        return {};
-    }
+  if (component && component.scrollToTop === false) {
+    return {};
+  }
 
-    return { x: 0, y: 0 };
+  return { x: 0, y: 0 };
 }
 
 /***/ }),
@@ -63553,7 +70524,7 @@ function scrollBehavior(to, from, savedPosition) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _Dashboard = __webpack_require__("./resources/js/views/Dashboard.vue");
@@ -63599,98 +70570,98 @@ var _4 = _interopRequireDefault(_3);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = [{
-    name: 'dashboard',
-    path: '/',
-    redirect: '/dashboards/main'
+  name: 'dashboard',
+  path: '/',
+  redirect: '/dashboards/main'
 }, {
-    name: 'dashboard.custom',
-    path: '/dashboards/:name',
-    component: _Dashboard2.default,
-    props: true
+  name: 'dashboard.custom',
+  path: '/dashboards/:name',
+  component: _Dashboard2.default,
+  props: true
 }, {
-    name: 'action-events.edit',
-    path: '/resources/action-events/:id/edit',
-    redirect: {
-        name: '404'
-    }
+  name: 'action-events.edit',
+  path: '/resources/action-events/:id/edit',
+  redirect: {
+    name: '404'
+  }
 }, {
-    name: 'index',
-    path: '/resources/:resourceName',
-    component: _Index2.default,
-    props: true
+  name: 'index',
+  path: '/resources/:resourceName',
+  component: _Index2.default,
+  props: true
 }, {
-    name: 'lens',
-    path: '/resources/:resourceName/lens/:lens',
-    component: _Lens2.default,
-    props: true
+  name: 'lens',
+  path: '/resources/:resourceName/lens/:lens',
+  component: _Lens2.default,
+  props: true
 }, {
-    name: 'create',
-    path: '/resources/:resourceName/new',
-    component: _Create2.default,
-    props: function props(route) {
-        return {
-            resourceName: route.params.resourceName,
-            viaResource: route.query.viaResource,
-            viaResourceId: route.query.viaResourceId,
-            viaRelationship: route.query.viaRelationship
-        };
-    }
+  name: 'create',
+  path: '/resources/:resourceName/new',
+  component: _Create2.default,
+  props: function props(route) {
+    return {
+      resourceName: route.params.resourceName,
+      viaResource: route.query.viaResource,
+      viaResourceId: route.query.viaResourceId,
+      viaRelationship: route.query.viaRelationship
+    };
+  }
 }, {
-    name: 'edit',
-    path: '/resources/:resourceName/:resourceId/edit',
-    component: _Update2.default,
-    props: function props(route) {
-        return {
-            resourceName: route.params.resourceName,
-            resourceId: route.params.resourceId,
-            viaResource: route.query.viaResource,
-            viaResourceId: route.query.viaResourceId,
-            viaRelationship: route.query.viaRelationship
-        };
-    }
+  name: 'edit',
+  path: '/resources/:resourceName/:resourceId/edit',
+  component: _Update2.default,
+  props: function props(route) {
+    return {
+      resourceName: route.params.resourceName,
+      resourceId: route.params.resourceId,
+      viaResource: route.query.viaResource,
+      viaResourceId: route.query.viaResourceId,
+      viaRelationship: route.query.viaRelationship
+    };
+  }
 }, {
-    name: 'attach',
-    path: '/resources/:resourceName/:resourceId/attach/:relatedResourceName',
-    component: _Attach2.default,
-    props: function props(route) {
-        return {
-            resourceName: route.params.resourceName,
-            resourceId: route.params.resourceId,
-            relatedResourceName: route.params.relatedResourceName,
-            viaRelationship: route.query.viaRelationship,
-            polymorphic: route.query.polymorphic == '1'
-        };
-    }
+  name: 'attach',
+  path: '/resources/:resourceName/:resourceId/attach/:relatedResourceName',
+  component: _Attach2.default,
+  props: function props(route) {
+    return {
+      resourceName: route.params.resourceName,
+      resourceId: route.params.resourceId,
+      relatedResourceName: route.params.relatedResourceName,
+      viaRelationship: route.query.viaRelationship,
+      polymorphic: route.query.polymorphic == '1'
+    };
+  }
 }, {
-    name: 'edit-attached',
-    path: '/resources/:resourceName/:resourceId/edit-attached/:relatedResourceName/:relatedResourceId',
-    component: _UpdateAttached2.default,
-    props: function props(route) {
-        return {
-            resourceName: route.params.resourceName,
-            resourceId: route.params.resourceId,
-            relatedResourceName: route.params.relatedResourceName,
-            relatedResourceId: route.params.relatedResourceId,
-            viaRelationship: route.query.viaRelationship
-        };
-    }
+  name: 'edit-attached',
+  path: '/resources/:resourceName/:resourceId/edit-attached/:relatedResourceName/:relatedResourceId',
+  component: _UpdateAttached2.default,
+  props: function props(route) {
+    return {
+      resourceName: route.params.resourceName,
+      resourceId: route.params.resourceId,
+      relatedResourceName: route.params.relatedResourceName,
+      relatedResourceId: route.params.relatedResourceId,
+      viaRelationship: route.query.viaRelationship
+    };
+  }
 }, {
-    name: 'detail',
-    path: '/resources/:resourceName/:resourceId',
-    component: _Detail2.default,
-    props: true
+  name: 'detail',
+  path: '/resources/:resourceName/:resourceId',
+  component: _Detail2.default,
+  props: true
 }, {
-    name: '403',
-    path: '/403',
-    component: _2.default
+  name: '403',
+  path: '/403',
+  component: _2.default
 }, {
-    name: '404',
-    path: '/404',
-    component: _4.default
+  name: '404',
+  path: '/404',
+  component: _4.default
 }, {
-    name: 'catch-all',
-    path: '*',
-    component: _4.default
+  name: 'catch-all',
+  path: '*',
+  component: _4.default
 }];
 
 /***/ }),
@@ -63772,7 +70743,7 @@ exports.default = new _vuex2.default.Store();
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -63796,280 +70767,280 @@ var _escapeUnicode = __webpack_require__("./resources/js/util/escapeUnicode.js")
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    namespaced: true,
+  namespaced: true,
 
-    state: function state() {
+  state: function state() {
+    return {
+      filters: [],
+      originalFilters: []
+    };
+  },
+
+  getters: {
+    /**
+     * The filters for the resource
+     */
+    filters: function filters(state) {
+      return state.filters;
+    },
+
+    /**
+     * The original filters for the resource
+     */
+    originalFilters: function originalFilters(state) {
+      return state.originalFilters;
+    },
+
+    /**
+     * Determine if there are any filters for the resource.
+     */
+    hasFilters: function hasFilters(state) {
+      return Boolean(state.filters.length > 0);
+    },
+
+    /**
+     * The current unencoded filter value payload
+     */
+    currentFilters: function currentFilters(state, getters) {
+      return _lodash2.default.map(state.filters, function (f) {
         return {
-            filters: [],
-            originalFilters: []
+          class: f.class,
+          value: f.currentValue
         };
+      });
     },
 
-    getters: {
-        /**
-         * The filters for the resource
-         */
-        filters: function filters(state) {
-            return state.filters;
-        },
-
-        /**
-         * The original filters for the resource
-         */
-        originalFilters: function originalFilters(state) {
-            return state.originalFilters;
-        },
-
-        /**
-         * Determine if there are any filters for the resource.
-         */
-        hasFilters: function hasFilters(state) {
-            return Boolean(state.filters.length > 0);
-        },
-
-        /**
-         * The current unencoded filter value payload
-         */
-        currentFilters: function currentFilters(state, getters) {
-            return _lodash2.default.map(state.filters, function (f) {
-                return {
-                    class: f.class,
-                    value: f.currentValue
-                };
-            });
-        },
-
-        /**
-         * Return the current filters encoded to a string.
-         */
-        currentEncodedFilters: function currentEncodedFilters(state, getters) {
-            return btoa((0, _escapeUnicode.escapeUnicode)((0, _stringify2.default)(getters.currentFilters)));
-        },
-
-        /**
-         * Determine whether any filters are applied
-         */
-        filtersAreApplied: function filtersAreApplied(state, getters) {
-            return getters.activeFilterCount > 0;
-        },
-
-        /**
-         * Return the number of filters that are non-default
-         */
-        activeFilterCount: function activeFilterCount(state, getters) {
-            return _lodash2.default.reduce(state.filters, function (result, f) {
-                var originalFilter = getters.getOriginalFilter(f.class);
-                var originalFilterCloneValue = (0, _stringify2.default)(originalFilter.currentValue);
-                var currentFilterCloneValue = (0, _stringify2.default)(f.currentValue);
-                return currentFilterCloneValue == originalFilterCloneValue ? result : result + 1;
-            }, 0);
-        },
-
-        /**
-         * Get a single filter from the list of filters.
-         */
-        getFilter: function getFilter(state) {
-            return function (filterKey) {
-                return _lodash2.default.find(state.filters, function (filter) {
-                    return filter.class == filterKey;
-                });
-            };
-        },
-
-        getOriginalFilter: function getOriginalFilter(state) {
-            return function (filterKey) {
-                return _lodash2.default.find(state.originalFilters, function (filter) {
-                    return filter.class == filterKey;
-                });
-            };
-        },
-
-        /**
-         * Get the options for a single filter.
-         */
-        getOptionsForFilter: function getOptionsForFilter(state, getters) {
-            return function (filterKey) {
-                var filter = getters.getFilter(filterKey);
-                return filter ? filter.options : [];
-            };
-        },
-
-        /**
-         * Get the current value for a given filter at the provided key.
-         */
-        filterOptionValue: function filterOptionValue(state, getters) {
-            return function (filterKey, optionKey) {
-                var filter = getters.getFilter(filterKey);
-
-                return _lodash2.default.find(filter.currentValue, function (value, key) {
-                    return key == optionKey;
-                });
-            };
-        }
-    },
-    actions: {
-        /**
-         * Fetch the current filters for the given resource name.
-         */
-        fetchFilters: function () {
-            var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref, options) {
-                var commit = _ref.commit,
-                    state = _ref.state;
-
-                var resourceName, _options$lens, lens, _ref3, data;
-
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                resourceName = options.resourceName, _options$lens = options.lens, lens = _options$lens === undefined ? false : _options$lens;
-
-                                if (!lens) {
-                                    _context.next = 7;
-                                    break;
-                                }
-
-                                _context.next = 4;
-                                return Nova.request().get('/nova-api/' + resourceName + '/lens/' + lens + '/filters');
-
-                            case 4:
-                                _context.t0 = _context.sent;
-                                _context.next = 10;
-                                break;
-
-                            case 7:
-                                _context.next = 9;
-                                return Nova.request().get('/nova-api/' + resourceName + '/filters');
-
-                            case 9:
-                                _context.t0 = _context.sent;
-
-                            case 10:
-                                _ref3 = _context.t0;
-                                data = _ref3.data;
-
-
-                                commit('storeFilters', data);
-
-                            case 13:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function fetchFilters(_x, _x2) {
-                return _ref2.apply(this, arguments);
-            }
-
-            return fetchFilters;
-        }(),
-
-
-        /**
-         * Reset the default filter state to the original filter settings.
-         */
-        resetFilterState: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref4) {
-                var commit = _ref4.commit,
-                    getters = _ref4.getters;
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                _lodash2.default.each(getters.originalFilters, function (filter) {
-                                    commit('updateFilterState', {
-                                        filterClass: filter.class,
-                                        value: filter.currentValue
-                                    });
-                                });
-
-                            case 1:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function resetFilterState(_x3) {
-                return _ref5.apply(this, arguments);
-            }
-
-            return resetFilterState;
-        }(),
-
-
-        /**
-         * Initialize the current filter values from the decoded query string.
-         */
-        initializeCurrentFilterValuesFromQueryString: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref6, encodedFilters) {
-                var commit = _ref6.commit,
-                    getters = _ref6.getters;
-                var initialFilters;
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                if (encodedFilters) {
-                                    initialFilters = JSON.parse(atob(encodedFilters));
-
-                                    _lodash2.default.each(initialFilters, function (f) {
-                                        commit('updateFilterState', {
-                                            filterClass: f.class,
-                                            value: f.value
-                                        });
-                                    });
-                                }
-
-                            case 1:
-                            case 'end':
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this);
-            }));
-
-            function initializeCurrentFilterValuesFromQueryString(_x4, _x5) {
-                return _ref7.apply(this, arguments);
-            }
-
-            return initializeCurrentFilterValuesFromQueryString;
-        }()
+    /**
+     * Return the current filters encoded to a string.
+     */
+    currentEncodedFilters: function currentEncodedFilters(state, getters) {
+      return btoa((0, _escapeUnicode.escapeUnicode)((0, _stringify2.default)(getters.currentFilters)));
     },
 
-    mutations: {
-        updateFilterState: function updateFilterState(state, _ref8) {
-            var filterClass = _ref8.filterClass,
-                value = _ref8.value;
+    /**
+     * Determine whether any filters are applied
+     */
+    filtersAreApplied: function filtersAreApplied(state, getters) {
+      return getters.activeFilterCount > 0;
+    },
 
-            var filter = (0, _lodash2.default)(state.filters).find(function (f) {
-                return f.class == filterClass;
-            });
+    /**
+     * Return the number of filters that are non-default
+     */
+    activeFilterCount: function activeFilterCount(state, getters) {
+      return _lodash2.default.reduce(state.filters, function (result, f) {
+        var originalFilter = getters.getOriginalFilter(f.class);
+        var originalFilterCloneValue = (0, _stringify2.default)(originalFilter.currentValue);
+        var currentFilterCloneValue = (0, _stringify2.default)(f.currentValue);
+        return currentFilterCloneValue == originalFilterCloneValue ? result : result + 1;
+      }, 0);
+    },
 
-            filter.currentValue = value;
-        },
+    /**
+     * Get a single filter from the list of filters.
+     */
+    getFilter: function getFilter(state) {
+      return function (filterKey) {
+        return _lodash2.default.find(state.filters, function (filter) {
+          return filter.class == filterKey;
+        });
+      };
+    },
 
+    getOriginalFilter: function getOriginalFilter(state) {
+      return function (filterKey) {
+        return _lodash2.default.find(state.originalFilters, function (filter) {
+          return filter.class == filterKey;
+        });
+      };
+    },
 
-        /**
-         * Store the mutable filter settings
-         */
-        storeFilters: function storeFilters(state, data) {
-            state.filters = data;
-            state.originalFilters = _lodash2.default.cloneDeep(data);
-        },
+    /**
+     * Get the options for a single filter.
+     */
+    getOptionsForFilter: function getOptionsForFilter(state, getters) {
+      return function (filterKey) {
+        var filter = getters.getFilter(filterKey);
+        return filter ? filter.options : [];
+      };
+    },
 
+    /**
+     * Get the current value for a given filter at the provided key.
+     */
+    filterOptionValue: function filterOptionValue(state, getters) {
+      return function (filterKey, optionKey) {
+        var filter = getters.getFilter(filterKey);
 
-        /**
-         * Clear the filters for this resource
-         */
-        clearFilters: function clearFilters(state) {
-            state.filters = [];
-            state.originalFilters = [];
-        }
+        return _lodash2.default.find(filter.currentValue, function (value, key) {
+          return key == optionKey;
+        });
+      };
     }
+  },
+  actions: {
+    /**
+     * Fetch the current filters for the given resource name.
+     */
+    fetchFilters: function () {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref, options) {
+        var commit = _ref.commit,
+            state = _ref.state;
+
+        var resourceName, _options$lens, lens, _ref3, data;
+
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                resourceName = options.resourceName, _options$lens = options.lens, lens = _options$lens === undefined ? false : _options$lens;
+
+                if (!lens) {
+                  _context.next = 7;
+                  break;
+                }
+
+                _context.next = 4;
+                return Nova.request().get('/nova-api/' + resourceName + '/lens/' + lens + '/filters');
+
+              case 4:
+                _context.t0 = _context.sent;
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.next = 9;
+                return Nova.request().get('/nova-api/' + resourceName + '/filters');
+
+              case 9:
+                _context.t0 = _context.sent;
+
+              case 10:
+                _ref3 = _context.t0;
+                data = _ref3.data;
+
+
+                commit('storeFilters', data);
+
+              case 13:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetchFilters(_x, _x2) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetchFilters;
+    }(),
+
+
+    /**
+     * Reset the default filter state to the original filter settings.
+     */
+    resetFilterState: function () {
+      var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref4) {
+        var commit = _ref4.commit,
+            getters = _ref4.getters;
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _lodash2.default.each(getters.originalFilters, function (filter) {
+                  commit('updateFilterState', {
+                    filterClass: filter.class,
+                    value: filter.currentValue
+                  });
+                });
+
+              case 1:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function resetFilterState(_x3) {
+        return _ref5.apply(this, arguments);
+      }
+
+      return resetFilterState;
+    }(),
+
+
+    /**
+     * Initialize the current filter values from the decoded query string.
+     */
+    initializeCurrentFilterValuesFromQueryString: function () {
+      var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref6, encodedFilters) {
+        var commit = _ref6.commit,
+            getters = _ref6.getters;
+        var initialFilters;
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (encodedFilters) {
+                  initialFilters = JSON.parse(atob(encodedFilters));
+
+                  _lodash2.default.each(initialFilters, function (f) {
+                    commit('updateFilterState', {
+                      filterClass: f.class,
+                      value: f.value
+                    });
+                  });
+                }
+
+              case 1:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function initializeCurrentFilterValuesFromQueryString(_x4, _x5) {
+        return _ref7.apply(this, arguments);
+      }
+
+      return initializeCurrentFilterValuesFromQueryString;
+    }()
+  },
+
+  mutations: {
+    updateFilterState: function updateFilterState(state, _ref8) {
+      var filterClass = _ref8.filterClass,
+          value = _ref8.value;
+
+      var filter = (0, _lodash2.default)(state.filters).find(function (f) {
+        return f.class == filterClass;
+      });
+
+      filter.currentValue = value;
+    },
+
+
+    /**
+     * Store the mutable filter settings
+     */
+    storeFilters: function storeFilters(state, data) {
+      state.filters = data;
+      state.originalFilters = _lodash2.default.cloneDeep(data);
+    },
+
+
+    /**
+     * Clear the filters for this resource
+     */
+    clearFilters: function clearFilters(state) {
+      state.filters = [];
+      state.originalFilters = [];
+    }
+  }
 };
 
 /***/ }),
@@ -64081,7 +71052,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _promise = __webpack_require__("./node_modules/babel-runtime/core-js/promise.js");
@@ -64104,32 +71075,32 @@ instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 instance.defaults.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content;
 
 instance.interceptors.response.use(function (response) {
-    return response;
+  return response;
 }, function (error) {
-    var status = error.response.status;
+  var status = error.response.status;
 
-    // Show the user a 500 error
+  // Show the user a 500 error
 
-    if (status >= 500) {
-        Nova.$emit('error', error.response.data.message);
-    }
+  if (status >= 500) {
+    Nova.$emit('error', error.response.data.message);
+  }
 
-    // Handle Session Timeouts
-    if (status === 401) {
-        window.location.href = Nova.config.base;
-    }
+  // Handle Session Timeouts
+  if (status === 401) {
+    window.location.href = Nova.config.base;
+  }
 
-    // Handle Forbidden
-    if (status === 403) {
-        _router2.default.push({ name: '403' });
-    }
+  // Handle Forbidden
+  if (status === 403) {
+    _router2.default.push({ name: '403' });
+  }
 
-    // Handle Token Timeouts
-    if (status === 419) {
-        Nova.$emit('token-expired');
-    }
+  // Handle Token Timeouts
+  if (status === 419) {
+    Nova.$emit('token-expired');
+  }
 
-    return _promise2.default.reject(error);
+  return _promise2.default.reject(error);
 });
 
 exports.default = instance;
@@ -64143,13 +71114,13 @@ exports.default = instance;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.escapeUnicode = escapeUnicode;
 function escapeUnicode(str) {
-    return str.replace(/[^\0-~]/g, function (c) {
-        return '\\u' + ('000' + c.charCodeAt().toString(16)).slice(-4);
-    });
+  return str.replace(/[^\0-~]/g, function (c) {
+    return '\\u' + ('000' + c.charCodeAt().toString(16)).slice(-4);
+  });
 }
 
 /***/ }),

@@ -985,12 +985,45 @@ textarea.form-input:read-only,
 ---------------------------------------------------------------------------- */
 
 .checkbox {
-  outline: 0;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  height: 1.25rem;
+  width: 1.25rem;
+  color: var(--primary);
+  background-color: var(--white);
+  border-width: 1px;
+  border-color: var(--60);
+  border-radius: .25rem;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
 }
 
-.checkbox:focus {
+.checkbox:focus,
+.checkbox:active {
+  outline: 0;
   -webkit-box-shadow: 0 0 0 3px var(--primary-50);
           box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.checkbox:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* File Upload
@@ -1841,6 +1874,34 @@ trix-editor.disabled {
 ---------------------------------------------------------------------------- */
 
 .tooltip {
+  display: block !important;
+  z-index: 88888;
+}
+
+.tooltip .tooltip-inner {
+}
+
+.tooltip.popover .popover-inner {
+}
+
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity .15s, visibility .15s;
+  transition: opacity .15s, visibility .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity .15s;
+  transition: opacity .15s;
+}
+
+/* Flatpickr Calendar
+---------------------------------------------------------------------------- */
+
+.flatpickr-calendar {
   z-index: 99999;
 }
 
@@ -3420,6 +3481,10 @@ trix-editor.disabled {
 
 .h-4 {
   height: 1rem;
+}
+
+.h-5 {
+  height: 1.25rem;
 }
 
 .h-6 {
@@ -5409,6 +5474,10 @@ trix-editor.disabled {
 
 .w-4 {
   width: 1rem;
+}
+
+.w-5 {
+  width: 1.25rem;
 }
 
 .w-8 {
