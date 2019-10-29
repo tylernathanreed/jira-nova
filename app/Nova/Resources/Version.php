@@ -136,7 +136,7 @@ class Version extends Resource
         return [
 
             // Index metrics
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByVersion(),
+            Version::getPastReleasesTrend(),
             (new \App\Nova\Metrics\IssueCountPartition)->groupByVersion(),
             
             Issue::getIssueCreatedByDateTrend()
@@ -144,7 +144,7 @@ class Version extends Resource
                 ->where('fix_versions', '!=', '[]'),
 
             // Detail metrics
-            $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
+            Version::getReleaseNotesPartition()->where('versions.id', '=', $request->resourceId)->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(Issue::getIssueStatusPartition())->onlyOnDetail(),
             $scope(Issue::getIssueDeliquenciesByDueDateTrend())->onlyOnDetail(),
@@ -152,6 +152,52 @@ class Version extends Resource
             $scope((new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee())->onlyOnDetail(),
 
         ];
+    }
+
+    /**
+     * Creates and returns a new past releases trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPastReleasesTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->countOf('id')
+            ->label('Release History')
+            ->dateColumn('release_date')
+            ->suffix('releases');
+    }
+
+    /**
+     * Creates and returns a new release notes partition.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getReleaseNotesPartition()
+    {
+        return (new \App\Nova\Metrics\FluentPartition)
+            ->model(static::$model)
+            ->label('Release Notes')
+            ->joinRelation('issues')
+            ->useCount()
+            ->groupBy("
+                case
+                    when issues.requires_release_notes = 1
+                        then case
+                            when issues.release_notes is not null
+                                then 'Has Release Notes'
+                            else 'Missing Release Notes'
+                        end
+                    else 'Not Required'
+                end
+            ")
+            ->colors([
+                'Has Release Notes' => '#098f56',
+                'Missing Release Notes' => '#F5573B',
+                'Not Required' => '#5b9bd5'
+            ])
+            ->help('This metric shows the completion status of release notes.');
     }
 
     /**
