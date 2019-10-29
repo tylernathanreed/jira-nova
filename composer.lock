@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af7c2d75c9f097195141763bc5d31743",
+    "content-hash": "d462e8cc90d89cd20b4782178a7a7298",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -3072,6 +3072,40 @@
                 "theme"
             ],
             "time": "2019-09-15T15:34:24+00:00"
+        },
+        {
+            "name": "reedware/nova-text-filter",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./packages/reedware/nova-text-filter",
+                "reference": "54647b22230a103ca1003842fa1c693242d9037b"
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Reedware\\NovaTextFilter\\FilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Reedware\\NovaTextFilter\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Adds a text filter component for resources and lenses.",
+            "keywords": [
+                "filter",
+                "laravel",
+                "nova"
+            ]
         },
         {
             "name": "reedware/nova-treeview",
@@ -6611,6 +6645,7 @@
         "reedware/laravel-blueprints": 20,
         "reedware/nova-field-manager": 20,
         "reedware/nova-partition-metric-style-fix": 20,
+        "reedware/nova-text-filter": 20,
         "reedware/nova-treeview": 20,
         "reedware/nova-value-toggle": 20
     },
