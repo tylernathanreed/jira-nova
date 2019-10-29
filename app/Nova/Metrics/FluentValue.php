@@ -685,12 +685,12 @@ class FluentValue extends Value
     /**
      * Calculate the previous range and calculate any short-cuts.
      *
-     * @param  string|int  $range
-     * @param  string      $timezone
+     * @param  string|int   $range
+     * @param  string|null  $timezone
      *
      * @return array
      */
-    protected function previousRange($range, $timezone)
+    protected function previousRange($range, $timezone = null)
     {
         $previous = parent::previousRange($range, $timezone);
 
