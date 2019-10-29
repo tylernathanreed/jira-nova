@@ -5,7 +5,21 @@ namespace App\Nova\Filters\Concerns;
 trait Nameable
 {
     /**
-     * Sets the name of this lens.
+     * Sets the name of this filter.
+     *
+     * @param  string  $name
+     *
+     * @return $this
+     */
+    public function label($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Alias of {@see $this->label()}.
      *
      * @param  string  $name
      *
@@ -13,8 +27,6 @@ trait Nameable
      */
     public function setName($name)
     {
-        $this->name = $name;
-
-        return $this;
+        return $this->label($name);
     }
 }
