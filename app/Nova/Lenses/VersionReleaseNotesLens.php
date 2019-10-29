@@ -31,6 +31,9 @@ class VersionReleaseNotesLens extends Lens
         // Make sure the version has been released
         $query->whereNotNull('versions.release_date');
 
+        // Only look at versions released in the past year
+        $query->where('versions.release_date', '>=', carbon()->subYear());
+
         // Join into issues
         $query->joinRelation('issues', function($join) {
 
