@@ -30,6 +30,12 @@ class VersionPolicy extends Policy
      */
     public function view(User $user, Version $label)
     {
+        // Don't allow in lenses
+        if(request()->route()->uri() == 'nova-api/{resource}/lens/{lens}') {
+            return false;
+        }
+
+        // Allow
         return true;
     }
 

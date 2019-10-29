@@ -178,7 +178,9 @@ class Version extends Resource
      */
     public function lenses(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Lenses\VersionReleaseNotesLens
+        ];
     }
 
     /**
