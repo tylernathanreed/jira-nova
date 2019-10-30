@@ -447,28 +447,30 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8"
+                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/1febd6c3ef84253d7c815bed85fc622ad207a9f8",
-                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/e17f069ede36f7534b95adec71910ed1b49c74ea",
+                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "^7.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5"
+                "doctrine/coding-standard": "^6.0",
+                "phpstan/phpstan": "^0.11.8",
+                "phpunit/phpunit": "^8.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -482,12 +484,12 @@
             ],
             "authors": [
                 {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Johannes Schmitt",
@@ -503,7 +505,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-06-08T11:03:04+00:00"
+            "time": "2019-07-30T19:33:28+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -1187,17 +1189,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "7078f323275315e89f43534300b0f05125e31810"
+                "reference": "c2e0448986c23af336d8bf44cb02a74801f61c56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-7078f323275315e89f43534300b0f05125e31810-zip-3a8975.zip",
-                "reference": "7078f323275315e89f43534300b0f05125e31810",
-                "shasum": "08621b8b8aaf3f67c817d4417f7f823d0c84b244"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-c2e0448986c23af336d8bf44cb02a74801f61c56-zip-59afb4.zip",
+                "reference": "c2e0448986c23af336d8bf44cb02a74801f61c56",
+                "shasum": "83bd0827d315ac13856fd753d0fbb3bd0731054d"
             },
             "require": {
                 "cakephp/chronos": "^1.0",
@@ -1253,7 +1255,7 @@
                 "admin",
                 "laravel"
             ],
-            "time": "2019-10-29T17:42:57+00:00"
+            "time": "2019-10-29T20:04:49+00:00"
         },
         {
             "name": "laravel/telescope",
@@ -1649,11 +1651,12 @@
         },
         {
             "name": "mnobrega/php-jira-agile-rest-client",
-            "version": "9999999-dev",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./packages/mnobrega/php-jira-agile-rest-client",
-                "reference": "1a847fc47b6cc05377058cf3b5a5b332613ecdbd"
+                "reference": "663811c00e28c8e05b5fe395b73010560c9397d0",
+                "shasum": null
             },
             "require": {
                 "illuminate/support": "^5.5",
@@ -1990,7 +1993,8 @@
             "dist": {
                 "type": "path",
                 "url": "./nova-components/BadgeUrl",
-                "reference": "b114c1e8014a274a8367c940fffb8383f261b4aa"
+                "reference": "b114c1e8014a274a8367c940fffb8383f261b4aa",
+                "shasum": null
             },
             "require": {
                 "php": ">=7.1.0"
@@ -2019,11 +2023,12 @@
         },
         {
             "name": "nova-components/color-swatch",
-            "version": "9999999-dev",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/ColorSwatch",
-                "reference": "1137ed59747638960feb5a5bd7d0a3ec1c2dba1a"
+                "reference": "1137ed59747638960feb5a5bd7d0a3ec1c2dba1a",
+                "shasum": null
             },
             "require": {
                 "php": ">=7.1.0"
@@ -2052,11 +2057,12 @@
         },
         {
             "name": "nova-components/jira-issue-prioritizer",
-            "version": "9999999-dev",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/jira-issue-prioritizer",
-                "reference": "bae2bef9c091cb98d4fd2855c6f98df501267f3d"
+                "reference": "bae2bef9c091cb98d4fd2855c6f98df501267f3d",
+                "shasum": null
             },
             "require": {
                 "php": ">=7.1.0"
@@ -2085,11 +2091,12 @@
         },
         {
             "name": "nova-components/slideshow-player",
-            "version": "9999999-dev",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/slideshow-player",
-                "reference": "617ddea1d67499620bab9d06a8e1e2204058261d"
+                "reference": "617ddea1d67499620bab9d06a8e1e2204058261d",
+                "shasum": null
             },
             "require": {
                 "php": ">=7.1.0"

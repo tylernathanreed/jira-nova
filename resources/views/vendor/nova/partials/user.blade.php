@@ -1,4 +1,4 @@
-<dropdown-trigger class="h-9 flex items-center" slot-scope="{toggle}" :handle-click="toggle">
+<dropdown-trigger class="h-9 flex items-center">
     @isset($user->email_address)
         <img
             src="{{ $user->jira()->avatarUrls->{"48x48"} }}"
