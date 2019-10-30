@@ -208,18 +208,23 @@ class IssueWorklog extends Resource
 
                 });
 
+                $query->leftJoin('holiday_instances', function($join) {
+                    $join->on('holiday_instances.observed_date', '=', 'dates.date');
+                });
+
             })
             ->select(preg_replace('/\s\s+/', ' ', 'sum(active_schedules.simple_weekly_allocation / 5.0)'))
             ->addSelect([
                 'dates.is_weekend',
                 'active_schedules.author_id',
                 'active_schedules.author_key',
-                DB::raw('sum(time_off.percent) as percent_off')
+                DB::raw('sum(time_off.percent) as percent_off'),
+                DB::raw('sum(case when holiday_instances.id is not null then 1 else 0 end) as is_holiday')
             ])
             ->groupBy(['author_id', 'author_name'], function($group) {
                 return [
                     'aggregate' => $group->reduce(function($aggregate, $result) {
-                        return $aggregate + ($result->is_weekend ? 0 : ($result->aggregate * (1 - $result->percent_off)));
+                        return $aggregate + ($result->is_weekend || $result->is_holiday ? 0 : ($result->aggregate * (1 - $result->percent_off)));
                     }, 0)
                 ];
             })
