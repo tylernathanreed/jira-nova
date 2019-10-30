@@ -5,6 +5,7 @@ namespace NovaComponents\JiraIssuePrioritizer;
 use App\Models\User;
 use App\Models\Issue;
 use App\Models\Schedule;
+use App\Models\HolidayInstance;
 
 class EstimateCalculator
 {
@@ -61,10 +62,8 @@ class EstimateCalculator
      */
     public static function getScheduleAdjustmentsForAssignee($assignee)
     {
-        // If the assignee cannot be mapped to a user, there are no adjustments
-        if(is_null($user = User::where('jira_key', '=', $assignee)->first())) {
-            return [];
-        }
+        // Determine the user
+        $user = User::where('jira_key', '=', $assignee)->first();
 
         // Initialize the adjustments
         $adjustments = [];
@@ -74,11 +73,23 @@ class EstimateCalculator
         // of time off being used. We'll need to flip the percent.
 
         // Determine the time off by date
-        $timeoffs = $user->timeoffs()->pluck('percent', 'date');
+        $timeoffs = !is_null($user) ? $user->timeoffs()->pluck('percent', 'date') : [];
 
-        // Add the each time off as an adjustment
+        // Add each time off as an adjustment
         foreach($timeoffs as $date => $percent) {
             $adjustments[carbon($date)->toDateString()] = 1 - $percent;
+        }
+
+        // The second adjustment that can happen is a company holiday can
+        // occur. On these dates, all users have the date off, and are
+        // not expected to work. We'll adjust the schedule to do so.
+
+        // Determine the holidays by date
+        $holidays = HolidayInstance::where('observed_date', '>=', carbon())->pluck('observed_date');
+
+        // Add each holiday as an adjustment
+        foreach($holidays as $date) {
+            $adjustments[carbon($date)->toDateString()] = 0;
         }
 
         // Return the adjustments
