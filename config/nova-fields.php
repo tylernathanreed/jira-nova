@@ -50,6 +50,7 @@ return [
 	'badgeUrl'    => \NovaComponents\BadgeUrl\BadgeUrl::class,
 	'color'       => \Timothyasp\Color\Color::class,
 	'swatch'      => \NovaComponents\ColorSwatch\ColorSwatch::class,
+	'textWrap'    => \Reedware\NovaTextWrapField\TextWrap::class,
 	'url'         => \Inspheric\Fields\Url::class,
 	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class,
 

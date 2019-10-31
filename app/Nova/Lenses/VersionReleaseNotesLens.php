@@ -90,9 +90,7 @@ class VersionReleaseNotesLens extends Lens
 
             Field::text('Key', 'key')->sortable(),
 
-            Field::text('Release Notes', 'release_notes', function() {
-                return strlen($this->release_notes) > 150 ? substr($this->release_notes, 0, 150) . '...' : $this->release_notes;
-            }),
+            Field::textWrap('Release Notes', 'release_notes')->asMarkdown()->withMeta(['maxWidth' => '1080px']),
 
             Field::badgeUrl('Status', 'status_group_name')->backgroundUsing(function($value, $resource) {
                 return $resource->status_group_color ?? null;
@@ -109,7 +107,7 @@ class VersionReleaseNotesLens extends Lens
 
             Field::text('Fix Version', 'fix_version'),
 
-            Field::date('Release Date', 'release_date')->format('M/D')->sortable()
+            Field::date('Release', 'release_date')->format('M/D')->sortable()
 
         ];
 
