@@ -51,7 +51,8 @@ class Version extends Resource
      * @var array
      */
     public static $withCount = [
-        'issues'
+        'issues',
+        'releaseNotes'
     ];
 
     /**
@@ -109,7 +110,11 @@ class Version extends Resource
 
             Field::number('Total Issues', 'issues_count')->onlyOnIndex()->sortable(),
 
-            Field::belongsToMany('Issues', 'issues', Issue::class)
+            Field::number('Release Notes', 'release_notes_count')->onlyOnIndex()->sortable(),
+
+            Field::belongsToMany('Issues', 'issues', Issue::class),
+
+            Field::belongsToMany('Release Notes', 'releaseNotes', Issue::class)
 
         ];
     }
@@ -136,7 +141,7 @@ class Version extends Resource
         return [
 
             // Index metrics
-            (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByVersion(),
+            Version::getPastReleasesTrend(),
             (new \App\Nova\Metrics\IssueCountPartition)->groupByVersion(),
             
             Issue::getIssueCreatedByDateTrend()
@@ -144,14 +149,60 @@ class Version extends Resource
                 ->where('fix_versions', '!=', '[]'),
 
             // Detail metrics
-            $scope(Issue::getIssueCreatedByDateValue())->onlyOnDetail(),
+            Version::getReleaseNotesPartition()->where('versions.id', '=', $request->resourceId)->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(Issue::getIssueStatusPartition())->onlyOnDetail(),
-            $scope(Issue::getIssueDeliquenciesByDueDateTrend())->onlyOnDetail(),
+            $scope(Issue::getIssueCountByTypePartition())->onlyOnDetail(),
             $scope(Issue::getIssueDeliquenciesByEstimatedDateTrend())->onlyOnDetail(),
-            $scope((new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee())->onlyOnDetail(),
+            $scope(Issue::getIssueCountByPriorityPartition())->onlyOnDetail(),
 
         ];
+    }
+
+    /**
+     * Creates and returns a new past releases trend.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getPastReleasesTrend()
+    {
+        return (new \App\Nova\Metrics\FluentTrend)
+            ->model(static::$model)
+            ->countOf('id')
+            ->label('Release History')
+            ->dateColumn('release_date')
+            ->suffix('releases');
+    }
+
+    /**
+     * Creates and returns a new release notes partition.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getReleaseNotesPartition()
+    {
+        return (new \App\Nova\Metrics\FluentPartition)
+            ->model(static::$model)
+            ->label('Release Notes')
+            ->joinRelation('issues')
+            ->useCount()
+            ->groupBy("
+                case
+                    when issues.requires_release_notes = 1
+                        then case
+                            when issues.release_notes is not null
+                                then 'Has Release Notes'
+                            else 'Missing Release Notes'
+                        end
+                    else 'Not Required'
+                end
+            ")
+            ->colors([
+                'Has Release Notes' => '#098f56',
+                'Missing Release Notes' => '#F5573B',
+                'Not Required' => '#5b9bd5'
+            ])
+            ->help('This metric shows the completion status of release notes.');
     }
 
     /**
@@ -178,7 +229,9 @@ class Version extends Resource
      */
     public function lenses(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Lenses\VersionReleaseNotesLens
+        ];
     }
 
     /**

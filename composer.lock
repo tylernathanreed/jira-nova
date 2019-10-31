@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af7c2d75c9f097195141763bc5d31743",
+    "content-hash": "fc3109da7b740c9123550cd99c784035",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -3079,6 +3079,92 @@
                 "theme"
             ],
             "time": "2019-09-15T15:34:24+00:00"
+        },
+        {
+            "name": "reedware/nova-text-filter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tylernathanreed/nova-text-filter.git",
+                "reference": "e031b01fe78522a5444bcea245217d5454bca1c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-text-filter/zipball/e031b01fe78522a5444bcea245217d5454bca1c3",
+                "reference": "e031b01fe78522a5444bcea245217d5454bca1c3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Reedware\\NovaTextFilter\\FilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Reedware\\NovaTextFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Adds a text filter component for resources and lenses.",
+            "keywords": [
+                "filter",
+                "laravel",
+                "nova"
+            ],
+            "time": "2019-10-29T22:24:39+00:00"
+        },
+        {
+            "name": "reedware/nova-textwrap-field",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tylernathanreed/nova-textwrap-field.git",
+                "reference": "f089bdf48c6c3d78eb597e298e653b28c5e2c574"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-textwrap-field/zipball/f089bdf48c6c3d78eb597e298e653b28c5e2c574",
+                "reference": "f089bdf48c6c3d78eb597e298e653b28c5e2c574",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Reedware\\NovaTextWrapField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Reedware\\NovaTextWrapField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Adds a text field with wrapping capabilities to Laravel Nova.",
+            "keywords": [
+                "laravel",
+                "nova",
+                "text",
+                "textarea",
+                "wrap"
+            ],
+            "time": "2019-10-31T15:40:45+00:00"
         },
         {
             "name": "reedware/nova-treeview",
@@ -6618,6 +6704,8 @@
         "reedware/laravel-blueprints": 20,
         "reedware/nova-field-manager": 20,
         "reedware/nova-partition-metric-style-fix": 20,
+        "reedware/nova-text-filter": 20,
+        "reedware/nova-textwrap-field": 20,
         "reedware/nova-treeview": 20,
         "reedware/nova-value-toggle": 20
     },

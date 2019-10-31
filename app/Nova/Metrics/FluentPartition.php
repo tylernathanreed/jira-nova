@@ -2,9 +2,12 @@
 
 namespace App\Nova\Metrics;
 
+use DB;
+use Closure;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Metrics\PartitionResult;
 
 class FluentPartition extends Partition
@@ -118,6 +121,13 @@ class FluentPartition extends Partition
     public $colors;
 
     /**
+     * The labels to assign to the partition.
+     *
+     * @var \Closure|null
+     */
+    public $resultLabelResolver;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -146,6 +156,9 @@ class FluentPartition extends Partition
 
         // Apply the result limit
         $this->applyResultLimit($result);
+
+        // Apply the result labels
+        $this->applyResultLabels($result);
 
         // Apply the result colors
         $this->applyResultColors($result);
@@ -512,6 +525,38 @@ class FluentPartition extends Partition
     }
 
     /**
+     * Assigns the labels on the partition result.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function resultLabel(Closure $callback)
+    {
+        $this->resultLabelResolver = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Sets the labels on the partition result.
+     *
+     * @param  \Laravel\Nova\Metrics\PartitionResult  $result
+     *
+     * @return void
+     */
+    public function applyResultLabels($result)
+    {
+        // Make sure labels have been provided
+        if(is_null($this->resultLabelResolver)) {
+            return;
+        }
+
+        // Apply the labels
+        $result->label($this->resultLabelResolver);
+    }
+
+    /**
      * Assigns the colors for this partition.
      *
      * @param  array  $colors
@@ -579,6 +624,34 @@ class FluentPartition extends Partition
     }
 
     /**
+     * Return a partition result showing the segments of a aggregate.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
+     * @param  string  $function
+     * @param  string  $column
+     * @param  string  $groupBy
+     *
+     * @return \Laravel\Nova\Metrics\PartitionResult
+     */
+    protected function aggregate($request, $model, $function, $column, $groupBy)
+    {
+        $query = $model instanceof Builder ? $model : (new $model)->newQuery();
+
+        $wrappedColumn = $query->getQuery()->getGrammar()->wrap(
+            $column = $column ?? $query->getModel()->getQualifiedKeyName()
+        );
+
+        $results = $query->select(
+            DB::raw("{$groupBy} as label"), DB::raw("{$function}({$wrappedColumn}) as aggregate")
+        )->groupBy(DB::raw($groupBy))->get();
+
+        return $this->result($results->mapWithKeys(function ($result) use ($groupBy) {
+            return $this->formatAggregateResult($result, $groupBy);
+        })->all());
+    }
+
+    /**
      * Format the aggregate result for the partition.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $result
@@ -587,7 +660,7 @@ class FluentPartition extends Partition
      */
     protected function formatAggregateResult($result, $groupBy)
     {
-        $key = $result->{last(explode('.', $groupBy))};
+        $key = $result->label;
 
         return [$key => round($this->applyResultFormat($result->aggregate), $this->precision)];
     }

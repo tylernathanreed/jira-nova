@@ -179,12 +179,22 @@ class Version extends Model implements Cacheable
     }
 
     /**
-     * Returns the issues associated to this label.
+     * Returns the issues associated to this version.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function issues()
     {
         return $this->belongsToMany(Issue::class, 'issues_fix_versions');
+    }
+
+    /**
+     * Returns the release notes associated to this version.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function releaseNotes()
+    {
+        return $this->issues()->whereNotNull('issues.release_notes');
     }
 }

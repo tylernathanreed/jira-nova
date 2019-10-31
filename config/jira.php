@@ -38,7 +38,9 @@ return [
         'epic_name' => env('JIRA_FIELD_EPIC_NAME', 'customfield_10002'),
         'estimated_completion_date' => env('JIRA_FIELD_ESTIMATED_COMPLETION_DATE', 'customfield_12011'),
         'issue_category' => env('JIRA_FIELD_ISSUE_CATEGORY', 'customfield_12005'),
-        'rank' => env('JIRA_FIELD_RANK', 'customfield_10119')
+        'rank' => env('JIRA_FIELD_RANK', 'customfield_10119'),
+        'release_notes' => env('JIRA_FIELD_RELEASE_NOTES', 'customfield_11200'),
+        'requires_release_notes' => env('JIRA_FIELD_REQUIRES_RELEASE_NOTES', 'customfield_10500')
     ],
 
     'version' => env('JIRA_VERSION', '7.9.2'),

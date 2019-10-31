@@ -77,6 +77,26 @@ class Issue extends Resource
      */
     public function fields(Request $request)
     {
+        if($request->viaRelationship == 'releaseNotes') {
+
+            return [
+
+                Field::avatar('T')->thumbnail(function() {
+                    return $this->type_icon_url;
+                })->maxWidth(16)->onlyOnIndex(),
+
+                Field::avatar('P')->thumbnail(function() {
+                    return $this->priority_icon_url;
+                })->maxWidth(16)->onlyOnIndex(),
+
+                Field::text('Key', 'key')->sortable(),
+
+                Field::textWrap('Release Notes', 'release_notes')->asMarkdown()->withMeta(['maxWidth' => '1080px'])
+
+            ];
+
+        }
+
         return [
 
             Field::id()->onlyOnDetail(),
@@ -310,6 +330,38 @@ class Issue extends Resource
             ->groupBy('status_name')
             ->resultClass(\App\Nova\Metrics\Results\StatusPartitionResult::class)
             ->help('This metric shows the total number of issues in each status group.');
+    }
+
+    /**
+     * Creates and returns a new issue type partition.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueCountByTypePartition()
+    {
+        return (new \App\Nova\Metrics\FluentPartition)
+            ->model(static::$model)
+            ->label('Issue Counts by Type')
+            ->useCount()
+            ->groupBy('type_name')
+            ->sort()
+            ->help('This metric shows the total number of issues for each issue type.');
+    }
+
+    /**
+     * Creates and returns a new issue priority partition.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIssueCountByPriorityPartition()
+    {
+        return (new \App\Nova\Metrics\FluentPartition)
+            ->model(static::$model)
+            ->label('Issue Counts by Priority')
+            ->useCount()
+            ->groupBy('priority_name')
+            ->resultClass(\App\Nova\Metrics\Results\PriorityPartitionResult::class)
+            ->help('This metric shows the total number of issues for each issue priority.');
     }
 
     /**

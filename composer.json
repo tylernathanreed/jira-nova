@@ -34,6 +34,8 @@
         "reedware/nova-field-manager": "^0.2.0@dev",
         "reedware/nova-icons": "^1.0",
         "reedware/nova-partition-metric-style-fix": "dev-master",
+        "reedware/nova-text-filter": "dev-master",
+        "reedware/nova-textwrap-field": "dev-master",
         "reedware/nova-treeview": "dev-master",
         "reedware/nova-value-toggle": "dev-master",
         "timothyasp/nova-badge-field": "^1.0",
