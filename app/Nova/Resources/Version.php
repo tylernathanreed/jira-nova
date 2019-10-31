@@ -147,9 +147,9 @@ class Version extends Resource
             Version::getReleaseNotesPartition()->where('versions.id', '=', $request->resourceId)->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(Issue::getIssueStatusPartition())->onlyOnDetail(),
-            $scope(Issue::getIssueDeliquenciesByDueDateTrend())->onlyOnDetail(),
+            $scope(Issue::getIssueCountByTypePartition())->onlyOnDetail(),
             $scope(Issue::getIssueDeliquenciesByEstimatedDateTrend())->onlyOnDetail(),
-            $scope((new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee())->onlyOnDetail(),
+            $scope(Issue::getIssueCountByPriorityPartition())->onlyOnDetail(),
 
         ];
     }
