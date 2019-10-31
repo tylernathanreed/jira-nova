@@ -51,7 +51,8 @@ class Version extends Resource
      * @var array
      */
     public static $withCount = [
-        'issues'
+        'issues',
+        'releaseNotes'
     ];
 
     /**
@@ -109,7 +110,11 @@ class Version extends Resource
 
             Field::number('Total Issues', 'issues_count')->onlyOnIndex()->sortable(),
 
-            Field::belongsToMany('Issues', 'issues', Issue::class)
+            Field::number('Release Notes', 'release_notes_count')->onlyOnIndex()->sortable(),
+
+            Field::belongsToMany('Issues', 'issues', Issue::class),
+
+            Field::belongsToMany('Release Notes', 'releaseNotes', Issue::class)
 
         ];
     }
