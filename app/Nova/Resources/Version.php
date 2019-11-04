@@ -3,6 +3,7 @@
 namespace App\Nova\Resources;
 
 use Field;
+use Closure;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -172,9 +173,11 @@ class Version extends Resource
     /**
      * Creates and returns a new incomplete released issues value.
      *
+     * @param  \Closure|null  $callback
+     *
      * @return \Laravel\Nova\Metrics\Metric
      */
-    public static function getIncompleteReleasedIssuesValue()
+    public static function getIncompleteReleasedIssuesValue(Closure $callback = null)
     {
         return (new \App\Nova\Metrics\FluentValue)
             ->model(static::$model)
@@ -182,9 +185,16 @@ class Version extends Resource
             ->label('Remaining Count')
             ->dateColumn('versions.release_date')
             ->whereNotNull('versions.release_date')
-            ->joinRelation('issues', function($join) {
+            ->joinRelation('issues', function($join) use ($callback) {
+
                 $join->incomplete();
+
+                if(!is_null($callback)) {
+                    $callback($join);
+                }
+
             })
+            ->useCurrentToRange()
             ->suffix('issues')
             ->help('This metric shows the number of released issues that are not complete.');
     }

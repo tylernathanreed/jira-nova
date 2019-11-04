@@ -3,6 +3,7 @@
 namespace App\Nova\Dashboards\Concerns;
 
 use App\Nova\Resources\Issue;
+use App\Nova\Resources\Version;
 use App\Nova\Resources\IssueChangelogItem;
 
 trait StatusMetrics
@@ -33,6 +34,19 @@ trait StatusMetrics
             'except_from' => array_merge(static::$priorStatuses, static::$statuses)
         ])->label(static::$label . ' Kickbacks by Day')
           ->help('This metric shows the number per day of recent transitions that went backwards in the workflow.');
+    }
+
+    /**
+     * Returns the backlog value metric for this dashboard.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getBacklogValueMetric()
+    {
+        return Version::getIncompleteReleasedIssuesValue(function($query) {
+            $query->whereIn('status_name', static::$statuses);
+        })->label(static::$label . ' Backlog')
+          ->help('This metric shows the issues that have been released into production, but are still in the ' . static::$label . ' phase.');
     }
 
     /**

@@ -52,7 +52,8 @@ class TestingDashboard extends Dashboard
     {
         return [
             static::getKickbacksValueMetric(),
-            static::getKickbacksTrendMetric()->width('2/3'),
+            static::getKickbacksTrendMetric(),
+            static::getBacklogValueMetric(),
 
             static::getInflowTrendMetric(),
             static::getOutflowTrendMetric(),
