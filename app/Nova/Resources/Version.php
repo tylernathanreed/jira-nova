@@ -171,7 +171,8 @@ class Version extends Resource
             ->countOf('id')
             ->label('Release History')
             ->dateColumn('release_date')
-            ->suffix('releases');
+            ->suffix('releases')
+            ->help('This metric shows the versions by day that have been recently released.');
     }
 
     /**
