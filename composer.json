@@ -15,6 +15,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "inspheric/nova-url-field": "^1.32",
         "laravel/framework": "^6.0",
+        "laravel/helpers": "^1.1",
         "laravel/nova": "^2.0",
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
