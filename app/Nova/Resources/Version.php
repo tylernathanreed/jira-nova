@@ -128,10 +128,16 @@ class Version extends Resource
      */
     public function cards(Request $request)
     {
-        $scope = function($filter) use ($request) {
+        $resourceId = $request->resourceId;
 
-            $filter->whereHas('versions', function($query) use ($request) {
-                $query->where('versions.id', '=', $request->resourceId);
+        $model = !is_null($resourceId)
+            ? app(NovaRequest::class)->findModelOrFail($resourceId)
+            : null;
+
+        $scope = function($filter) use ($resourceId) {
+
+            $filter->whereHas('versions', function($query) use ($resourceId) {
+                $query->where('versions.id', '=', $resourceId);
             });
 
             return $filter;
@@ -149,14 +155,38 @@ class Version extends Resource
                 ->where('fix_versions', '!=', '[]'),
 
             // Detail metrics
-            Version::getReleaseNotesPartition()->where('versions.id', '=', $request->resourceId)->onlyOnDetail(),
+            Version::getReleaseNotesPartition()->where('versions.id', '=', $resourceId)->onlyOnDetail(),
             $scope(Issue::getIssueCreatedByDateTrend())->onlyOnDetail(),
             $scope(Issue::getIssueStatusPartition())->onlyOnDetail(),
             $scope(Issue::getIssueCountByTypePartition())->onlyOnDetail(),
-            $scope(Issue::getIssueDeliquenciesByEstimatedDateTrend())->onlyOnDetail(),
+            (
+                (!is_null($model) && $model->released)
+                ? Version::getIncompleteReleasedIssuesValue()->where('versions.id', '=', $resourceId)->onlyOnDetail()
+                : $scope(Issue::getIssueDeliquenciesByEstimatedDateTrend())->onlyOnDetail()
+            ),
             $scope(Issue::getIssueCountByPriorityPartition())->onlyOnDetail(),
 
         ];
+    }
+
+    /**
+     * Creates and returns a new incomplete released issues value.
+     *
+     * @return \Laravel\Nova\Metrics\Metric
+     */
+    public static function getIncompleteReleasedIssuesValue()
+    {
+        return (new \App\Nova\Metrics\FluentValue)
+            ->model(static::$model)
+            ->countOf('versions.id')
+            ->label('Remaining Count')
+            ->dateColumn('versions.release_date')
+            ->whereNotNull('versions.release_date')
+            ->joinRelation('issues', function($join) {
+                $join->incomplete();
+            })
+            ->suffix('issues')
+            ->help('This metric shows the number of released issues that are not complete.');
     }
 
     /**
