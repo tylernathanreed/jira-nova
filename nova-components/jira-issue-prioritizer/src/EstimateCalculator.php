@@ -209,7 +209,7 @@ class EstimateCalculator
                 // to the next day for the next issue, otherwise we'll loop forever.
 
                 // Check if we've run out of time for the day
-                if($allocated >= $limit) {
+                if(round($limit - $allocated) <= 0) {
 
                     // Advance to the next day
                     $date = $date->addDay()->startOfDay();
@@ -220,7 +220,7 @@ class EstimateCalculator
                 }
 
                 // Determine how much time we can allocate for today
-                $allocatable = min($remaining, $limit - $allocated);
+                $allocatable = round(min($remaining, $limit - $allocated));
 
                 // Allocate the time
                 $date = $date->addSeconds($allocatable);
