@@ -76,7 +76,7 @@ class EstimateCalculator
         // of time off being used. We'll need to flip the percent.
 
         // Determine the time off by date
-        $timeoffs = !is_null($user) ? $user->timeoffs()->where('date', '>=', carbon())->pluck('percent', 'date') : [];
+        $timeoffs = !is_null($user) ? $user->timeoffs()->where('date', '>=', carbon()->toDateString())->pluck('percent', 'date') : [];
 
         // Add each time off as an adjustment
         foreach($timeoffs as $date => $percent) {
@@ -88,7 +88,7 @@ class EstimateCalculator
         // not expected to work. We'll adjust the schedule to do so.
 
         // Determine the holidays by date
-        $holidays = HolidayInstance::where('observed_date', '>=', carbon())->pluck('observed_date');
+        $holidays = HolidayInstance::where('observed_date', '>=', carbon()->toDateString())->pluck('observed_date');
 
         // Add each holiday as an adjustment
         foreach($holidays as $date) {
@@ -101,7 +101,7 @@ class EstimateCalculator
 
         // Determine the meetings by date
         $meetings = !is_null($user)
-            ? $user->meetings->where('effective_date', '>=', carbon())->groupBy(function($meeting) {
+            ? $user->meetings->where('effective_date', '>=', carbon()->toDateString())->groupBy(function($meeting) {
                 return $meeting->effective_date->toDateString();
             })->map(function($meetings) {
                 return $meetings->sum->length_in_seconds;
