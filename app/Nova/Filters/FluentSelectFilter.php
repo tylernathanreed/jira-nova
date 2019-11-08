@@ -29,6 +29,13 @@ class FluentSelectFilter extends SelectFilter
     public $default;
 
     /**
+     * The relation being filtered.
+     *
+     * @var string|null
+     */
+    public $relation;
+
+    /**
      * Creates and returns a new boolean field filter.
      *
      * @param  string  $name
@@ -57,6 +64,17 @@ class FluentSelectFilter extends SelectFilter
      */
     public function apply(Request $request, $query, $value)
     {
+        // Check for a relation
+        if(!is_null($this->relation)) {
+
+            // Wrap the condition in a "where has" clause
+            return $query->whereHas($this->relation, function($query) use ($value) {
+                $query->where($this->column, '=', $value);
+            });
+
+        }
+
+        // Apply the condition to the base query
         return $query->where($this->column, '=', $value);
     }
 
@@ -78,5 +96,29 @@ class FluentSelectFilter extends SelectFilter
     public function options(Request $request)
     {
         return $this->options;
+    }
+
+    /**
+     * Set the default options for the filter.
+     *
+     * @return array|mixed
+     */
+    public function default()
+    {
+        return $this->default;
+    }
+
+    /**
+     * Sets the relation for the filter.
+     *
+     * @param  string  $relation
+     *
+     * @return $this
+     */
+    public function relation($relation)
+    {
+        $this->relation = $relation;
+
+        return $this;
     }
 }
