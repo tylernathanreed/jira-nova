@@ -100,5 +100,23 @@ class FieldServiceProvider extends ServiceProvider
                 });
 
         });
+
+        /**
+         * Overrides the "Date" field with a default format.
+         *
+         * @link https://momentjs.com/docs/#/parsing/string-format/ for {@see $date->format()}.
+         * @link https://flatpickr.js.org/formatting/ for {@see $date->pickerFormat()}.
+         *
+         * @return \Laravel\Nova\Fields\Date
+         */
+        $fields->macro('date', function($name, $attribute = null, callable $resolveCallback = null) use ($fields) {
+
+            return $fields->dateField($name, $attribute, $resolveCallback)
+                ->format('MMM Do, YYYY')
+                ->pickerFormat('Y-m-d');
+
+        });
+    }
+
     }
 }

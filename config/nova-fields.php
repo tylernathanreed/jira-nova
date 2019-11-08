@@ -10,7 +10,7 @@ return [
 	'code'                 => \Laravel\Nova\Fields\Code::class,
 	'country'              => \Laravel\Nova\Fields\Country::class,
 	'currency'             => \Laravel\Nova\Fields\Currency::class,
-	'date'                 => \Laravel\Nova\Fields\Date::class,
+	'dateField'            => \Laravel\Nova\Fields\Date::class, // "date" is a macro to impose a default format
 	'dateTime'             => \Laravel\Nova\Fields\DateTime::class,
 	'file'                 => \Laravel\Nova\Fields\File::class,
 	'gravatar'             => \Laravel\Nova\Fields\Gravatar::class,
