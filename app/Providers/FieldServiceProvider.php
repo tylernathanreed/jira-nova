@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use Laravel\Nova\Fields\Field;
 use Illuminate\Support\ServiceProvider;
 use Reedware\NovaFieldManager\NovaFieldManager;
 
@@ -17,18 +18,21 @@ class FieldServiceProvider extends ServiceProvider
      */
     public function boot(NovaFieldManager $fields)
     {
-        // Register the field macros
-        $this->registerFieldMacros($fields);
+        // Register the field manager macros
+        $this->registerFieldManagerMacros($fields);
+
+        // Register the field instance macros
+        $this->registerFieldInstanceMacros();
     }
 
     /**
-     * Registers the field macros.
+     * Registers the field manager macros.
      *
      * @param  Reedware\NovaFieldManager\NovaFieldManager  $fields
      *
      * @return void
      */
-    protected function registerFieldMacros(NovaFieldManager $fields)
+    protected function registerFieldManagerMacros(NovaFieldManager $fields)
     {
         /**
          * Creates and returns a new display name field.
@@ -119,5 +123,19 @@ class FieldServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Registers the field instance macros.
+     *
+     * @return void
+     */
+    protected function registerFieldInstanceMacros()
+    {
+        Field::macro('fillAfterCreate', function() {
+            return $this->fillUsing(function($request, $model, $attribute, $requestAttribute) {
+                return function() use ($request, $model, $attribute, $requestAttribute) {
+                    return $this->fillAttributeFromRequest($request, $requestAttribute, $model, $attribute);
+                };
+            });
+        });
     }
 }
