@@ -83,7 +83,7 @@ class MeetingInstance extends Resource
             })->exceptOnForms()->sortable(),
 
             Field::multiselect('Participants', 'participants')
-                ->options(UserModel::pluck('display_name', 'id')->all())
+                ->options(UserModel::orderBy('display_name')->pluck('display_name', 'id')->all())
                 ->placeholder('Chose participants...')
                 ->required()
                 ->onlyOnForms()
