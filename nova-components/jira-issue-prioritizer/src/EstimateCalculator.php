@@ -110,7 +110,23 @@ class EstimateCalculator
 
         // Add each meeting as an adjustment
         foreach($meetings as $date => $length) {
-            $adjustments[$date] = ($limit = $schedule->getAllocationLimit(carbon($date)->dayOfWeek)) > 0 ? max(($adjustments[$date] ?? 1) - ($length / $limit), 0) : 0;
+
+            // Determine the daily limit
+            $limit = $schedule->getAllocationLimit(carbon($date)->dayOfWeek);
+
+            // If the limit is already zero, don't bother
+            if($limit <= 0) {
+                continue;
+            }
+
+            // If the current allocation is already zero, don't bother
+            if(($adjustments[$date] ?? 1) <= 0) {
+                continue;
+            }
+
+            // Assign the adjustment
+            $adjustments[$date] = max(($adjustments[$date] ?? 1) - ($length / $limit), 0);
+
         }
 
         // Return the adjustments
