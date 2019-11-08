@@ -65,6 +65,9 @@ class EstimateCalculator
         // Determine the user
         $user = User::where('jira_key', '=', $assignee)->first();
 
+        // Determine the schedule for the assignee
+        $schedule = static::getScheduleForAssignee($assignee);
+
         // Initialize the adjustments
         $adjustments = [];
 
@@ -90,6 +93,24 @@ class EstimateCalculator
         // Add each holiday as an adjustment
         foreach($holidays as $date) {
             $adjustments[carbon($date)->toDateString()] = 0;
+        }
+
+        // The third adjustment that we'll make is for meetings. We assume
+        // that meetings aren't logged as issues, and thus we'll have to
+        // consider the time commitments for each participant in them.
+
+        // Determine the meetings by date
+        $meetings = !is_null($user)
+            ? $user->meetings->where('effective_date', '>=', carbon())->groupBy(function($meeting) {
+                return $meeting->effective_date->toDateString();
+            })->map(function($meetings) {
+                return $meetings->sum->getLength();
+            })->toArray()
+            : [];
+
+        // Add each meeting as an adjustment
+        foreach($meetings as $date => $length) {
+            $adjustments[$date] = ($limit = $schedule->getAllocationLimit(carbon($date)->dayOfWeek)) > 0 ? max(($adjustments[$date] ?? 1) - ($length / $limit), 0) : 0;
         }
 
         // Return the adjustments
