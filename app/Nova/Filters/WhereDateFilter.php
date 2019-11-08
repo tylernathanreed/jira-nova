@@ -70,4 +70,14 @@ class WhereDateFilter extends DateFilter
     {
         return Str::slug($this->name());
     }
+
+    /**
+     * Set the default options for the filter.
+     *
+     * @return array|mixed
+     */
+    public function default()
+    {
+        return $this->default;
+    }
 }
