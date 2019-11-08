@@ -73,7 +73,7 @@ class EstimateCalculator
         // of time off being used. We'll need to flip the percent.
 
         // Determine the time off by date
-        $timeoffs = !is_null($user) ? $user->timeoffs()->pluck('percent', 'date') : [];
+        $timeoffs = !is_null($user) ? $user->timeoffs()->where('date', '>=', carbon())->pluck('percent', 'date') : [];
 
         // Add each time off as an adjustment
         foreach($timeoffs as $date => $percent) {
