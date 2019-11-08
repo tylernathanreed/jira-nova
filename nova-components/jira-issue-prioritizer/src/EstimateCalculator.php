@@ -77,7 +77,7 @@ class EstimateCalculator
 
         // Add each time off as an adjustment
         foreach($timeoffs as $date => $percent) {
-            $adjustments[carbon($date)->toDateString()] = 1 - $percent;
+            $adjustments[carbon($date)->toDateString()] = 1 - max($percent, 0);
         }
 
         // The second adjustment that can happen is a company holiday can
