@@ -10,7 +10,7 @@ return [
 	'code'                 => \Laravel\Nova\Fields\Code::class,
 	'country'              => \Laravel\Nova\Fields\Country::class,
 	'currency'             => \Laravel\Nova\Fields\Currency::class,
-	'date'                 => \Laravel\Nova\Fields\Date::class,
+	'dateField'            => \Laravel\Nova\Fields\Date::class, // "date" is a macro to impose a default format
 	'dateTime'             => \Laravel\Nova\Fields\DateTime::class,
 	'file'                 => \Laravel\Nova\Fields\File::class,
 	'gravatar'             => \Laravel\Nova\Fields\Gravatar::class,
@@ -49,8 +49,10 @@ return [
 	'badge'       => \Timothyasp\Badge\Badge::class,
 	'badgeUrl'    => \NovaComponents\BadgeUrl\BadgeUrl::class,
 	'color'       => \Timothyasp\Color\Color::class,
+	'multiselect' => \OptimistDigital\MultiselectField\Multiselect::class,
 	'swatch'      => \NovaComponents\ColorSwatch\ColorSwatch::class,
 	'textWrap'    => \Reedware\NovaTextWrapField\TextWrap::class,
+	'time'        => \Laraning\NovaTimeField\TimeField::class,
 	'url'         => \Inspheric\Fields\Url::class,
 	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class,
 

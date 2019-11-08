@@ -213,4 +213,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(TimeOff::class, 'user_id');
     }
+
+    /**
+     * Returns the meetings that this user participates in.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function meetings()
+    {
+        return $this->belongsToMany(MeetingInstance::class, 'meeting_participants', 'user_id', 'meeting_instance_id')->withTimestamps();
+    }
 }

@@ -65,6 +65,9 @@ class EstimateCalculator
         // Determine the user
         $user = User::where('jira_key', '=', $assignee)->first();
 
+        // Determine the schedule for the assignee
+        $schedule = static::getScheduleForAssignee($assignee);
+
         // Initialize the adjustments
         $adjustments = [];
 
@@ -73,11 +76,11 @@ class EstimateCalculator
         // of time off being used. We'll need to flip the percent.
 
         // Determine the time off by date
-        $timeoffs = !is_null($user) ? $user->timeoffs()->pluck('percent', 'date') : [];
+        $timeoffs = !is_null($user) ? $user->timeoffs()->where('date', '>=', carbon()->toDateString())->pluck('percent', 'date') : [];
 
         // Add each time off as an adjustment
         foreach($timeoffs as $date => $percent) {
-            $adjustments[carbon($date)->toDateString()] = 1 - $percent;
+            $adjustments[carbon($date)->toDateString()] = 1 - max($percent, 0);
         }
 
         // The second adjustment that can happen is a company holiday can
@@ -85,11 +88,45 @@ class EstimateCalculator
         // not expected to work. We'll adjust the schedule to do so.
 
         // Determine the holidays by date
-        $holidays = HolidayInstance::where('observed_date', '>=', carbon())->pluck('observed_date');
+        $holidays = HolidayInstance::where('observed_date', '>=', carbon()->toDateString())->pluck('observed_date');
 
         // Add each holiday as an adjustment
         foreach($holidays as $date) {
             $adjustments[carbon($date)->toDateString()] = 0;
+        }
+
+        // The third adjustment that we'll make is for meetings. We assume
+        // that meetings aren't logged as issues, and thus we'll have to
+        // consider the time commitments for each participant in them.
+
+        // Determine the meetings by date
+        $meetings = !is_null($user)
+            ? $user->meetings->where('effective_date', '>=', carbon()->toDateString())->groupBy(function($meeting) {
+                return $meeting->effective_date->toDateString();
+            })->map(function($meetings) {
+                return $meetings->sum->length_in_seconds;
+            })->toArray()
+            : [];
+
+        // Add each meeting as an adjustment
+        foreach($meetings as $date => $length) {
+
+            // Determine the daily limit
+            $limit = $schedule->getAllocationLimit(carbon($date)->dayOfWeek);
+
+            // If the limit is already zero, don't bother
+            if($limit <= 0) {
+                continue;
+            }
+
+            // If the current allocation is already zero, don't bother
+            if(($adjustments[$date] ?? 1) <= 0) {
+                continue;
+            }
+
+            // Assign the adjustment
+            $adjustments[$date] = max(($adjustments[$date] ?? 1) - ($length / $limit), 0);
+
         }
 
         // Return the adjustments
@@ -172,7 +209,7 @@ class EstimateCalculator
                 // to the next day for the next issue, otherwise we'll loop forever.
 
                 // Check if we've run out of time for the day
-                if($allocated >= $limit) {
+                if(round($limit - $allocated) <= 0) {
 
                     // Advance to the next day
                     $date = $date->addDay()->startOfDay();
@@ -183,7 +220,7 @@ class EstimateCalculator
                 }
 
                 // Determine how much time we can allocate for today
-                $allocatable = min($remaining, $limit - $allocated);
+                $allocatable = round(min($remaining, $limit - $allocated));
 
                 // Allocate the time
                 $date = $date->addSeconds($allocatable);

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
+use Laravel\Nova\Fields\Field;
 use Illuminate\Support\ServiceProvider;
 use Reedware\NovaFieldManager\NovaFieldManager;
 
@@ -16,18 +18,21 @@ class FieldServiceProvider extends ServiceProvider
      */
     public function boot(NovaFieldManager $fields)
     {
-        // Register the field macros
-        $this->registerFieldMacros($fields);
+        // Register the field manager macros
+        $this->registerFieldManagerMacros($fields);
+
+        // Register the field instance macros
+        $this->registerFieldInstanceMacros();
     }
 
     /**
-     * Registers the field macros.
+     * Registers the field manager macros.
      *
      * @param  Reedware\NovaFieldManager\NovaFieldManager  $fields
      *
      * @return void
      */
-    protected function registerFieldMacros(NovaFieldManager $fields)
+    protected function registerFieldManagerMacros(NovaFieldManager $fields)
     {
         /**
          * Creates and returns a new display name field.
@@ -99,6 +104,38 @@ class FieldServiceProvider extends ServiceProvider
                     return $model->setAttribute($attribute, $request->{$requestAttribute} / 100);
                 });
 
+        });
+
+        /**
+         * Overrides the "Date" field with a default format.
+         *
+         * @link https://momentjs.com/docs/#/parsing/string-format/ for {@see $date->format()}.
+         * @link https://flatpickr.js.org/formatting/ for {@see $date->pickerFormat()}.
+         *
+         * @return \Laravel\Nova\Fields\Date
+         */
+        $fields->macro('date', function($name, $attribute = null, callable $resolveCallback = null) use ($fields) {
+
+            return $fields->dateField($name, $attribute, $resolveCallback)
+                ->format('MMM Do, YYYY')
+                ->pickerFormat('Y-m-d');
+
+        });
+    }
+
+    /**
+     * Registers the field instance macros.
+     *
+     * @return void
+     */
+    protected function registerFieldInstanceMacros()
+    {
+        Field::macro('fillAfterCreate', function() {
+            return $this->fillUsing(function($request, $model, $attribute, $requestAttribute) {
+                return function() use ($request, $model, $attribute, $requestAttribute) {
+                    return $this->fillAttributeFromRequest($request, $requestAttribute, $model, $attribute);
+                };
+            });
         });
     }
 }

@@ -974,11 +974,43 @@ textarea.form-input:read-only,
 ---------------------------------------------------------------------------- */
 
 .checkbox {
-  outline: 0;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  flex-shrink: 0;
+  height: 1.25rem;
+  width: 1.25rem;
+  color: var(--primary);
+  background-color: var(--white);
+  border-width: 1px;
+  border-color: var(--60);
+  border-radius: .25rem;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
 }
 
-.checkbox:focus {
+.checkbox:focus,
+.checkbox:active {
+  outline: 0;
   box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.checkbox:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* File Upload
@@ -1152,23 +1184,6 @@ textarea.form-input:read-only,
 /* Dropdown
 ---------------------------------------------------------------------------- */
 
-.dropdown {
-}
-
-.dropdown-menu-left {
-  top: 2.5rem;
-  left: 0rem;
-}
-
-.dropdown-menu-right {
-  top: 2.5rem;
-  right: 0rem;
-}
-
-.dropdown-right {
-  right: 20px;
-}
-
 .dropdown-alt .dropdown-trigger {
   display: flex;
   align-items: center;
@@ -1185,9 +1200,6 @@ textarea.form-input:read-only,
 
 /* Sidebar
 ---------------------------------------------------------------------------- */
-
-.sidebar-link {
-}
 
 .router-link-active {
   font-weight: 800 !important;
@@ -1821,6 +1833,39 @@ trix-editor.disabled {
 
 .key-value-items .key-value-item:last-child > .key-value-fields {
   border-bottom: none;
+}
+
+/* Tooltip
+---------------------------------------------------------------------------- */
+
+.tooltip {
+  display: block !important;
+  z-index: 88888;
+}
+
+.tooltip .tooltip-inner {
+}
+
+.tooltip.popover .popover-inner {
+}
+
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s, visibility .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
+
+/* Flatpickr Calendar
+---------------------------------------------------------------------------- */
+
+.flatpickr-calendar {
+  z-index: 99999;
 }
 
 /* Tailwind Utilities
@@ -3299,10 +3344,6 @@ trix-editor.disabled {
   font-family: Nunito, system-ui, BlinkMacSystemFont, -apple-system, sans-serif;
 }
 
-.font-serif {
-  font-family: Constantia, Lucida Bright, Lucidabright, Lucida Serif, Lucida, DejaVu Serif, Bitstream Vera Serif, Liberation Serif, Georgia, serif;
-}
-
 .font-mono {
   font-family: Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 }
@@ -3391,6 +3432,10 @@ trix-editor.disabled {
   height: 1rem;
 }
 
+.h-5 {
+  height: 1.25rem;
+}
+
 .h-6 {
   height: 1.5rem;
 }
@@ -3417,6 +3462,10 @@ trix-editor.disabled {
 
 .h-editor-icon {
   height: .95rem;
+}
+
+.h-\!8 {
+  height: 2rem !important;
 }
 
 .h-dropdown-trigger {
@@ -3837,6 +3886,10 @@ trix-editor.disabled {
 
 .min-h-0 {
   min-height: 0;
+}
+
+.min-h-9 {
+  min-height: 2.25rem;
 }
 
 .min-h-input {
@@ -5300,6 +5353,10 @@ trix-editor.disabled {
   width: 1rem;
 }
 
+.w-5 {
+  width: 1.25rem;
+}
+
 .w-8 {
   width: 2rem;
 }
@@ -5550,4 +5607,44 @@ div[dusk=casl-priorities-lens-component] table tr th:first-child,
 div[dusk=casl-priorities-lens-component] table tr td:last-child,
 div[dusk=casl-priorities-lens-component] table tr th:last-child {
   display: none;
+}
+
+#nova .multiselect {
+  height: 2.25rem;
+  min-height: 2.25rem;
+}
+
+#nova .multiselect .multiselect__select {
+  height: 2.25rem;
+}
+
+#nova .multiselect .multiselect__option--highlight {
+  background: var(--primary);
+}
+
+#nova .multiselect .multiselect__option--highlight:after {
+  background: var(--primary);
+}
+
+#nova .multiselect .multiselect__tags {
+  min-height: 2.25rem;
+  padding-top: 6px;
+}
+
+#nova .multiselect .multiselect__placeholder {
+  line-height: 1.5;
+  font-size: 1rem;
+  margin-bottom: 0;
+  margin-left: 5px;
+  margin-top: -2px;
+  padding-top: 0;
+}
+
+#nova .multiselect .multiselect__tag {
+  background: var(--primary);
+}
+
+#nova .multiselect .multiselect__tag-icon:focus,
+#nova .multiselect .multiselect__tag-icon:hover {
+  background: var(--primary);
 }

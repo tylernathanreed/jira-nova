@@ -212,6 +212,17 @@ class IssueWorklog extends Resource
                     $join->on('holiday_instances.observed_date', '=', 'dates.date');
                 });
 
+                $query->leftJoin('meeting_participants', function($join) {
+                    $join->on('meeting_participants.user_id', '=', 'active_schedules.author_id');
+                });
+
+                $query->leftJoin('meeting_instances', function($join) {
+
+                    $join->on('meeting_instances.id', '=', 'meeting_participants.meeting_instance_id');
+                    $join->on('meeting_instances.effective_date', '=', 'dates.date');
+
+                });
+
             })
             ->select(preg_replace('/\s\s+/', ' ', 'sum(active_schedules.simple_weekly_allocation / 5.0)'))
             ->addSelect([
@@ -219,12 +230,21 @@ class IssueWorklog extends Resource
                 'active_schedules.author_id',
                 'active_schedules.author_key',
                 DB::raw('sum(time_off.percent) as percent_off'),
-                DB::raw('sum(case when holiday_instances.id is not null then 1 else 0 end) as is_holiday')
+                DB::raw('sum(case when holiday_instances.id is not null then 1 else 0 end) as is_holiday'),
+                DB::raw('sum(meeting_instances.length_in_seconds) / 3600.0 as cumulative_meeting_length')
             ])
             ->groupBy(['author_id', 'author_name'], function($group) {
                 return [
                     'aggregate' => $group->reduce(function($aggregate, $result) {
-                        return $aggregate + ($result->is_weekend || $result->is_holiday ? 0 : ($result->aggregate * (1 - $result->percent_off)));
+
+                        if($result->is_weekend || $result->is_holiday) {
+                            return $aggregate;
+                        }
+
+                        $value = max(($result->aggregate * (1 - $result->percent_off)) - $result->cumulative_meeting_length, 0);
+
+                        return $aggregate + $value;
+
                     }, 0)
                 ];
             })

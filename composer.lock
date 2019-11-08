@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "776b31295cabcccb171736072f2b07f0",
+    "content-hash": "a4cc05a725552b8b44094e6ebd0464dc",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1038,6 +1038,47 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "laraning/nova-time-field",
+            "version": "v0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laraning/nova-time-field.git",
+                "reference": "e0533b89cb5d9db72e141d3d2b170f99aeb3b4aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laraning/nova-time-field/zipball/e0533b89cb5d9db72e141d3d2b170f99aeb3b4aa",
+                "reference": "e0533b89cb5d9db72e141d3d2b170f99aeb3b4aa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laraning\\NovaTimeField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laraning\\NovaTimeField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "time": "2019-08-23T07:31:03+00:00"
         },
         {
             "name": "laravel/framework",
@@ -2234,6 +2275,62 @@
                 "serialize"
             ],
             "time": "2019-10-19T18:38:51+00:00"
+        },
+        {
+            "name": "optimistdigital/nova-multiselect-field",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/optimistdigital/nova-multiselect-field.git",
+                "reference": "f6407b2aef8150c9c35667fb9301477c1d349514"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/optimistdigital/nova-multiselect-field/zipball/f6407b2aef8150c9c35667fb9301477c1d349514",
+                "reference": "f6407b2aef8150c9c35667fb9301477c1d349514",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^2.0.11",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "OptimistDigital\\MultiselectField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "OptimistDigital\\MultiselectField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tarvo Reinpalu",
+                    "email": "tarvoreinpalu@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Optimist Digital",
+                    "email": "info@optimistdigital.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A multiple select field for Laravel Nova.",
+            "keywords": [
+                "laravel",
+                "multiselect",
+                "nova",
+                "select"
+            ],
+            "time": "2019-11-04T10:49:15+00:00"
         },
         {
             "name": "paragonie/random_compat",

@@ -119,3 +119,44 @@ div[dusk="casl-priorities-lens-component"] {
     }
 
 }
+
+#nova .multiselect {
+
+    @apply .h-9 .min-h-9;
+
+    .multiselect__select {
+        @apply .h-9;
+    }
+
+    .multiselect__option--highlight {
+
+        background: var(--primary);
+
+        &:after {
+            background: var(--primary);
+        }
+
+    }
+
+    .multiselect__tags {
+        @apply .min-h-9;
+        padding-top: 6px;
+    }
+
+    .multiselect__placeholder {
+        @apply .leading-normal;
+        font-size: 1rem;
+        margin-bottom: 0;
+        margin-left: 5px;
+        margin-top: -2px;
+        padding-top: 0;
+    }
+
+    .multiselect__tag {
+        background: var(--primary);
+    }
+
+    .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
+        background: var(--primary);
+    }
+}
