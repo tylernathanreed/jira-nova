@@ -49,8 +49,10 @@ return [
 	'badge'       => \Timothyasp\Badge\Badge::class,
 	'badgeUrl'    => \NovaComponents\BadgeUrl\BadgeUrl::class,
 	'color'       => \Timothyasp\Color\Color::class,
+	'multiselect' => \OptimistDigital\MultiselectField\Multiselect::class,
 	'swatch'      => \NovaComponents\ColorSwatch\ColorSwatch::class,
 	'textWrap'    => \Reedware\NovaTextWrapField\TextWrap::class,
+	'time'        => \Laraning\NovaTimeField\TimeField::class,
 	'url'         => \Inspheric\Fields\Url::class,
 	'valueToggle' => \Reedware\NovaValueToggle\ValueToggle::class,
 

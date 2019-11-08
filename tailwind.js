@@ -50,18 +50,6 @@ module.exports = {
 
     fonts: {
         sans: ['Nunito', 'system-ui', 'BlinkMacSystemFont', '-apple-system', 'sans-serif'],
-        serif: [
-            'Constantia',
-            'Lucida Bright',
-            'Lucidabright',
-            'Lucida Serif',
-            'Lucida',
-            'DejaVu Serif',
-            'Bitstream Vera Serif',
-            'Liberation Serif',
-            'Georgia',
-            'serif',
-        ],
         mono: ['Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
     },
 
@@ -147,6 +135,7 @@ module.exports = {
         '3': '0.75rem',
         'editor-icon': '0.95rem',
         '4': '1rem',
+        '5': '1.25rem',
         // '6': '1.5rem',
         '8': '2rem',
         '9': '2.25rem',
@@ -186,8 +175,10 @@ module.exports = {
         '3': '0.75rem',
         'editor-icon': '0.95rem',
         '4': '1rem',
+        '5': '1.25rem',
         '6': '1.5rem',
         '8': '2rem',
+        '!8': '2rem !important',
         'dropdown-trigger': '2.25rem',
         '9': '2.25rem',
         // '10': '2.5rem',
@@ -215,6 +206,7 @@ module.exports = {
 
     minHeight: {
         '0': '0',
+        '9': '2.25rem',
         input: '3rem',
         textarea: '4.875rem',
         full: '100%',
