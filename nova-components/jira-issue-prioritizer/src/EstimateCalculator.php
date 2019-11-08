@@ -104,7 +104,7 @@ class EstimateCalculator
             ? $user->meetings->where('effective_date', '>=', carbon())->groupBy(function($meeting) {
                 return $meeting->effective_date->toDateString();
             })->map(function($meetings) {
-                return $meetings->sum->getLength();
+                return $meetings->sum->length_in_seconds;
             })->toArray()
             : [];
 

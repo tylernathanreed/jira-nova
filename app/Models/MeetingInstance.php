@@ -116,16 +116,6 @@ class MeetingInstance extends Model
         return carbon("{$date} {$time}");
     }
 
-    /**
-     * Returns the length of the meeting, in hours.
-     *
-     * @return float
-     */
-    public function getLength()
-    {
-        return $this->ends_at->floatDiffInHours($this->starts_at);
-    }
-
     ///////////////////////
     //* Magic Accessors *//
     ///////////////////////
