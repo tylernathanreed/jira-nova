@@ -1767,8 +1767,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/mnobrega/php-jira-agile-rest-client",
-                "reference": "396e97e8541ba2f9315e9bb9d17bfc8f5232c9d1",
-                "shasum": null
+                "reference": "396e97e8541ba2f9315e9bb9d17bfc8f5232c9d1"
             },
             "require": {
                 "illuminate/support": "^5.5|^6.0",
@@ -2105,8 +2104,7 @@
             "dist": {
                 "type": "path",
                 "url": "./nova-components/BadgeUrl",
-                "reference": "b114c1e8014a274a8367c940fffb8383f261b4aa",
-                "shasum": null
+                "reference": "b114c1e8014a274a8367c940fffb8383f261b4aa"
             },
             "require": {
                 "php": ">=7.1.0"
@@ -2135,12 +2133,11 @@
         },
         {
             "name": "nova-components/color-swatch",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/ColorSwatch",
-                "reference": "1137ed59747638960feb5a5bd7d0a3ec1c2dba1a",
-                "shasum": null
+                "reference": "1137ed59747638960feb5a5bd7d0a3ec1c2dba1a"
             },
             "require": {
                 "php": ">=7.1.0"
@@ -2169,12 +2166,11 @@
         },
         {
             "name": "nova-components/jira-issue-prioritizer",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/jira-issue-prioritizer",
-                "reference": "bae2bef9c091cb98d4fd2855c6f98df501267f3d",
-                "shasum": null
+                "reference": "bae2bef9c091cb98d4fd2855c6f98df501267f3d"
             },
             "require": {
                 "php": ">=7.1.0"
@@ -2203,12 +2199,11 @@
         },
         {
             "name": "nova-components/slideshow-player",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/slideshow-player",
-                "reference": "617ddea1d67499620bab9d06a8e1e2204058261d",
-                "shasum": null
+                "reference": "617ddea1d67499620bab9d06a8e1e2204058261d"
             },
             "require": {
                 "php": ">=7.1.0"
