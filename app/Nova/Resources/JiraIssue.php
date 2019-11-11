@@ -121,6 +121,9 @@ class JiraIssue extends Resource
             new \App\Nova\Metrics\JiraIssueDelinquentByDiffTrend,
             new \App\Nova\Metrics\JiraIssueByPriorityPartition,
             new \App\Nova\Metrics\JiraIssueWorkloadByFocusPartition,
+            new \App\Nova\Metrics\MeetingCalendarEvents,
+            new \App\Nova\Metrics\TimeOffCalendarEvents,
+            new \App\Nova\Metrics\HolidayCalendarEvents
         ];
     }
 

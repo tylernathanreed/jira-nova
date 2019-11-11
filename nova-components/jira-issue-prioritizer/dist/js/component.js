@@ -34054,6 +34054,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             // Return the option name
             return option.name;
+        },
+        onFilterChanged: function onFilterChanged() {
+            this.filterChanged();
+            Nova.$emit('filter-changed');
+        },
+        onClearSelectedFilters: function onClearSelectedFilters() {
+            this.clearSelectedFilters();
+            Nova.$emit('filter-changed');
         }
     },
 
@@ -36242,8 +36250,8 @@ var render = function() {
                       "per-page-options": []
                     },
                     on: {
-                      "clear-selected-filters": _vm.clearSelectedFilters,
-                      "filter-changed": _vm.filterChanged
+                      "clear-selected-filters": _vm.onClearSelectedFilters,
+                      "filter-changed": _vm.onFilterChanged
                     }
                   })
                 ],

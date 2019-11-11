@@ -59,8 +59,8 @@
                         :per-page="100"
                         :per-page-options="[]"
                         ref="filterMenu"
-                        @clear-selected-filters="clearSelectedFilters"
-                        @filter-changed="filterChanged"
+                        @clear-selected-filters="onClearSelectedFilters"
+                        @filter-changed="onFilterChanged"
                     />
 
                 </div>
@@ -582,6 +582,16 @@
                 // Return the option name
                 return option.name;
 
+            },
+
+            onFilterChanged() {
+                this.filterChanged();
+                Nova.$emit('filter-changed');
+            },
+
+            onClearSelectedFilters() {
+                this.clearSelectedFilters();
+                Nova.$emit('filter-changed');
             }
 
         },
