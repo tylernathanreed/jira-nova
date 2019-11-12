@@ -197,7 +197,7 @@ class IssueWorklog extends Resource
                 $subquery = (new ScheduleModel)->newActiveSchedulesQuery($range);
 
                 $query->joinSub($subquery, 'active_schedules', function($join) {
-                    $join->whereRaw('1 = 1');
+                    $join->whereRaw('\'1\' = \'1\'');
                 });
 
                 $query->leftJoin('time_off', function($join) {
@@ -230,7 +230,7 @@ class IssueWorklog extends Resource
                 'active_schedules.author_id',
                 'active_schedules.author_key',
                 DB::raw('sum(time_off.percent) as percent_off'),
-                DB::raw('sum(case when holiday_instances.id is not null then 1 else 0 end) as is_holiday'),
+                DB::raw('sum(case when holiday_instances.id is not null then \'1\' else \'0\' end) as is_holiday'),
                 DB::raw('sum(meeting_instances.length_in_seconds) / 3600.0 as cumulative_meeting_length')
             ])
             ->groupBy(['author_id', 'author_name'], function($group) {

@@ -12,6 +12,8 @@ class CreateIssueChangelogItemsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('issue_changelog_items');
+
         Schema::create('issue_changelog_items', function (Blueprint $table) {
 
             // Identification
@@ -30,10 +32,22 @@ class CreateIssueChangelogItemsTable extends Migration
             $table->text('item_to')->nullable();
 
             // Indexes
-            $table->index(['issue_changelog_id', 'item_field_name', 'item_from']);
-            $table->index(['issue_changelog_id', 'item_field_name', 'item_to']);
+            if(Schema::getConnection()->getDriverName() != 'mysql') {
+
+                $table->index(['issue_changelog_id', 'item_field_name', 'item_from'], 'IX_issue_changelog_items_specific_from');
+                $table->index(['issue_changelog_id', 'item_field_name', 'item_to'], 'IX_issue_changelog_items_specific_to');
+
+            }
 
         });
+
+        if(Schema::getConnection()->getDriverName() == 'mysql') {
+
+            DB::statement('alter table `issue_changelog_items` add index `IX_issue_changelog_items_specific_from` (`issue_changelog_id`, `item_field_name`, `item_from`(50))');
+            DB::statement('alter table `issue_changelog_items` add index `IX_issue_changelog_items_specific_to` (`issue_changelog_id`, `item_field_name`, `item_to`(50))');
+
+        }
+
     }
 
     /**

@@ -740,7 +740,7 @@ class FluentTrend extends Trend
             if(!is_null($callback)) {
 
                 // Select the result of the callback
-                $query->select($callback($date));
+                $query->select(DB::raw($callback($date)));
 
             }
 
@@ -880,6 +880,11 @@ class FluentTrend extends Trend
     {
         // Determine the query
         $query = $this->newQuery($request);
+
+        // Make sure a column is provided
+        if(is_null($column)) {
+            $column = $column ?? $query->getModel()->getQualifiedKeyName();
+        }
 
         // Determine the wrapped column
         $wrappedColumn = $query->getQuery()->getGrammar()->wrap($column);
