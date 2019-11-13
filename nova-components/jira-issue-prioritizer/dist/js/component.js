@@ -36959,6 +36959,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -36970,33 +36980,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         var issue = this.getIssue(this.issueKey);
 
+        var moments = {
+            'due_date': issue.due_date ? __WEBPACK_IMPORTED_MODULE_0_moment___default()(issue.due_date) : null,
+            'due_week': issue.due_week ? __WEBPACK_IMPORTED_MODULE_0_moment___default()(issue.due_week) : null,
+            'estimate': issue.estimate ? __WEBPACK_IMPORTED_MODULE_0_moment___default()(issue.estimate) : null
+        };
+
+        var dates = [moments['due_date'], moments['due_week']].filter(function (m) {
+            return !!m;
+        });
+
+        moments['due'] = dates.length > 0 ? __WEBPACK_IMPORTED_MODULE_0_moment___default.a.min(dates) : null;
+
         return {
             'order': this.index,
             'dragging': false,
-            'due': issue.due_date,
-            'estimate': issue.estimate,
-            'offset': this.calculateDiffInDays(issue.due_date, issue.estimate)
+            'due': moments['due'],
+            'due_date': moments['due_date'],
+            'due_week': moments['due_week'],
+            'week_number': issue.week_number,
+            'estimate': moments['estimate'],
+            'offset': this.calculateDiffInDays(moments['due'], moments['estimate'])
         };
     },
 
     methods: {
-
-        moment: __WEBPACK_IMPORTED_MODULE_0_moment___default.a,
-
+        moment: function moment() {
+            return __WEBPACK_IMPORTED_MODULE_0_moment___default()();
+        },
         calculateDiffInDays: function calculateDiffInDays(a, b) {
 
             if (!a || !b) {
                 return null;
             }
 
-            var ma = this.moment(a);
-            var mb = this.moment(b);
-
-            return ma.diff(mb, 'days', 0);
+            return a.diff(b, 'days', 0);
         },
         setEstimate: function setEstimate(estimate) {
 
-            this.estimate = estimate;
+            this.estimate = estimate ? __WEBPACK_IMPORTED_MODULE_0_moment___default()(estimate) : null;
             this.offset = this.calculateDiffInDays(this.due, estimate);
         }
     },
@@ -37647,21 +37669,73 @@ var render = function() {
                     _c("div", { staticClass: "flex items-center" }, [
                       _c("label", [_vm._v("D")]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "flex-1" }, [
-                        _c("span", {
-                          class: _vm.due ? "" : "text-gray",
-                          domProps: {
-                            textContent: _vm._s(
-                              _vm.due
-                                ? _vm
-                                    .moment(_vm.due)
-                                    .toDate()
-                                    .toLocaleDateString()
-                                : "TBD"
-                            )
-                          }
-                        })
-                      ])
+                      _c(
+                        "div",
+                        { staticClass: "flex-1" },
+                        [
+                          _vm.due
+                            ? _c(
+                                "tooltip",
+                                { attrs: { trigger: "hover" } },
+                                [
+                                  _c("span", {
+                                    staticClass:
+                                      "border-b border-70 border-dashed cursor-pointer",
+                                    domProps: {
+                                      textContent: _vm._s(
+                                        _vm.due.toDate().toLocaleDateString()
+                                      )
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "tooltip-content",
+                                    {
+                                      attrs: {
+                                        slot: "content",
+                                        "max-width": "250px"
+                                      },
+                                      slot: "content"
+                                    },
+                                    [
+                                      _vm.due_date
+                                        ? _c("div", {
+                                            domProps: {
+                                              textContent: _vm._s(
+                                                "Production: " +
+                                                  _vm.due_date
+                                                    .toDate()
+                                                    .toLocaleDateString()
+                                              )
+                                            }
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.due_week
+                                        ? _c("div", {
+                                            domProps: {
+                                              textContent: _vm._s(
+                                                "Week #" +
+                                                  _vm.week_number +
+                                                  ": " +
+                                                  _vm.due_week
+                                                    .toDate()
+                                                    .toLocaleDateString()
+                                              )
+                                            }
+                                          })
+                                        : _vm._e()
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _c("span", { staticClass: "text-gray" }, [
+                                _vm._v("TBD")
+                              ])
+                        ],
+                        1
+                      )
                     ])
                   ]
                 ),
@@ -37685,10 +37759,7 @@ var render = function() {
                           ? _c("span", {
                               domProps: {
                                 textContent: _vm._s(
-                                  _vm
-                                    .moment(_vm.estimate)
-                                    .toDate()
-                                    .toLocaleDateString()
+                                  _vm.estimate.toDate().toLocaleDateString()
                                 )
                               }
                             })
@@ -37711,7 +37782,7 @@ var render = function() {
                   attrs: { "data-field": "estimated-offset" }
                 },
                 [
-                  !_vm.due || !_vm.estimate || _vm.due == _vm.estimate
+                  !_vm.due || !_vm.estimate || _vm.due.isSame(_vm.estimate)
                     ? _c("span", [_vm._v("—")])
                     : _vm.offset > 0
                     ? _c("span", {

@@ -103,6 +103,39 @@ class Label extends Model implements Cacheable
         return [$start, $end];
     }
 
+    /**
+     * Returns the week label index from the given label names.
+     *
+     * @param  array  $labels
+     *
+     * @return integer|null
+     */
+    public static function getWeekLabelIndexFromLabelNames($labels)
+    {
+        // If there aren't any labels, there is no index
+        if(empty($labels)) {
+            return null;
+        }
+
+        // Determine the week labels
+        $weeks = array_filter($labels, function($label) {
+            return starts_with($label, 'Week');
+        });
+
+        // If there aren't any week labels, there is no index
+        if(empty($weeks)) {
+            return null;
+        }
+
+        // Determine the numbers tied to each label
+        $numbers = array_map(function($week) {
+            return (int) substr($week, 4);
+        }, $weeks);
+
+        // Return the highest number
+        return max($numbers);
+    }
+
     /////////////
     //* Cache *//
     /////////////

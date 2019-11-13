@@ -117,10 +117,20 @@
                         <div class="flex items-center">
                             <label>D</label>
                             <div class="flex-1">
-                                <span
-                                    :class="due ? '' : 'text-gray'"
-                                    v-text="due ? moment(due).toDate().toLocaleDateString() : 'TBD'"
-                                />
+                                <tooltip v-if="due" trigger="hover">
+                                    <span
+                                        class="border-b border-70 border-dashed cursor-pointer"
+                                        v-text="due.toDate().toLocaleDateString()"
+                                    />
+                                    <tooltip-content
+                                        slot="content"
+                                        max-width="250px"
+                                    >
+                                        <div v-if="due_date" v-text="'Production: ' + due_date.toDate().toLocaleDateString()"/>
+                                        <div v-if="due_week" v-text="'Week #' + week_number + ': ' + due_week.toDate().toLocaleDateString()"/>
+                                    </tooltip-content>
+                                </tooltip>
+                                <span v-else class="text-gray">TBD</span>
                             </div>
                         </div>
                     </div>
@@ -129,7 +139,7 @@
                         <div class="flex items-center">
                             <label>E</label>
                             <div class="flex-1">
-                                <span v-if="estimate" v-text="moment(estimate).toDate().toLocaleDateString()"/>
+                                <span v-if="estimate" v-text="estimate.toDate().toLocaleDateString()"/>
                                 <span v-else>&mdash;</span>
                             </div>
                         </div>
@@ -137,7 +147,7 @@
                 </div>
 
                 <div class="swimlane-issue-field" data-field="estimated-offset" style="min-width: 32px; max-width: 32px; text-align: center">
-                    <span v-if="!due || !estimate || due == estimate">&mdash;</span>
+                    <span v-if="!due || !estimate || due.isSame(estimate)">&mdash;</span>
                     <span v-else-if="offset > 0"
                         class="text-success"
                         v-text="'(+' + (offset > 99 ? '++' : offset) + ')'"
@@ -198,19 +208,37 @@
 
             let issue = this.getIssue(this.issueKey);
 
+            let moments = {
+                'due_date': issue.due_date ? moment(issue.due_date) : null,
+                'due_week': issue.due_week ? moment(issue.due_week) : null,
+                'estimate': issue.estimate ? moment(issue.estimate) : null
+            };
+
+            let dates = [
+                moments['due_date'],
+                moments['due_week']
+            ].filter(m => !!m);
+
+            moments['due'] = dates.length > 0 ? moment.min(dates) : null;
+
             return {
                 'order': this.index,
                 'dragging': false,
-                'due': issue.due_date,
-                'estimate': issue.estimate,
-                'offset': this.calculateDiffInDays(issue.due_date, issue.estimate)
+                'due': moments['due'],
+                'due_date': moments['due_date'],
+                'due_week': moments['due_week'],
+                'week_number': issue.week_number,
+                'estimate': moments['estimate'],
+                'offset': this.calculateDiffInDays(moments['due'], moments['estimate'])
             }
 
         },
 
         methods: {
 
-            moment: moment,
+            moment() {
+                return moment()
+            },
 
             calculateDiffInDays(a, b) {
 
@@ -218,16 +246,13 @@
                     return null;
                 }
 
-                let ma = this.moment(a);
-                let mb = this.moment(b);
-
-                return ma.diff(mb, 'days', 0);
+                return a.diff(b, 'days', 0);
 
             },
 
             setEstimate(estimate) {
 
-                this.estimate = estimate;
+                this.estimate = estimate ? moment(estimate) : null;
                 this.offset = this.calculateDiffInDays(this.due, estimate);
 
             }

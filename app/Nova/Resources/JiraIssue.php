@@ -4,6 +4,7 @@ namespace App\Nova\Resources;
 
 use Field;
 use Illuminate\Http\Request;
+use App\Models\Label as LabelModel;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class JiraIssue extends Resource
@@ -67,6 +68,14 @@ class JiraIssue extends Resource
             Field::text('focus', 'focus'),
 
             Field::text('due_date', 'due_date'),
+
+            Field::text('week_number', function() {
+                return LabelModel::getWeekLabelIndexFromLabelNames($this->labels);
+            }),
+
+            Field::text('due_week', function() {
+                return !is_null($index = LabelModel::getWeekLabelIndexFromLabelNames($this->labels)) ? LabelModel::getWeekRange($index)[1]->toDateString() : null;
+            }),
 
             Field::text('estimate_remaining', 'estimate_remaining'),
             Field::text('estimate_date', 'estimate_date'),
@@ -177,6 +186,6 @@ class JiraIssue extends Resource
      */
     public function serializeForIndex(NovaRequest $request, $fields = null)
     {
-        return collect($fields ?: $this->indexFields($request))->pluck('value', 'attribute')->all();
+        return collect($fields ?: $this->indexFields($request))->pluck('value', 'name')->all();
     }
 }
