@@ -1,38 +1,31 @@
 To-Do:
- - September-ish:
-    - Worklog Dasboard
+ - November-ish:
+    - Designations
+    - Magic Ranking
+ - December-ish:
     - Sync Jobs
- - October-ish:
-    - Holidays
+ - January-ish:
     - Roles
     - My Dashboard
     - Roles / Policies (Permissions)
- - November-ish:
+ - February-ish:
    - User / Issue associations (using canSee authorization)
    - Jira Users (without Jinora)
    - Nova Users (without Jira)
    - System User
- - December-ish:
+ - March-ish:
    - Guest User
-   - Laravel 6
    - Remove old Jira API
    - Process (jobs)
- - January-ish:
-   - Automated testing for cards
+ - April-ish:
    - Automated testing for landing pages
  - TBD:
    - Focus Group Abstraction
    - Field Abstraction
-   - Roadmap Due Dates
    - Issue Show Page
 
 
 Schema:
-
-holidays
- - id
- - display_name
- - date
 
 Phase 3:
 
@@ -95,3 +88,28 @@ fields
  - display_name
  - jira_name
  - system_name
+
+ranking_criteria
+ - id
+ - display_name
+ - system_name
+ - priority
+ - criteria
+
+ranking_escalations
+ - id
+ - display_name
+ - system_name
+
+Escalation Y/N
+Past Due Date
+Testing Failed Y/N
+In Development Y/N
+Stack Rank
+Client Rank (TBD)
+Has Epic Y/N
+Priority
+Issue Type
+Entry Date
+Estimated Week Commitment Delinquencues (Bubble-up)
+Estimated Production Delinquencies (Bubble-Up)
