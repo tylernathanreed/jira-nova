@@ -36,6 +36,7 @@
 
                     <button
                         v-if="resources.length"
+                        title="Toggle between Rank and Estimate ordering."
                         class="btn btn-link bg-30 px-3 border border-60 rounded mr-3 h-dropdown-trigger cursor-pointer select-none"
                         :class="{ 'btn-disabled': working, 'bg-primary border-primary': orderBy != 'rank' }"
                         :disabled="working"
@@ -45,6 +46,20 @@
                             <icon-sort/>
                             <icon-layer-group v-if="orderBy == 'rank'"/>
                             <icon-calendar v-else/>
+                        </div>
+                    </button>
+
+                    <button
+                        v-if="resources.length && orderBy == 'rank'"
+                        title="Sort the issues using a pre-defined set of criteria."
+                        class="btn btn-link bg-30 px-3 border border-60 rounded mr-3 h-dropdown-trigger cursor-pointer select-none"
+                        :class="{ 'btn-disabled': working, 'bg-primary border-primary': orderBy != 'rank' }"
+                        :disabled="working"
+                        @click.prevent="magicSort"
+                    >
+                        <div class="w-11" :class="{'text-80': orderBy == 'rank', 'text-white': orderBy != 'rank'}">
+                            <icon-sort/>
+                            <icon-magic/>
                         </div>
                     </button>
 
@@ -333,6 +348,12 @@
                 return this.orderBy == 'rank'
                     ? _.orderBy(resources, ['rank'], ['asc'])
                     : _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
+
+            },
+
+            magicSort() {
+
+                console.log(this.resources);
 
             },
 

@@ -33561,6 +33561,21 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -33788,6 +33803,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         applyOrder: function applyOrder(resources) {
 
             return this.orderBy == 'rank' ? _.orderBy(resources, ['rank'], ['asc']) : _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
+        },
+        magicSort: function magicSort() {
+
+            console.log(this.resources);
         },
 
 
@@ -36206,7 +36225,10 @@ var render = function() {
                             "btn-disabled": _vm.working,
                             "bg-primary border-primary": _vm.orderBy != "rank"
                           },
-                          attrs: { disabled: _vm.working },
+                          attrs: {
+                            title: "Toggle between Rank and Estimate ordering.",
+                            disabled: _vm.working
+                          },
                           on: {
                             click: function($event) {
                               $event.preventDefault()
@@ -36231,6 +36253,45 @@ var render = function() {
                                 ? _c("icon-layer-group")
                                 : _c("icon-calendar")
                             ],
+                            1
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.resources.length && _vm.orderBy == "rank"
+                    ? _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-link bg-30 px-3 border border-60 rounded mr-3 h-dropdown-trigger cursor-pointer select-none",
+                          class: {
+                            "btn-disabled": _vm.working,
+                            "bg-primary border-primary": _vm.orderBy != "rank"
+                          },
+                          attrs: {
+                            title:
+                              "Sort the issues using a pre-defined set of criteria.",
+                            disabled: _vm.working
+                          },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.magicSort($event)
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-11",
+                              class: {
+                                "text-80": _vm.orderBy == "rank",
+                                "text-white": _vm.orderBy != "rank"
+                              }
+                            },
+                            [_c("icon-sort"), _vm._v(" "), _c("icon-magic")],
                             1
                           )
                         ]
