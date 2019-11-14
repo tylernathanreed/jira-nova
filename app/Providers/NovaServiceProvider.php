@@ -117,6 +117,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
+     * Register the application's Nova resources.
+     *
+     * @return void
+     */
+    protected function resources()
+    {
+        Nova::resourcesIn(app_path('Nova/Resources'));
+    }
+
+    /**
      * Get the cards that should be displayed on the Nova dashboard.
      *
      * @return array
