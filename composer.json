@@ -22,6 +22,7 @@
         "laravel/tinker": "^1.0",
         "league/csv": "^9.3",
         "lesstif/php-jira-rest-client": "^1.37",
+        "maatwebsite/laravel-nova-excel": "^1.1",
         "mad-web/nova-telescope-link": "^2.0",
         "mnobrega/php-jira-agile-rest-client": "dev-master",
         "nova-components/badge-url": "dev-master",

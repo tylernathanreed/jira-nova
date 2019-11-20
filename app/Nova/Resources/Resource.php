@@ -4,6 +4,7 @@ namespace App\Nova\Resources;
 
 use Laravel\Nova\Resource as NovaResource;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 abstract class Resource extends NovaResource
 {
@@ -195,5 +196,28 @@ abstract class Resource extends NovaResource
     public static function getDefaultAttributes()
     {
         return static::$defaultAttributes ?? [];
+    }
+
+    /**
+     * Creates and returns a new download action.
+     *
+     * @return \Laravel\Nova\Actions\Action
+     */
+    public static function newDownloadAction()
+    {
+        // Create a new action
+        $action = new DownloadExcel;
+
+        // Ask for the filename
+        $action->askForFilename();
+
+        // Ask for writer type
+        $action->askForWriterType();
+
+        // Include headers
+        $action->withHeadings();
+
+        // Return the action
+        return $action;
     }
 }
