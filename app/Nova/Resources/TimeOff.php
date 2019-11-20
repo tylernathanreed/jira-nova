@@ -197,6 +197,8 @@ class TimeOff extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            static::newDownloadAction()
+        ];
     }
 }
