@@ -123,6 +123,174 @@ class Issue extends Model implements Cacheable
         return rtrim(config('jira.host'), '/') . '/browse/' . $key;
     }
 
+    /**
+     * Returns whether or not this issue has the specified label.
+     *
+     * @param  string  $label
+     *
+     * @return boolean
+     */
+    public function hasLabel($label)
+    {
+        return !is_null(collect($this->labels)->first(function($compare) use ($label) {
+            return $compare == $label;
+        }));
+    }
+
+    /**
+     * Returns the due date of this issue.
+     *
+     * @return \Carbon\Carbon|null
+     */
+    public function getDueDate()
+    {
+        // Determine the applicable due dates
+        $dates = $this->getApplicableDueDates();
+
+        // If there aren't any dates, then it cannot be due
+        if(count($dates) == 0) {
+            return null;
+        }
+
+        // Return the oldest date
+        return min($dates);
+    }
+
+    /**
+     * Returns the applicable due dates.
+     *
+     * @return array
+     */
+    public function getApplicableDueDates()
+    {
+        return array_filter([
+            $this->getProductionDueDate(),
+            $this->getWeekCommitmentDueDate()
+        ]);
+    }
+
+    /**
+     * Returns the production due date of this issue.
+     *
+     * @return \Carbon\Carbon|null
+     */
+    public function getProductionDueDate()
+    {
+        return $this->due_date;
+    }
+
+    /**
+     * Returns the week commitment due date of this issue.
+     *
+     * @return \Carbon\Carbon|null
+     */
+    public function getWeekCommitmentDueDate()
+    {
+        // Determine the week label index from the label names
+        $index = $this->getWeekLabelIndex();
+
+        // If no index was found, no commitment has been made
+        if(is_null($index)) {
+            return null;
+        }
+
+        // Return the end date of the week
+        return Label::getWeekRange($index)[1];
+    }
+
+    /**
+     * Returns the week label index of this issue.
+     *
+     * @return integer|null
+     */
+    public function getWeekLabelIndex()
+    {
+        // Return the week label index from the label names
+        return Label::getWeekLabelIndexFromLabelNames($this->labels);
+    }
+
+    /**
+     * Returns whether or not this issue is past due.
+     *
+     * @return boolean
+     */
+    public function isPastDue()
+    {
+        return !is_null($due = $this->getDueDate()) && $due->isPast() && !$due->isToday();
+    }
+
+    /**
+     * Returns the priority index of this issue.
+     *
+     * @return integer|null
+     */
+    public function getPriorityIndex()
+    {
+        switch($this->priority_name) {
+
+            case 'Highest':
+                return 1;
+
+            case 'High':
+                return 2;
+
+            case 'Medium':
+                return 3;
+
+            case 'Low':
+                return 4;
+
+            case 'Lowest':
+                return 5;
+
+            default:
+                return null;
+
+        }
+    }
+
+    /**
+     * Returns the type index of this issue.
+     *
+     * @return integer|null
+     */
+    public function getTypeIndex()
+    {
+        switch($this->type_name) {
+
+            case 'Bug': case 'Error': case 'Problem':
+                return 1;
+
+            case 'Data Update': case 'Meta Update':
+                return 2;
+
+            case 'Task': case 'Sub-Task': case 'Epic':
+                return 3;
+
+            case 'Service Request': case 'Training':
+                return 4;
+
+            case 'Improvement':
+                return 5;
+
+            case 'Research':
+                return 6;
+
+            case 'New Feature':
+                return 7;
+
+            case 'Fit and Finish': case 'Consistency': case 'Verbiage':
+                return 8;
+
+            case 'Recommendation':
+                return 9;
+
+            default:
+                return null;
+
+        }
+    }
+
     ////////////
     //* Jira *//
     ////////////
@@ -394,7 +562,7 @@ class Issue extends Model implements Cacheable
     /**
      * Returns all of the block relations from the specified jira issues.
      *
-     * @param  array  $issues
+     * @param  \Illuminate\Support\Collection  $issues
      *
      * @return array
      */

@@ -88,7 +88,7 @@ class IssueChangelog extends Model implements Cacheable
                             foreach($changelogs as $changelog) {
 
                                 // Create the changelog
-                                $newChangelog = $issue->changelogs()->create([
+                                $newChangelog = $issue->changelogs()->updateOrCreate(['jira_id' => $changelog->id], [
                                     'jira_id' => $changelog->id,
                                     'issue_key' => $issue->key,
                                     'author_id' => $userMapping[$changelog->author->key] ?? null,

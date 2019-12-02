@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('estimate', 'JiraIssuePrioritizerController@estimate');
+Route::post('magic-sort', 'JiraIssuePrioritizerController@magicSort');

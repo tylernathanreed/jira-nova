@@ -352,8 +352,74 @@
             },
 
             magicSort() {
+                this.getMagicSortOrder();
+            },
 
-                console.log(this.resources);
+            getMagicSortOrder() {
+
+                let self = this;
+
+                // Determine the issues
+                let issues = this.resources.map(function(issue, index) {
+                    return issue.key;
+                })
+
+                this.working = true;
+
+                Nova.request({
+                    method: 'post',
+                    url: '/nova-vendor/jira-priorities/magic-sort',
+                    data: this.newFormData({'issues': JSON.stringify(issues)}),
+                })
+                    .then(response => {
+
+                        this.resources = this.getMagicSortedResources(response.data.orders);
+
+                        this.$nextTick(() => {
+                            this.assignEstimatedCompletionDates();
+                        });
+
+                        this.working = false;
+
+                    })
+                    .catch(error => {
+
+                        if(!error.response) {
+
+                            console.warn(error);
+                            this.errors = new Errors(error.message);
+
+                        }
+
+                        else if(error.response.status == 422) {
+                            this.errors = new Errors(error.response.data.errors);
+                        }
+
+                        this.working = false;
+
+                    })
+
+            },
+
+            getMagicSortedResources(orders) {
+
+                let original = this.resources;
+
+                let ordered = [];
+
+                for(let i = 0; i < orders.length; i++) {
+
+                    let index = _.findIndex(original, {'key': orders[i]});
+
+                    ordered.push(original.splice(index, 1)[0]);
+                    
+                }
+
+                for(let i = 0; i < original.length; i++) {
+                    ordered.push(original[i]);
+                }
+
+                return ordered;
 
             },
 

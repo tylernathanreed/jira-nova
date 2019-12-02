@@ -7,6 +7,23 @@ use App\Models\Issue;
 use App\Models\Schedule;
 use App\Models\HolidayInstance;
 
+/*
+|--------------------------------------------------------------------------
+| Estimate Calculator
+|--------------------------------------------------------------------------
+|
+| The estimate calculation will calculate the estimated completion dates
+| of the provided issues based on information about the issue. This is
+| useful for determining estimated delinquencies and early warnings.
+|
+| The following fields are required per issue to calculate an estimate:
+|
+|  - {string}   "key"        The unique string identifier for the issue.
+|  - {integer}  "order"      The order in which the issues need to be completed.
+|  - {string}   "focus"      The name of the focus group the issue is in.
+|  - {integer}  "remaining"  The estimated remaining work time (in seconds) to complete the issue.
+|
+*/
 class EstimateCalculator
 {
     /**

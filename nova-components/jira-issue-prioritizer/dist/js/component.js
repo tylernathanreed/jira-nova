@@ -33805,8 +33805,64 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             return this.orderBy == 'rank' ? _.orderBy(resources, ['rank'], ['asc']) : _.orderBy(resources, ['new_estimated_completion_date', 'rank'], ['asc', 'asc']);
         },
         magicSort: function magicSort() {
+            this.getMagicSortOrder();
+        },
+        getMagicSortOrder: function getMagicSortOrder() {
+            var _this5 = this;
 
-            console.log(this.resources);
+            var self = this;
+
+            // Determine the issues
+            var issues = this.resources.map(function (issue, index) {
+                return issue.key;
+            });
+
+            this.working = true;
+
+            Nova.request({
+                method: 'post',
+                url: '/nova-vendor/jira-priorities/magic-sort',
+                data: this.newFormData({ 'issues': JSON.stringify(issues) })
+            }).then(function (response) {
+
+                _this5.resources = _this5.getMagicSortedResources(response.data.orders);
+
+                _this5.$nextTick(function () {
+                    _this5.assignEstimatedCompletionDates();
+                });
+
+                _this5.working = false;
+            }).catch(function (error) {
+
+                if (!error.response) {
+
+                    console.warn(error);
+                    _this5.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.message);
+                } else if (error.response.status == 422) {
+                    _this5.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
+                }
+
+                _this5.working = false;
+            });
+        },
+        getMagicSortedResources: function getMagicSortedResources(orders) {
+
+            var original = this.resources;
+
+            var ordered = [];
+
+            for (var i = 0; i < orders.length; i++) {
+
+                var index = _.findIndex(original, { 'key': orders[i] });
+
+                ordered.push(original.splice(index, 1)[0]);
+            }
+
+            for (var _i = 0; _i < original.length; _i++) {
+                ordered.push(original[_i]);
+            }
+
+            return ordered;
         },
 
 
@@ -33894,7 +33950,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
          * @return {void}
          */
         assignEstimatedCompletionDates: function assignEstimatedCompletionDates() {
-            var _this5 = this;
+            var _this6 = this;
 
             var after = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -33960,9 +34016,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 if (!error.response) {
 
                     console.warn(error);
-                    _this5.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.message);
+                    _this6.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.message);
                 } else if (error.response.status == 422) {
-                    _this5.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
+                    _this6.errors = new __WEBPACK_IMPORTED_MODULE_3_laravel_nova__["Errors"](error.response.data.errors);
                 }
             });
         },
