@@ -208,9 +208,10 @@ class IssueSingleEpicPrioritiesLens extends Lens
                 ->futuristic()
                 ->scope($scope),
 
-            Issue::getIssueWeekStatusPartition('-1 week')->label('Last Week')->scope($scope),
-            Issue::getIssueWeekStatusPartition()->label('This Week')->scope($scope),
-            Issue::getIssueWeekStatusPartition('+1 week')->label('Next Week')->scope($scope),
+            Issue::getIssueWeekStatusPartition('-1 week')->label('Last Week')->scope($scope)->width('1/4'),
+            Issue::getIssueWeekStatusPartition()->label('This Week')->scope($scope)->width('1/4'),
+            Issue::getIssueWeekStatusPartition('+1 week')->label('Next Week')->scope($scope)->width('1/4'),
+            Issue::getIssueStatusPartition()->scope($scope)->label('All Time')->width('1/4')
 
         ];
     }
