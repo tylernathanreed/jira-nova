@@ -72,6 +72,14 @@ class MeetingInstance extends Model
             }
 
         });
+
+        // When the model is being deleted...
+        static::deleting(function($model) {
+
+            // Also delete the pivot entries
+            $model->participants()->detach();
+
+        });
     }
 
     /////////////////
