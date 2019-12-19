@@ -219,181 +219,129 @@ class SortedIssues extends Collection
 
         }
 
-        // The next step is to determine 
+        // The next step is to walk through each delinquency to see if
+        // there are any non-delinquencies that could be pulled down
+        // and stay non-delinquent. We'll call this grab and pull.
 
-        // dump(compact('estimates', 'commitments', 'blocks'));
+        // Iterate through the estimates
+        foreach($estimates as $key => $estimate) {
+
+            // If the issue does not have a commitment, we can skip it
+            if(is_null($commitment = ($commitments[$key] ?? null))) {
+                continue;
+            }
+
+            // If the estimate is not delinquent, we can skip it
+            if($estimate < $commitment) {
+                continue;
+            }
+
+            // At this point, we know that we have a delinquency. The next
+            // step is to see if there are any issues ahead of this one
+            // that we can pull down without making things any worse.
+
+            // Pull down any issues that won't be made delinquent by doing so
+            $issues = $this->pullIssues($issues, $commitments, $estimates, $key, $criteria);
+
+            // With the issues changed, the estimates will be different. We
+            // will need to recalculate the estimates, such that the next
+            // iteration will have a fresh set of data to operate with.
+
+            // Recalculate the estimates
+            $estimates = $this->calculateEstimates($issues, $criteria);
+
+        }
 
         // Return the issues
         return $issues;
     }
 
     /**
-     * Returns a sorted collection based on the given records.
+     * Pulls the issues above the specified key that are non-delinquent in hopes to make the specified issue non-delinquent.
      *
-     * @param  array  $records
+     * @param  array   $issues
+     * @param  array   $commitments
+     * @param  array   $estimates
+     * @param  string  $key
+     * @param  array   $criteria
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return array
      */
-    public static function getSortedCollection($records)
+    protected function pullIssues($issues, $commitments, $estimates, $key, $criteria)
     {
-        // Convert the list of records into a collection
-        $records = (new Issue)->newCollection($records);
+        // The first piece of information that we'll need is an index.
+        // We'll search for the issue with the given key to find it.
+        // Our index will tell us what the algorithm is thinking.
 
-        // Before we split the records into groups, we will want to order
-        // them based on off a predefined set of criteria. While we may
-        // violate this order later on, it is a good place to start.
+        // Determine the index of the given issue
+        $index = array_search($key, Arr::pluck($issues, 'key'));
 
-        // Determine the initial list of sorted records
-        $initial = static::getSimpleSortedCollection($records)->map(function($record) {
+        // If for whatever reason, we failed to find the index, instead
+        // of failing, we'll just return the original set of issues.
+        // No clue what happened, but at least we won't explode.
+
+        // Make sure an index was found
+        if($index === false) {
+            return $issues;
+        }
+
+        // With the overhead out of the way, the next step is to utilize
+        // the initial set of estimates. We'll walk backwards through
+        // these and pull down any issues that we're allowed to do.
+
+        // Convert the commitments and estimates into a seqential array
+        $candidates = array_map(function($key) use ($estimates, $commitments) {
             return [
-                'key' => $record->key,
-                'assignee' => $record->assignee_key,
-                'remaining' => $record->estimate_remaining,
-                'focus' => $record->focus,
-                'due' => optional($record->getDueDate())->toDateString()
+                'key' => $key,
+                'estimate' => $estimates[$key],
+                'due' => $commitments[$key] ?? null,
+                'moveable' => is_null($commitments[$key] ?? null) || $commitments[$key] > $estimates[$key]
             ];
-        });
+        }, array_keys($estimates));
 
-        // The second step to magic sort is to split the records into two
-        // groups: one with commitments, and one without. We will have
-        // to zipper them back together, which may not be the same.
+        // Iterate backwards through the candidates
+        for($i = $index - 1; $i >= 0; $i--) {
 
-        // Split the groups into commitments and backlog items
-        $groups = $initial->groupBy(function($record) {
-            return !is_null($record['due']) ? 'commitments' : 'backlog';
-        });
+            // Determine the current candidate
+            $candidate = $candidates[$i];
 
-        // In order to zipper the groups together, we will need to use
-        // the commitments as our sorted list, and zipper in our non
-        // commitments in a similar way, but without delinquencies.
+            // If the candidate cannot be moved, stop here
+            if(!$candidate['moveable']) {
+                break;
+            }
 
-        // Initialize the list of sorted records
-        $sorted = $groups['commitments']->sortBy('order');
+            // At this point, we know that our issue is delinquent, and there's
+            // a non-delinquent issue above it that we can move. If by moving
+            // the issue we'd make it delinquent, then we shouldn't move it.
 
-        // Calculate the initial set of estimates
-        $sorted = static::assignEstimates($sorted);
+            // Temporarily move the candidate
+            $temporary = $this->moveIssue($issues, $i, $index + 1);
 
-        // Intialize the list of unsorted records
-        $unsorted = $groups['backlog']->sortBy('order');
+            // Rebuild the estimates
+            $newEstimates = $this->calculateEstimates($temporary, $criteria);
 
-        // The way we are going to zipper in the backlog records will
-        // involve slotting in a new record before the first on-time
-        // issue after the latest delinquency. Repeat until done.
+            // Determine the commitment and estimate
+            $commitment = $candidate['due'];
+            $estimate = $newEstimates[$candidate['key']];
 
-        // Initialize the zipper index
-        $index = 0;
-
-        // Loop until we're out of backlog records
-        for($i = 0; count($unsorted) > 0 && $i < count($unsorted); $i++) {
-
-            // Determine the next unsorted item to squeeze in
-            $record = $unsorted[$i];
-
-            // Determine the zipper index
-            $index = static::getZipperIndex($sorted, $record['order'], $index);
-
-            // Temporarily add in the unsorted item
-            $temporary = $sorted::make($sorted->all());
-            $temporary->splice($index + 1, 0, [$record]);
-
-            // Reapply the ordering
-            $temporary = $temporary->mapWithKeys(function($record, $order) {
-                $record['order'] = $order + 1;
-                return [$order => $record];
-            });
-
-            // Assign new estimates
-            $temporary = static::assignEstimates($temporary);
-
-            // Determine the new zipper index
-            $temporaryIndex = static::getZipperIndex($temporary, $record['order']);
-
-            // If the zipper index moved by more than one, we can't put it there
-            if($temporaryIndex - $index > 1) {
-
-                // Force the zipper index forward
-                $index++;
-
-                // Try the same record again
-                $i--;
-                continue;
-
+            // If the change would make the moved issue delinquent, don't do it
+            if(!is_null($commitment) && $commitment < $estimate) {
+                break;
             }
 
             // Commit the change
-            $sorted = $temporary;
+            $issues = $temporary;
+            $index--;
 
-            // Force the zipper index forward
-            $index++;
-
-        }
-
-        // Return the sorted collection
-        return $sorted;
-    }
-
-    /**
-     * Returns the index to zipper in the next record.
-     *
-     * @param  \Illuminate\Database\Eloquent\Collection  $records
-     * @param  integer                                   $order
-     * @param  integer                                   $start
-     *
-     * @return integer
-     */
-    public static function getZipperIndex($records, $order, $start = 0)
-    {
-        // The first reference point that we need is the latest delinquency
-        // in the list of records. We do not want to put anything before
-        // it, as that will make the delinquency worse. Let's do it.
-
-        // Make sure we can access the list by index
-        $records = $records->values();
-
-        // Initialize the delinquent index
-        $delinquentIndex = null;
-
-        // Search backwards through the list for the first delinquency
-        for($i = count($records) - 1; $i >= $start; $i--) {
-
-            // Determine the next potential delinquency
-            $candidate = $records[$i];
-
-            // Another restriction that we're going to enforce is that just
-            // because we can make a commitment non-delinquent does not
-            // mean that we can violate the initial ordering clause.
-
-            // If the candidate would be ordered higher only because there's no due date, stop it
-            if($order < $candidate['order']) {
-
-                // Mark the delinquent index and bail
-                $delinquentIndex = $i;
+            // If the issue itself is no longer delinquent, we can stop
+            if($newEstimates[$key] <= $commitments[$key]) {
                 break;
-
             }
-
-            // In terms of delinquency, we're going to consider same-day
-            // completions as delinquent, seeing as we wouldn't want
-            // to put anything before it, as that would delay it.
-
-            // If the candidate is not delinquent, skip it
-            if($candidate['due'] > $candidate['estimate'] || is_null($candidate['due'])) {
-                continue;
-            }
-
-            // Mark the delinquent index and bail
-            $delinquentIndex = $i;
-            break;
 
         }
 
-        // If we found a delinquent index, start after it
-        if(!is_null($delinquentIndex)) {
-            return $delinquentIndex + 1;
-        }
-
-        // Otherwise, we can start at the beginning of the list
-        return $start;
+        // Return the issues
+        return $issues;
     }
 
     /**
@@ -435,7 +383,7 @@ class SortedIssues extends Collection
         array_splice($issues, $to, 0, [$issues[$from]]);
 
         // Remove the issue from the original index
-        unset($issues[$from + 1]);
+        unset($issues[$from + ($from > $to ? 1 : 0)]);
 
         // Return the issues
         return array_values($issues);
