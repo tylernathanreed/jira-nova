@@ -6,6 +6,7 @@ use Jira;
 use Event;
 use App\Models\Issue;
 use App\Models\Cache;
+use App\Jobs\Cache\CacheJob;
 use Illuminate\Console\Command;
 use App\Events\CacheStatusUpdate;
 
@@ -139,7 +140,7 @@ class JiraCache extends Command
 
         // Iterate through each cache
         foreach($caches as $cache) {
-            $cache->{$operation}();
+            dispatch((new CacheJob($cache, $operation))->onConnection('sync'));
         }
     }
 }

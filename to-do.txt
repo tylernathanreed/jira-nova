@@ -1,8 +1,6 @@
 To-Do:
- - November-ish:
+  - December-ish:
     - Designations
-    - Magic Ranking
- - December-ish:
     - Sync Jobs
  - January-ish:
     - Roles
@@ -29,7 +27,7 @@ Schema:
 
 Phase 3:
 
-process_family
+process_families
  - uuid
  - batch_uuid
  - created_by_user_id (integer)
