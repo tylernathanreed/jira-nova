@@ -31,7 +31,7 @@ process_families
  - batch_uuid
  - created_by_user_id (integer)
 
-process
+processes
  - uuid
  - family_uuid (integer)
  - family_order (integer)
@@ -50,6 +50,12 @@ process
  - cancelled_reason (string)
  - created_at (datetime)
  - created_by_process_uuid (string)
+
+$process = (new Process(compact('job')));
+$process->dependencies()->make(['job' => $parentJob]); // Does not save
+$process->dependencies()->create(['job' => $parentJob]); // Saves
+$process->children()->make(['job' => $childJob]);
+$process->children()->create(['job' => $childJob]);
 
 process_attempts
  - uuid
