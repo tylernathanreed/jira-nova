@@ -1,7 +1,6 @@
 To-Do:
   - December-ish:
     - Designations
-    - Sync Jobs
  - January-ish:
     - Roles
     - My Dashboard
