@@ -466,8 +466,29 @@ class Issue extends Resource
     {
         return [
             (new \App\Nova\Filters\JiraUserFilter)->useAssignee(),
-            new \App\Nova\Filters\StatusIssueFilter
+            new \App\Nova\Filters\StatusIssueFilter,
+            $this->newFixVersionFilter()
         ];
+    }
+
+    public function newFixVersionFilter()
+    {
+        return (new \App\Nova\Filters\InlineTextFilter)->label('Fix Version')->handle(function($query, $value) {
+
+            // Explode the values
+            $values = explode(',', $value);
+
+            // Wrap everything within a nested "where" clause
+            $query->where(function($query) use ($values) {
+
+                // Use a "like" clause for each value
+                foreach($values as $value) {
+                    $query->orWhere('fix_versions', 'like', "%{$value}%");
+                }
+
+            });
+
+        });
     }
 
     /**
