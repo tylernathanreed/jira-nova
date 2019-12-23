@@ -173,6 +173,29 @@ abstract class Resource extends NovaResource
     }
 
     /**
+     * Returns the select options for this resource.
+     *
+     * @param  string|null  $key
+     *
+     * @return array
+     */
+    public static function selection($key = null)
+    {
+        // Create a new model instance
+        $model = static::newModel();
+
+        // If the title property is available, pluck it using a query
+        if(!is_null(static::$title)) {
+            return $model->newQuery()->pluck($model->getKeyName(), static::$title)->all();
+        }
+
+        // Otherwise, use the title method
+        return $model::all()->keyBy($key)->map(function($model) {
+            return (new static($model))->title();
+        });
+    }
+
+    /**
      * Creates and returns a fresh instance of the model represented by the resource.
      *
      * @return mixed

@@ -1,9 +1,6 @@
 To-Do:
- - November-ish:
+  - December-ish:
     - Designations
-    - Magic Ranking
- - December-ish:
-    - Sync Jobs
  - January-ish:
     - Roles
     - My Dashboard
@@ -16,8 +13,10 @@ To-Do:
  - March-ish:
    - Guest User
    - Remove old Jira API
-   - Process (jobs)
  - April-ish:
+   - MySql Conversion
+   - Process (jobs)
+ - May-ish:
    - Automated testing for landing pages
  - TBD:
    - Focus Group Abstraction
@@ -29,12 +28,12 @@ Schema:
 
 Phase 3:
 
-process_family
+process_families
  - uuid
  - batch_uuid
  - created_by_user_id (integer)
 
-process
+processes
  - uuid
  - family_uuid (integer)
  - family_order (integer)
@@ -53,6 +52,12 @@ process
  - cancelled_reason (string)
  - created_at (datetime)
  - created_by_process_uuid (string)
+
+$process = (new Process(compact('job')));
+$process->dependencies()->make(['job' => $parentJob]); // Does not save
+$process->dependencies()->create(['job' => $parentJob]); // Saves
+$process->children()->make(['job' => $childJob]);
+$process->children()->create(['job' => $childJob]);
 
 process_attempts
  - uuid

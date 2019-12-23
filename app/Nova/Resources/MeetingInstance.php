@@ -2,11 +2,9 @@
 
 namespace App\Nova\Resources;
 
-use Auth;
 use Field;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\User as UserModel;
 
 class MeetingInstance extends Resource
 {
@@ -178,7 +176,7 @@ class MeetingInstance extends Resource
         return [
             new \App\Nova\Filters\WhereDateFilter('On or After', 'effective_date', '>=', carbon()->toDateString()),
             new \App\Nova\Filters\WhereDateFilter('On or Before', 'effective_date', '<='),
-            (new \App\Nova\Filters\FluentSelectFilter('Has Participant', 'users.id', UserModel::pluck('id', 'display_name')->all(), Auth::id()))->relation('participants')
+            (new \App\Nova\Filters\FluentSelectFilter('Has Participant', 'users.id', User::selection(), $request->user()->getKey()))->relation('participants')
         ];
     }
 

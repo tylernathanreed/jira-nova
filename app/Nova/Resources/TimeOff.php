@@ -171,8 +171,9 @@ class TimeOff extends Resource
     public function filters(Request $request)
     {
         return [
-            new \App\Nova\Filters\WhereDateFilter('On or After', 'date', '>='),
-            new \App\Nova\Filters\WhereDateFilter('On or Before', 'date', '<=')
+            new \App\Nova\Filters\FluentSelectFilter('User', 'user_id', User::selection(), $request->user()->getKey()),
+            new \App\Nova\Filters\WhereDateFilter('On or After', 'date', '>=', carbon()),
+            new \App\Nova\Filters\WhereDateFilter('On or Before', 'date', '<=', carbon()->addYear())
         ];
     }
 
