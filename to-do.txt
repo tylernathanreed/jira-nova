@@ -13,8 +13,10 @@ To-Do:
  - March-ish:
    - Guest User
    - Remove old Jira API
-   - Process (jobs)
  - April-ish:
+   - MySql Conversion
+   - Process (jobs)
+ - May-ish:
    - Automated testing for landing pages
  - TBD:
    - Focus Group Abstraction
