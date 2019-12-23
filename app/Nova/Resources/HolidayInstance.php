@@ -146,8 +146,8 @@ class HolidayInstance extends Resource
     public function filters(Request $request)
     {
         return [
-            new \App\Nova\Filters\WhereDateFilter('On or After', 'observed_date', '>='),
-            new \App\Nova\Filters\WhereDateFilter('On or Before', 'observed_date', '<=')
+            new \App\Nova\Filters\WhereDateFilter('On or After', 'observed_date', '>=', carbon()),
+            new \App\Nova\Filters\WhereDateFilter('On or Before', 'observed_date', '<=', carbon()->addYear())
         ];
     }
 
