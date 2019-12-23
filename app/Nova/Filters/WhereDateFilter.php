@@ -72,9 +72,9 @@ class WhereDateFilter extends DateFilter
     }
 
     /**
-     * Set the default options for the filter.
+     * Returns the default options for the filter.
      *
-     * @return array|mixed
+     * @return mixed
      */
     public function default()
     {
