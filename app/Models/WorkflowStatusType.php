@@ -33,7 +33,7 @@ class WorkflowStatusType extends Model implements Cacheable
     public static function runCacheHandler(Closure $callback, Carbon $since = null)
     {
         // Determine the statuses
-        $statuses = Api::getAllStatuses();
+        $statuses = Api::getStatuses();
 
         // Determine the jira id to our id mapping
         $projects = Project::pluck('id', 'jira_id')->all();
@@ -77,7 +77,7 @@ class WorkflowStatusType extends Model implements Cacheable
      */
     public static function getCacheRecordCount(Carbon $since = null)
     {
-        return count(Api::getAllStatuses());
+        return count(Api::getStatuses());
     }
 
     /////////////////

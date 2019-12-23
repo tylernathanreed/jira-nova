@@ -70,7 +70,7 @@ class JiraUserFilter extends SelectFilter
     public function options(Request $request)
     {
         return array_merge(['(Assigned)' => 'NotNull', '(Unassigned)' => 'Null'], array_flip(
-            collect(Api::findUsersAssignableToIssues(['project' => 'UAS']))->pluck('displayName', 'key')->all()
+            collect(Api::getUsersAssignableToIssues(['project' => 'UAS']))->pluck('displayName', 'key')->all()
         ));
     }
 
