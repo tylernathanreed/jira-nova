@@ -343,6 +343,23 @@ class Connection extends ApiConnection
     }
 
     /**
+     * Returns the list of all users (active and inactive).
+     *
+     * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-users-search-get
+     *
+     * @param  array  $options
+     *
+     * @option  {integer}  "startAt"     The page offset (defaults to 0).
+     * @option  {integer}  "maxResults"  The maximum number of items to return per page (defaults to 50, maximum is 50).
+     *
+     * @return \stdClass
+     */
+    public function getUsers($options = [])
+    {
+        return $this->request()->path("users/search")->get($options);
+    }
+
+    /**
      * Returns the specified workload.
      *
      * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-issue-issueIdOrKey-worklog-id-get
