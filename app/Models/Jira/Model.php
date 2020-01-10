@@ -6,6 +6,9 @@ use App\Models\Model as Eloquent;
 
 abstract class Model extends Eloquent
 {
+    //////////////////
+    //* Attributes *//
+    //////////////////
     /**
      * The connection name for the model.
      *
@@ -28,6 +31,16 @@ abstract class Model extends Eloquent
     protected $avatarKey = 'avatar_urls';
 
     /**
+     * The internally cached record maps.
+     *
+     * @var array
+     */
+    protected static $recordMap = [];
+
+    ///////////////////////
+    //* Magic Accessors *//
+    ///////////////////////
+    /**
      * Returns the url for the default avatar size.
      *
      * @return string|null
@@ -46,6 +59,9 @@ abstract class Model extends Eloquent
         return $urls[$this->avatarSize];
     }
 
+    ///////////////
+    //* Casting *//
+    ///////////////
     /**
      * Returns the casts mapping.
      *
@@ -56,6 +72,73 @@ abstract class Model extends Eloquent
         return array_merge(['avatar_urls' => 'json'], parent::getCasts());
     }
 
+    //////////////////
+    //* Record Map *//
+    //////////////////
+    /**
+     * Loads the specified record map if it has not already been loaded.
+     *
+     * @param  string  $model
+     *
+     * @return void
+     */
+    protected function loadRecordMapIfNotLoaded($model)
+    {
+        // If the record map has already been loaded, stop here
+        if(array_key_exists($model, static::$recordMap)) {
+            return;
+        }
+
+        // Load the record map
+        $model::loadRecordMap();
+    }
+
+    /**
+     * Loads the record map for this model.
+     *
+     * @return void
+     */
+    public static function loadRecordMap()
+    {
+        static::$recordMap[static::class] = static::getRecordMap();
+    }
+
+    /**
+     * Returns the record map for this model.
+     *
+     * @return array
+     */
+    public static function getRecordMap()
+    {
+        return static::all()->keyBy((new static)->getRecordMapKeyName());
+    }
+
+    /**
+     * Returns the record map key name for this model.
+     *
+     * @return \Closure|string
+     */
+    public function getRecordMapKeyName()
+    {
+        return $this->getJiraCacheKeyName();
+    }
+
+    /**
+     * Returns the specified record from the record map.
+     *
+     * @param  string  $model
+     * @param  mixed   $key
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public static function getRecordFromMap($model, $key)
+    {
+        return static::$recordMap[$model][$key] ?? null;
+    }
+
+    ///////////////
+    //* Caching *//
+    ///////////////
     /**
      * Creates and returns new model from the specified jira record.
      *

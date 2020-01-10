@@ -2,20 +2,20 @@
 
 namespace App\Models\Jira;
 
-class User extends Model
+class Project extends Model
 {
     //////////////////
-    //* Record Map *//
+    //* Attributes *//
     //////////////////
     /**
-     * Returns the record map key name for this model.
+     * The attributes that should be casted.
      *
-     * @return \Closure|string
+     * @var array
      */
-    public function getRecordMapKeyName()
-    {
-        return 'account_id';
-    }
+    protected $casts = [
+        'project_keys' => 'array',
+        'properties' => 'array'
+    ];
 
     ///////////////
     //* Caching *//
@@ -30,14 +30,27 @@ class User extends Model
      */
     public function updateFromJira($record, $options = [])
     {
+        // Load the users if not already loaded
+        $this->loadRecordMapIfNotLoaded(User::class);
+
+        // Determine the project lead
+        $lead = static::getRecordFromMap(User::class, optional($record->lead)->accountId);
+
         // Update the jira attributes
-        $this->account_id = $record->accountId;
-        $this->account_type = $record->accountType;
+        $this->jira_id = $record->id;
+        $this->jira_key = $record->key;
+        $this->entity_id = $record->entityId ?? null;
+        $this->uuid = $record->uuid ?? null;
+        $this->style = $record->style;
+        $this->name = $record->name;
+        $this->description = $record->description ?: null;
         $this->avatar_urls = $record->avatarUrls;
-        $this->display_name = $record->displayName;
-        $this->is_active = !! $record->active;
-        $this->timezone = $record->timeZone ?? null;
-        $this->locale = $record->locale ?? null;
+        $this->lead()->associate($lead);
+        $this->project_keys = $record->projectKeys;
+        $this->project_type_key = $record->projectTypeKey;
+        $this->is_simplified = $record->simplified;
+        $this->is_private = $record->isPrivate;
+        $this->properties = ((array) $record->properties) ?: null;
 
         // Save
         $this->save();
@@ -53,7 +66,7 @@ class User extends Model
      */
     public static function getJiraCacheKeyFromApi($record)
     {
-        return "{$record->accountType}@{$record->accountId}";
+        return $record->uuid ?? $record->id;
     }
 
     /**
@@ -69,11 +82,18 @@ class User extends Model
         $startAt = 0;
         $maxResults = 50;
 
+        // Determine the properties to expand
+        $expand = [
+            'description',
+            'lead',
+            'projectKeys'
+        ];
+
         // Start the first iteration
         do {
 
             // Find the next page of records
-            $records = $connection->getUsers(compact('startAt', 'maxResults'));
+            $records = $connection->getProjects(compact('startAt', 'maxResults', 'expand'))->values;
 
             // Advance the starting position
             $startAt += count($records);
@@ -91,12 +111,12 @@ class User extends Model
     //* Relations *//
     /////////////////
     /**
-     * Returns the projects where this user is assigned as the lead.
+     * Returns the user assigned as lead to this project.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function projectsAsLead()
+    public function lead()
     {
-        return $this->hasMany(Project::class, 'lead_id');
+        return $this->belongsTo(User::class, 'lead_id');
     }
 }
