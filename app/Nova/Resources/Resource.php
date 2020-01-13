@@ -186,13 +186,32 @@ abstract class Resource extends NovaResource
 
         // If the title property is available, pluck it using a query
         if(!is_null(static::$title)) {
-            return $model->newQuery()->pluck($model->getKeyName(), static::$title)->all();
+            return $model->newQuery()->pluck($model->getKeyName(), static::$title)->sortKeys()->all();
         }
 
         // Otherwise, use the title method
         return $model::all()->keyBy($key)->map(function($model) {
             return (new static($model))->title();
-        });
+        })->sortKeys()->all();
+    }
+
+    /**
+     * Returns the default select option for this resource.
+     *
+     * @return mixed
+     */
+    public static function defaultSelection()
+    {
+        // Determine the model class
+        $model = static::$model;
+
+        // Make sure a default selection method exists
+        if(!method_exists($model, 'getDefaultSelectionValue')) {
+            return null;
+        }
+
+        // Return the result of the model
+        return $model::getDefaultSelectionValue();
     }
 
     /**
