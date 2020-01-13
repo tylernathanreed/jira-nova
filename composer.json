@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2.26",
+        "php": "^7.2",
         "david-griffiths/nova-dark-theme": "^1.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
