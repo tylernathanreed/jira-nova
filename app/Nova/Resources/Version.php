@@ -256,6 +256,7 @@ class Version extends Resource
     public function filters(Request $request)
     {
         return [
+            new \App\Nova\Filters\FluentSelectFilter('Project', 'project_id', Project::selection(), Project::defaultSelection()),
             new \App\Nova\Filters\FieldBooleanFilter('released', 'Released'),
             new \App\Nova\Filters\ExistenceFilter('Has Incomplete Issues', 'issues', function($query) { $query->incomplete(); })
         ];

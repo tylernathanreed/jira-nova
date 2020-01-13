@@ -73,6 +73,19 @@ class Project extends Model implements Cacheable
     }
 
     /////////////////
+    //* Selection *//
+    /////////////////
+    /**
+     * Returns the default selection value for this model.
+     *
+     * @return integer|null
+     */
+    public static function getDefaultSelectionValue()
+    {
+        return optional((new static)->newQuery()->where('jira_key', '=', config('jira.default-project'))->first())->getKey();
+    }
+
+    /////////////////
     //* Relations *//
     /////////////////
     /**
