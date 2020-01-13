@@ -433,6 +433,21 @@ class IssueCountPartition extends Partition
     }
 
     /**
+     * Format the aggregate result for the partition.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $result
+     * @param  string  $groupBy
+     * @return array
+     */
+    protected function formatAggregateResult($result, $groupBy)
+    {
+        $key = $result->{last(explode('.', $groupBy))};
+
+        return [$key => (float) $result->aggregate];
+    }
+
+
+    /**
      * Sets the partition result class based on the grouping mechanism.
      *
      * @return $this
