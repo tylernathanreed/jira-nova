@@ -121,6 +121,29 @@ class FieldServiceProvider extends ServiceProvider
                 ->pickerFormat('Y-m-d');
 
         });
+
+        /**
+         * Overrides the "Time" field to use twelve-hour format and 15 minute increment.
+         *
+         * @return \Laraning\NovaTimeField\TimeField
+         */
+        $fields->macro('time', function($name, $attribute = null, callable $resolveCallback = null) use ($fields) {
+
+            // Create the field
+            $field = $fields->timeField($name, $attribute, $resolveCallback);
+
+            // Enforce a twelve-hour format
+            $field->withTwelveHourTime();
+
+            // Enforce a 15 minute increment
+            if(method_exists($field, 'minuteIncrement')) {
+                $field->minuteIncrement(15);
+            }
+
+            // Return the field
+            return $field;
+
+        });
     }
 
     /**

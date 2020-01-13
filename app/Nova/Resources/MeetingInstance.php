@@ -70,11 +70,11 @@ class MeetingInstance extends Resource
 
             Field::time('Start Time', 'start_time', function($value, $resource) {
                 return $value ? Carbon::createFromFormat('H:i:s', $value)->format('g:i A') : null;
-            })->withTwelveHourTime()->required(),
+            })->required(),
 
             Field::time('End Time', 'end_time', function($value, $resource) {
                 return $value ? Carbon::createFromFormat('H:i:s', $value)->format('g:i A') : null;
-            })->withTwelveHourTime()->required()->rules('after:start_time'),
+            })->required()->rules('after:start_time'),
 
             Field::number('Length', 'length_in_seconds', function($value, $resource) {
                 return round($value / 3600, 2);
