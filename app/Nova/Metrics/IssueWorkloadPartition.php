@@ -101,7 +101,20 @@ class IssueWorkloadPartition extends Partition
 
         // Label the results
         $result->label(function($label) {
+
+            // If we're labelling by names, use "First L." convention
+            if($this->groupBy == static::GROUP_BY_ASSIGNEE && strpos($label, ' ') !== false) {
+
+                // Change the label to use "First L." convention
+                $label = array_reduce(explode(' ', $label), function($label, $part) {
+                    return empty($label) ? $part : $label .= ' ' . strtoupper(substr($part, 0, 1)) . '.';
+                }, '');
+
+            }
+
+            // Cast null to "Unassigned"
             return $label ?: 'Unassigned';
+
         });
 
         // Return the partition result
