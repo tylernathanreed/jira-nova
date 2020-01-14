@@ -69,19 +69,19 @@ class MeetingInstance extends Resource
             Field::date('Effective', 'effective_date')->required()->sortable(),
 
             Field::time('Start Time', 'start_time', function($value, $resource) {
-                return Carbon::createFromFormat('H:i:s', $value)->format('g:i A');
-            })->withTwelveHourTime()->required(),
+                return $value ? Carbon::createFromFormat('H:i:s', $value)->format('g:i A') : null;
+            })->required(),
 
             Field::time('End Time', 'end_time', function($value, $resource) {
-                return Carbon::createFromFormat('H:i:s', $value)->format('g:i A');
-            })->withTwelveHourTime()->required()->rules('after:start_time'),
+                return $value ? Carbon::createFromFormat('H:i:s', $value)->format('g:i A') : null;
+            })->required()->rules('after:start_time'),
 
             Field::number('Length', 'length_in_seconds', function($value, $resource) {
                 return round($value / 3600, 2);
             })->exceptOnForms()->sortable(),
 
             Field::multiselect('Participants', 'participants')
-                ->options(UserModel::orderBy('display_name')->pluck('display_name', 'id')->all())
+                ->options(array_flip(User::selection()))
                 ->placeholder('Chose participants...')
                 ->required()
                 ->onlyOnForms()

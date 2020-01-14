@@ -15,6 +15,8 @@ return [
 
     'default' => env('JIRA_CONNECTION', 'cli'),
 
+    'default-project' => env('JIRA_DEFAULT_PROJECT'),
+
     'connections' => [
 
         'cli' => [

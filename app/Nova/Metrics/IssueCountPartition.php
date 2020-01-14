@@ -101,7 +101,20 @@ class IssueCountPartition extends Partition
 
         // Label the results
         $result->label(function($label) {
+
+            // If we're labelling by names, use "First L." convention
+            if($this->groupBy == static::GROUP_BY_ASSIGNEE && strpos($label, ' ') !== false) {
+
+                // Change the label to use "First L." convention
+                $label = array_reduce(explode(' ', $label), function($label, $part) {
+                    return empty($label) ? $part : $label .= ' ' . strtoupper(substr($part, 0, 1)) . '.';
+                }, '');
+
+            }
+
+            // Cast null to "Unassigned"
             return $label ?: 'Unassigned';
+
         });
 
         // Return the partition result
@@ -431,6 +444,21 @@ class IssueCountPartition extends Partition
         // Create and return the result
         return new $class($value);
     }
+
+    /**
+     * Format the aggregate result for the partition.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $result
+     * @param  string  $groupBy
+     * @return array
+     */
+    protected function formatAggregateResult($result, $groupBy)
+    {
+        $key = $result->{last(explode('.', $groupBy))};
+
+        return [$key => (float) $result->aggregate];
+    }
+
 
     /**
      * Sets the partition result class based on the grouping mechanism.

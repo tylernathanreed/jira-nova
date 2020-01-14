@@ -431,12 +431,10 @@ class Issue extends Resource
                     });
 
             })
-            ->setValueAccessor(function($result) {
-                return $result->aggregate * 100;
-            })
             ->useForValues(function($trend) {
-                return array_sum($trend) / count($trend) / 100;
+                return array_sum($trend) / count($trend);
             })
+            ->precision(2)
             ->format([
                 'output' => 'percent',
                 'mantissa' => 0
