@@ -153,7 +153,7 @@ class Label extends Model implements Cacheable
         $labels = static::getLabelsFromIssues();
 
         // Rebuild the labels within a transaction
-        DB::transaction(function() use ($labels) {
+        DB::transaction(function() use ($chunk) {
 
             // Truncate the pivot table
             (new static)->issues()->newPivotStatement()->truncate();
@@ -161,28 +161,33 @@ class Label extends Model implements Cacheable
             // Truncate the table
             static::query()->truncate();
 
-            // Convert the labels into a subquery
-            $query = DB::query()->fromSub($labels->reduce(function($query, $label) {
+            // Chunk the labels into smaller batches
+            foreach($labels->chunk(100) as $chunk) {
 
-                $subquery = DB::query()->selectRaw("\"{$label}\" as name");
+                // Convert the labels into a subquery
+                $query = DB::query()->fromSub($chunk->reduce(function($query, $label) {
 
-                return is_null($query) ? $subquery : $query->unionAll($subquery);
+                    $subquery = DB::query()->selectRaw("\"{$label}\" as name");
 
-            }, null), 'labels');
+                    return is_null($query) ? $subquery : $query->unionAll($subquery);
 
-            // Fill in the table with the new labels
-            static::query()->insertUsing(['name'], $query);
+                }, null), 'labels');
 
-            // Convert the pivot table into a subquery
-            $query = static::query()->join('issues', function($join) {
-                $join->on('issues.labels', 'like', DB::raw('"%""" || labels.name || """%"'));
-            })->select([
-                'issues.id as issue_id',
-                'labels.name as label_name'
-            ]);
+                // Fill in the table with the new labels
+                static::query()->insertUsing(['name'], $query);
 
-            // Fill in the pivot table with new relations
-            (new static)->issues()->newPivotStatement()->insertUsing(['issue_id', 'label_name'], $query);
+                // Convert the pivot table into a subquery
+                $query = static::query()->join('issues', function($join) {
+                    $join->on('issues.labels', 'like', DB::raw('"%""" || labels.name || """%"'));
+                })->select([
+                    'issues.id as issue_id',
+                    'labels.name as label_name'
+                ]);
+
+                // Fill in the pivot table with new relations
+                (new static)->issues()->newPivotStatement()->insertUsing(['issue_id', 'label_name'], $query);
+
+            }
 
         });
 
