@@ -6,9 +6,12 @@ use Jira;
 use Closure;
 use Carbon\Carbon;
 use App\Support\Contracts\Cacheable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model implements Cacheable
 {
+    use SoftDeletes;
+
     /////////////
     //* Cache *//
     /////////////
