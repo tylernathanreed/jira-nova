@@ -26,10 +26,13 @@ class Project extends Model implements Cacheable
     public static function runCacheHandler(Closure $callback, Carbon $since = null)
     {
         // Determine all of the projects
-        $projects = Jira::projects()->getAllProjects();
+        $projects = collect(Jira::projects()->getAllProjects());
+
+        // Delete projects that no longer exist
+        (new static)->newQuery()->whereNotIn('jira_key', $projects->pluck('key'))->get()->each->delete();
 
         // Convert the projects into our format
-        $projects = collect($projects)->keyBy('key')->map(function($project) {
+        $projects = $projects->keyBy('key')->map(function($project) {
 
             return [
                 'jira_id' => $project->id,
