@@ -527,6 +527,11 @@ class Issue extends Resource
                 static::getIssueStatusPartition(),
             ]),
 
+            /**
+             * This is a temporary lens and must eventually be removed!
+             */
+            (new \App\Nova\Lenses\Laravel55PrioritiesLens)->label('Laravel 5.5 Roadmap'),
+
             \App\Nova\Lenses\FilterLens::make($this, 'Stale Issues')->scope(function($query) { $query->hasLabel('Stale')->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
