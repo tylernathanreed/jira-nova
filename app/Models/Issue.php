@@ -924,7 +924,8 @@ class Issue extends Model implements Cacheable
             'labels',
             'fix_versions',
             'type_name',
-            'issue_category'
+            'issue_category',
+            'estimate_date'
         ]);
 
         // Wrap the query into a subquery
