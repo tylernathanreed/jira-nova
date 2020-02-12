@@ -15,14 +15,20 @@ class ExtendUserKeyColumns extends Migration
     {
         Schema::table('issues', function(Blueprint $table) {
 
-            $table->string('reporter_key', 64)->nullable()->change();
-            $table->string('assignee_key', 64)->nullable()->change();
+            $table->string('reporter_key', 80)->nullable()->change();
+            $table->string('assignee_key', 80)->nullable()->change();
 
         });
 
         Schema::table('users', function(Blueprint $table) {
 
-            $table->string('jira_key', 64)->nullable()->change();
+            $table->string('jira_key', 80)->nullable()->change();
+
+        });
+
+        Schema::table('issue_changelogs', function(Blueprint $table) {
+
+            $table->string('author_key', 80)->nullable()->change();
 
         });
     }
@@ -34,6 +40,23 @@ class ExtendUserKeyColumns extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('issues', function(Blueprint $table) {
+
+            $table->string('reporter_key', 35)->nullable()->change();
+            $table->string('assignee_key', 35)->nullable()->change();
+
+        });
+
+        Schema::table('users', function(Blueprint $table) {
+
+            $table->string('jira_key', 35)->nullable()->change();
+
+        });
+
+        Schema::table('issue_changelogs', function(Blueprint $table) {
+
+            $table->string('author_key', 35)->nullable()->change();
+
+        });
     }
 }
