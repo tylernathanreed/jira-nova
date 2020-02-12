@@ -229,6 +229,7 @@ class IssueWorklog extends Resource
                 'dates.is_weekend',
                 'active_schedules.author_id',
                 'active_schedules.author_key',
+                'active_schedules.author_name',
                 DB::raw('sum(time_off.percent) as percent_off'),
                 DB::raw('sum(case when holiday_instances.id is not null then \'1\' else \'0\' end) as is_holiday'),
                 DB::raw('sum(meeting_instances.length_in_seconds) / 3600.0 as cumulative_meeting_length')
