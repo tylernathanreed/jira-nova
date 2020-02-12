@@ -322,6 +322,7 @@ class Schedule extends Model
         $query->groupBy([
             'issue_worklogs.author_id',
             'issue_worklogs.author_key',
+            'issue_worklogs.author_name',
             'schedules.id',
             'schedules.simple_weekly_allocation'
         ]);
@@ -330,6 +331,7 @@ class Schedule extends Model
         $query->select([
             'issue_worklogs.author_id',
             'issue_worklogs.author_key',
+            'issue_worklogs.author_name',
             'schedules.id as schedule_id',
             'schedules.simple_weekly_allocation'
         ]);
