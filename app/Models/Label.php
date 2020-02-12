@@ -153,7 +153,7 @@ class Label extends Model implements Cacheable
         $labels = static::getLabelsFromIssues();
 
         // Rebuild the labels within a transaction
-        DB::transaction(function() use ($chunk) {
+        DB::transaction(function() use ($labels) {
 
             // Truncate the pivot table
             (new static)->issues()->newPivotStatement()->truncate();
@@ -161,31 +161,17 @@ class Label extends Model implements Cacheable
             // Truncate the table
             static::query()->truncate();
 
-            // Chunk the labels into smaller batches
-            foreach($labels->chunk(100) as $chunk) {
+            // Handle each label separately
+            foreach($labels as $name) {
 
-                // Convert the labels into a subquery
-                $query = DB::query()->fromSub($chunk->reduce(function($query, $label) {
+                // Create the label
+                $label = static::forceCreate(compact('name'));
 
-                    $subquery = DB::query()->selectRaw("\"{$label}\" as name");
+                // Find the issues containing the label
+                $issueIds = Issue::where('labels', '!=', '[]')->where('labels', 'like', DB::raw("\"%\"\"{$name}\"\"%\""))->pluck('id');
 
-                    return is_null($query) ? $subquery : $query->unionAll($subquery);
-
-                }, null), 'labels');
-
-                // Fill in the table with the new labels
-                static::query()->insertUsing(['name'], $query);
-
-                // Convert the pivot table into a subquery
-                $query = static::query()->join('issues', function($join) {
-                    $join->on('issues.labels', 'like', DB::raw('"%""" || labels.name || """%"'));
-                })->select([
-                    'issues.id as issue_id',
-                    'labels.name as label_name'
-                ]);
-
-                // Fill in the pivot table with new relations
-                (new static)->issues()->newPivotStatement()->insertUsing(['issue_id', 'label_name'], $query);
+                // Create pivot entries for the label
+                $label->issues()->sync($issueIds);
 
             }
 
