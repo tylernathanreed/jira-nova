@@ -226,7 +226,7 @@ class IssueWorklog extends Resource
             })
             ->select(preg_replace('/\s\s+/', ' ', 'sum(active_schedules.simple_weekly_allocation / 5.0)'))
             ->addSelect([
-                'dates.is_weekend',
+                DB::raw('max(dates.is_weekend) as is_weekend'),
                 'active_schedules.author_id',
                 'active_schedules.author_key',
                 'active_schedules.author_name',
@@ -234,7 +234,7 @@ class IssueWorklog extends Resource
                 DB::raw('sum(case when holiday_instances.id is not null then \'1\' else \'0\' end) as is_holiday'),
                 DB::raw('sum(meeting_instances.length_in_seconds) / 3600.0 as cumulative_meeting_length')
             ])
-            ->groupBy(['author_id', 'author_name'], function($group) {
+            ->groupBy(['author_id', 'author_name', 'author_key'], function($group) {
                 return [
                     'aggregate' => $group->reduce(function($aggregate, $result) {
 
