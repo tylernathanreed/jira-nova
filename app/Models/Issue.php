@@ -933,7 +933,9 @@ class Issue extends Model implements Cacheable
             'due_date',
             'project_id',
             'labels',
-            'fix_versions'
+            'fix_versions',
+            'type_name',
+            'issue_category'
         ]);
 
         // Wrap the query into a subquery
