@@ -200,7 +200,9 @@ class Label extends Model implements Cacheable
      */
     public static function getLabelsFromIssues()
     {
-        return Issue::where('labels', '!=', '[]')->select('labels')->distinct()->get()->pluck('labels')->collapse()->unique()->sort()->values()->toBase();
+        return Issue::where('labels', '!=', '[]')->select('labels')->distinct()->get()->pluck('labels')->collapse()->unique(function($label) {
+            return strtoupper($label);
+        })->sort()->values()->toBase();
     }
 
     ///////////////
