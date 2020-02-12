@@ -156,10 +156,10 @@ class Label extends Model implements Cacheable
         DB::transaction(function() use ($labels) {
 
             // Truncate the pivot table
-            (new static)->issues()->newPivotStatement()->truncate();
+            (new static)->issues()->newPivotStatement()->delete();
 
             // Truncate the table
-            static::query()->truncate();
+            static::query()->delete();
 
             // Handle each label separately
             foreach($labels as $name) {
