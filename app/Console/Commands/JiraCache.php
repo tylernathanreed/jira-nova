@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use DB;
 use Jira;
 use Event;
 use App\Models\Issue;
@@ -15,18 +16,19 @@ class JiraCache extends Command
     /**
      * The name and signature of the console command.
      *
-     * @option  {boolean}  all  Whether or not to cache all issues.
+     * @option  {boolean}  "all"    Whether or not to cache all issues.
+     * @option  {boolean}  "reset"  Whether or not clear all cached information.
      *
      * @var string
      */
-    protected $signature = 'jira:cache {--all}';
+    protected $signature = 'jira:cache {--all} {--reset}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Caches the jira issues for metrics.';
+    protected $description = 'Caches the jira issues for metrics';
 
     /**
      * Whether or not the listeners have been registered.
@@ -42,11 +44,69 @@ class JiraCache extends Command
      */
     public function handle()
     {
+        // Clear cache information if requested
+        $this->clearCacheDataIfRequested();
+
         // Register the listeners if they haven't already been registered
         $this->registerListenersIfNotRegistered();
 
         // Handle the caches
         $this->handleCaches();
+    }
+
+    /**
+     * Clears the cache data if requested by the user.
+     *
+     * @return void
+     */
+    public function clearCacheDataIfRequested()
+    {
+        // Make sure the action was requested
+        if(!$this->option('reset')) {
+            return;
+        }
+
+        // Clear the cache data
+        $this->clearCacheData();
+    }
+
+    /**
+     * Clears the cache data.
+     *
+     * @return void
+     */
+    public function clearCacheData()
+    {
+        $this->comment("Clearing Labels...");
+        DB::table('issues_labels')->delete();
+        DB::table('labels')->delete();
+        $this->info("Cleared Labels.");
+
+        $this->comment("Clearing Versions...");
+        DB::table('issues_fix_versions')->delete();
+        DB::table('versions')->delete();
+        $this->info("Cleared Versions.");
+
+        $this->comment("Clearing Worklogs...");
+        DB::table('issue_worklogs')->delete();
+        $this->info("Cleared Worklogs.");
+
+        $this->comment("Clearing Changelogs...");
+        DB::table('issue_changelog_items')->delete();
+        DB::table('issue_changelogs')->delete();
+        $this->info("Cleared Changelogs.");
+
+        $this->comment("Clearing Issues...");
+        DB::table('issues')->delete();
+        $this->info("Cleared Issues.");
+
+        $this->comment("Clearing Epics...");
+        DB::table('epics')->delete();
+        $this->info("Cleared Epics.");
+
+        $this->comment("Clearing Projects...");
+        DB::table('projects')->delete();
+        $this->info("Cleared Projects.");
     }
 
     /**
