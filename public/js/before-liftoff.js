@@ -21,7 +21,7 @@ var replaceTitleUsingRoute = function() {
 
     // Append the path to the base title
     if(path) {
-        document.title = Nova.config.name + ' :: ' + path;
+        document.title = Nova.config.name + ' :: Week ' + Nova.config.weekIndex + ' :: ' + path;
     } else {
         document.title = Nova.config.name;
     }
