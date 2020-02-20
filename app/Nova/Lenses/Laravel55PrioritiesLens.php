@@ -182,13 +182,7 @@ class Laravel55PrioritiesLens extends Lens
                     return 'Laravel ' . substr($label, -3);
                 }),
 
-            (new \App\Nova\Metrics\FluentTrend)
-                ->model(\App\Models\Issue::class)
-                ->label('Recent Completions')
-                ->countOf('issues.id')
-                ->dateColumn('resolution_date')
-                ->suffix('issue')
-                ->scope($scope),
+            (new \App\Nova\Metrics\Laravel55RoadmapGantt),
 
             (new \App\Nova\Metrics\FluentTrend)
                 ->model(\App\Models\Issue::class)
