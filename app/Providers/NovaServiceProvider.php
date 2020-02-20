@@ -144,7 +144,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Issue::getIssueDeliquenciesByDueDateTrend(),
             Issue::getIssueDeliquenciesByEstimatedDateTrend(),
             Issue::getIssueWeeklySatisfactionTrend(),
-            Issue::getIssueWorkloadPartition()->groupByEpic(),
+            (new \App\Nova\Metrics\EpicGroupsGantt),
+            // Issue::getIssueWorkloadPartition()->groupByEpic(),
             Issue::getIssueWorkloadPartition()->groupByFocus(),
             Issue::getIssueWorkloadPartition()->groupByAssignee()
         ];
