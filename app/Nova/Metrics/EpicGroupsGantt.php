@@ -64,17 +64,15 @@ class EpicGroupsGantt extends Gantt
                 end as `group`
             ")),
             'epics.name',
-            DB::raw('min(issues.estimate_date) as start_date'),
-            DB::raw('max(issues.estimate_date) as end_date'),
-            DB::raw('max(issues.due_date) as due_date')
-        ])->groupBy('epics.name');
+            DB::raw('issues.estimate_date'),
+            DB::raw('issues.due_date')
+        ]);
 
         $query = Epic::query()
             ->fromSub($subquery, 'epic_timelines')
-            ->whereNotNull('group')
-            ->orderBy('due_date');
+            ->whereNotNull('group');
 
-        return $this->spreadByDays($request, $query, 'group', ['start_date', 'end_date']);
+        return $this->spreadByDays($request, $query, 'group', 'estimate_date');
     }
 
     /**
