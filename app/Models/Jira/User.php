@@ -61,7 +61,7 @@ class User extends Model
      *
      * @param  \App\Support\Jira\Api\Connection  $connection
      *
-     * @return array
+     * @return \Generator
      */
     public static function getPaginatedJiraRecords($connection)
     {

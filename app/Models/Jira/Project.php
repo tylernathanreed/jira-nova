@@ -74,7 +74,7 @@ class Project extends Model
      *
      * @param  \App\Support\Jira\Api\Connection  $connection
      *
-     * @return array
+     * @return \Generator
      */
     public static function getPaginatedJiraRecords($connection)
     {
@@ -105,6 +105,16 @@ class Project extends Model
 
         // Loop until there aren't any more records, or a partial page is found
         while(count($records) >= $maxResults);
+    }
+
+    /**
+     * Returns the record map key name for this model.
+     *
+     * @return \Closure|string
+     */
+    public function getRecordMapKeyName()
+    {
+        return 'jira_key';
     }
 
     /////////////////

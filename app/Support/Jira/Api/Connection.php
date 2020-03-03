@@ -263,6 +263,8 @@ class Connection extends ApiConnection
      *
      * @option  {string|array}  "expand"      The additional information to include about the project.
      * @option  {string|array}  "properties"  The project properties to include.
+     *
+     * @return \stdClass
      */
     public function getProject($projectIdOrKey, $options = [])
     {
@@ -278,6 +280,36 @@ class Connection extends ApiConnection
 
         // Submit the request and return the result
         return $this->request()->path("project/{$projectIdOrKey}")->get($options);
+    }
+
+    /**
+     * Returns the components for the specified project.
+     *
+     * @param  string  $projectIdOrKey
+     *
+     * @return array
+     */
+    public function getProjectComponents($projectIdOrKey)
+    {
+        return $this->request()->path("project/{$projectIdOrKey}/components")->get();
+    }
+
+    /**
+     * Returns the paginated components for the specified project.
+     *
+     * @param  string  $projectIdOrKey
+     * @param  array   $options
+     *
+     * @option  {integer}  "startAt"     The page offset (defaults to 0).
+     * @option  {integer}  "maxResults"  The maximum number of items to return per page (defaults to 50, maximum is 50).
+     * @option  {string}   "orderBy"     The field to order the results by (default is "name").
+     * @option  {string}   "query"       The literal string used to filter by the components by name or description (case insensitive).
+     *
+     * @return \stdClass
+     */
+    public function getProjectComponentsPaginated($projectIdOrKey, $options = [])
+    {
+        return $this->request()->path("project/{$projectIdOrKey}/component", $options)->get();
     }
 
     /**
