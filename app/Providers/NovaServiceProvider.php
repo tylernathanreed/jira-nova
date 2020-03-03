@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Label;
 use Laravel\Nova\Nova;
 use App\Models\FocusGroup;
 use Illuminate\Http\Request;
@@ -69,7 +70,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 'user' => $user->toArray(),
                 'schedule' => !is_null($schedule = $user->getSchedule()) ? $schedule->toNovaData() : null,
                 'focusGroups' => FocusGroup::all()->keyBy('system_name')->map->toNovaData(),
-                'colors' => $this->app->make('config')->get('jira.colors')
+                'colors' => $this->app->make('config')->get('jira.colors'),
+                'weekIndex' => Label::getWeekLabelIndex()
             ]);
 
         });
@@ -142,7 +144,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Issue::getIssueDeliquenciesByDueDateTrend(),
             Issue::getIssueDeliquenciesByEstimatedDateTrend(),
             Issue::getIssueWeeklySatisfactionTrend(),
-            Issue::getIssueWorkloadPartition()->groupByEpic(),
+            (new \App\Nova\Metrics\EpicGroupsGantt),
+            // Issue::getIssueWorkloadPartition()->groupByEpic(),
             Issue::getIssueWorkloadPartition()->groupByFocus(),
             Issue::getIssueWorkloadPartition()->groupByAssignee()
         ];

@@ -3,7 +3,7 @@
 namespace App\Nova\Filters;
 
 use Auth;
-use Jira;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class Assignee extends SelectFilter
@@ -44,9 +44,7 @@ class Assignee extends SelectFilter
      */
     public function options(Request $request)
     {
-        return array_flip(
-            collect(Jira::users()->findAssignableUsers(['project' => 'UAS']))->pluck('displayName', 'key')->all()
-        );
+        return User::pluck('display_name', 'jira_key')->sort()->flip()->toArray();
     }
 
     /**

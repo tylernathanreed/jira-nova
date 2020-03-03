@@ -35,6 +35,9 @@ class MetricTest extends TestCase
         // Create a new request instance
         $request = $this->app->make(NovaRequest::class);
 
+        // Force the range on the request
+        $request['range'] = 30;
+
         // Extract the available cards from each resource
         $cards = array_reduce($resources, function($cards, $resource) use ($request) {
             $cards[get_class($resource)] = $resource->availableCards($request);

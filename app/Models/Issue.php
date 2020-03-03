@@ -876,7 +876,9 @@ class Issue extends Model implements Cacheable
     public static function updateIssueAggregates()
     {
         // Update the rank index
-        // static::updateIssueRankIndex();
+        if(DB::connection()->getDriverName() == 'mysql') {
+            static::updateMySQLIssueRankIndex();
+        }
     }
 
     /**
@@ -884,23 +886,10 @@ class Issue extends Model implements Cacheable
      *
      * @return void
      */
-    public static function updateIssueRankIndex()
+    public static function updateMySQLIssueRankIndex()
     {
-        // Create a new rank index query
-        $query = (new static)->newRankIndexQuery();
-
-        // Alias the query
-        $query = DB::query()->fromSub($query, 'rank_indexes');
-
-        // Add a subselect filter
-        $query->whereColumn('rank_indexes.id', '=', 'issues.id');
-
-        // Select the update value
-        $query->select('rank_indexes.rank_index');
-
-        // Update the rank index
-        (new Issue)->newQuery()->getQuery()->update([
-            'rank_index' => DB::raw('(' . $query->toRealSql() . ')')
+        (new static)->newQuery()->whereRaw('0 = (@rownum := 0)')->orderBy('rank')->update([
+            'rank_index' => DB::raw('@rownum := 1 + @rownum')
         ]);
     }
 
@@ -933,7 +922,10 @@ class Issue extends Model implements Cacheable
             'due_date',
             'project_id',
             'labels',
-            'fix_versions'
+            'fix_versions',
+            'type_name',
+            'issue_category',
+            'estimate_date'
         ]);
 
         // Wrap the query into a subquery

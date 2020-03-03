@@ -42,39 +42,24 @@ class Version extends Model implements Cacheable
         DB::transaction(function() use ($versions) {
 
             // Truncate the pivot table
-            (new static)->issues()->newPivotStatement()->truncate();
+            (new static)->issues()->newPivotStatement()->delete();
 
             // Truncate the table
-            static::query()->truncate();
+            static::query()->delete();
 
-            // Convert the versions into a subquery
-            $query = DB::query()->fromSub($versions->reduce(function($query, $version) {
+            // Handle each version separate
+            foreach($versions as $version) {
 
-                $subquery = DB::query()->selectRaw(preg_replace('/\s\s+/', ' ', "
-                    {$version['project_id']} as project_id,
-                    {$version['jira_id']} as jira_id,
-                    \"{$version['name']}\" as name,
-                    " . ($version['released'] ? 1 : 0) . " as released,
-                    " . (!is_null($version['release_date']) ? "\"{$version['release_date']}\"" : "null") . " as release_date
-                "));
+                // Create the version
+                $instance = static::forceCreate($version);
 
-                return is_null($query) ? $subquery : $query->unionAll($subquery);
+                // Find the issues containing the version
+                $issueIds = Issue::where('labels', '!=', '[]')->where('fix_versions', 'like', DB::raw("\"%\"\"{$instance->name}\"\"%\""))->pluck('id');
 
-            }, null), 'versions');
+                // Create the pivot entries for the fix version
+                $instance->issues()->sync($issueIds);
 
-            // Fill in the table with the new versions
-            static::query()->insertUsing(['project_id', 'jira_id', 'name', 'released', 'release_date'], $query);
-
-            // Convert the pivot table into a subquery
-            $query = static::query()->join('issues', function($join) {
-                $join->on('issues.fix_versions', 'like', DB::raw('"%""" || versions.name || """%"'));
-            })->select([
-                'issues.id as issue_id',
-                'versions.id as version_id'
-            ]);
-
-            // Fill in the pivot table with new relations
-            (new static)->issues()->newPivotStatement()->insertUsing(['issue_id', 'version_id'], $query);
+            }
 
         });
 

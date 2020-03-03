@@ -2,6 +2,7 @@
 
 namespace App\Nova\Resources;
 
+use DB;
 use Field;
 use Illuminate\Http\Request;
 use App\Models\Epic as EpicModel;
@@ -208,9 +209,12 @@ class Issue extends Resource
             Field::code('Links', 'links')->json()->onlyOnDetail(),
             // Field::text('blocks', 'blocks'),
 
-            Field::text('Rank', 'rank')->onlyOnIndex()->sortable(),
-            // Field::text('Rank Index', 'rank_index')->onlyOnDetail(),
-            Field::text('Rank', 'rank')->onlyOnDetail(),
+            (
+                DB::connection()->getDriverName() == 'mysql'
+                    ? Field::text('Rank Index', 'rank_index')->sortable()->exceptOnForms()
+                    : Field::text('Rank', 'rank')->sortable()->exceptOnForms()
+
+            ),
 
             Field::date('Created', 'entry_date')->onlyOnDetail()
 
@@ -526,6 +530,11 @@ class Issue extends Resource
                 (new \App\Nova\Metrics\IssueCountPartition)->groupByAssignee(),
                 static::getIssueStatusPartition(),
             ]),
+
+            /**
+             * This is a temporary lens and must eventually be removed!
+             */
+            (new \App\Nova\Lenses\Laravel55PrioritiesLens)->label('Laravel 5.5 Roadmap'),
 
             \App\Nova\Lenses\FilterLens::make($this, 'Stale Issues')->scope(function($query) { $query->hasLabel('Stale')->incomplete(); })->addScopedCards([
                 (new \App\Nova\Metrics\IssueWorkloadPartition)->groupByAssignee(),
