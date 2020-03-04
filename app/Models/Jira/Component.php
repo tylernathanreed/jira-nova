@@ -18,10 +18,10 @@ class Component extends Model
     public function updateFromJira($record, $options = [])
     {
         // Load the users if not already loaded
-        $this->loadRecordMapIfNotLoaded(User::class);
+        static::loadRecordMapIfNotLoaded(User::class);
 
         // Load the projects if not already loaded
-        $this->loadRecordMapIfNotLoaded(Project::class);
+        static::loadRecordMapIfNotLoaded(Project::class);
 
         // Determine the project
         $project = static::getRecordFromMap(Project::class, $record->project);

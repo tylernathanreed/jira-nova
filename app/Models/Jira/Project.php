@@ -31,7 +31,7 @@ class Project extends Model
     public function updateFromJira($record, $options = [])
     {
         // Load the users if not already loaded
-        $this->loadRecordMapIfNotLoaded(User::class);
+        static::loadRecordMapIfNotLoaded(User::class);
 
         // Determine the project lead
         $lead = static::getRecordFromMap(User::class, optional($record->lead)->accountId);
