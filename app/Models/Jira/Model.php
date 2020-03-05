@@ -37,6 +37,13 @@ abstract class Model extends Eloquent
      */
     protected static $recordMap = [];
 
+    /**
+     * The internally cached alias record maps.
+     *
+     * @var array
+     */
+    protected static $aliasRecordMap = [];
+
     ///////////////////////
     //* Magic Accessors *//
     ///////////////////////
@@ -78,39 +85,53 @@ abstract class Model extends Eloquent
     /**
      * Loads the specified record map if it has not already been loaded.
      *
-     * @param  string  $model
+     * @param  string       $model
+     * @param  string|null  $alias
      *
      * @return void
      */
-    protected function loadRecordMapIfNotLoaded($model)
+    public static function loadRecordMapIfNotLoaded($model, $alias = null)
     {
         // If the record map has already been loaded, stop here
-        if(array_key_exists($model, static::$recordMap)) {
+        if(is_null($alias) && array_key_exists($model, static::$recordMap)) {
+            return;
+        }
+
+        // If the record map has been aliased, and it has already been loaded, stop here
+        if(array_key_exists($model, static::$aliasRecordMap) && array_key_exists($alias, static::$aliasRecordMap[$model])) {
             return;
         }
 
         // Load the record map
-        $model::loadRecordMap();
+        $model::loadRecordMap($alias);
     }
 
     /**
      * Loads the record map for this model.
      *
+     * @param  string|null  $alias
+     *
      * @return void
      */
-    public static function loadRecordMap()
+    public static function loadRecordMap($alias = null)
     {
-        static::$recordMap[static::class] = static::getRecordMap();
+        if(is_null($alias)) {
+            static::$recordMap[static::class] = static::getRecordMap();
+        } else {
+            static::$aliasRecordMap[static::class][$alias] = static::getRecordMap($alias);
+        }
     }
 
     /**
      * Returns the record map for this model.
      *
+     * @param  string|null  $alias
+     *
      * @return array
      */
-    public static function getRecordMap()
+    public static function getRecordMap($alias = null)
     {
-        return static::all()->keyBy((new static)->getRecordMapKeyName());
+        return static::all()->keyBy($alias ?: (new static)->getRecordMapKeyName());
     }
 
     /**
@@ -126,14 +147,39 @@ abstract class Model extends Eloquent
     /**
      * Returns the specified record from the record map.
      *
-     * @param  string  $model
-     * @param  mixed   $key
+     * @param  string       $model
+     * @param  mixed        $key
+     * @param  string|null  $alias
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public static function getRecordFromMap($model, $key)
+    public static function getRecordFromMap($model, $key, $alias = null)
     {
-        return static::$recordMap[$model][$key] ?? null;
+        if(is_null($alias)) {
+            return static::$recordMap[$model][$key] ?? null;
+        }
+
+        return static::$aliasRecordMap[$model][$alias][$key] ?? null;
+    }
+
+    /**
+     * Returns the loaded record maps for all models.
+     *
+     * @return array
+     */
+    public static function getAllLoadedRecordMaps()
+    {
+        return static::$recordMap;
+    }
+
+    /**
+     * Returns the loaded alias record maps for all models.
+     *
+     * @return array
+     */
+    public static function getAllLoadedAliasRecordMaps()
+    {
+        return static::$aliasRecordMap;
     }
 
     ///////////////

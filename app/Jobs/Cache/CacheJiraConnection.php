@@ -17,7 +17,6 @@ class CacheJiraConnection extends Job
     /**
      * Creates a new job instance.
      *
-     * @param  string       $model
      * @param  string|null  $apiConnection
      *
      * @return void
@@ -36,26 +35,25 @@ class CacheJiraConnection extends Job
     {
         // Determine the models to cache
         $models = [
-            \App\Models\Jira\User::class,
+            \App\Models\Jira\Component::class,
+            \App\Models\Jira\IssueType::class,
             \App\Models\Jira\Project::class,
-            // \App\Models\Jira\Epic::class,
-            // \App\Models\Jira\Issue::class,
-            // \App\Models\Jira\Label::class,
-            // \App\Models\Jira\IssueWorklog::class,
-            // \App\Models\Jira\IssueChangelog::class,
-            // \App\Models\Jira\Version::class
+            \App\Models\Jira\ProjectIssueStatusType::class,
+            \App\Models\Jira\ProjectIssueType::class,
+            \App\Models\Jira\User::class,
+            \App\Models\Jira\Version::class,
+            \App\Models\Jira\WorkflowStatusCategory::class,
+            \App\Models\Jira\WorkflowStatusType::class
         ];
 
         // Determine the dependencies
         $dependencies = [
             \App\Models\Jira\Project::class => [\App\Models\Jira\User::class],
-            // \App\Models\Jira\Epic::class => [\App\Models\Jira\Project::class, \App\Models\Jira\User::class],
-            // \App\Models\Jira\Issue::class => [\App\Models\Jira\Project::class, \App\Models\Jira\User::class, \App\Models\Jira\Epic::class],
-            // \App\Models\Jira\Label::class => [\App\Models\Jira\Issue::class],
-            // \App\Models\Jira\IssueWorklog::class => [\App\Models\Jira\User::class, \App\Models\Jira\Issue::class],
-            // \App\Models\Jira\IssueChangelog::class => [\App\Models\Jira\User::class, \App\Models\Jira\Issue::class],
-            // \App\Models\Jira\Version::class => [\App\Models\Jira\Project::class, \App\Models\Jira\Issue::class],
-
+            \App\Models\Jira\Component::class => [\App\Models\Jira\Project::class],
+            \App\Models\Jira\Version::class => [\App\Models\Jira\Project::class],
+            \App\Models\Jira\WorkflowStatusType::class => [\App\Models\Jira\WorkflowStatusCategory::class],
+            \App\Models\Jira\ProjectIssueType::class => [\App\Models\Jira\Project::class, \App\Models\Jira\IssueType::class],
+            \App\Models\Jira\ProjectIssueStatusType::class => [\App\Models\Jira\ProjectIssueType::class, \App\Models\Jira\WorkflowStatusType::class],
         ];
 
         // Create the jobs for each model
@@ -78,9 +76,26 @@ class CacheJiraConnection extends Job
             $job->processWhenReady();
         }
 
-        /*
-        CacheJiraEndpoint::dispatchNow(\App\Models\Jira\User::class);
-        CacheJiraEndpoint::dispatchNow(\App\Models\Jira\Project::class);
-        */
+    	// $this->dispatchEndpointJob(\App\Models\Jira\User::class);
+    	// $this->dispatchEndpointJob(\App\Models\Jira\Project::class);
+        // $this->dispatchEndpointJob(\App\Models\Jira\Component::class);
+        // $this->dispatchEndpointJob(\App\Models\Jira\Version::class);
+        // $this->dispatchEndpointJob(\App\Models\Jira\IssueType::class);
+        // $this->dispatchEndpointJob(\App\Models\Jira\WorkflowStatusCategory::class);
+        // $this->dispatchEndpointJob(\App\Models\Jira\WorkflowStatusType::class);
+        // $this->dispatchEndpointJob(\App\Models\Jira\ProjectIssueType::class);
+        // $this->dispatchEndpointJob(\App\Models\Jira\ProjectIssueStatusType::class);
+    }
+
+    /**
+     * Dispatches a job to handle the specified page.
+     *
+     * @param  \stdClass|array  $page
+     *
+     * @return void
+     */
+    public function dispatchEndpointJob($model)
+    {
+        CacheJiraEndpoint::dispatch($model, $this->apiConnection);
     }
 }

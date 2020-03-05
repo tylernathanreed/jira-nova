@@ -263,6 +263,8 @@ class Connection extends ApiConnection
      *
      * @option  {string|array}  "expand"      The additional information to include about the project.
      * @option  {string|array}  "properties"  The project properties to include.
+     *
+     * @return \stdClass
      */
     public function getProject($projectIdOrKey, $options = [])
     {
@@ -281,6 +283,36 @@ class Connection extends ApiConnection
     }
 
     /**
+     * Returns the components for the specified project.
+     *
+     * @param  string  $projectIdOrKey
+     *
+     * @return array
+     */
+    public function getProjectComponents($projectIdOrKey)
+    {
+        return $this->request()->path("project/{$projectIdOrKey}/components")->get();
+    }
+
+    /**
+     * Returns the paginated components for the specified project.
+     *
+     * @param  string  $projectIdOrKey
+     * @param  array   $options
+     *
+     * @option  {integer}  "startAt"     The page offset (defaults to 0).
+     * @option  {integer}  "maxResults"  The maximum number of items to return per page (defaults to 50, maximum is 50).
+     * @option  {string}   "orderBy"     The field to order the results by (default is "name").
+     * @option  {string}   "query"       The literal string used to filter by the components by name or description (case insensitive).
+     *
+     * @return \stdClass
+     */
+    public function getProjectComponentsPaginated($projectIdOrKey, $options = [])
+    {
+        return $this->request()->path("project/{$projectIdOrKey}/component", $options)->get();
+    }
+
+    /**
      * Returns the valid statuses for a project.
      *
      * @param  string  $projectIdOrKey
@@ -290,6 +322,48 @@ class Connection extends ApiConnection
     public function getProjectStatuses($projectIdOrKey)
     {
         return $this->request()->path("project/{$projectIdOrKey}/statuses")->get();
+    }
+
+    /**
+     * Returns the versions for the specified project.
+     *
+     * @param  string  $projectIdOrKey
+     *
+     * @return array
+     */
+    public function getProjectVersions($projectIdOrKey)
+    {
+        return $this->request()->path("project/{$projectIdOrKey}/versions")->get();
+    }
+
+    /**
+     * Returns the paginated versions for the specified project.
+     *
+     * @param  string  $projectIdOrKey
+     * @param  array   $options
+     *
+     * @option  {integer}       "startAt"     The page offset (defaults to 0).
+     * @option  {integer}       "maxResults"  The maximum number of items to return per page (defaults to 50, maximum is 50).
+     * @option  {string}        "orderBy"     The field to order the results by (default is "name").
+     * @option  {string}        "query"       The literal string used to filter by the versions by name or description (case insensitive).
+     * @option  {string|array}  "status"      The status value(s) to filter the versions.
+     * @option  {string|array}  "expand"      The additional information to include in the response.
+     *
+     * @return \stdClass
+     */
+    public function getProjectVersionsPaginated($projectIdOrKey, $options = [])
+    {
+        // Convert the "status" option to a string
+        if(isset($options['status']) && is_array($options['status'])) {
+            $options['status'] = implode(',', $options['status']);
+        }
+
+        // Convert the "expand" option to a string
+        if(isset($options['expand']) && is_array($options['expand'])) {
+            $options['expand'] = implode(',', $options['expand']);
+        }
+
+        return $this->request()->path("project/{$projectIdOrKey}/version", $options)->get();
     }
 
     /**
@@ -312,6 +386,18 @@ class Connection extends ApiConnection
     public function getStatuses()
     {
         return $this->request()->path('status')->get();
+    }
+
+    /**
+     * Returns a list of all of the status categories.
+     *
+     * @link https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-statuscategory-get
+     *
+     * @return array
+     */
+    public function getStatusCategories()
+    {
+        return $this->request()->path('statuscategory')->get();
     }
 
     /**

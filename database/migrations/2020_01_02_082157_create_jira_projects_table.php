@@ -20,7 +20,7 @@ class CreateJiraProjectsTable extends Migration
             $table->string('cache_value', 36)->index();
 
             // Attributes
-            $table->integer('jira_id')->index();
+            $table->integer('jira_id')->unsigned()->index();
             $table->string('jira_key', 10)->index();
             $table->string('entity_id', 36)->nullable()->index();
             $table->string('uuid', 36)->nullable()->index();

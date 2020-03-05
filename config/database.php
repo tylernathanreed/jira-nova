@@ -86,10 +86,15 @@ return [
         ],
 
         'jira' => [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('jira.sqlite')),
+            'driver' => env('DB_JIRA_DRIVER', 'sqlite'),
+            'database' => env('DB_JIRA_DATABASE', database_path('jira.sqlite')),
+            'host' => env('DB_JIRA_HOST', '127.0.0.1'),
+            'port' => env('DB_JIRA_PORT', '3306'),
+            'database' => env('DB_JIRA_DATABASE', 'forge'),
+            'username' => env('DB_JIRA_USERNAME', 'forge'),
+            'password' => env('DB_JIRA_PASSWORD', ''),
             'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'foreign_key_constraints' => env('DB_JIRA_FOREIGN_KEYS', true),
         ],
 
     ],
