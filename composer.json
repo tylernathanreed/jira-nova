@@ -39,6 +39,7 @@
         "reedware/laravel-relation-joins": "^1.0",
         "reedware/nova-calendar-events-metric": "^1.0",
         "reedware/nova-field-manager": "^0.2.0@dev",
+        "reedware/nova-gantt-metric": "^1.0",
         "reedware/nova-icons": "^1.0",
         "reedware/nova-partition-metric-style-fix": "dev-master",
         "reedware/nova-text-filter": "dev-master",

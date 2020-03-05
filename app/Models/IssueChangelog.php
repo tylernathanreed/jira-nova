@@ -87,14 +87,17 @@ class IssueChangelog extends Model implements Cacheable
                             // Create each changelog
                             foreach($changelogs as $changelog) {
 
+                                // Determine the author
+                                $author = optional($changelog->author);
+
                                 // Create the changelog
                                 $newChangelog = $issue->changelogs()->updateOrCreate(['jira_id' => $changelog->id], [
                                     'jira_id' => $changelog->id,
                                     'issue_key' => $issue->key,
-                                    'author_id' => $userMapping[$changelog->author->key] ?? null,
-                                    'author_key' => $changelog->author->key ?? null,
-                                    'author_name' => $changelog->author->name ?? null,
-                                    'author_icon_url' => $changelog->author->avatarUrls->{'32x32'} ?? null,
+                                    'author_id' => $userMapping[$author->key] ?? null,
+                                    'author_key' => $author->key ?? null,
+                                    'author_name' => $author->name ?? null,
+                                    'author_icon_url' => optional($author->avatarUrls)->{'32x32'} ?? null,
                                     'created_at' => carbon($changelog->created)->tz('America/Chicago')->toDateTimeString()
                                 ]);
 

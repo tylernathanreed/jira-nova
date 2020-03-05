@@ -156,33 +156,24 @@ class Label extends Model implements Cacheable
         DB::transaction(function() use ($labels) {
 
             // Truncate the pivot table
-            (new static)->issues()->newPivotStatement()->truncate();
+            (new static)->issues()->newPivotStatement()->delete();
 
             // Truncate the table
-            static::query()->truncate();
+            static::query()->delete();
 
-            // Convert the labels into a subquery
-            $query = DB::query()->fromSub($labels->reduce(function($query, $label) {
+            // Handle each label separately
+            foreach($labels as $name) {
 
-                $subquery = DB::query()->selectRaw("\"{$label}\" as name");
+                // Create the label
+                $label = static::forceCreate(compact('name'));
 
-                return is_null($query) ? $subquery : $query->unionAll($subquery);
+                // Find the issues containing the label
+                $issueIds = Issue::where('labels', '!=', '[]')->where('labels', 'like', DB::raw("\"%\"\"{$name}\"\"%\""))->pluck('id');
 
-            }, null), 'labels');
+                // Create pivot entries for the label
+                $label->issues()->sync($issueIds);
 
-            // Fill in the table with the new labels
-            static::query()->insertUsing(['name'], $query);
-
-            // Convert the pivot table into a subquery
-            $query = static::query()->join('issues', function($join) {
-                $join->on('issues.labels', 'like', DB::raw('"%""" || labels.name || """%"'));
-            })->select([
-                'issues.id as issue_id',
-                'labels.name as label_name'
-            ]);
-
-            // Fill in the pivot table with new relations
-            (new static)->issues()->newPivotStatement()->insertUsing(['issue_id', 'label_name'], $query);
+            }
 
         });
 
@@ -209,7 +200,9 @@ class Label extends Model implements Cacheable
      */
     public static function getLabelsFromIssues()
     {
-        return Issue::where('labels', '!=', '[]')->select('labels')->distinct()->get()->pluck('labels')->collapse()->unique()->sort()->values()->toBase();
+        return Issue::where('labels', '!=', '[]')->select('labels')->distinct()->get()->pluck('labels')->collapse()->unique(function($label) {
+            return strtoupper($label);
+        })->sort()->values()->toBase();
     }
 
     ///////////////

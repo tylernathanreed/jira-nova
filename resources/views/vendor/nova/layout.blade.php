@@ -66,8 +66,14 @@
                     </dropdown>
                 </div>
 
-                <div class="flex items-center h-header w-sidebar z-20 px-6 pt-search normalscreen:hidden slideshow:hidden">
-                    @include('nova::partials.logo')
+                <div class="flex items-center h-header z-20 px-6 pt-search normalscreen:hidden slideshow:hidden">
+                    <div class="px-6">
+                        @include('nova::partials.logo')
+                    </div>
+                    <div class="flex-1"></div>
+                    <div class="px-6">
+                        Week {{ \App\Models\Label::getWeekLabelIndex() }}
+                    </div>
                 </div>
 
                 <div data-testid="content" class="px-view py-view mx-auto slideshow:p-0">

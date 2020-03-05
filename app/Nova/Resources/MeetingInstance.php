@@ -87,7 +87,7 @@ class MeetingInstance extends Resource
                 ->onlyOnForms()
                 ->fillAfterCreate()
                 ->resolveUsing(function($value, $resource) {
-                    return $value->pluck('id')->toArray();
+                    return collect($value)->pluck('id')->toArray();
                 }),
 
             Field::belongsToMany('Participants', 'participants', User::class)
