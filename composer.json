@@ -32,6 +32,7 @@
         "optimistdigital/nova-multiselect-field": "^1.4",
         "rcknr/nova-multiselect-filter": "^1.2",
         "reedware/carbon-helper": "^1.0",
+        "reedware/graphs": "dev-master",
         "reedware/laravel-api": "^1.0",
         "reedware/laravel-blueprints": "^1.0",
         "reedware/laravel-processes": "dev-master",
@@ -67,6 +68,10 @@
         {
             "type": "path",
             "url": "./packages/reedware/laravel-processes"
+        },
+        {
+            "type": "path",
+            "url": "./packages/reedware/graphs"
         },
         {
             "type": "path",
