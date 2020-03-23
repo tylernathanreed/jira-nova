@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e23731d3808e62d8b8ef9e6cd8cd1329",
+    "content-hash": "337aaf35bfefd1c6143ee7b3daa4bcbe",
     "packages": [
         {
             "name": "brick/math",
@@ -3905,16 +3905,16 @@
         },
         {
             "name": "reedware/nova-icons",
-            "version": "v1.0.9",
+            "version": "v1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/nova-icons.git",
-                "reference": "d5b4b1a7a05cc24fc0bcabae642912c13c26bc1b"
+                "reference": "10962080669fefc897845ebee999fa2c399e499e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/d5b4b1a7a05cc24fc0bcabae642912c13c26bc1b",
-                "reference": "d5b4b1a7a05cc24fc0bcabae642912c13c26bc1b",
+                "url": "https://api.github.com/repos/tylernathanreed/nova-icons/zipball/10962080669fefc897845ebee999fa2c399e499e",
+                "reference": "10962080669fefc897845ebee999fa2c399e499e",
                 "shasum": ""
             },
             "require": {
@@ -3953,7 +3953,7 @@
                 "nova",
                 "vue"
             ],
-            "time": "2019-11-14T13:59:16+00:00"
+            "time": "2020-03-23T16:21:03+00:00"
         },
         {
             "name": "reedware/nova-partition-metric-style-fix",
