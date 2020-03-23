@@ -66,10 +66,6 @@
         },
         {
             "type": "path",
-            "url": "./packages/reedware/laravel-processes"
-        },
-        {
-            "type": "path",
             "url": "./nova-components/jira-issue-prioritizer"
         },
         {
