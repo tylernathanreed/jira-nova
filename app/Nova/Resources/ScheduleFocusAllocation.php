@@ -36,7 +36,7 @@ class ScheduleFocusAllocation extends Resource
     public static $displayInNavigation = false;
 
     /**
-     * Get the displayable label of the resource.
+     * Returns the displayable label of the resource.
      *
      * @return string
      */
@@ -46,7 +46,7 @@ class ScheduleFocusAllocation extends Resource
     }
 
     /**
-     * Get the value that should be displayed to represent the resource.
+     * Returns the value that should be displayed to represent the resource.
      *
      * @return string
      */
@@ -56,7 +56,7 @@ class ScheduleFocusAllocation extends Resource
     }
 
     /**
-     * Get the fields displayed by the resource.
+     * Returns the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
      *

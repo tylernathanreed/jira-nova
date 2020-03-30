@@ -18,6 +18,7 @@ class Label extends Model implements Cacheable
      * @var string
      */
     protected $primaryKey = 'name';
+
     /**
      * The "type" of the primary key ID.
      *
