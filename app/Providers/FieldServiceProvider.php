@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use Closure;
 use Carbon\Carbon;
 use Laravel\Nova\Fields\Field;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Validation\Rule;
 use Reedware\NovaFieldManager\NovaFieldManager;
 
 class FieldServiceProvider extends ServiceProvider
@@ -165,5 +167,129 @@ class FieldServiceProvider extends ServiceProvider
                 };
             });
         });
+
+        /**
+         * Fills this field normally, but also fills additional content using the specified callback.
+         *
+         * @param  \Closure  $callback
+         *
+         * @return $this
+         */
+        Field::macro('fillExtraUsing', function(Closure $callback) {
+
+            // Override the fill callback
+            return $this->fillUsing(function($request, $model, $attribute, $requestAttribute) use ($callback) {
+
+                // Fill the original attribute from the request
+                $response = $this->fillAttributeFromRequest($request, $requestAttribute, $model, $attribute);
+
+                // Invoke the callback
+                $callback($request, $model, $attribute, $requestAttribute);
+
+                // Return the response
+                return $response;
+
+            });
+
+        });
+
+        /**
+         * Adds the specified rules to the field's validation rules.
+         *
+         * @param  callable|array|string  $rules
+         *
+         * @return $this
+         */
+        Field::macro('addRules', function($rules) {
+
+            // Determine the current rules
+            $currentRules = $this->rules;
+
+            // Normalize the new rules
+            $newRules = ($rules instanceof Rule || is_string($rules)) ? func_get_args() : $rules;
+
+            // Merge the rules
+            $this->rules = array_merge($currentRules, $newRules);
+
+            // Allow chaining
+            return $this;
+
+        });
+
+        /**
+         * Validates that the relation field is a sibling of another field within the request.
+         *
+         * @param  string       $sibling
+         * @param  string       $requestAttribute
+         * @param  string       $siblingAttribute
+         * @param  string|null  $localAttribute
+         *
+         * @return $this
+         */
+        Field::macro('siblingTo', function($sibling, $requestAttribute, $siblingAttribute, $localAttribute = null) {
+
+            // If a local attribute wasn't provided, use the sibling attribute
+            if(is_null($localAttribute)) {
+                $localAttribute = $siblingAttribute;
+            }
+
+            // Determine the request
+            $request = request();
+
+            // When the user is providing values for both this field and the
+            // sibling field, the underlying parent must be the same. If
+            // they are different, then the siblings aren't siblings.
+
+            // Make sure the request attribute has been provided
+            if(!$request->has($requestAttribute)) {
+                return $this;
+            }
+
+            // Since validation has not occurred yet, the referenced sibling
+            // may not actually exist. If any assumptions fail, we won't
+            // the additional rule here, as a prequisite rule failed.
+
+            // Create a new sibling query
+            $siblingQuery = $sibling::newModel()->newQuery();
+
+            // Respect soft deletes
+            if($request->input("{$requestAttribute}_trashed")) {
+                $siblingQuery->withTrashed();
+            }
+
+            // Determine the expected parent key
+            $expectedParentKey = $siblingQuery->whereKey($request->input($requestAttribute))->value($siblingAttribute);
+
+            // Make sure an expected parent key was found
+            if(is_null($expectedParentKey)) {
+                return $this;
+            }
+
+            // At this point, we know the expected parent key, but we have not
+            // yet figured out the actual parent key. This requires knowing
+            // the possible list of siblings using the expected parent.
+
+            // Determine the key name of the resource
+            $keyName = ($this->resourceClass)::newModel()->getKeyName();
+
+            // Create a new resource query
+            $resourceQuery = ($this->resourceClass)::newModel()->newQuery();
+
+            // Respect soft deletes
+            if($request->input("{$this->attribute}_trashed")) {
+                $resourceQuery->withTrashed();
+            }
+
+            // Determine the allowed keys
+            $allowedKeys = $resourceQuery->where($localAttribute, $expectedParentKey)->pluck($keyName);
+
+            // Require the selected resource key to be in the list of allowed keys
+            $this->addRules(['in: ' . $allowedKeys->implode(',')]);
+
+            // Allow chaining
+            return $this;
+
+        });
+
     }
 }
