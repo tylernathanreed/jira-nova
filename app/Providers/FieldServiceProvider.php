@@ -153,6 +153,11 @@ class FieldServiceProvider extends ServiceProvider
      */
     protected function registerFieldInstanceMacros()
     {
+        /**
+         * Fills this field after the underlying resource has been created.
+         *
+         * @return $this
+         */
         Field::macro('fillAfterCreate', function() {
             return $this->fillUsing(function($request, $model, $attribute, $requestAttribute) {
                 return function() use ($request, $model, $attribute, $requestAttribute) {
