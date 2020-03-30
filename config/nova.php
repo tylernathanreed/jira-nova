@@ -142,6 +142,7 @@ return [
         'Management' => 'icon-cubes',
         'Meta' => 'icon-code',
         'Scheduling' => 'icon-calendar',
+        'Software' => 'icon-software',
         'System' => 'icon-cogs',
         'Workflows' => 'icon-project-diagram'
     ]
