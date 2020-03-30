@@ -93,7 +93,16 @@ return [
             'database' => env('DB_JIRA_DATABASE', 'forge'),
             'username' => env('DB_JIRA_USERNAME', 'forge'),
             'password' => env('DB_JIRA_PASSWORD', ''),
-            'prefix' => '',
+            'unix_socket' => env('DB_JIRA_SOCKET', ''),
+            'charset' => env('DB_JIRA_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_JIRA_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => env('DB_JIRA_PREFIX', ''),
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
             'foreign_key_constraints' => env('DB_JIRA_FOREIGN_KEYS', true),
         ],
 
