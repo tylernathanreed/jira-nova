@@ -1,3 +1,25 @@
+{{-- Remap the navigation to key the resources by their label --}}
+<?php $navigation = $navigation->map(function($group) {
+    return $group->mapWithKeys(function($resource) {
+        return [$resource::label() => $resource];
+    });
+}); ?>
+
+{{-- Determine the nested labels --}}
+<?php $nestedLabels = $navigation->keys()->filter(function($label) {
+    return strpos($label, '.') !== false;
+}); ?>
+
+{{-- Move the nested labels to their nested position within the navigation --}}
+<?php $navigation = $nestedLabels->reduce(function($navigation, $label) {
+
+    [$prefix, $nested] = explode('.', $label);
+    $navigation[$prefix][$nested] = $navigation[$label];
+
+    return $navigation;
+
+}, $navigation)->except($nestedLabels); ?>
+
 @if(count(Nova::availableResources(request())))
     @foreach($navigation as $group => $resources)
         @if($resources->first() == $group)
@@ -38,16 +60,48 @@
 
                 <template slot="menu">
                     <ul class="list-reset bg-90-quarter">
-                        @foreach($resources as $resource)
+                        @foreach($resources as $label => $resource)
                             <li class="sidebar-item text-sm">
-                                <router-link :to="{
-                                    name: 'index',
-                                    params: {
-                                        resourceName: '{{ $resource::uriKey() }}'
-                                    }
-                                }" class="text-white text-justify no-underline ml-8 p-4 w-full">
-                                    {{ $resource::label() }}
-                                </router-link>
+                                @if(is_string($resource))
+                                    <router-link :to="{
+                                        name: 'index',
+                                        params: {
+                                            resourceName: '{{ $resource::uriKey() }}'
+                                        }
+                                    }" class="text-white text-justify no-underline ml-8 p-4 w-full">
+                                        {{ $label }}
+                                    </router-link>
+                                @else
+
+                                    <?php $groupLabel = $label; ?>
+                                    <?php $group = $resource; ?>
+
+                                    <treeview tag="div" class="w-full" toggle-tag="li" toggle-class="sidebar-item text-white text-justify no-underline p-4">
+                                        <template slot="label">
+                                            <span class="flex items-center flex-1 ml-8">
+                                                <span class="sidebar-label">{{ $groupLabel }}</span>
+                                            </span>
+                                        </template>
+
+                                        <template slot="menu">
+                                            <ul class="list-reset bg-90-quarter pl-8">
+                                                @foreach($group as $label => $resource)
+                                                    <li class="sidebar-item text-sm">
+                                                        <router-link :to="{
+                                                            name: 'index',
+                                                            params: {
+                                                                resourceName: '{{ $resource::uriKey() }}'
+                                                            }
+                                                        }" class="text-white text-justify no-underline p-4 w-full">
+                                                            {{ $label }}
+                                                        </router-link>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </template>
+                                    </treeview>
+
+                                @endif
                             </li>
                         @endforeach
                     </ul>
