@@ -97,6 +97,63 @@ html {
     padding-bottom: 0.75rem;
 }
 
+// Override the lens page for Pipeline Summary
+div[dusk="pipeline-summary-lens-component"] {
+
+    table {
+
+        th {
+
+            // Make the table header text much larger
+            font-size: 2rem;
+
+            // Add borders and such to clearly delineate
+            border-top-width: 2px;
+
+            &:first-child {
+                border-left-width: 2px;
+            }
+
+            &:last-child {
+                border-right-width: 2px;
+            }
+
+        }
+
+        td {
+
+            // Make the table body text much larger
+            font-size: 2rem;
+            height: 3.5rem;
+
+            // Add borders and such to clearly delineate
+            &:first-child {
+                border-left-width: 2px;
+            }
+
+            &:last-child {
+                border-right-width: 2px;
+            }
+
+        }
+
+    }
+
+    // Remove the pagination components to increase landscape
+    .card {
+
+        & > div:first-child {
+            display: none;
+        }
+
+        .relative > div:last-child {
+            display: none;
+        }
+
+    }
+
+}
+
 div[dusk="casl-priorities-lens-component"] {
 
     a[data-testid="lens-back"] {

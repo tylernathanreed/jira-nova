@@ -1039,8 +1039,8 @@ textarea.form-input:read-only,
 }
 
 .form-file-input:focus + .form-file-btn {
-  outline: none;
-  box-shadow: 0 0 8px var(--primary);
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--primary-50);
 }
 
 /* Buttons
@@ -1837,6 +1837,20 @@ trix-editor.disabled {
 
 /* Tooltip
 ---------------------------------------------------------------------------- */
+
+.tooltip {
+  background-color: var(--white);
+  padding-left: .75rem;
+  padding-right: .75rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  border-radius: .25rem;
+  border-width: 1px;
+  border-color: var(--50);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
+  font-size: .875rem;
+  line-height: 1.5;
+}
 
 .tooltip {
   display: block !important;
@@ -5592,6 +5606,40 @@ html {
 .relative[dusk][initialperpage] .card > .flex.items-center:not(.py-3) {
   padding-top: .75rem;
   padding-bottom: .75rem;
+}
+
+div[dusk=pipeline-summary-lens-component] table th {
+  font-size: 2rem;
+  border-top-width: 2px;
+}
+
+div[dusk=pipeline-summary-lens-component] table th:first-child {
+  border-left-width: 2px;
+}
+
+div[dusk=pipeline-summary-lens-component] table th:last-child {
+  border-right-width: 2px;
+}
+
+div[dusk=pipeline-summary-lens-component] table td {
+  font-size: 2rem;
+  height: 3.5rem;
+}
+
+div[dusk=pipeline-summary-lens-component] table td:first-child {
+  border-left-width: 2px;
+}
+
+div[dusk=pipeline-summary-lens-component] table td:last-child {
+  border-right-width: 2px;
+}
+
+div[dusk=pipeline-summary-lens-component] .card > div:first-child {
+  display: none;
+}
+
+div[dusk=pipeline-summary-lens-component] .card .relative > div:last-child {
+  display: none;
 }
 
 div[dusk=casl-priorities-lens-component] a[data-testid=lens-back] {
