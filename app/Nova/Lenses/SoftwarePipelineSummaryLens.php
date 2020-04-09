@@ -34,6 +34,11 @@ class SoftwarePipelineSummaryLens extends Lens
         // Disable table order prefixes
         $request->withoutTableOrderPrefix();
 
+        // If custom ordering has not been applied, then we'll supply our own
+        if(!$request->orderBy || !$request->orderByDirection) {
+            $query->orderBy('step_order', 'asc');
+        }
+
         // Return the query
         return $request->withOrdering($request->withFilters(
             $query
