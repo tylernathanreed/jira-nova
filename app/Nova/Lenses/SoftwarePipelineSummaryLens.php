@@ -36,7 +36,7 @@ class SoftwarePipelineSummaryLens extends Lens
 
         // If custom ordering has not been applied, then we'll supply our own
         if(!$request->orderBy || !$request->orderByDirection) {
-            $query->orderBy('step_order', 'asc');
+            $query->orderBy('step_order', 'asc')->orderBy('is_baseline_brand', 'desc');
         }
 
         // Return the query
