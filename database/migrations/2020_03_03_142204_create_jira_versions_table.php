@@ -23,7 +23,7 @@ class CreateJiraVersionsTable extends Migration
 
             // Attributes
             $table->integer('jira_id')->index();
-            $table->bigBelongsTo('projects', 'project_id')->index();
+            $table->bigBelongsTo('projects', 'project_id', 'id', 'FK_jira_versions_projects_project_id')->index();
             $table->string('name', 255)->index();
             $table->text('description')->nullable();
             $table->boolean('archived');
