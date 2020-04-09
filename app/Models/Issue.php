@@ -428,7 +428,7 @@ class Issue extends Model implements Cacheable
         $query->whereNotIn('priority', ['Hold']);
 
         // Filter by status
-        $query->whereIn('status', ['Assigned', 'Testing Failed', 'Dev Hold', 'In Development', 'In Design']);
+        $query->whereIn('status', ['Assigned', 'Testing Failed', 'Dev Hold', 'In Development', 'In Design', 'Can\'t Test']);
 
         // If the "dev" focus group is disabled, exclude them
         if(!$groups['dev']) {
