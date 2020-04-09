@@ -383,7 +383,7 @@ class Issue extends Model implements Cacheable
 
         // Initialize the options
         $options = [
-            'assignee' => collect(Jira::users()->findAssignableUsers(['project' => 'UAS']))->pluck('displayName', 'key')->all(),
+            'assignee' => User::pluck('display_name', 'jira_key')->sort()->flip()->toArray(),
             'groups' => [
                 'dev' => true,
                 'ticket' => true,
