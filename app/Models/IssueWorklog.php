@@ -78,7 +78,9 @@ class IssueWorklog extends Model implements Cacheable
                             foreach($worklogs as $worklog) {
 
                                 // Create the worklog
-                                $newWorklog = $issue->worklogs()->create([
+                                $newWorklog = $issue->worklogs()->updateOrCreate([
+                                    'jira_id' => $worklog->id,
+                                ], [
                                     'jira_id' => $worklog->id,
                                     'author_id' => isset($worklog->author->key) ? ($userMapping[$worklog->author->key] ?? null) : null,
                                     'author_key' => $worklog->author->key ?? null,
