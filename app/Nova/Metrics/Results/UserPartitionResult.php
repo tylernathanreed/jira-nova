@@ -17,6 +17,10 @@ class UserPartitionResult extends PartitionResult
      */
     public function __construct(array $value)
     {
+        $value = array_filter($value, function($aggregate) {
+            return $aggregate > 0;
+        });
+
         // Call the parent method
         parent::__construct($value);
 
