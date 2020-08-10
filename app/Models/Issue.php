@@ -412,58 +412,28 @@ class Issue extends Model implements Cacheable
         // Create a new query
         $query = $this->newJiraQueryWithDefaultSelection();
 
-        // Determine the applicable focus groups
-        $groups = $options['groups'] ?? [
-            'dev' => true,
-            'ticket' => true,
-            'other' => true
-        ];
-
-        // Filter by assignee
-        if(isset($options['assignee'])) {
-            $query->whereIn('assignee', $options['assignee'] ?? ['tyler.reed']);
-        }
-
         // Ignore "Hold" priorities
         $query->whereNotIn('priority', ['Hold']);
 
-        // Filter by status
-        $query->whereIn('status', ['Assigned', 'Testing Failed', 'Dev Hold', 'In Development', 'In Design', 'Can\'t Test']);
+        // Filter by assignee
+        if(!empty($options['assignee'])) {
 
-        // If the "dev" focus group is disabled, exclude them
-        if(!$groups['dev']) {
+            // Check for traditional assignee
+            $query->where(function($query) use ($options) {
 
-            $query->where(function($query) {
-
-                $query->where(function($query) {
-                    $query->where('Issue Category', '!=', 'Dev');
-                    $query->whereNotNull('Issue Category');
-                });
-
-                $query->orWhere('priority', '=', 'Highest');
+                $query->whereIn('assignee', $options['assignee']);
+                $query->whereIn('status', ['Assigned', 'Testing Failed', 'Dev Hold', 'In Development', 'In Design', 'Can\'t Test']);
 
             });
 
-        }
+            // Check for Designated QA
+            $query->orWhere(function($query) use ($options) {
 
-        // If the "ticket" focus group is disabled, exclude them
-        if(!$groups['ticket']) {
-
-            $query->where(function($query) {
-
-                $query->where(function($query) {
-                    $query->whereNull('Issue Category');
-                    $query->orWhereNotIn('Issue Category', ['Ticket', 'Data']);
-                    $query->orWhere('priority', 'Highest');
-                });
+                $query->whereIn('Designated QA', $options['assignee']);
+                $query->whereIn('status', ['Ready to Test [Test]']);
 
             });
 
-        }
-
-        // If the "other" focus group is disabled, exclude them
-        if(!$groups['other']) {
-            $query->where('priority', '!=', 'Highest');
         }
 
         // Order by rank
