@@ -87,6 +87,7 @@ return [
         'ghx-label-7' => ['background' => '#8777d9', 'color' => '#fff'],
         'ghx-label-8' => ['background' => '#998dd9', 'color' => '#172B4D'],
         'ghx-label-9' => ['background' => '#ff7452', 'color' => '#fff'],
+        'ghx-label-10' => ['background' => '#B3D4FF', 'color' => '#0049B0'],
         'ghx-label-11' => ['background' => '#79e2f2', 'color' => '#42526e'],
         'ghx-label-12' => ['background' => '#7a869a', 'color' => '#fff'],
         'ghx-label-13' => ['background' => '#57d9a3', 'color' => '#172B4D'],
