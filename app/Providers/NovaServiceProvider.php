@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
-use App\Models\Label;
-use Laravel\Nova\Nova;
 use App\Models\FocusGroup;
-use Illuminate\Http\Request;
-use Laravel\Nova\Cards\Help;
+use App\Models\Label;
+use App\Nova\Exceptions\NovaExceptionHandler;
 use App\Nova\Resources\Issue;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -126,6 +128,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function resources()
     {
         Nova::resourcesIn(app_path('Nova/Resources'));
+    }
+
+    /**
+     * Register Nova's custom exception handler.
+     *
+     * @return void
+     */
+    protected function registerExceptionHandler()
+    {
+        $this->app->bind(ExceptionHandler::class, NovaExceptionHandler::class);
     }
 
     /**
