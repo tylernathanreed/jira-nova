@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use DB;
 use Api;
-use Closure;
-use Carbon\Carbon;
 use App\Support\Contracts\Cacheable;
+use Carbon\Carbon;
+use Closure;
+use DB;
+use Exception;
 
 class IssueWorklog extends Model implements Cacheable
 {
@@ -60,7 +61,11 @@ class IssueWorklog extends Model implements Cacheable
                         $offset = $issue->worklogs_count ?? 0;
 
                         // Determine the total number of worklogs
-                        $total = Api::getIssueWorklogs($issue->key, ['maxResults' => 0])->total;
+                        try {
+                            $total = Api::getIssueWorklogs($issue->key, ['maxResults' => 0])->total;
+                        } catch(Exception $ex) {
+                            return;
+                        }
 
                         // Walk through the change logs
                         while($offset < $total) {

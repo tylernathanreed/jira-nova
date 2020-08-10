@@ -5,6 +5,7 @@ namespace App\Models;
 use DB;
 use Api;
 use Closure;
+use Exception;
 use Carbon\Carbon;
 use App\Support\Contracts\Cacheable;
 
@@ -70,7 +71,11 @@ class IssueChangelog extends Model implements Cacheable
                         $offset = $issue->changelogs_count ?? 0;
 
                         // Determine the total number of changelogs
-                        $total = Api::getChangeLogs($issue->key, ['maxResults' => 0])->total;
+                        try {
+                            $total = Api::getChangeLogs($issue->key, ['maxResults' => 0])->total;
+                        } catch(Exception $ex) {
+                            return;
+                        }
 
                         // Walk through the change logs
                         while($offset < $total) {
