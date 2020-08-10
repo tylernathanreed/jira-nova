@@ -531,6 +531,8 @@ class Issue extends Resource
                 static::getIssueStatusPartition(),
             ]),
 
+            (new \App\Nova\Lenses\HealthDebtLens),
+
             /**
              * This is a temporary lens and must eventually be removed!
              */
