@@ -358,7 +358,7 @@ class Issue extends Model implements Cacheable
         $issues = $issues->keyBy('key');
 
         // Determine the block map from the jira issues
-        $blocks = static::getBlockMapFromJiraIssues($issues);
+        // $blocks = static::getBlockMapFromJiraIssues($issues);
 
         // Assign the blocks to each issue
         foreach($issues as $key => &$issue) {
