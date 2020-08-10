@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Exception;
+use Throwable;
+use App\Support\DumpServerChecker;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -30,11 +32,60 @@ class Handler extends ExceptionHandler
      * Report or log an exception.
      *
      * @param  \Exception  $exception
+     *
      * @return void
+     *
+     * @throws \Exception
      */
     public function report(Exception $exception)
     {
         parent::report($exception);
+
+        if ($this->shouldntReport($exception)) {
+            return;
+        }
+
+        $this->dump($exception);
+    }
+
+    /**
+     * Dumps the specified exception.
+     *
+     * @return boolean
+     */
+    public function dump(Throwable $exception)
+    {
+        if(!DumpServerChecker::isOnline()) {
+            return false;
+        }
+
+        $trace = preg_replace(
+            '/^#\d+ ~\\\\vendor\\\\[^\n+]+\n/m',
+            '',
+            $this->removeGlobalPaths($exception->getTraceAsString())
+        );
+
+        dump([
+            'class' => get_class($exception),
+            'message' => $exception->getMessage(),
+            'file' => $this->removeGlobalPaths($exception->getFile()),
+            'line' => $exception->getLine(),
+            'trace' => $trace
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Removes the global paths from the specified message.
+     *
+     * @param  string  $message
+     *
+     * @return string
+     */
+    protected function removeGlobalPaths($message)
+    {
+        return str_replace(base_path(), '~', $message);
     }
 
     /**
