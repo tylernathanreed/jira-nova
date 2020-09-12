@@ -20,7 +20,7 @@ class LoginUsingRequest
      */
     public function handle($request, Closure $next)
     {
-        if(!$request->login) {
+        if(!$request->has('login')) {
             return $next($request);
         }
 

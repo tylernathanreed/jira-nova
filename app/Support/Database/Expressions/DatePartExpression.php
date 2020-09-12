@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Database\Expression;
+namespace App\Support\Database\Expressions;
 
 use InvalidArgumentException;
 use Illuminate\Database\Eloquent\Builder;

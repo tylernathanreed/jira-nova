@@ -36,6 +36,10 @@ class SharedConfiguration implements RestInterface, AgileInterface
     public function getJiraLogLevel()              { return $this->config->get('jira.logs.level'); }
     public function isCurlOptSslVerifyHost()       { return $this->config->get('jira.curl.verify_host'); }
     public function isCurlOptSslVerifyPeer()       { return $this->config->get('jira.curl.verify_peer'); }
+    public function isCurlOptSslCert()             { return $this->config->get('jira.curl.cert'); }
+    public function isCurlOptSslCertPassword()     { return $this->config->get('jira.curl.cert_password'); }
+    public function isCurlOptSslKey()              { return $this->config->get('jira.curl.key'); }
+    public function isCurlOptSslKeyPassword()      { return $this->config->get('jira.curl.key_password'); }
     public function isCurlOptVerbose()             { return $this->config->get('jira.curl.verbose'); }
     public function getCurlOptUserAgent()          { return $this->config->get('jira.curl.user_agent'); }
     public function getOAuthAccessToken()          { return $this->config->get('jira.oauth.token'); }
@@ -56,6 +60,10 @@ class SharedConfiguration implements RestInterface, AgileInterface
     public function setJiraLogLevel($value)               { return $this->config->set('jira.logs.level', $value); }
     public function setCurlOptSslVerifyHost($value)       { return $this->config->set('jira.curl.verify_host', $value); }
     public function setCurlOptSslVerifyPeer($value)       { return $this->config->set('jira.curl.verify_peer', $value); }
+    public function setCurlOptSslCert()                   { return $this->config->set('jira.curl.cert'); }
+    public function setCurlOptSslCertPassword()           { return $this->config->set('jira.curl.cert_password'); }
+    public function setCurlOptSslKey()                    { return $this->config->set('jira.curl.key'); }
+    public function setCurlOptSslKeyPassword()            { return $this->config->set('jira.curl.key_password'); }
     public function setCurlOptVerbose($value)             { return $this->config->set('jira.curl.verbose', $value); }
     public function setCurlOptUserAgent($value)           { return $this->config->set('jira.curl.user_agent', $value); }
     public function setOAuthAccessToken($value)           { return $this->config->set('jira.oauth.token', $value); }

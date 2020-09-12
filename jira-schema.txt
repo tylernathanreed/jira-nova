@@ -1,0 +1,7 @@
+jira_issues
+ - id
+ - issue_key
+ - project_id
+ - reporter_id
+ - assignee_id
+ - issue_type_id

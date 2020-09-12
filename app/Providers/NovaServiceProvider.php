@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Models\FocusGroup;
 use App\Models\Label;
-use App\Nova\Exceptions\NovaExceptionHandler;
+use App\Exceptions\NovaExceptionHandler;
 use App\Nova\Resources\Issue;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
@@ -188,7 +188,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new \NovaComponents\JiraIssuePrioritizer\JiraIssuePrioritizer,
-            new \MadWeb\NovaTelescopeLink\TelescopeLink('Telescope', 'blank'),
+            // new \MadWeb\NovaTelescopeLink\TelescopeLink('Telescope', 'blank'),
         ];
     }
 

@@ -623,7 +623,7 @@ class FluentTrend extends Trend
      *
      * @return $this
      */
-    public function precision($precision)
+    public function precision($precision = 0)
     {
         $this->precision = $precision;
 

@@ -4,17 +4,9 @@ namespace App\Support\Jira\Middleware;
 
 use Closure;
 use App\Support\Jira\JiraService;
-use Illuminate\Contracts\Session\Session;
 
 class ShareConfigurationFromSession
 {
-    /**
-     * The session store.
-     *
-     * @var \Illuminate\Contracts\Session\Session
-     */
-    protected $session;
-
     /**
      * The jira service.
      *
@@ -30,9 +22,8 @@ class ShareConfigurationFromSession
      *
      * @return void
      */
-    public function __construct(Session $session, JiraService $jira)
+    public function __construct(JiraService $jira)
     {
-        $this->session = $session;
         $this->jira = $jira;
     }
 
@@ -46,8 +37,16 @@ class ShareConfigurationFromSession
      */
     public function handle($request, Closure $next)
     {
+        // Make sure the request has a session
+        if(!$request->hasSession()) {
+            return $next($request);
+        }
+
+        // Determine the session
+        $session = $request->session();
+
         // Make sure the session has jira configuration
-        if(!$this->session->has('jira.username') || !$this->session->has('jira.password')) {
+        if(!$session->has('jira.username') || !$session->has('jira.password')) {
             return $next($request);
         }
 
@@ -55,8 +54,8 @@ class ShareConfigurationFromSession
         $config = $this->jira->getConfiguration();
 
         // Determine the session configuration
-        $username = $this->session->get('jira.username');
-        $password = $this->session->get('jira.password');
+        $username = $session->get('jira.username');
+        $password = $session->get('jira.password');
 
         // Update the jira configuration using the session configuration
         $config->setJiraUser($username);

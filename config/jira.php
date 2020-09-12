@@ -66,6 +66,10 @@ return [
     'curl' => [
         'verify_host' => env('JIRA_CURLOPT_SSL_VERIFYHOST', false),
         'verify_peer' => env('JIRA_CURLOPT_SSL_VERIFYPEER', false),
+        'cert' => env('JIRA_CURLOPT_SSL_CERT'),
+        'cert_password' => env('JIRA_CURLOPT_SSL_CERT_PASSWORD'),
+        'key' => env('JIRA_CURLOPT_SSL_KEY'),
+        'key_password' => env('JIRA_CURLOPT_SSL_KEY_PASSWORD'),
         'user_agent' => env('JIRA_CURLOPT_USERAGENT', sprintf('curl/%s (%s)', ($curl = curl_version())['version'], $curl['host'])),
         'verbose' => env('JIRA_CURLOPT_VERBOSE', false)
     ],

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Jira\Resource;
+namespace App\Support\Jira\Resources;
 
 use Illuminate\Support\Str;
 
